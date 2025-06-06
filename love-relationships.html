@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="app-title">Curious Souls Café</title> <script src="https://cdn.tailwindcss.com"></script>
+    <title id="app-title">Curious Souls Café</title> 
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -177,8 +178,26 @@
     </button>
 
     <script>
-        // GitHub raw content URL for the questions file
-        const githubRawUrl = "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Love Relationships.txt";
+        // Dynamically determine the topic and GitHub URL based on the current HTML file's name
+        const currentPagePath = window.location.pathname;
+        const currentPageFileName = currentPagePath.substring(currentPagePath.lastIndexOf('/') + 1);
+        
+        // Extract the base name from the HTML file (e.g., "transitions", "love-relationship", "love_relationship")
+        const htmlFileBaseName = currentPageFileName.split('.')[0]; 
+
+        // Convert the base name to a display-friendly topic name (Title Case with spaces)
+        // This handles kebab-case (e.g., "love-relationship" -> "Love Relationship")
+        // and snake_case (e.g., "love_relationship" -> "Love Relationship")
+        const displayTopicName = htmlFileBaseName.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+
+        // The text file name should match the HTML file's base name (e.g., Transitions.txt)
+        // This assumes the .txt file on GitHub has the exact same casing as the displayTopicName.
+        const textFileNameForGithub = `${displayTopicName}.txt`; 
+
+        // Construct the GitHub raw content URL using the text file name
+        const githubRawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${textFileNameForGithub}`;
+
+        console.log("Attempting to fetch from URL:", githubRawUrl); // Added for debugging
 
         let itemList = []; // This will be populated dynamically
         let lastSearchTerm = "";
@@ -205,34 +224,79 @@
         const randomHighlightColor = highlightColors[Math.floor(Math.random() * highlightColors.length)];
         document.documentElement.style.setProperty('--highlight-color', randomHighlightColor);
 
-        // Function to fetch questions from GitHub
+        // --- Persistent Saved Questions Logic ---
+        const savedQuestionsLocalStorageKey = `csc_saved_questions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`; // Unique key per topic
+
+        /**
+         * Loads saved questions from localStorage and displays them.
+         */
+        function loadSavedQuestions() {
+            const savedQuestionsJson = localStorage.getItem(savedQuestionsLocalStorageKey);
+            if (savedQuestionsJson) {
+                const savedQuestions = JSON.parse(savedQuestionsJson);
+                // Clear existing display placeholder
+                chosenQuestionsDisplay.innerHTML = ''; 
+                savedQuestions.forEach(questionText => {
+                    addChosenQuestionToDOM(questionText); // Re-add to DOM without saving to localStorage again
+                });
+            } else {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            }
+            updateClearButtonText();
+        }
+
+        /**
+         * Saves the current list of chosen questions to localStorage.
+         */
+        function saveCurrentChosenQuestions() {
+            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.textContent);
+            localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
+        }
+
+        // Function to fetch questions from localStorage or GitHub
         async function fetchQuestions() {
-            try {
-                const response = await fetch(githubRawUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const text = await response.text();
-                // Split the text by newline, filter out empty lines, and trim each question
-                itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                availableRandomItems = [...itemList]; // Initialize available items for random selection
+            // Construct the localStorage key based on the displayTopicName
+            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
+            const cachedContent = localStorage.getItem(localStorageKey);
 
-                // Extract topic name from the file path
-                const pathSegments = githubRawUrl.split('/');
-                const fileNameWithExt = pathSegments[pathSegments.length - 1];
-                const topicName = fileNameWithExt.split('.')[0]; // "Transitions"
-
-                // Update HTML elements with the dynamic topic
-                appTitleElement.textContent = `Curious Souls Café - ${topicName}`;
-                topicTitleElement.textContent = `Topic: ${topicName}`;
-
+            if (cachedContent) {
+                // Load from localStorage if available
+                console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
+                itemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                availableRandomItems = [...itemList];
+                appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+                topicTitleElement.textContent = `Topic: ${displayTopicName}`;
                 totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
-                displayRandomItems(); // Display initial random items once loaded
-            } catch (error) {
-                console.error("Could not load questions:", error);
-                resultDisplay.textContent = "Failed to load questions. Please check the network or file path.";
-                appTitleElement.textContent = "Curious Souls Café - Error";
-                topicTitleElement.textContent = "Topic: Error";
+                displayRandomItems();
+                loadSavedQuestions(); // Load saved questions after topic questions are ready
+            } else {
+                // Fallback to fetching from GitHub if not in localStorage
+                console.log(`Loading questions for topic "${displayTopicName}" from GitHub (not found in localStorage).`);
+                try {
+                    // Update HTML elements with the dynamic topic immediately before fetching
+                    appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+                    topicTitleElement.textContent = `Topic: ${displayTopicName}`;
+
+                    const response = await fetch(githubRawUrl);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const text = await response.text();
+                    itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                    availableRandomItems = [...itemList]; // Initialize available items for random selection
+
+                    // Optionally, save to localStorage for future visits
+                    localStorage.setItem(localStorageKey, text);
+
+                    totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
+                    displayRandomItems(); // Display initial random items once loaded
+                    loadSavedQuestions(); // Load saved questions after topic questions are ready
+                } catch (error) {
+                    console.error("Could not load questions:", error);
+                    resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
+                    appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
+                    topicTitleElement.textContent = `Topic: Error`;
+                }
             }
         }
 
@@ -242,7 +306,13 @@
             if (highlightedItems.length > 0) {
                 clearChosenButton.textContent = "Clear Selected";
             } else {
-                clearChosenButton.textContent = "Clear Saved Questions";
+                // Check if there are any saved questions at all (even if not highlighted)
+                const allChosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+                if (allChosenItems.length > 0) {
+                    clearChosenButton.textContent = "Clear All Saved";
+                } else {
+                    clearChosenButton.textContent = "Clear Saved Questions";
+                }
             }
         }
 
@@ -287,47 +357,67 @@
             });
         }
 
+        /**
+         * Adds a question to the DOM display and saves it to localStorage.
+         * @param {string} questionText - The text of the question to add.
+         */
         function addChosenQuestion(questionText) {
-            // Check if the question is already in the chosen list
+            // Check if the question is already in the chosen list in DOM
             const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
             if (!existingChosenItems.includes(questionText)) {
-                const chosenItemDiv = document.createElement('div');
-                chosenItemDiv.classList.add('chosen-item');
-                chosenItemDiv.textContent = questionText;
-                chosenQuestionsDisplay.appendChild(chosenItemDiv);
-
-                // Add click listener for highlighting chosen items
-                chosenItemDiv.addEventListener('click', function() {
-                    this.classList.toggle('selected-chosen-item');
-                    updateClearButtonText();
-                });
-
-                // Remove the initial placeholder text if present
-                const placeholder = chosenQuestionsDisplay.querySelector('p.text-gray-500');
-                if (placeholder) {
-                    chosenQuestionsDisplay.removeChild(placeholder);
-                }
+                addChosenQuestionToDOM(questionText);
+                saveCurrentChosenQuestions(); // Save to localStorage after adding
             }
             updateClearButtonText();
         }
 
+        /**
+         * Helper function to add a question div to the DOM without affecting localStorage.
+         * Used for both initial loading and user interaction.
+         * @param {string} questionText - The text of the question to add.
+         */
+        function addChosenQuestionToDOM(questionText) {
+            const chosenItemDiv = document.createElement('div');
+            chosenItemDiv.classList.add('chosen-item');
+            chosenItemDiv.textContent = questionText;
+            chosenQuestionsDisplay.appendChild(chosenItemDiv);
+
+            // Add click listener for highlighting chosen items
+            chosenItemDiv.addEventListener('click', function() {
+                this.classList.toggle('selected-chosen-item');
+                updateClearButtonText();
+            });
+
+            // Remove the initial placeholder text if present
+            const placeholder = chosenQuestionsDisplay.querySelector('p.text-gray-500');
+            if (placeholder) {
+                chosenQuestionsDisplay.removeChild(placeholder);
+            }
+        }
+
+        /**
+         * Removes a question from the DOM display and from localStorage.
+         * @param {string} questionText - The text of the question to remove.
+         */
         function removeChosenQuestion(questionText) {
             const chosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            let removedFromDOM = false;
             chosenItems.forEach(item => {
                 if (item.textContent === questionText) {
                     chosenQuestionsDisplay.removeChild(item);
+                    removedFromDOM = true;
                 }
             });
+
+            if (removedFromDOM) {
+                saveCurrentChosenQuestions(); // Save to localStorage after removing
+            }
 
             // If no chosen questions remain, display the placeholder
             const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
             if (remainingQuestionDivs.length === 0) {
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
-            } else {
-                if (chosenQuestionsDisplay.firstChild && chosenQuestionsDisplay.firstChild.tagName === 'HR') {
-                    chosenQuestionsDisplay.removeChild(chosenQuestionsDisplay.firstChild);
-                }
-            }
+            } 
             updateClearButtonText();
         }
 
@@ -380,20 +470,18 @@
         clearChosenButton.addEventListener('click', function() {
             const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
 
-            if (highlightedItems.length > 0) {
+            if (highlightedItems.length > 0) { // If specific items are highlighted, clear only those
                 highlightedItems.forEach(item => {
                     chosenQuestionsDisplay.removeChild(item);
                 });
-
-                const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
-                if (remainingQuestionDivs.length === 0) {
-                    chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
-                } else {
-                    if (chosenQuestionsDisplay.firstChild && chosenQuestionsDisplay.firstChild.tagName === 'HR') {
-                        chosenQuestionsDisplay.removeChild(chosenQuestionsDisplay.firstChild);
-                    }
-                }
-            } else {
+            } else { // Otherwise, clear all saved questions
+                chosenQuestionsDisplay.innerHTML = ''; // Clear all from DOM
+            }
+            saveCurrentChosenQuestions(); // Update localStorage after clearing
+            
+            // If no chosen questions remain, display the placeholder
+            const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            if (remainingQuestionDivs.length === 0) {
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
             }
             updateClearButtonText();
@@ -420,7 +508,8 @@
         });
 
         // Initial calls
-        fetchQuestions(); // Fetch questions when the app loads
+        fetchQuestions(); // Fetch and load topic questions
+        // loadSavedQuestions() is now called within fetchQuestions after itemList is ready
         
         randomizeButton.addEventListener('click', function(event) {
             event.preventDefault();
