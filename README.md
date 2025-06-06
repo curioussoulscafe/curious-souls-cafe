@@ -36,7 +36,7 @@ The Curious Souls Café web app keeps its questions organized in a simple way:
 
 * The main page (`index.html`) is where you choose your topic.
 
-* Each topic (like "Transitions" or "Love Relationships") has its own separate page (e.g., `transitions.html`), where a link needs to be specified for retrieving a text file (below) containing the questions.
+* Each topic (like "Transitions" or "Love Relationships") has its own separate page (e.g., `transitions.html`).
 
 * All the questions for each topic are stored in simple text files (`.txt`) inside the `questions/` folder. For example, all "Transitions" questions are in `questions/Transitions.txt`.
 
