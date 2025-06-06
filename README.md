@@ -22,7 +22,7 @@ Just click the link below or scan a QR code to open the Curious Souls Café web 
 
 * **Find Specific Questions:** Looking for something particular? Use the search bar to find questions that match your keywords.
 
-* **Save Questions:** See a question you like during the question-picking process of a curious conversation? Simply click or tap on it, and it will be added to your "Saved Questions" list at the bottom of the page temporarily. You can clear them anytime.
+* **Save Questions:** See a question you like? Simply click or tap on it, and it will be added to your "Saved Questions" list at the bottom of the page. You can clear them anytime.
 
 * **Optimized for On-the-Go:** The web app is designed to work seamlessly on smartphones and tablets, making it the ideal companion for dynamic, on-the-go interactions.
 
