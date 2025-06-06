@@ -177,8 +177,26 @@
     </button>
 
     <script>
-        // GitHub raw content URL for the questions file
-        const githubRawUrl = "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Transitions.txt";
+        // Dynamically determine the topic and GitHub URL based on the current HTML file's name
+        const currentPagePath = window.location.pathname;
+        const currentPageFileName = currentPagePath.substring(currentPagePath.lastIndexOf('/') + 1);
+        
+        // Extract the base name from the HTML file (e.g., "transitions", "love-relationship", "love_relationship")
+        const htmlFileBaseName = currentPageFileName.split('.')[0]; 
+
+        // Convert the base name to a display-friendly topic name (Title Case with spaces)
+        // This handles kebab-case (e.g., "love-relationship" -> "Love Relationship")
+        // and snake_case (e.g., "love_relationship" -> "Love Relationship")
+        const displayTopicName = htmlFileBaseName.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+
+        // The text file name should match the HTML file's base name (e.g., Transitions.txt)
+        // This assumes the .txt file on GitHub has the exact same casing as the displayTopicName.
+        const textFileNameForGithub = `${displayTopicName}.txt`; 
+
+        // Construct the GitHub raw content URL using the text file name
+        const githubRawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${textFileNameForGithub}`;
+
+        console.log("Attempting to fetch from URL:", githubRawUrl); // Added for debugging
 
         let itemList = []; // This will be populated dynamically
         let lastSearchTerm = "";
