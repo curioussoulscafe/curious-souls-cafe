@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curious Souls Café</title>
+    <title>Curious Souls Café - Topics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -33,6 +33,20 @@
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        /* Loading indicator styles */
+        .loading-spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #a855f7; /* Purple */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -45,7 +59,8 @@
         <h2 class="text-xl font-semibold text-gray-700 text-center mb-6">Choose a Topic:</h2>
 
         <div id="topics-list" class="space-y-4">
-            <p class="text-gray-500 text-center">Loading topics...</p>
+            <div class="loading-spinner"></div>
+            <p class="text-gray-500 text-center">Loading topics and questions...</p>
         </div>
 
         <p id="error-message" class="text-red-500 text-center mt-4 hidden">Failed to load topics. Please check your GitHub repository and network connection.</p>
@@ -58,19 +73,26 @@
         // GitHub API endpoint for the 'questions' subfolder
         const githubApiUrl = 'https://api.github.com/repos/curioussoulscafe/curious-souls-cafe/contents/questions';
 
+        // --- NEW: List of topics NOT to cache ---
+        // Add the display names of topics whose .txt files should always be fetched fresh
+        // Example: If "Happiness.txt" and "Latest News.txt" are frequently updated:
+        const DO_NOT_CACHE_TOPICS = ["Past Questions"];
+        // const DO_NOT_CACHE_TOPICS = ["Happiness", "The Mind Speaks", "Love Relationship"];
+
         /**
-         * Fetches the list of question files from the GitHub repository.
-         * Filters for .txt files and generates topic buttons.
+         * Fetches the list of question files from the GitHub repository,
+         * then fetches the content of each file and stores it in localStorage (selectively).
          */
-        async function fetchTopics() {
+        async function fetchAndCacheTopics() {
             try {
+                // Step 1: Fetch list of files
                 const response = await fetch(githubApiUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
 
-                // Filter for .txt files and extract topic names
+                // Filter for .txt files and prepare for content fetching
                 const topicFiles = data.filter(item => item.type === 'file' && item.name.endsWith('.txt'));
 
                 if (topicFiles.length === 0) {
@@ -78,37 +100,71 @@
                     return;
                 }
 
+                // Step 2: Fetch content of each file concurrently and selectively cache
+                const fetchContentPromises = topicFiles.map(async (file) => {
+                    const rawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${file.name}`;
+                    const topicName = file.name.replace('.txt', '');
+                    
+                    // Check if this topic should NOT be cached
+                    if (DO_NOT_CACHE_TOPICS.includes(topicName)) {
+                        console.log(`Skipping cache for '${topicName}' (marked as non-caching).`);
+                        // We still need to fetch it to ensure the file exists and is accessible
+                        // This fetch is just to validate existence and populate the topic button.
+                        // The actual topic page will handle its own non-cached fetch.
+                        const contentResponse = await fetch(rawUrl);
+                        if (!contentResponse.ok) {
+                            console.warn(`Could not fetch content for non-cached topic ${file.name}: ${contentResponse.statusText}`);
+                            return null; // Return null for failed fetches
+                        }
+                        return { name: topicName, htmlFileName: topicName.toLowerCase().replace(/ /g, '-') + '.html' };
+                    } else {
+                        // This topic should be cached
+                        const contentResponse = await fetch(rawUrl);
+                        if (!contentResponse.ok) {
+                            console.warn(`Could not fetch content for ${file.name}: ${contentResponse.statusText}`);
+                            return null; // Return null for failed fetches
+                        }
+                        const content = await contentResponse.text();
+                        // Store content in localStorage with a clear key
+                        localStorage.setItem(`csc_topic_${topicName.replace(/ /g, '_').toLowerCase()}`, content);
+                        console.log(`Cached content for '${topicName}'.`);
+                        return { name: topicName, htmlFileName: topicName.toLowerCase().replace(/ /g, '-') + '.html' };
+                    }
+                });
+
+                const loadedTopics = await Promise.all(fetchContentPromises);
+
+                // Filter out any nulls from failed fetches
+                const successfulTopics = loadedTopics.filter(topic => topic !== null);
+
                 // Clear loading message
                 topicsListDiv.innerHTML = '';
 
-                // Create a button for each topic
-                topicFiles.forEach(file => {
-                    // Extract the display name from the file name (e.g., "Transitions" from "Transitions.txt")
-                    const displayTopicName = file.name.replace('.txt', '');
-                    
-                    // Create the corresponding HTML file name (e.g., "transitions.html" from "Transitions")
-                    // This converts "Love Relationships" -> "love-relationships"
-                    const htmlFileName = displayTopicName.toLowerCase().replace(/ /g, '-') + '.html';
-
-                    const button = document.createElement('button');
-                    button.classList.add('topic-button');
-                    button.textContent = displayTopicName;
-                    button.addEventListener('click', () => {
-                        // Navigate to the corresponding HTML page
-                        window.location.href = htmlFileName;
+                // Step 3: Create buttons for successfully loaded topics
+                if (successfulTopics.length === 0) {
+                    topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics could be loaded. Please check the source files.</p>';
+                } else {
+                    successfulTopics.forEach(topic => {
+                        const button = document.createElement('button');
+                        button.classList.add('topic-button');
+                        button.textContent = topic.name;
+                        button.addEventListener('click', () => {
+                            // Navigate to the corresponding HTML page
+                            window.location.href = topic.htmlFileName;
+                        });
+                        topicsListDiv.appendChild(button);
                     });
-                    topicsListDiv.appendChild(button);
-                });
+                }
 
             } catch (error) {
-                console.error("Could not load topics:", error);
+                console.error("Could not load or cache topics:", error);
                 topicsListDiv.innerHTML = ''; // Clear loading message
                 errorMessageDiv.classList.remove('hidden'); // Show error message
             }
         }
 
-        // Fetch topics when the page loads
-        fetchTopics();
+        // Fetch and cache topics when the page loads
+        fetchAndCacheTopics();
     </script>
 </body>
 </html>
