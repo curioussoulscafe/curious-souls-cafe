@@ -224,6 +224,13 @@
         const randomHighlightColor = highlightColors[Math.floor(Math.random() * highlightColors.length)];
         document.documentElement.style.setProperty('--highlight-color', randomHighlightColor);
 
+        // --- NEW: List of topics NOT to cache ---
+        // Add the display names of topics whose .txt files should always be fetched fresh
+        // Make sure these names match the topic names exactly (case-sensitive)
+        const DO_NOT_CACHE_TOPICS = ["Past Questions"]; 
+        // Example: If "Love Relationship" should also not be cached, add it:
+        // const DO_NOT_CACHE_TOPICS = ["Happiness", "The Mind Speaks", "Love Relationship"];
+
         // --- Persistent Saved Questions Logic ---
         const savedQuestionsLocalStorageKey = `csc_saved_questions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`; // Unique key per topic
 
@@ -257,46 +264,56 @@
         async function fetchQuestions() {
             // Construct the localStorage key based on the displayTopicName
             const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
-            const cachedContent = localStorage.getItem(localStorageKey);
+            
+            // Check if this topic should NOT be cached
+            const isNonCachedTopic = DO_NOT_CACHE_TOPICS.includes(displayTopicName);
 
-            if (cachedContent) {
-                // Load from localStorage if available
-                console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
-                itemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                availableRandomItems = [...itemList];
-                appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
-                topicTitleElement.textContent = `Topic: ${displayTopicName}`;
-                totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
-                displayRandomItems();
-                loadSavedQuestions(); // Load saved questions after topic questions are ready
-            } else {
-                // Fallback to fetching from GitHub if not in localStorage
-                console.log(`Loading questions for topic "${displayTopicName}" from GitHub (not found in localStorage).`);
-                try {
-                    // Update HTML elements with the dynamic topic immediately before fetching
+            if (!isNonCachedTopic) { // If it's a topic that should be cached
+                const cachedContent = localStorage.getItem(localStorageKey);
+                if (cachedContent) {
+                    // Load from localStorage if available
+                    console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
+                    itemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                    availableRandomItems = [...itemList];
                     appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
                     topicTitleElement.textContent = `Topic: ${displayTopicName}`;
-
-                    const response = await fetch(githubRawUrl);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    const text = await response.text();
-                    itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                    availableRandomItems = [...itemList]; // Initialize available items for random selection
-
-                    // Optionally, save to localStorage for future visits
-                    localStorage.setItem(localStorageKey, text);
-
                     totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
-                    displayRandomItems(); // Display initial random items once loaded
+                    displayRandomItems();
                     loadSavedQuestions(); // Load saved questions after topic questions are ready
-                } catch (error) {
-                    console.error("Could not load questions:", error);
-                    resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
-                    appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
-                    topicTitleElement.textContent = `Topic: Error`;
+                    return; // Exit function after loading from cache
                 }
+            }
+
+            // Fallback to fetching from GitHub if not in localStorage or if it's a non-cached topic
+            console.log(`Loading questions for topic "${displayTopicName}" from GitHub (${isNonCachedTopic ? 'non-cached' : 'not found in localStorage'}).`);
+            try {
+                appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+                topicTitleElement.textContent = `Topic: ${displayTopicName}`;
+
+                const response = await fetch(githubRawUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                availableRandomItems = [...itemList]; // Initialize available items for random selection
+
+                // Only save to localStorage if it's NOT a non-cached topic
+                if (!isNonCachedTopic) {
+                    localStorage.setItem(localStorageKey, text);
+                    console.log(`Fetched and cached content for '${displayTopicName}'.`);
+                } else {
+                    console.log(`Fetched fresh content for '${displayTopicName}' (not cached).`);
+                }
+
+                totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
+                displayRandomItems(); // Display initial random items once loaded
+                loadSavedQuestions(); // Load saved questions after topic questions are ready
+            } catch (error) {
+                console.error("Could not load questions:", error);
+                resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
+                appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
+                topicTitleElement.textContent = `Topic: Error`;
             }
         }
 
