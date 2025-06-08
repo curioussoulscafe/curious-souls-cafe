@@ -14,6 +14,8 @@ Just click the link below or scan a QR code to open the Curious Souls Café web 
 
 <!--<img src="https://github.com/user-attachments/assets/da9d288d-0de2-490f-9183-700e317dfd21" alt="QR Code" width="300">-->
 
+![qr-code (6)](https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1)
+
 ## ✨ What You Can Do with the Web App
 
 **Note:** To fully utilize the Curious Souls Café web app, it's highly recommended to first understand how a Curious Souls Cafe event is typically structured. The app is designed to complement the in-person experience, providing guided questions that fit seamlessly into the event flow. You can learn more about the event structure [here](https://curioussoulscafe.substack.com/p/event-structure), or view a partial anchive of past events [here](https://curioussoulscafe.substack.com/archive).
