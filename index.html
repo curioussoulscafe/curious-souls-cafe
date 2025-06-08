@@ -143,6 +143,32 @@
             color: #9333ea; /* Darker purple on hover */
             transform: scale(1.1);
         }
+
+        /* Styling for the Live Discussion button */
+        .live-discussion-style {
+            background: linear-gradient(to right, #EF4444, #F87171); /* Red to light red gradient */
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            display: block; /* Important for visibility */
+            margin-bottom: 1rem; /* Space below the button */
+        }
+        .live-discussion-style:hover {
+            background: linear-gradient(to right, #DC2626, #EF4444); /* Darker red on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .live-discussion-style:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -154,8 +180,16 @@
         <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
         <h2 class="text-xl font-semibold text-gray-700 text-center mb-6">Choose a Topic:</h2>
 
+        <!-- Live Discussion button container - hidden by default, shown dynamically -->
+        <div id="live-discussion-button-container" class="mb-4 hidden">
+            <button id="live-discussion-button" class="live-discussion-style">
+                Live Discussion
+            </button>
+        </div>
+
         <div id="topics-list" class="space-y-4">
-            <p class="text-gray-500 text-center">Loading topics...</p>
+            <div class="loading-spinner"></div>
+            <p class="text-gray-500 text-center">Loading topics and questions...</p>
         </div>
 
         <p id="error-message" class="text-red-500 text-center mt-4 hidden">Failed to load topics. Please check your GitHub repository and network connection.</p>
@@ -223,55 +257,113 @@
         // GitHub API endpoint for the 'questions' subfolder
         const githubApiUrl = 'https://api.github.com/repos/curioussoulscafe/curious-souls-cafe/contents/questions';
 
+        // Variables for the Live Discussion button
+        const liveDiscussionButtonContainer = document.getElementById('live-discussion-button-container');
+        const liveDiscussionButton = document.getElementById('live-discussion-button');
+
         // New suggestion modal elements
         const suggestQuestionButton = document.getElementById('suggest-question-button');
         const suggestionModal = document.getElementById('suggestion-modal');
         const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
 
+        // --- NEW/RE-ADDED: List of topics NOT to cache ---
+        const DO_NOT_CACHE_TOPICS = ["Happiness", "The Mind Speaks", "Live Discussion"];
+
+
         /**
-         * Fetches the list of question files from the GitHub repository.
-         * Filters for .txt files and generates topic buttons.
+         * Fetches the list of question files from the GitHub repository,
+         * filters for .txt files, and dynamically creates topic buttons.
+         * It also checks for the existence of "Live Discussion.txt" and handles caching.
          */
-        async function fetchTopics() {
+        async function fetchAndCacheTopics() {
             try {
+                // Step 1: Fetch list of files
                 const response = await fetch(githubApiUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
 
-                // Filter for .txt files and extract topic names
+                // Filter for .txt files and prepare for content fetching
                 const topicFiles = data.filter(item => item.type === 'file' && item.name.endsWith('.txt'));
 
-                if (topicFiles.length === 0) {
-                    topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics found in the "questions" folder.</p>';
-                    return;
-                }
+                let liveDiscussionFileFound = false;
+
+                // Step 2: Process files for Live Discussion and other topics
+                const processFilesPromises = topicFiles.map(async (file) => {
+                    const topicName = file.name.replace('.txt', '');
+                    
+                    // Check for "Live Discussion.txt" specifically
+                    if (topicName === "Live Discussion") {
+                        liveDiscussionFileFound = true; // Mark that the file exists
+                        // No need to fetch content here, live-discussion.html will do it
+                        console.log(`Live Discussion.txt found. Button will be shown.`);
+                        return null; // Don't create a regular topic button for Live Discussion
+                    }
+
+                    // Handle caching for other topics
+                    const rawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${file.name}`;
+                    if (DO_NOT_CACHE_TOPICS.includes(topicName)) {
+                        console.log(`Skipping cache for '${topicName}' (marked as non-caching).`);
+                        // This fetch is just to validate existence and populate the topic button.
+                        // The actual topic page will handle its own non-cached fetch.
+                        const contentResponse = await fetch(rawUrl);
+                        if (!contentResponse.ok) {
+                            console.warn(`Could not fetch content for non-cached topic ${file.name}: ${contentResponse.statusText}`);
+                            return null; // Return null for failed fetches
+                        }
+                        return { name: topicName, htmlFileName: topicName.toLowerCase().replace(/ /g, '-') + '.html' };
+                    } else {
+                        // This topic should be cached
+                        const contentResponse = await fetch(rawUrl);
+                        if (!contentResponse.ok) {
+                            console.warn(`Could not fetch content for ${file.name}: ${contentResponse.statusText}`);
+                            return null; // Return null for failed fetches
+                        }
+                        const content = await contentResponse.text();
+                        // Store content in localStorage with a clear key
+                        localStorage.setItem(`csc_topic_${topicName.replace(/ /g, '_').toLowerCase()}`, content);
+                        console.log(`Fetched and cached content for '${topicName}'.`);
+                        return { name: topicName, htmlFileName: topicName.toLowerCase().replace(/ /g, '-') + '.html' };
+                    }
+                });
+
+                const loadedTopics = await Promise.all(processFilesPromises);
+                // Filter out nulls from live discussion or failed fetches to get only regular topics
+                const successfulTopics = loadedTopics.filter(topic => topic !== null); 
 
                 // Clear loading message
                 topicsListDiv.innerHTML = '';
 
-                // Create a button for each topic
-                topicFiles.forEach(file => {
-                    // Extract the display name from the file name (e.g., "Transitions" from "Transitions.txt")
-                    const displayTopicName = file.name.replace('.txt', '');
-                    
-                    // Create the corresponding HTML file name (e.g., "transitions.html" from "Transitions")
-                    // This converts "Love Relationships" -> "love-relationships"
-                    const htmlFileName = displayTopicName.toLowerCase().replace(/ /g, '-') + '.html';
-
-                    const button = document.createElement('button');
-                    button.classList.add('topic-button');
-                    button.textContent = displayTopicName;
-                    button.addEventListener('click', () => {
-                        // Navigate to the corresponding HTML page
-                        window.location.href = htmlFileName;
+                // Display Live Discussion button if file found
+                if (liveDiscussionFileFound) {
+                    liveDiscussionButtonContainer.classList.remove('hidden');
+                    liveDiscussionButton.addEventListener('click', () => {
+                        window.location.href = 'live-discussion.html';
                     });
-                    topicsListDiv.appendChild(button);
-                });
+                } else {
+                    liveDiscussionButtonContainer.classList.add('hidden'); // Ensure it's hidden if file not found
+                }
+
+                // Step 3: Create buttons for successfully loaded regular topics
+                if (successfulTopics.length === 0 && !liveDiscussionFileFound) { 
+                    topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics could be loaded. Please check the source files.</p>';
+                } else {
+                    // Sort regular topics alphabetically
+                    successfulTopics.sort((a, b) => a.name.localeCompare(b.name));
+                    successfulTopics.forEach(topic => {
+                        const button = document.createElement('button');
+                        button.classList.add('topic-button');
+                        button.textContent = topic.name;
+                        button.addEventListener('click', () => {
+                            window.location.href = topic.htmlFileName;
+                        });
+                        topicsListDiv.appendChild(button);
+                    });
+                }
 
             } catch (error) {
-                console.error("Could not load topics:", error);
+                console.error("Could not load or cache topics:", error);
                 topicsListDiv.innerHTML = ''; // Clear loading message
                 errorMessageDiv.classList.remove('hidden'); // Show error message
             }
@@ -287,7 +379,7 @@
         });
 
         // Fetch topics when the page loads
-        fetchTopics();
+        fetchAndCacheTopics();
     </script>    
 </body>
 </html>
