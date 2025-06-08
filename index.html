@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curious Souls Café</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .topic-button {
+            background-color: #a855f7; /* Purple-500 */
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%; /* Full width */
+            text-align: center;
+            display: block; /* Ensures padding and margin work as expected */
+        }
+        .topic-button:hover {
+            background-color: #9333ea; /* Purple-600 */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .topic-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .info-link {
+            display: block; /* Makes it a block element to take full width */
+            text-align: center; /* Center the text */
+            margin-top: 1rem; /* Add some space above the link */
+            color: #6b46c1; /* Purple text color */
+            font-weight: 600; /* Semi-bold font */
+            text-decoration: none; /* No underline by default */
+            transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+        }
+
+        .info-link:hover {
+            color: #805ad5; /* Darker purple on hover */
+            text-decoration: underline; /* Underline on hover */
+        }
+        .info-link i {
+            margin-right: 0.5rem; /* Space between icon and text */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform hover:scale-105">
+        <div class="flex justify-center mb-6">
+            <img src="https://avatars.githubusercontent.com/u/194744307?v=4" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+        </div>
+        <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
+        <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
+        <h2 class="text-xl font-semibold text-gray-700 text-center mb-6">Choose a Topic:</h2>
+
+        <div id="topics-list" class="space-y-4">
+            <p class="text-gray-500 text-center">Loading topics...</p>
+        </div>
+
+        <p id="error-message" class="text-red-500 text-center mt-4 hidden">Failed to load topics. Please check your GitHub repository and network connection.</p>
+        <div class="mt-8 pt-4 border-t border-gray-300 text-center">
+            <h3 class="text-xl font-semibold text-purple-600 mb-4">Share with curious souls:</h3>
+            <img src="https://github.com/user-attachments/assets/da9d288d-0de2-490f-9183-700e317dfd21" 
+                    alt="QR Code to launch app" 
+                    class="w-48 h-48 mx-auto rounded-lg shadow-md border border-gray-200"
+                    onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Missing';"
+            >
+            <p class="text-gray-500 text-sm mt-2">Let others scan the QR code to launch this page and start the curious conversation!</p>
+            <a href="https://github.com/curioussoulscafe/curious-souls-cafe/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="info-link">
+                <i class="fas fa-info-circle"></i>About this
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const topicsListDiv = document.getElementById('topics-list');
+        const errorMessageDiv = document.getElementById('error-message');
+
+        // GitHub API endpoint for the 'questions' subfolder
+        const githubApiUrl = 'https://api.github.com/repos/curioussoulscafe/curious-souls-cafe/contents/questions';
+
+        /**
+         * Fetches the list of question files from the GitHub repository.
+         * Filters for .txt files and generates topic buttons.
+         */
+        async function fetchTopics() {
+            try {
+                const response = await fetch(githubApiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Filter for .txt files and extract topic names
+                const topicFiles = data.filter(item => item.type === 'file' && item.name.endsWith('.txt'));
+
+                if (topicFiles.length === 0) {
+                    topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics found in the "questions" folder.</p>';
+                    return;
+                }
+
+                // Clear loading message
+                topicsListDiv.innerHTML = '';
+
+                // Create a button for each topic
+                topicFiles.forEach(file => {
+                    // Extract the display name from the file name (e.g., "Transitions" from "Transitions.txt")
+                    const displayTopicName = file.name.replace('.txt', '');
+                    
+                    // Create the corresponding HTML file name (e.g., "transitions.html" from "Transitions")
+                    // This converts "Love Relationships" -> "love-relationships"
+                    const htmlFileName = displayTopicName.toLowerCase().replace(/ /g, '-') + '.html';
+
+                    const button = document.createElement('button');
+                    button.classList.add('topic-button');
+                    button.textContent = displayTopicName;
+                    button.addEventListener('click', () => {
+                        // Navigate to the corresponding HTML page
+                        window.location.href = htmlFileName;
+                    });
+                    topicsListDiv.appendChild(button);
+                });
+
+            } catch (error) {
+                console.error("Could not load topics:", error);
+                topicsListDiv.innerHTML = ''; // Clear loading message
+                errorMessageDiv.classList.remove('hidden'); // Show error message
+            }
+        }
+
+        // Fetch topics when the page loads
+        fetchTopics();
+    </script>    
+</body>
+</html>
