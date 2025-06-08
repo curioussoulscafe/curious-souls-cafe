@@ -228,6 +228,10 @@
                 <a href="https://github.com/curioussoulscafe/curious-souls-cafe" target="_blank" rel="noopener noreferrer" aria-label="Check out our GitHub">
                     <i class="fa-brands fa-github"></i>
                 </a>
+                <!-- Email Icon Added -->
+                <a href="mailto:curious.souls.cafe@gmail.com" aria-label="Email us">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
             </div>
 
             <a href="https://github.com/curioussoulscafe/curious-souls-cafe/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="info-link">
@@ -323,7 +327,7 @@
                         const content = await contentResponse.text();
                         // Store content in localStorage with a clear key
                         localStorage.setItem(`csc_topic_${topicName.replace(/ /g, '_').toLowerCase()}`, content);
-                        console.log(`Fetched and cached content for '${topicName}'.`);
+                        console.log(`Cached content for '${topicName}'.`);
                         return { name: topicName, htmlFileName: topicName.toLowerCase().replace(/ /g, '-') + '.html' };
                     }
                 });
