@@ -6,8 +6,8 @@
     <title>Curious Souls Café</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Font Awesome for icons (UPDATED to 6.5.2, removed integrity/crossorigin for better compatibility) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -52,6 +52,97 @@
         .info-link i {
             margin-right: 0.5rem; /* Space between icon and text */
         }
+
+        /* Updated styles for Submit Question button on index.html with a more obvious dark grey gradient */
+        #suggest-question-button {
+            background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
+            color: white; /* White text for contrast */
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+            font-size: 1.125rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s ease-in-out;
+            display: block;
+            text-align: center;
+        }
+        #suggest-question-button:hover {
+            background: linear-gradient(to right, #000000, #333333); /* Even darker gradient on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #suggest-question-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal specific styles (duplicated for index.html) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* Above all other content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* Full rounded */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .modal-button.cancel {
+            background-color: #e2e8f0; /* Gray-200 */
+            color: #4a5568; /* Gray-700 */
+        }
+        .modal-button.cancel:hover {
+            background-color: #cbd5e0; /* Gray-300 */
+        }
+
+        /* Social media icons styling */
+        .social-icons a {
+            color: #a855f7; /* Purple-500 */
+            font-size: 1.8rem; /* Larger icon size */
+            margin: 0 0.75rem; /* Space between icons */
+            transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .social-icons a:hover {
+            color: #9333ea; /* Darker purple on hover */
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -68,6 +159,11 @@
         </div>
 
         <p id="error-message" class="text-red-500 text-center mt-4 hidden">Failed to load topics. Please check your GitHub repository and network connection.</p>
+        
+        <button id="suggest-question-button" title="Submit a Question">
+            Submit a Question
+        </button>
+
         <div class="mt-8 pt-4 border-t border-gray-300 text-center">
             <h3 class="text-xl font-semibold text-purple-600 mb-4">Share with friends:</h3>
             <img src="https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1" 
@@ -75,10 +171,44 @@
                     class="w-48 h-48 mx-auto rounded-lg shadow-md border border-gray-200"
                     onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Missing';"
             >
-            <p class="text-gray-500 text-sm mt-2">Let's help fellow curious souls scan the QR code to launch this page and start the curious conversation! 😊</p>
+            <p class="text-gray-500 text-sm mt-2">Let's help fellow curious souls scan the QR code to launch this page and start the conversation! 😊</p>
+            
+            <!-- Social Media Icons added here -->
+            <div class="social-icons flex justify-center mt-4 mb-4">
+                <a href="https://x.com/curioussoulcafe" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="https://facebook.com/curious.souls.cafe" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com/curious.souls.cafe" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://curioussoulscafe.substack.com" target="_blank" rel="noopener noreferrer" aria-label="Read us on Substack">
+                    <i class="fa-solid fa-book-open"></i> <!-- Using book-open for Substack -->
+                </a>
+                <a href="https://medium.com/@curious.souls.cafe" target="_blank" rel="noopener noreferrer" aria-label="Read us on Medium">
+                    <i class="fa-brands fa-medium-m"></i>
+                </a>
+            </div>
+
             <a href="https://github.com/curioussoulscafe/curious-souls-cafe/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="info-link">
-                <i class="fas fa-info-circle"></i>About this
+                <i class="fas fa-info-circle"></i> About this
             </a>
+        </div>
+    </div>
+
+    <div id="suggestion-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">
+                To submit your own question, please use our Google Form:
+            </p>
+            <p class="mb-4">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeioXb-E_ngChehFUgOgg1Ngl5gEZxZV2U4RgrYJ4Q5lDFmDg/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-bold">
+                    Submit a Question (Google Form)
+                </a>
+            </p>
+            <button id="close-suggestion-modal" class="modal-button cancel">Close</button>
         </div>
     </div>
 
@@ -88,6 +218,11 @@
 
         // GitHub API endpoint for the 'questions' subfolder
         const githubApiUrl = 'https://api.github.com/repos/curioussoulscafe/curious-souls-cafe/contents/questions';
+
+        // New suggestion modal elements
+        const suggestQuestionButton = document.getElementById('suggest-question-button');
+        const suggestionModal = document.getElementById('suggestion-modal');
+        const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
 
         /**
          * Fetches the list of question files from the GitHub repository.
@@ -137,6 +272,15 @@
                 errorMessageDiv.classList.remove('hidden'); // Show error message
             }
         }
+
+        // Event listeners for the new suggestion modal
+        suggestQuestionButton.addEventListener('click', function() {
+            suggestionModal.classList.add('show');
+        });
+
+        closeSuggestionModalButton.addEventListener('click', function() {
+            suggestionModal.classList.remove('show');
+        });
 
         // Fetch topics when the page loads
         fetchTopics();
