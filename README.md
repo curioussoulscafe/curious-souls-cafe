@@ -12,9 +12,7 @@ Just click the link below or scan a QR code to open the Curious Souls Café web 
 
 2.  Alternatively, scan the QR code within the main page of the above web app (easier during face-to-face discussions)
 
-<!--<img src="https://github.com/user-attachments/assets/da9d288d-0de2-490f-9183-700e317dfd21" alt="QR Code" width="300">-->
-
-![qr-code (6)](https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1)
+<!--<img src="https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1" alt="QR Code" width="300">-->
 
 ## ✨ What You Can Do with the Web App
 
