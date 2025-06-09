@@ -28,6 +28,8 @@ Just click the link below or scan a QR code to open the Curious Souls Café web 
 
 * **Optimized for On-the-Go:** The web app is designed to work seamlessly on smartphones and tablets, making it the ideal companion for dynamic, on-the-go interactions.
 
+* **Join a Live Discussion**: During special events, a prominent "Live Discussion" button will appear on the main page, giving you access to real-time questions curated for that event.
+
 ## 🎲 A Fun Little Secret!
 
 Did you know there's a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren't just random! They're designed to subtly match the fun [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our event facilitators to make those in-person discussions even more engaging. It's a small nod to bring a bit of that real-world fun into your digital experience!
@@ -44,7 +46,7 @@ The Curious Souls Café web app keeps its questions organized in a simple way:
 
 ## 💪 For Event Facilitators: Managing Live Discussion Questions
 
-The "Live Discussion" feature is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in `index.html`.
+The "Live Discussion" feature or button is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in `index.html`.
 
 This allows event facilitators to quickly activate and deactivate the live discussion feature as needed for their events.
 
@@ -54,21 +56,15 @@ To enable and disable the "Live Discussion" button for an event:
 
    * **Place the `Live Discussion.txt` file** (containing the specific event's questions) inside the `questions` folder in the GitHub repository.
 
-   * **Commit and push** these changes to the GitHub repository.
+   * **Commit and push** these changes to the GitHub repository. (The changes should then be automatically deployed to GitHub Pages within a minute.)
 
-   * **Deploy** the changes to GitHub Pages (this should happen automatically after a push).
-
-   * The "Live Discussion" button will now be visible on the main page for participants.
+   * The "Live Discussion" button will now be visible on the main page for participants. (Note: For those who already have the page loaded, they may need to refresh their mobile browser.)
 
 2. **To Disable the "Live Discussion" Button (after the event):**
 
    * **Remove the `Live Discussion.txt` file** from the `questions` folder in the GitHub repository.
 
    * **Commit and push** these changes to the GitHub repository.
-
-   * **Deploy** the changes to GitHub Pages (automatic).
-
-   * The "Live Discussion" button will now be hidden from the main page.
 
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
 
