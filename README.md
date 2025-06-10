@@ -1,14 +1,14 @@
 # Curious Souls Café
 
-Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
+Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [live web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
 
 Originally created to facilitate meaningful discussions during Curious Souls Café meetup events, this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
 
-## 🚀 Getting Started with Curious Souls Café
+## 🚀 Getting Started
 
 Step into meaningful conversations with ease! Here's how you can join the fun:
 
-1. **Launch the Web App**  
+1. **Launch the Live Web App**  
    Open the Curious Souls Café web app in your browser by clicking this link: [Curious Souls Café Web App](https://curioussoulscafe.github.io/curious-souls-cafe/).
 
 2. **Invite Others**  
@@ -43,47 +43,47 @@ Enjoy diving into thought-provoking topics, building connections, and sharing pe
 
 * **Join a Live Discussion**: During special events, a prominent "Live Discussion" button will appear on the main page, giving you access to real-time questions curated for that event.
 
+## 🎲 A Fun Little Secret!
+
+Did you know there's a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren't just random! They're designed to subtly match the fun [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our event facilitators to make those in-person discussions even more engaging. It's a small nod to bring a bit of that real-world fun into your digital experience!
+
 ## 💡 Tips for Using the App
 
 Here are some helpful tips to enhance your Curious Souls Café experience:
 
-1. **Return to Main Page:** Clicking the round **Curious Souls Café icon** at the top of any topic page will take you back to the main topic selection page. This has the same effect as clicking the "Leave Page" button at the bottom.
+1. **Highlight Chosen Questions:** Always **highlight the question that is chosen** by tapping or clicking it. This makes it easier for other participants to focus on the active question, preventing confusion when multiple questions are displayed on the app at the same time.
 
-2. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific dice colors used by our facilitators) which requires them to randomly choose a question and answer it:
+2. **Return to Main Page:** Clicking the round **Curious Souls Café icon** at the top of any topic page will take you back to the main topic selection page. This has the same effect as clicking the "Leave Page" button at the bottom.
+
+3. **Quick Scroll to Top:** The **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
+
+4. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our facilitators) which requires them to randomly choose a question and answer it:
 
    * Set the **"No. of questions to pick"** field to `1` (instead of the default value, e.g., `3`).
 
    * Then, have the participant tap **"Generate Questions!"** so that only one random question is displayed.
 
-3. **Highlight Chosen Questions:** Always **highlight the question that is chosen** by tapping or clicking it. This makes it easier for other participants to focus on the active question, preventing confusion when multiple questions are displayed on the app at the same time.
-
-4. **Quick Scroll to Top:** The **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
-
 5. **Advanced Search & Clear:**
 
    * Searching with **nothing inputted in the search field** will display all questions in the current deck. Be mindful that this could quickly fill up the screen.
 
-   * For more advanced searching, you can use your web browser's built-in "Find" functionality (usually accessed by `Ctrl+F` or `Cmd+F`).
+   * For more advanced searching, you can use your web browser's built-in "Find" functionality.
 
    * In case the screen becomes too crowded after a search, simply tap the **"Top" button** and then click the **"Search" button** again (or "Clear Search") to clear the search results and tidy up the display.
 
-## 🎲 A Fun Little Secret!
-
-Did you know there's a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren't just random! They're designed to subtly match the fun [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our event facilitators to make those in-person discussions even more engaging. It's a small nod to bring a bit of that real-world fun into your digital experience!
-
 ## 📚 Introducing the Question Decks
 
-Our in-person Curious Souls Café meetup is your space for meaningful conversations and deep self-reflection. Like a cozy neighborhood café, it’s a place to share ideas, explore life’s big questions, and connect with others in an open and welcoming way. At the heart of the Curious Souls Café experience are **questions**, thoughtfully designed by us or third parties to guide you through soul-searching discussions. Whether you're reflecting on your personal journey, navigating life changes, or building deeper connections, these decks spark introspection and encourage engaging dialogue.
+Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com/p/event-structure) is your space for meaningful conversations and deep self-reflection. Like a cozy neighborhood café, it’s a place to share ideas, explore life’s big questions, and connect with others in an open and welcoming way. At the heart of the Curious Souls Café experience are **questions**, thoughtfully designed by our facilitators or third parties to guide you through soul-searching discussions. Whether you're reflecting on your personal journey, navigating life changes, or building deeper connections, these decks spark introspection and encourage engaging dialogue.
 
 Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
 
-- **Curious Talk**: A guide for self-discovery and discussions about your past, present, and future.  
+- **Curious Talk**: Probe deeper motivations and encourage introspective, insightful responses.
 - **Transitions**: Navigate life’s changes with prompts that foster reflection and personal growth.  
-- **Happiness**: Define joy, discover its sources, and cultivate more of it in your life.  
+- **Happiness**: Explore your personal definition, experiences, and journey with happiness.
 - **Love Relationships**: Deepen your connections and reflect on the dynamics of love and intimacy.  
-- **Past Questions**: Engage with prompts shared by participants from around the world.  
+- **Past Questions**: Engage with prompts shared by curious souls (participants) from around the world.  
 - **Authenticity**: Align your actions with your values and embrace your true self.
-- **The Mind Speaks**: Reflect on thoughts, beliefs, and mindfulness.
+- **The Mind Speaks**: Reflect on thoughts, feelings, and personal well-being.
 
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
 
@@ -99,7 +99,9 @@ The Curious Souls Café web app keeps its questions organized in a simple way:
 
 * All the questions for each topic are stored in simple text files (`.txt`) inside the `questions/` folder. For example, all "Transitions" questions are in `questions/Transitions.txt`.
 
-## 💪 For Event Facilitators: How to Add New Question Sets
+## 💪 For Event Facilitators
+
+### How to Add New Question Sets
 
 If you're an event facilitator looking to add new question sets to the main page, here's a straightforward process:
 
@@ -111,7 +113,7 @@ Since the page title, `questions.txt` link, displayed topic name, and main page 
 
 By following the these steps, you can seamlessly integrate new question sets into the Curious Souls Café web app for your events!
 
-## 💪 For Event Facilitators: Managing Live Discussion Questions
+### Managing Live Discussion Questions
 
 The "Live Discussion" feature or button is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in `index.html`.
 
