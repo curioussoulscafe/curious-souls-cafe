@@ -1,8 +1,8 @@
 # Curious Souls Café
 
-Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
+Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder. Whether you're seeking to better understand yourself, revisit past experiences, or envision future possibilities—both personal and communal—this app serves as a guide for soul-searching discussions with yourself and others.
 
-Originally created to facilitate meaningful discussions during Curious Souls Café [meetup events](https://curioussoulscafe.substack.com), this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note that the app is in active development, and some features may be added, updated, or removed as we continue to improve the experience.)
+Originally created to facilitate meaningful discussions during Curious Souls Café [meetup events](https://curioussoulscafe.substack.com), this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
 
 ## 🚀 How to Start the Live Web App
 
