@@ -43,6 +43,30 @@ Enjoy diving into thought-provoking topics, building connections, and sharing pe
 
 * **Join a Live Discussion**: During special events, a prominent "Live Discussion" button will appear on the main page, giving you access to real-time questions curated for that event.
 
+## 💡 Tips for Using the App
+
+Here are some helpful tips to enhance your Curious Souls Café experience:
+
+1. **Return to Main Page:** Clicking the round **Curious Souls Café icon** at the top of any topic page will take you back to the main topic selection page. This has the same effect as clicking the "Leave Page" button at the bottom.
+
+2. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific dice colors used by our facilitators) which requires them to randomly choose a question and answer it:
+
+   * Set the **"No. of questions to pick"** field to `1` (instead of the default value, e.g., `3`).
+
+   * Then, have the participant tap **"Generate Questions!"** so that only one random question is displayed.
+
+3. **Highlight Chosen Questions:** Always **highlight the question that is chosen** by tapping or clicking it. This makes it easier for other participants to focus on the active question, preventing confusion when multiple questions are displayed on the app at the same time.
+
+4. **Quick Scroll to Top:** The **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
+
+5. **Advanced Search & Clear:**
+
+   * Searching with **nothing inputted in the search field** will display all questions in the current deck. Be mindful that this could quickly fill up the screen.
+
+   * For more advanced searching, you can use your web browser's built-in "Find" functionality (usually accessed by `Ctrl+F` or `Cmd+F`).
+
+   * In case the screen becomes too crowded after a search, simply tap the **"Top" button** and then click the **"Search" button** again (or "Clear Search") to clear the search results and tidy up the display.
+
 ## 🎲 A Fun Little Secret!
 
 Did you know there's a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren't just random! They're designed to subtly match the fun [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our event facilitators to make those in-person discussions even more engaging. It's a small nod to bring a bit of that real-world fun into your digital experience!
