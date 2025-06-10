@@ -55,7 +55,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
 2. **Return to Main Page:** Clicking the round **Curious Souls Café icon** at the top of any topic page will take you back to the main topic selection page. This has the same effect as clicking the "Leave Page" button at the bottom.
 
-3. **Quick Scroll to Top:** The **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
+3. **Quick Scroll to Top:** The sticky **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
 
 4. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our facilitators) which requires them to randomly choose a question and answer it:
 
@@ -67,9 +67,9 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * Searching with **nothing inputted in the search field** will display all questions in the current deck. Be mindful that this could quickly fill up the screen.
 
-   * For more advanced searching, you can use your web browser's built-in "Find" functionality.
+   * For more advanced searching, you can combine the above with your web browser's built-in "Find" functionality.
 
-   * In case the screen becomes too crowded after a search, simply tap the **"Top" button** and then click the **"Search" button** again (or "Clear Search") to clear the search results and tidy up the display.
+   * In case the screen becomes too crowded after a search, simply tap the sticky **"Top" button** and then click the **"Search" button** again (or "Clear Search") to clear the search results and tidy up the display.
 
 ## 📚 Introducing the Question Decks
 
