@@ -4,19 +4,23 @@ Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about
 
 Originally created to facilitate meaningful discussions during Curious Souls Café meetup events, this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
 
-## 🚀 How to Start the Live Web App
+## 🚀 Getting Started with Curious Souls Café
 
-Just click the link below or scan a QR code to open the Curious Souls Café web app in your web browser:
+Dive into meaningful conversations with just a few simple steps! Here's how to join the fun:
 
-1.  Visit the web app now via this link: <https://curioussoulscafe.github.io/curious-souls-cafe/>
+1. **Open the Live Web App**: Click this link to launch the Curious Souls Café in your browser: https://curioussoulscafe.github.io/curious-souls-cafe/
 
-2.  Alternatively, scan the QR code within the main page of the above web app (easier during face-to-face discussions)
+2. **Share the Experience**: On the main page, you'll find a QR code. Share it with your friends or participants so they can scan it and join the conversation instantly.
+
+3. **Pick a Topic Together**: Gather your group, choose a topic (question deck) that everyone agrees on, and let the curious conversations begin!
+
+Enjoy exploring thought-provoking ideas and connecting with fellow curious minds! 😊
+
+**Note:** To fully utilize the Curious Souls Café web app, it's highly recommended to first understand how a Curious Souls Cafe event is typically structured, if you haven't attended an event before. The app is designed to complement the in-person experience, providing guided questions that fit seamlessly into the event flow. You can learn more about the rules, i.e., the event structure [here](https://curioussoulscafe.substack.com/p/event-structure), or view a partial archive of past events [here](https://curioussoulscafe.substack.com/archive).
 
 <!--<img src="https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1" alt="QR Code" width="300">-->
 
 ## ✨ What You Can Do with the Web App
-
-**Note:** To fully utilize the Curious Souls Café web app, it's highly recommended to first understand how a Curious Souls Cafe event is typically structured, if you haven't attended an event before. The app is designed to complement the in-person experience, providing guided questions that fit seamlessly into the event flow. You can learn more about the event structure [here](https://curioussoulscafe.substack.com/p/event-structure), or view a partial archive of past events [here](https://curioussoulscafe.substack.com/archive).
 
 * **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Curious Talk](https://curioussoulscafe.github.io/curious-souls-cafe/curious-talk.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html). Just click (or tap) on a topic button to dive in!
 
