@@ -44,6 +44,18 @@ The Curious Souls Café web app keeps its questions organized in a simple way:
 
 * All the questions for each topic are stored in simple text files (`.txt`) inside the `questions/` folder. For example, all "Transitions" questions are in `questions/Transitions.txt`.
 
+## 💪 For Event Facilitators: How to Add New Question Sets
+
+If you're an event facilitator looking to add new question sets to the main page, here's a straightforward process:
+
+1.  **Add a new `questions.txt` file:** Create a new text file inside the `questions/` folder. Name it clearly, reflecting your new topic (e.g., `questions/MyNewTopic.txt`). Populate this file with your questions, one per line.
+
+2.  **Duplicate an existing HTML subpage:** Choose an existing topic's HTML file (e.g., `transitions.html`) and duplicate it. Rename the duplicated file to match your new topic (e.g., `mynewtopic.html`).
+
+Since the page title, `questions.txt` link, displayed topic name, and main page link are all handled dynamically and automatically, you don't need to manually update the new HTML file or `index.html`.
+
+By following the these steps, you can seamlessly integrate new question sets into the Curious Souls Café web app for your events!
+
 ## 💪 For Event Facilitators: Managing Live Discussion Questions
 
 The "Live Discussion" feature or button is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in `index.html`.
