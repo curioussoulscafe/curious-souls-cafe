@@ -1,8 +1,8 @@
 # Curious Souls Café
 
-Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder. Whether you're seeking to better understand yourself, revisit past experiences, or envision future possibilities—both personal and communal—this app serves as a guide for soul-searching discussions with yourself and others.
+Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
 
-Originally created to facilitate meaningful discussions during Curious Souls Café [meetup events](https://curioussoulscafe.substack.com), this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
+Originally created to facilitate meaningful discussions during Curious Souls Café meetup events, this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
 
 ## 🚀 How to Start the Live Web App
 
@@ -33,6 +33,24 @@ Just click the link below or scan a QR code to open the Curious Souls Café web 
 ## 🎲 A Fun Little Secret!
 
 Did you know there's a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren't just random! They're designed to subtly match the fun [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our event facilitators to make those in-person discussions even more engaging. It's a small nod to bring a bit of that real-world fun into your digital experience!
+
+## 📚 Introducing the Question Decks
+
+Our in-person Curious Souls Café meetup is your space for meaningful conversations and deep self-reflection. Like a cozy neighborhood café, it’s a place to share ideas, explore life’s big questions, and connect with others in an open and welcoming way. At the heart of the Curious Souls Café experience are **questions**, thoughtfully designed by us or third parties to guide you through soul-searching discussions. Whether you're reflecting on your personal journey, navigating life changes, or building deeper connections, these decks spark introspection and encourage engaging dialogue.
+
+Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
+
+- **Curious Talk**: A guide for self-discovery and discussions about your past, present, and future.  
+- **Transitions**: Navigate life’s changes with prompts that foster reflection and personal growth.  
+- **Happiness**: Define joy, discover its sources, and cultivate more of it in your life.  
+- **Love Relationships**: Deepen your connections and reflect on the dynamics of love and intimacy.  
+- **Past Questions**: Engage with prompts shared by participants from around the world.  
+- **Authenticity**: Align your actions with your values and embrace your true self.
+- **The Mind Speaks**: Reflect on thoughts, beliefs, and mindfulness.
+
+💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
+
+Let these decks inspire your journey of exploration, connection, and growth!
 
 ## 📂 For the Tech-Savvy: How the Source Code is Structured
 
@@ -77,7 +95,5 @@ To enable and disable the "Live Discussion" button for an event:
    * **Remove the `Live Discussion.txt` file** from the `questions` folder in the GitHub repository.
 
    * **Commit and push** these changes to the GitHub repository.
-
-💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
 
 Thank you for visiting the Curious Souls Café! We hope it sparks many interesting conversations.
