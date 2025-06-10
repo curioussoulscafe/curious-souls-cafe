@@ -6,17 +6,26 @@ Originally created to facilitate meaningful discussions during Curious Souls Caf
 
 ## 🚀 Getting Started with Curious Souls Café
 
-Dive into meaningful conversations with just a few simple steps! Here's how to join the fun:
+Step into meaningful conversations with ease! Here's how you can join the fun:
 
-1. **Open the Live Web App**: Click this link to launch the Curious Souls Café in your browser: https://curioussoulscafe.github.io/curious-souls-cafe/
+1. **Launch the Web App**  
+   Open the Curious Souls Café web app in your browser by clicking this link: [Curious Souls Café Web App](https://curioussoulscafe.github.io/curious-souls-cafe/).
 
-2. **Share the Experience**: On the main page, you'll find a QR code. Share it with your friends or participants so they can scan it and join the conversation instantly.
+2. **Invite Others**  
+   On the main page, you'll find a QR code. Share it with friends or participants—anyone can scan it to instantly join the conversation.
 
-3. **Pick a Topic Together**: Gather your group, choose a topic (question deck) that everyone agrees on, and let the curious conversations begin!
+3. **Pick a Topic**  
+   Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin!
 
-Enjoy exploring thought-provoking ideas and connecting with fellow curious minds! 😊
+4. **Start the Conversation**  
+   Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion). Picture each question on the app as a physical card, and follow the instructions for an engaging and seamless experience.
 
-**Note:** To fully utilize the Curious Souls Café web app, it's highly recommended to first understand how a Curious Souls Cafe event is typically structured, if you haven't attended an event before. The app is designed to complement the in-person experience, providing guided questions that fit seamlessly into the event flow. You can learn more about the rules, i.e., the event structure [here](https://curioussoulscafe.substack.com/p/event-structure), or view a partial archive of past events [here](https://curioussoulscafe.substack.com/archive).
+5. **Explore Past Events**  
+   Curious about what we've discussed before? Check out our [Event Archive](https://curioussoulscafe.substack.com/archive) for highlights from previous meetups.
+
+Enjoy diving into thought-provoking topics, building connections, and sharing perspectives with fellow curious minds! 😊
+
+**Pro Tip:** For a deeper understanding of how our events are structured, including different conversation styles, check out our [Event Structure Guide](https://curioussoulscafe.substack.com/p/event-structure).
 
 <!--<img src="https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1" alt="QR Code" width="300">-->
 
