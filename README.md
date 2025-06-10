@@ -1,8 +1,8 @@
-# Curious Souls Café
+# Curious Souls Café Wep App
 
 Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [live web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
 
-Originally created to facilitate meaningful discussions during Curious Souls Café meetup events, this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
+Originally created to facilitate meaningful discussions during Curious Souls Café [meetup events](https://curioussoulscafe.substack.com/p/event-structure), this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
 
 ## 🚀 Getting Started
 
@@ -77,13 +77,13 @@ Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com
 
 Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
 
-- **Curious Talk**: Probe deeper motivations and encourage introspective, insightful responses.
-- **Transitions**: Navigate life’s changes with prompts that foster reflection and personal growth.  
-- **Happiness**: Explore your personal definition, experiences, and journey with happiness.
-- **Love Relationships**: Deepen your connections and reflect on the dynamics of love and intimacy.  
-- **Past Questions**: Engage with prompts shared by curious souls (participants) from around the world.  
-- **Authenticity**: Align your actions with your values and embrace your true self.
-- **The Mind Speaks**: Reflect on thoughts, feelings, and personal well-being.
+- **[Curious Talk](https://curioussoulscafe.github.io/curious-souls-cafe/curious-talk.html)**: Probe deeper motivations and encourage introspective, insightful responses.
+- **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
+- **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
+- **[Past Questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
+- **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
+- **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.  
+- **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
 
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
 
