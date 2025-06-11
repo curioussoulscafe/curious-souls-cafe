@@ -103,7 +103,7 @@ The Curious Souls Café web app keeps its questions organized in a simple way:
 
 ## 💪 For Event Facilitators
 
-### How to Add New Question Sets
+### ➡️ How to Add New Question Sets
 
 If you're an event facilitator looking to add new question sets to the main page, here's a straightforward process:
 
@@ -115,7 +115,7 @@ Since the page title, `questions.txt` link, displayed topic name, and main page 
 
 By following the these steps, you can seamlessly integrate new question sets into the Curious Souls Café web app for your events!
 
-### Managing Live Discussion Questions
+### ➡️ Managing Live Discussion Questions
 
 The "Live Discussion" feature or button is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in `index.html`.
 
