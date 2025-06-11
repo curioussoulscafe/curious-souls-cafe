@@ -20,12 +20,11 @@ Step into meaningful conversations with ease! Here's how you can join the fun:
 4. **Start the Conversation**  
    Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion). Picture each question on the app as a physical card, and follow the instructions for an engaging and seamless experience.
 
-5. **Explore Past Events** (optional)
-   Curious about what we've discussed before? Check out our [Event Archive](https://curioussoulscafe.substack.com/archive) for highlights from previous meetups.
-
 Enjoy diving into thought-provoking topics, building connections, and sharing perspectives with fellow curious minds! 😊
 
-**Pro Tip:** For a deeper understanding of how our events are structured, including different conversation styles, check out our [Event Structure Guide](https://curioussoulscafe.substack.com/p/event-structure).
+**Pro Tip:**
+- For a deeper understanding of how our events are structured, including different conversation styles, check out our [Event Structure Guide](https://curioussoulscafe.substack.com/p/event-structure).
+- Curious about what we've discussed before? Check out our [Event Archive](https://curioussoulscafe.substack.com/archive) for highlights from previous meetups.
 
 <!--<img src="https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1" alt="QR Code" width="300">-->
 
