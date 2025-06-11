@@ -37,7 +37,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 
 - **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
 - **[Casual Talk](https://curioussoulscafe.github.io/curious-souls-cafe/casual-talk.html)**: Moderate sharing, leaning towards preferences, light reflections, and positive connections.
-- **[Curious Talk](https://curioussoulscafe.github.io/curious-souls-cafe/curious-talk.html)**: Probe deeper motivations and encourage introspective, insightful responses.
+- **[Curious](https://curioussoulscafe.github.io/curious-souls-cafe/curious.html)**: Probe deeper motivations and encourage introspective, insightful responses.
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
 - **[Past Questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
@@ -50,7 +50,7 @@ Let these decks inspire your journey of exploration, connection, and growth!
 
 ## ✨ What You Can Do with the Web App
 
-* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Curious Talk](https://curioussoulscafe.github.io/curious-souls-cafe/curious-talk.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html). Just click (or tap) on a topic button to dive in!
+* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Casual Talk](https://curioussoulscafe.github.io/curious-souls-cafe/casual-talk.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html). Just click (or tap) on a topic button to dive in!
 
 * **Get Random Questions:** Once you're on a topic page, tell the web app how many questions you'd like, and it will instantly give you new ones to ponder.
 
