@@ -1,4 +1,4 @@
-# Curious Souls Café Web App
+# Curious Souls Café
 
 Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [live web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
 
@@ -20,7 +20,7 @@ Step into meaningful conversations with ease! Here's how you can join the fun:
 4. **Start the Conversation**  
    Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion). Picture each question on the app as a physical card, and follow the instructions for an engaging and seamless experience.
 
-5. **Explore Past Events**  
+5. **Explore Past Events** (optional)
    Curious about what we've discussed before? Check out our [Event Archive](https://curioussoulscafe.substack.com/archive) for highlights from previous meetups.
 
 Enjoy diving into thought-provoking topics, building connections, and sharing perspectives with fellow curious minds! 😊
@@ -28,6 +28,25 @@ Enjoy diving into thought-provoking topics, building connections, and sharing pe
 **Pro Tip:** For a deeper understanding of how our events are structured, including different conversation styles, check out our [Event Structure Guide](https://curioussoulscafe.substack.com/p/event-structure).
 
 <!--<img src="https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1" alt="QR Code" width="300">-->
+
+## 📚 Introducing the Question Decks
+
+Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com/p/event-structure) is your space for meaningful conversations and deep self-reflection. Like a cozy neighborhood café, it’s a place to share ideas, explore life’s big questions, and connect with others in an open and welcoming way. At the heart of the Curious Souls Café experience are **questions**, thoughtfully designed by our facilitators or third parties to guide you through soul-searching discussions. Whether you're reflecting on your personal journey, navigating life changes, or building deeper connections, these decks spark introspection and encourage engaging dialogue.
+
+Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
+
+- **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
+- **[Casual Talk](https://curioussoulscafe.github.io/curious-souls-cafe/casual-talk.html)**: Moderate sharing, leaning towards preferences, light reflections, and positive connections.
+- **[Curious Talk](https://curioussoulscafe.github.io/curious-souls-cafe/curious-talk.html)**: Probe deeper motivations and encourage introspective, insightful responses.
+- **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
+- **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
+- **[Past Questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
+- **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
+- **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.  
+
+💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
+
+Let these decks inspire your journey of exploration, connection, and growth!
 
 ## ✨ What You Can Do with the Web App
 
@@ -72,25 +91,6 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
    * For more advanced searching, you can combine the above with your web browser's built-in "Find" functionality.
 
    * In case the screen becomes too crowded after a search, simply tap the sticky **"Top" button** and then click the **"Search" button** again (or "Clear Search") to clear the search results and tidy up the display.
-
-## 📚 Introducing the Question Decks
-
-Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com/p/event-structure) is your space for meaningful conversations and deep self-reflection. Like a cozy neighborhood café, it’s a place to share ideas, explore life’s big questions, and connect with others in an open and welcoming way. At the heart of the Curious Souls Café experience are **questions**, thoughtfully designed by our facilitators or third parties to guide you through soul-searching discussions. Whether you're reflecting on your personal journey, navigating life changes, or building deeper connections, these decks spark introspection and encourage engaging dialogue.
-
-Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
-
-- **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
-- **[Casual Talk](https://curioussoulscafe.github.io/curious-souls-cafe/casual-talk.html)**: Moderate sharing, leaning towards preferences, light reflections, and positive connections.
-- **[Curious Talk](https://curioussoulscafe.github.io/curious-souls-cafe/curious-talk.html)**: Probe deeper motivations and encourage introspective, insightful responses.
-- **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
-- **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
-- **[Past Questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
-- **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
-- **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.  
-
-💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
-
-Let these decks inspire your journey of exploration, connection, and growth!
 
 ## 📂 For the Tech-Savvy: How the Source Code is Structured
 
