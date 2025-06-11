@@ -35,7 +35,7 @@ Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com
 Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
 
 - **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
-- **[Casual Talk](https://curioussoulscafe.github.io/curious-souls-cafe/casual-talk.html)**: Moderate sharing, leaning towards preferences, light reflections, and positive connections.
+- **[Casual Talk](https://curioussoulscafe.github.io/curious-souls-cafe/casual-talk.html)**: Share moderately, leaning towards preferences, light reflections, and positive connections.
 - **[Curious](https://curioussoulscafe.github.io/curious-souls-cafe/curious.html)**: Probe deeper motivations and encourage introspective, insightful responses.
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
