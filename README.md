@@ -57,13 +57,15 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
 3. **Quick Scroll to Top:** The sticky **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
 
-4. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our facilitators) which requires them to randomly choose a question and answer it:
+4. **Direct Topic Page Links**: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Transitions" topic, you would use: `<URL>/transitions.html` like [this](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html).
+
+5. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our facilitators) which requires them to randomly choose a question and answer it:
 
    * Set the **"No. of questions to pick"** field to `1` (instead of the default value, e.g., `3`).
 
    * Then, have the participant tap **"Generate Questions!"** so that only one random question is displayed.
 
-5. **Advanced Search & Clear:**
+6. **Advanced Search & Clear:**
 
    * Searching with **nothing inputted in the search field** will display all questions in the current deck. Be mindful that this could quickly fill up the screen.
 
@@ -77,13 +79,14 @@ Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com
 
 Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
 
+- **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
+- **[Casual Talk](https://curioussoulscafe.github.io/curious-souls-cafe/casual-talk.html)**: Encourage sharing without oversharing, leaning towards preferences, light reflections, and positive connections.
 - **[Curious Talk](https://curioussoulscafe.github.io/curious-souls-cafe/curious-talk.html)**: Probe deeper motivations and encourage introspective, insightful responses.
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
 - **[Past Questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
 - **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
 - **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.  
-- **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
 
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
 
