@@ -258,6 +258,20 @@
         </div>
     </div>
 
+    <!-- New Confirmation Modal for empty search -->
+    <div id="empty-search-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">
+                Searching with an empty field will display ALL questions, which could quickly fill the screen.
+                To clear results if the screen gets crowded, tap "Top" and then click "Search" again.
+            </p>
+            <div class="modal-buttons">
+                <button id="confirm-empty-search-yes" class="modal-button confirm">Proceed</button>
+                <button id="confirm-empty-search-no" class="modal-button cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Dynamically determine the topic and GitHub URL based on the current HTML file's name
         const currentPagePath = window.location.pathname;
@@ -302,6 +316,12 @@
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
         const confirmClearNo = document.getElementById('confirm-clear-no');
+
+        // Modal elements for empty search confirmation
+        const emptySearchModal = document.getElementById('empty-search-modal');
+        const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
+        const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
 
         // Define the list of highlight colors
         const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
@@ -541,7 +561,22 @@
                 return;
             }
 
-            const filteredResult = itemList.filter(item => item.toLowerCase().includes(currentSearchTerm));
+            // If search input is empty, show confirmation modal
+            if (currentSearchTerm === "") {
+                emptySearchModal.classList.add('show');
+                return; // Stop execution until user confirms
+            }
+            
+            executeSearch(currentSearchTerm);
+        }
+
+        function executeSearch(searchTerm) {
+            if (itemList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                return;
+            }
+            
+            const filteredResult = itemList.filter(item => item.toLowerCase().includes(searchTerm));
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
@@ -551,7 +586,7 @@
                 searchResultsDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(searchResultsDisplay);
             }
-            lastSearchTerm = currentSearchTerm;
+            lastSearchTerm = searchTerm;
             searchButton.textContent = "Search / Clear Search";
         }
 
@@ -604,6 +639,16 @@
                 top: 0,
                 behavior: 'smooth'
             });
+        });
+
+        // Event listeners for empty search confirmation modal
+        confirmEmptySearchYes.addEventListener('click', function() {
+            emptySearchModal.classList.remove('show');
+            executeSearch(""); // Proceed with empty search
+        });
+
+        confirmEmptySearchNo.addEventListener('click', function() {
+            emptySearchModal.classList.remove('show');
         });
 
         // Initial calls
