@@ -247,7 +247,7 @@
         &#9650; Top
     </button>
 
-    <!-- Confirmation Modal -->
+    <!-- Confirmation Modal for clearing saved questions -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
@@ -258,12 +258,25 @@
         </div>
     </div>
 
-    <script>
-        const displayTopicName = "Live Discussion"; // Hardcoded for this specific page
-        const textFileNameForGithub = `Live Discussion.txt`; 
-        const githubRawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${textFileNameForGithub}`;
+    <!-- New Confirmation Modal for empty search -->
+    <div id="empty-search-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">
+                Searching with an empty field will display ALL questions, which could quickly fill the screen.
+                To clear results if the screen gets crowded, tap "Top" and then click "Search" again.
+            </p>
+            <div class="modal-buttons">
+                <button id="confirm-empty-search-yes" class="modal-button confirm">Proceed</button>
+                <button id="confirm-empty-search-no" class="modal-button cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
 
-        console.log("Attempting to fetch from URL:", githubRawUrl); 
+    <script>
+        const displayTopicName = "Live Discussion"; // Specific topic name for this page
+        const textFileNameForGithub = `${displayTopicName}.txt`;
+        const githubRawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${textFileNameForGithub}`;
+        // Note: No localStorageKey for topic content as Live Discussion is always fetched fresh.
 
         let itemList = []; 
         let lastSearchTerm = "";
@@ -283,12 +296,18 @@
         const appTitleElement = document.getElementById('app-title');
         const topicTitleElement = document.getElementById('topic-title');
 
-        // Modal elements
+        // Modal elements for clearing saved questions
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
         const confirmClearNo = document.getElementById('confirm-clear-no');
 
-        // Define the list of highlight colors
+        // Modal elements for empty search confirmation
+        const emptySearchModal = document.getElementById('empty-search-modal');
+        const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
+        const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
+
+        // Define the list of highlight colors (kept consistent with transitions.html)
         const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
 
         // Pick a random highlight color on load and apply it to the CSS variable
@@ -303,8 +322,9 @@
          */
         function loadSavedQuestions() {
             const savedQuestionsJson = localStorage.getItem(savedQuestionsLocalStorageKey);
-            if (savedQuestionsJson) {
-                const savedQuestions = JSON.parse(savedQuestionsJson); 
+            const savedQuestions = savedQuestionsJson ? JSON.parse(savedQuestionsJson) : [];
+
+            if (savedQuestions.length > 0) { 
                 chosenQuestionsDisplay.innerHTML = ''; 
                 savedQuestions.forEach(questionText => {
                     addChosenQuestionToDOM(questionText);
@@ -323,13 +343,16 @@
             localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
         }
 
-        // Function to fetch questions from GitHub (Live Discussion is never cached)
+        /**
+         * Fetches questions for the Live Discussion topic ALWAYS from GitHub.
+         * It does NOT use localStorage for topic content.
+         */
         async function fetchQuestions() {
+            appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+            topicTitleElement.textContent = `Topic: ${displayTopicName}`;
+
             console.log(`Loading questions for topic "${displayTopicName}" from GitHub.`);
             try {
-                appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
-                topicTitleElement.textContent = `Topic: ${displayTopicName}`;
-
                 const response = await fetch(githubRawUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -337,6 +360,8 @@
                 const text = await response.text();
                 itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
                 availableRandomItems = [...itemList]; // Initialize available items for random selection
+
+                console.log(`Fetched questions for "${displayTopicName}".`);
 
                 totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
                 displayRandomItems(); // Display initial random items once loaded
@@ -355,7 +380,6 @@
             if (highlightedItems.length > 0) {
                 clearChosenButton.textContent = "Clear Selected";
             } else {
-                // Check if there are any saved questions at all (even if not highlighted)
                 const allChosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
                 if (allChosenItems.length > 0) {
                     clearChosenButton.textContent = "Clear All Saved";
@@ -367,7 +391,7 @@
 
         function selectUniqueItems(arr, numItems) {
             if (numItems > availableRandomItems.length || availableRandomItems.length === 0) {
-                availableRandomItems = [...itemList]; 
+                availableRandomItems = [...itemList];
             }
 
             let selectedItems = [];
@@ -383,7 +407,7 @@
                 availableRandomItems.splice(randomIndex, 1); 
             }
             if (selectedItems.length === 0 && itemList.length > 0) {
-                return "No items available to pick."; 
+                return "No items available to pick.";
             }
             return selectedItems;
         }
@@ -413,7 +437,7 @@
             const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
             if (!existingChosenItems.includes(questionText)) {
                 addChosenQuestionToDOM(questionText);
-                saveCurrentChosenQuestions(); 
+                saveCurrentChosenQuestions();
             }
             updateClearButtonText();
         }
@@ -455,7 +479,7 @@
             });
 
             if (removedFromDOM) {
-                saveCurrentChosenQuestions(); 
+                saveCurrentChosenQuestions();
             }
 
             const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
@@ -476,7 +500,7 @@
             const numItemsToPick = parseInt(itemCountInput.value);
             const result = selectUniqueItems(questionsToPickFrom, numItemsToPick);
 
-            if (typeof result === "string") { 
+            if (typeof result === "string") {
                 resultDisplay.textContent = result;
             } else {
                 let itemDivs = result.map(item => `<div class="item">${item}</div>`);
@@ -486,11 +510,7 @@
             }
         }
 
-        function displayFilteredItems() {
-            if (itemList.length === 0) {
-                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                return;
-            }
+        function performSearch() {
             const currentSearchTerm = searchInput.value.trim().toLowerCase();
 
             if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
@@ -500,7 +520,22 @@
                 return;
             }
 
-            const filteredResult = itemList.filter(item => item.toLowerCase().includes(currentSearchTerm));
+            // If search input is empty, show confirmation modal
+            if (currentSearchTerm === "") {
+                emptySearchModal.classList.add('show');
+                return; // Stop execution until user confirms
+            }
+            
+            executeSearch(currentSearchTerm);
+        }
+
+        function executeSearch(searchTerm) {
+            if (itemList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                return;
+            }
+            
+            const filteredResult = itemList.filter(item => item.toLowerCase().includes(searchTerm));
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
@@ -510,10 +545,12 @@
                 searchResultsDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(searchResultsDisplay);
             }
-            lastSearchTerm = currentSearchTerm;
+            lastSearchTerm = searchTerm;
             searchButton.textContent = "Search / Clear Search";
         }
 
+
+        // --- MODIFIED: Clear button now shows confirmation modal ---
         clearChosenButton.addEventListener('click', function() {
             confirmationModal.classList.add('show');
         });
@@ -528,7 +565,7 @@
             } else { 
                 chosenQuestionsDisplay.innerHTML = ''; 
             }
-            saveCurrentChosenQuestions(); 
+            saveCurrentChosenQuestions();
             
             const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
             if (remainingQuestionDivs.length === 0) {
@@ -541,7 +578,9 @@
         confirmClearNo.addEventListener('click', function() {
             confirmationModal.classList.remove('show'); 
         });
+        // --- END MODIFIED ---
 
+        // Event listener for the "Leave Page" button
         backToTopicsButton.addEventListener('click', () => {
             window.location.href = 'index.html'; 
         });
@@ -561,7 +600,18 @@
             });
         });
 
-        fetchQuestions();
+        // Event listeners for empty search confirmation modal
+        confirmEmptySearchYes.addEventListener('click', function() {
+            emptySearchModal.classList.remove('show');
+            executeSearch(""); // Proceed with empty search
+        });
+
+        confirmEmptySearchNo.addEventListener('click', function() {
+            emptySearchModal.classList.remove('show');
+        });
+
+        // Initial calls
+        fetchQuestions(); 
         
         randomizeButton.addEventListener('click', function(event) {
             event.preventDefault();
@@ -570,13 +620,13 @@
 
         searchButton.addEventListener('click', function(event) {
             event.preventDefault();
-            displayFilteredItems();
+            performSearch(); 
         });
 
         searchInput.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
-                displayFilteredItems();
+                performSearch(); 
             }
         });
 
