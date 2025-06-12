@@ -36,7 +36,6 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 
 - **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
 - **[Bonding](https://curioussoulscafe.github.io/curious-souls-cafe/bonding.html)**: Share moderately, leaning towards preferences, light reflections, and positive connections.
-- **[Curious](https://curioussoulscafe.github.io/curious-souls-cafe/curious.html)**: Probe deeper motivations and encourage introspective, insightful responses.
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
 - **[Past Questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
