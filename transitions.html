@@ -280,17 +280,31 @@
         // Extract the base name from the HTML file (e.g., "transitions", "love-relationship", "love_relationship")
         const htmlFileBaseName = currentPageFileName.split('.')[0]; 
 
-        // Convert the base name to a display-friendly topic name (Title Case with spaces)
-        // This handles kebab-case (e.g., "love-relationship" -> "Love Relationship")
-        // and snake_case (e.g., "love_relationship" -> "Love Relationship")
-        const displayTopicName = htmlFileBaseName.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+        // Define a mapping for specific HTML file base names to their corresponding *exact* .txt file names on GitHub
+        // This is for files that don't follow the standard Title Case with spaces convention after HTML base name conversion.
+        const githubFileNameOverrides = {
+            "write-your-own-questions": "Write-Your-Own Questions.txt", // HTML: write-your-own-questions.html -> GitHub: Write-Your-Own Questions.txt
+            // Add other overrides here if needed in the future, e.g.:
+            // "my-custom-topic": "My-Custom-Topic.txt"
+        };
 
-        // The text file name should match the HTML file's base name (e.g., Transitions.txt)
-        // This assumes the .txt file on GitHub has the exact same casing as the displayTopicName.
-        const textFileNameForGithub = `${displayTopicName}.txt`; 
+        let textFileNameForGithub;
+        let displayTopicName;
 
-        // Construct the GitHub raw content URL using the text file name
-        const githubRawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${textFileNameForGithub}`;
+        if (githubFileNameOverrides[htmlFileBaseName]) {
+            textFileNameForGithub = githubFileNameOverrides[htmlFileBaseName];
+            // For display, we still want a nice name. Derive it from the override filename.
+            // This will convert "Write-Your-Own Questions.txt" -> "Write Your Own Questions" for display
+            displayTopicName = textFileNameForGithub.replace('.txt', '').replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+        } else {
+            // Original logic for displayTopicName (converts kebab-case/snake_case to Title Case with Spaces)
+            displayTopicName = htmlFileBaseName.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+            // Original logic for textFileNameForGithub (uses the display-friendly name + .txt)
+            textFileNameForGithub = `${displayTopicName}.txt`;
+        }
+        
+        // Construct the GitHub raw content URL using the determined text file name, ensuring proper URL encoding
+        const githubRawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${encodeURIComponent(textFileNameForGithub)}`;
 
         console.log("Attempting to fetch from URL:", githubRawUrl); // Added for debugging
 

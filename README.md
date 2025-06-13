@@ -38,11 +38,11 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
 - **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/icebreaker.html)**: Spark lighthearted, meaningful, and inclusive conversations.
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
-- **[Past Questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
+- **[Write-Your-Own Questions](https://curioussoulscafe.github.io/curious-souls-cafe/write-your-own-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
 - **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
 - **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.  
 
-💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/past-questions.html) from our global events.
+💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/write-your-own-questions.html) from our global events.
 
 Let these decks inspire your journey of exploration, connection, and growth!
 
