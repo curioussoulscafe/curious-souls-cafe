@@ -48,7 +48,7 @@ Let these decks inspire your journey of exploration, connection, and growth!
 
 ## ✨ What You Can Do with the Web App
 
-* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Casual Talk](https://curioussoulscafe.github.io/curious-souls-cafe/casual-talk.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html). Just click (or tap) on a topic button to dive in!
+* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/icebreaker.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html). Just click (or tap) on a topic button to dive in!
 
 * **Get Random Questions:** Once you're on a topic page, tell the web app how many questions you'd like, and it will instantly give you new ones to ponder.
 
