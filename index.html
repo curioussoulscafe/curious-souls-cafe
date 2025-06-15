@@ -6,7 +6,7 @@
     <title>Curious Souls Café</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons (UPDATED to 6.5.2, removed integrity/crossorigin for better compatibility) -->
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         body {
@@ -75,6 +75,32 @@
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
         #suggest-question-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* New styles for the Roll the Dice button to match Submit a Question */
+        #roll-dice-page-button {
+            background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
+            color: white; /* White text for contrast */
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+            font-size: 1.125rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s ease-in-out;
+            display: block;
+            text-align: center;
+        }
+        #roll-dice-page-button:hover {
+            background: linear-gradient(to right, #000000, #333333); /* Even darker gradient on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #roll-dice-page-button:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -168,6 +194,21 @@
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        /* Loading spinner styles */
+        .loading-spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #a855f7; /* Purple */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -193,8 +234,13 @@
 
         <p id="error-message" class="text-red-500 text-center mt-4 hidden">Failed to load topics. Please check your GitHub repository and network connection.</p>
         
-        <button id="suggest-question-button" title="Let's Write a Question">
-            Let's Write a Question
+        <button id="suggest-question-button" title="Submit a Question">
+            Submit a Question
+        </button>
+
+        <!-- Button to Roll the Dice Page (moved and restyled) -->
+        <button id="roll-dice-page-button" class="mt-4" onclick="location.href='dice-roll.html'">
+            Roll the Dice
         </button>
 
         <div class="mt-8 pt-4 border-t border-gray-300 text-center">
@@ -204,11 +250,11 @@
                     class="w-48 h-48 mx-auto rounded-lg shadow-md border border-gray-200 mb-4"
                     onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Missing';"
             >
+            <p class="text-gray-500 text-sm mt-4">Let's help fellow curious souls scan the QR code to launch this page and start the conversation! 😊</p>
             <p class="text-sm text-gray-700 mt-2">
                 <i class="fa-solid fa-link mr-1"></i> 
                 <a href="https://curioussoulscafe.github.io/curious-souls-cafe/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">curioussoulscafe.github.io/curious-souls-cafe</a>
             </p>
-            <p class="text-gray-500 text-sm mt-4">Let's help fellow curious souls scan the QR code to launch this page and start the conversation! 😊</p>
 
             <!-- Social Media Icons in a single row -->
             <div class="social-icons flex justify-center w-full space-x-4 mt-4 mb-4">
@@ -244,7 +290,7 @@
     <div id="suggestion-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
-                To share your own question, please use our Google Form:
+                To submit your own question, please use our Google Form:
             </p>
             <p class="mb-4">
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeioXb-E_ngChehFUgOgg1Ngl5gEZxZV2U4RgrYJ4Q5lDFmDg/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-bold">
@@ -271,13 +317,16 @@
         const suggestionModal = document.getElementById('suggestion-modal');
         const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
 
-        // --- NEW/RE-ADDED: List of topics NOT to cache ---
-        const DO_NOT_CACHE_TOPICS = ["Happiness", "The Mind Speaks", "Live Discussion"];
+        // --- List of topics NOT to cache ---
+        // Add the display names of topics whose .txt files should always be fetched fresh
+        // Make sure these names match the topic names exactly (case-sensitive)
+        // "Live Discussion" is intentionally not in DO_NOT_CACHE_TOPICS here; its behavior is determined by its existence.
+        const DO_NOT_CACHE_TOPICS = ["Happiness", "The Mind Speaks", "Write Your Own Questions"];
 
 
         /**
          * Fetches the list of question files from the GitHub repository,
-         * filters for .txt files, and dynamically creates topic buttons.
+         * then fetches the content of each file and stores it in localStorage (selectively).
          * It also checks for the existence of "Live Discussion.txt" and handles caching.
          */
         async function fetchAndCacheTopics() {
@@ -296,7 +345,7 @@
 
                 // Step 2: Process files for Live Discussion and other topics
                 const processFilesPromises = topicFiles.map(async (file) => {
-                    const topicName = file.name.replace('.txt', '');
+                    const topicName = file.name.replace('.txt', ''); // Get topic name without .txt
                     
                     // Check for "Live Discussion.txt" specifically
                     if (topicName === "Live Discussion") {
@@ -306,8 +355,8 @@
                         return null; // Don't create a regular topic button for Live Discussion
                     }
 
-                    // Handle caching for other topics
-                    const rawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${file.name}`;
+                    // For other topics, determine if it should be cached
+                    const rawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${encodeURIComponent(file.name)}`;
                     if (DO_NOT_CACHE_TOPICS.includes(topicName)) {
                         console.log(`Skipping cache for '${topicName}' (marked as non-caching).`);
                         // This fetch is just to validate existence and populate the topic button.
@@ -317,7 +366,14 @@
                             console.warn(`Could not fetch content for non-cached topic ${file.name}: ${contentResponse.statusText}`);
                             return null; // Return null for failed fetches
                         }
-                        return { name: topicName, htmlFileName: topicName.toLowerCase().replace(/ /g, '-') + '.html' };
+                        // For HTML file naming, convert "Write-Your-Own Questions" -> "write-your-own-questions"
+                        // Handle specific overrides for HTML file names here if needed.
+                        let htmlFileName = topicName.toLowerCase().replace(/ /g, '-');
+                        // Specific override for "Write Your Own Questions" to "write-your-own-questions.html"
+                        if (topicName === "Write Your Own Questions") {
+                           htmlFileName = "write-your-own-questions";
+                        }
+                        return { name: topicName, htmlFileName: `${htmlFileName}.html` };
                     } else {
                         // This topic should be cached
                         const contentResponse = await fetch(rawUrl);
@@ -329,7 +385,8 @@
                         // Store content in localStorage with a clear key
                         localStorage.setItem(`csc_topic_${topicName.replace(/ /g, '_').toLowerCase()}`, content);
                         console.log(`Cached content for '${topicName}'.`);
-                        return { name: topicName, htmlFileName: topicName.toLowerCase().replace(/ /g, '-') + '.html' };
+                        const htmlFileName = topicName.toLowerCase().replace(/ /g, '-');
+                        return { name: topicName, htmlFileName: `${htmlFileName}.html` };
                     }
                 });
 

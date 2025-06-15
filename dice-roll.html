@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="app-title">Curious Souls Café - Roll the Dice!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Gray-100 */
+        }
+        /* Removed .container CSS rule as Tailwind classes are now applied directly to the div */
+        .logo-link {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            justify-content: center; /* Center the image */
+            align-items: center;
+        }
+        .logo-link img {
+            width: 6rem; /* Equivalent to w-24 */
+            height: 6rem; /* Equivalent to h-24 */
+            border-radius: 9999px; /* rounded-full */
+            border: 2px solid #a855f7; /* border-purple-500 */
+        }
+        .logo-link img:hover {
+            transform: scale(1.05); /* Slightly enlarge logo on hover */
+        }
+
+        .roll-button {
+            background-image: linear-gradient(to right, #a855f7, #ec4899); /* Purple-500 to Pink-500 gradient */
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%; /* Full width */
+            text-align: center;
+            display: block;
+        }
+        .roll-button:hover {
+            background-image: linear-gradient(to right, #9333ea, #db2777); /* Darker gradient on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .roll-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Styles for the embedded leave page button */
+        .leave-page-button {
+            background-color: #c53030; /* Deeper red for "Leave Page" */
+            color: white; /* White text */
+            border: none; /* No border */
+            padding: 0.5rem 1rem; /* Matched padding */
+            font-size: 1rem; /* Matched font size */
+            font-weight: bold; /* Added font-weight bold */
+            border-radius: 9999px; /* Full rounded */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out; /* Smooth transition for hover */
+            width: 100%; /* Make it full width */
+            margin-top: 1rem; /* Adjusted to match other subpages */
+            margin-bottom: 0; /* Ensures it's the last element with no extra space */
+            display: block; /* Ensure it takes full width */
+            text-align: center; /* Center the text */
+        }
+        .leave-page-button:hover {
+            background-color: #9b2c2c; /* Slightly darker red on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
+        }
+
+        /* Dice Styles */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .dice-cube {
+            position: relative;
+            width: 96px; /* Adjusted from 24 to be more visible (4x scaling of 24px) */
+            height: 96px; /* Adjusted from 24 */
+            margin: 0 auto; /* Center the cube */
+            transform-style: preserve-3d;
+            transition: transform 1.5s ease-out; /* Slower transition for final roll */
+        }
+
+        .dice-face {
+            position: absolute;
+            width: 96px;
+            height: 96px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem; /* Larger font for numbers */
+            font-weight: bold;
+            color: #333;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+            background-color: #f0f0f0; /* Default face color */
+            backface-visibility: hidden; /* Hide back of face during rotation */
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1); /* Inner shadow for depth */
+            word-break: break-word; /* Ensure text wraps */
+            padding: 5px; /* Add some padding */
+            line-height: 1.2; /* Adjust line height for better display */
+            text-align: center; /* Center text on face */
+        }
+
+        /* Face positioning (half of 96px is 48px) */
+        .face-front  { transform: rotateY(0deg) translateZ(48px); }
+        .face-back   { transform: rotateY(180deg) translateZ(48px); }
+        .face-right  { transform: rotateY(90deg) translateZ(48px); }
+        .face-left   { transform: rotateY(-90deg) translateZ(48px); }
+        .face-top    { transform: rotateX(90deg) translateZ(48px); }
+        .face-bottom { transform: rotateX(-90deg) translateZ(48px); }
+
+        /* Animation for rolling */
+        .dice-cube.rolling {
+            animation: roll-keyframes 1s linear infinite; /* Fast, continuous roll */
+        }
+
+        @keyframes roll-keyframes {
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+
+        .color-input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            flex-wrap: nowrap; /* Forces items onto a single line */
+            width: 100%; /* Ensure the group takes full available width */
+        }
+
+        .color-number {
+            font-weight: bold;
+            margin-right: 0.5rem;
+            width: 1.5rem; /* Fixed width for consistent alignment */
+            text-align: right;
+            flex-shrink: 0; /* Prevents shrinking */
+        }
+
+        /* Style for the color input (the picker itself) */
+        input[type="color"].color-picker-input {
+            width: 32px; /* Slightly larger for easier clicking */
+            height: 32px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 0.5rem;
+            padding: 0; /* Remove default padding */
+            cursor: pointer;
+            -webkit-appearance: none; /* Remove default browser styling for webkit */
+            -moz-appearance: none; /* Remove default browser styling for mozilla */
+            appearance: none; /* Standard property */
+            background-color: transparent; /* Ensure background is transparent to show chosen color */
+            flex-shrink: 0; /* Prevents shrinking */
+        }
+
+        /* Specific styles for the color input thumb/value indicator */
+        input[type="color"].color-picker-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"].color-picker-input::-webkit-color-swatch {
+            border: none;
+            border-radius: 3px; /* Slightly smaller border radius than container */
+        }
+        input[type="color"].color-picker-input::-moz-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"].color-picker-input::-moz-color-swatch {
+            border: none;
+            border-radius: 3px;
+        }
+
+        /* Style for the Add Color button - matched to search button style */
+        #add-color-button {
+            background-color: #6b7280; /* Gray-500 */
+            color: white;
+            padding: 0.75rem 1rem; /* Adjust padding to match other topic page buttons */
+            border-radius: 9999px; /* Fully rounded */
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem; /* Adjusted margin-top */
+            font-size: 1rem; /* Matched font size */
+        }
+        #add-color-button:hover {
+            background-color: #4b5563; /* Gray-700 */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #add-color-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .restore-button {
+            background-color: #fc8181; /* Lighter red for "Clear Saved Questions" from other pages */
+            color: white;
+            padding: 0.5rem 1rem; /* Matched padding of clear-chosen-button */
+            border-radius: 9999px; /* Matched full rounded of clear-chosen-button */
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            display: block;
+            margin-top: 1rem; /* Spacing from previous button */
+            font-size: 1rem; /* Matched font size of clear-chosen-button */
+        }
+
+        .restore-button:hover {
+            background-color: #f56565; /* Slightly darker light red on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .restore-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform hover:scale-105">
+        <div class="flex justify-center mb-6">
+            <a href="index.html" class="logo-link">
+                <img src="https://avatars.githubusercontent.com/u/194744307?v=4" alt="Curious Souls Cafe Logo">
+            </a>
+        </div>
+        <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
+        
+        <p class="text-gray-700 text-center mb-4 leading-relaxed">
+            Discover the playful twist behind our <a href="https://curioussoulscafe.substack.com/i/154389021/the-dice-decides" target="_blank" rel="noopener noreferrer" class="text-purple-600 hover:underline font-bold">dice here</a>. Let's spark fun and engaging discussions with it!
+        </p>
+
+        <!-- Custom Dice Configuration -->
+        <div id="custom-dice-config-section" class="my-8 text-center">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Custom Dice</h2>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Colors for Sides:</label>
+                <div id="colors-input-container">
+                    <!-- Default colors will be added here by JS -->
+                </div>
+                <p id="sides-count-message" class="text-gray-700 text-sm mb-2 text-center"></p>
+                <button id="add-color-button">
+                    Add Color / Side
+                </button>
+            </div>
+
+            <p id="dice-result-text" class="text-lg font-medium text-gray-800 mt-4">Configure your dice and roll!</p>
+            <button id="roll-custom-dice-button" class="roll-button mt-4">Roll the Dice</button>
+        </div>
+
+        <div id="virtual-dice" class="relative w-24 h-24 mx-auto perspective-1000 mt-8">
+            <div class="dice-cube">
+                <div class="dice-face face-front"></div>
+                <div class="dice-face face-back"></div>
+                <div class="dice-face face-right"></div>
+                <div class="dice-face face-left"></div>
+                <div class="dice-face face-top"></div>
+                <div class="dice-face face-bottom"></div>
+            </div>
+        </div>
+
+        <!-- List of Dice Colors -->
+        <div id="dice-colors-list" class="mt-8 pt-4 border-t border-gray-300 text-center">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Configured Dice Colors:</h3>
+            <ul id="configured-colors-ul" class="list-none p-0 flex flex-wrap justify-center gap-2 mb-4">
+                <!-- Configured colors will be dynamically inserted here -->
+            </ul>
+        </div>
+
+        <!-- Remember message moved here -->
+        <p class="text-gray-700 text-sm mb-2 text-center mt-4">
+            Remember, any added or changed colors are saved by default for your next visit!
+        </p>
+        <!-- Restore Defaults Button -->
+        <button id="restore-defaults-button" class="restore-button">
+            Restore Defaults
+        </button>
+
+        <button onclick="location.href='index.html'" class="leave-page-button">
+            <i class="fas fa-arrow-left"></i> Leave Page
+        </button>
+    </div>
+
+    <script>
+        const virtualDice = document.getElementById('virtual-dice').querySelector('.dice-cube');
+        const diceFaces = virtualDice.querySelectorAll('.dice-face');
+
+        const colorsInputContainer = document.getElementById('colors-input-container');
+        const addColorButton = document.getElementById('add-color-button');
+        const restoreDefaultsButton = document.getElementById('restore-defaults-button');
+        const rollCustomDiceButton = document.getElementById('roll-custom-dice-button');
+        const diceResultText = document.getElementById('dice-result-text');
+        const configuredColorsUl = document.getElementById('configured-colors-ul');
+        const sidesCountMessage = document.getElementById('sides-count-message'); 
+        
+        let customDiceColors = []; 
+
+        const localStorageKey = 'customDiceColors'; 
+
+        // Default colors for initial load/restore
+        const defaultDiceColors = [
+            { value: "#57FCFF", label: "Blue" },
+            { value: "#FFFFAD", label: "Yellow" },
+            { value: "#FFC6C6", label: "Red" },
+            { value: "#C5E1A5", label: "Green" }, 
+            { value: "#B0BEC5", label: "Grey" },  
+            { value: "#CE93D8", label: "Purple" } 
+        ];
+
+        /**
+         * Converts a color string (hex) to an RGB object.
+         * @param {string} colorString - The color string (e.g., "#RRGGBB").
+         * @returns {object} An object with r, g, b properties.
+         */
+        function hexToRgb(hex) {
+            const r = parseInt(hex.substring(1, 3), 16);
+            const g = parseInt(hex.substring(3, 5), 16);
+            const b = parseInt(hex.substring(5, 7), 16);
+            return { r, g, b };
+        }
+
+        /**
+         * Calculates Euclidean distance between two RGB colors.
+         * @param {object} rgb1 - First RGB color {r, g, b}.
+         * @param {object} rgb2 - Second RGB color {r, g, b}.
+         * @returns {number} The distance between the two colors.
+         */
+        function getColorDistance(rgb1, rgb2) {
+            return Math.sqrt(
+                Math.pow(rgb1.r - rgb2.r, 2) +
+                Math.pow(rgb1.g - rgb2.g, 2) +
+                Math.pow(rgb1.b - rgb2.b, 2)
+            );
+        }
+
+        /**
+         * Generates a random hexadecimal color string.
+         * @returns {string} A random hex color (e.g., "#RRGGBB").
+         */
+        function getRandomHexColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+        }
+
+        /**
+         * Finds a new random color that is "sharply different" from a given set of existing colors.
+         * It tries to maximize the minimum distance to any existing color.
+         * @param {Array<object>} existingColors - An array of color objects {value: string, label: string}.
+         * @returns {string} A hex color string that is distinct.
+         */
+        function findSharplyDifferentColor(existingColors) {
+            const maxAttempts = 100; 
+            const minDistanceThreshold = 120; 
+
+            if (existingColors.length === 0) {
+                return getRandomHexColor(); 
+            }
+
+            let bestColor = null;
+            let maxMinDistance = -1;
+
+            const existingRgbColors = existingColors.map(c => {
+                if (c.value.startsWith('#')) return hexToRgb(c.value);
+                // For named colors in existingColors (unlikely if inputs are always hex), convert them
+                const tempDiv = document.createElement('div');
+                tempDiv.style.color = c.value;
+                document.body.appendChild(tempDiv);
+                const computedColor = window.getComputedStyle(tempDiv).color;
+                document.body.removeChild(tempDiv);
+                const rgbMatch = computedColor.match(/\d+/g);
+                return { r: parseInt(rgbMatch[0]), g: parseInt(rgbMatch[1]), b: parseInt(rgbMatch[2]) };
+            });
+
+            for (let i = 0; i < maxAttempts; i++) {
+                const candidateHex = getRandomHexColor();
+                const candidateRgb = hexToRgb(candidateHex);
+
+                let minDistanceToExisting = Infinity;
+                for (const existingRgb of existingRgbColors) {
+                    const distance = getColorDistance(candidateRgb, existingRgb);
+                    minDistanceToExisting = Math.min(minDistanceToExisting, distance);
+                }
+
+                if (minDistanceToExisting > maxMinDistance) {
+                    maxMinDistance = minDistanceToExisting;
+                    bestColor = candidateHex;
+                }
+
+                if (maxMinDistance >= minDistanceThreshold) {
+                    return bestColor;
+                }
+            }
+            return bestColor || getRandomHexColor(); 
+        }
+
+        /**
+         * Adds a new color input field to the UI.
+         * @param {string} initialValue - The initial color value for the input.
+         */
+        function addColorInput(initialValue = '') {
+            const colorInputGroup = document.createElement('div');
+            colorInputGroup.classList.add('color-input-group');
+
+            const colorNumberSpan = document.createElement('span');
+            colorNumberSpan.classList.add('color-number');
+            colorNumberSpan.style.flexShrink = '0'; 
+
+            const finalInitialValue = initialValue || findSharplyDifferentColor(customDiceColors);
+
+            const colorPickerInput = document.createElement('input');
+            colorPickerInput.type = 'color';
+            colorPickerInput.classList.add('color-picker-input');
+            colorPickerInput.value = finalInitialValue; 
+            colorPickerInput.style.flexShrink = '0'; 
+
+            const colorTextInput = document.createElement('input');
+            colorTextInput.type = 'text';
+            colorTextInput.placeholder = 'e.g., #FF0000 or blue';
+            colorTextInput.value = finalInitialValue;
+            // Removed fixed width (w-32) and added flex-grow to make it expand
+            colorTextInput.classList.add('shadow', 'appearance-none', 'border', 'rounded', 'py-2', 'px-3', 'text-gray-700', 'leading-tight', 'focus:outline-none', 'focus:shadow-outline', 'flex-grow');
+            
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'X';
+            removeButton.classList.add('bg-red-400', 'hover:bg-red-600', 'text-white', 'font-bold', 'py-1', 'px-2', 'rounded-full', 'ml-2', 'text-xs');
+            removeButton.onclick = () => {
+                colorsInputContainer.removeChild(colorInputGroup);
+                updateCustomDiceColors(); 
+            };
+            removeButton.style.flexShrink = '0'; 
+
+            colorPickerInput.addEventListener('input', (event) => {
+                const hexValue = event.target.value;
+                colorTextInput.value = hexValue.toUpperCase(); 
+                updateCustomDiceColors(); 
+            });
+
+            colorTextInput.addEventListener('input', (event) => {
+                const value = event.target.value.trim();
+                if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value) || CSS.supports('color', value)) {
+                    colorPickerInput.value = value;
+                } else {
+                    colorPickerInput.value = '#000000'; 
+                }
+                updateCustomDiceColors(); 
+            });
+            
+            colorInputGroup.appendChild(colorNumberSpan); 
+            colorInputGroup.appendChild(colorPickerInput);
+            colorInputGroup.appendChild(colorTextInput);
+            colorInputGroup.appendChild(removeButton);
+            colorsInputContainer.appendChild(colorInputGroup);
+
+            updateCustomDiceColors(); 
+        }
+
+        /**
+         * Reads all color inputs and updates the `customDiceColors` array.
+         * Also saves the current state to localStorage and updates the sides count message.
+         */
+        function updateCustomDiceColors() {
+            customDiceColors = [];
+            const colorInputGroups = colorsInputContainer.querySelectorAll('.color-input-group');
+            colorInputGroups.forEach((group, index) => {
+                const colorTextInput = group.querySelector('input[type="text"]');
+                const colorNumberSpan = group.querySelector('.color-number');
+
+                if (colorNumberSpan) {
+                    colorNumberSpan.textContent = `${index + 1}.`;
+                }
+
+                const value = colorTextInput.value.trim();
+                if (value) {
+                    const label = value.startsWith('#') ? value.toUpperCase() : value.charAt(0).toUpperCase() + value.slice(1);
+                    customDiceColors.push({ value: value, label: label });
+                }
+            });
+            populateDiceColorsList(configuredColorsUl, customDiceColors);
+            updateDiceFaceVisuals(false); 
+            
+            localStorage.setItem(localStorageKey, JSON.stringify(customDiceColors));
+
+            // Update the sides count message and Roll button text
+            sidesCountMessage.textContent = `There are ${customDiceColors.length} sides currently on this dice.`;
+            rollCustomDiceButton.textContent = `Roll the Dice (D${customDiceColors.length})`;
+        }
+
+        /**
+         * Sets the content and style of a single dice face.
+         * @param {HTMLElement} faceElement The div element for the face.
+         * @param {object} outcome The outcome object ({type: 'color', value: string, label: string}).
+         * @param {string} displayText - The text to actually display on the dice face (e.g., number or label).
+         */
+        function setFaceContent(faceElement, outcome, displayText) {
+            faceElement.textContent = '';
+            faceElement.style.backgroundColor = '';
+            faceElement.style.color = '#333';
+
+            faceElement.style.backgroundColor = outcome.value;
+            faceElement.textContent = displayText; 
+            faceElement.style.color = getContrastYIQ(outcome.value);
+        }
+        
+        /**
+         * Determines if black or white text provides better contrast on a given background color.
+         * @param {string} hexcolor Hexadecimal color string (e.g., "#RRGGBB").
+         * @returns {string} 'black' or 'white'.
+         */
+        function getContrastYIQ(hexcolor){
+            let r, g, b;
+            if (hexcolor.startsWith('#')) {
+                r = parseInt(hexcolor.substring(1,3),16);
+                g = parseInt(hexcolor.substring(3,5),16);
+                b = parseInt(hexcolor.substring(5,7),16);
+            } else {
+                const tempDiv = document.createElement('div');
+                tempDiv.style.color = hexcolor;
+                document.body.appendChild(tempDiv);
+                const computedColor = window.getComputedStyle(tempDiv).color; 
+                document.body.removeChild(tempDiv);
+
+                const rgbMatch = computedColor.match(/\d+/g);
+                if (rgbMatch && rgbMatch.length >= 3) {
+                    r = parseInt(rgbMatch[0]);
+                    g = parseInt(rgbMatch[1]);
+                    b = parseInt(rgbMatch[2]);
+                } else {
+                    return 'black'; 
+                }
+            }
+
+            const yiq = ((r*299)+(g*587)+(b*114))/1000;
+            return (yiq >= 128) ? 'black' : 'white';
+        }
+
+        /**
+         * Updates the visual appearance of the 3D dice faces based on the current customDiceColors.
+         * @param {boolean} showNumbers - If true, displays numbers; otherwise, only colors.
+         */
+        function updateDiceFaceVisuals(showNumbers) {
+            diceFaces.forEach((face, index) => {
+                if (customDiceColors.length > 0) {
+                    const displayContent = showNumbers ? `${index + 1}` : '';
+                    setFaceContent(face, customDiceColors[index % customDiceColors.length], displayContent); 
+                } else {
+                    face.textContent = '';
+                    face.style.backgroundColor = '#f0f0f0'; 
+                    face.style.color = '#333';
+                }
+            });
+        }
+
+
+        /**
+         * Simulates a dice roll with a visual animation and displays the result.
+         * Uses the custom configuration.
+         */
+        function rollCustomDice() {
+            const numSides = customDiceColors.length; 
+
+            if (numSides === 0) {
+                diceResultText.textContent = "Please add at least one color for the dice faces.";
+                return;
+            }
+
+            rollCustomDiceButton.disabled = true;
+            diceResultText.textContent = "Rolling...";
+
+            updateDiceFaceVisuals(false); 
+
+            virtualDice.classList.add('rolling');
+
+            const finalRollDegreeX = (Math.floor(Math.random() * 4) * 90) + (360 * 3) + Math.random() * 30 - 15;
+            const finalRollDegreeY = (Math.floor(Math.random() * 4) * 90) + (360 * 3) + Math.random() * 30 - 15;
+            const finalRollDegreeZ = (Math.floor(Math.random() * 4) * 90) + (360 * 3) + Math.random() * 30 - 15;
+
+            virtualDice.style.transition = 'transform 1.5s ease-out';
+            virtualDice.style.transform = `rotateX(${finalRollDegreeX}deg) rotateY(${finalRollDegreeY}deg) rotateZ(${finalRollDegreeZ}deg)`;
+
+            const randomSideIndex = Math.floor(Math.random() * numSides); 
+            const finalOutcome = customDiceColors[randomSideIndex]; 
+
+            diceFaces.forEach((face, index) => {
+                const faceColor = customDiceColors[index % customDiceColors.length];
+                setFaceContent(face, faceColor, ''); 
+            });
+
+            setTimeout(() => {
+                virtualDice.classList.remove('rolling');
+                
+                setFaceContent(diceFaces[0], finalOutcome, `${randomSideIndex + 1}`);
+
+                diceResultText.innerHTML = `You rolled: <span style="background-color: ${finalOutcome.value}; padding: 2px 8px; border-radius: 4px; color: ${getContrastYIQ(finalOutcome.value)};">${finalOutcome.label}</span>`;
+                
+                rollCustomDiceButton.disabled = false;
+                
+                virtualDice.style.transition = 'none';
+                virtualDice.style.transform = 'rotateX(0deg) rotateY(0deg) rotateZ(0deg)'; 
+                
+                setTimeout(() => {
+                    virtualDice.style.transition = 'transform 1.5s ease-in-out'; 
+                }, 50);
+
+            }, 1500);
+        }
+
+        /**
+         * Populates the list of dice colors below the dice sections.
+         * @param {HTMLElement} ulElement The <ul> element to populate.
+         * @param {Array} colorsArray The array of color objects ({value, label}).
+         */
+        function populateDiceColorsList(ulElement, colorsArray) {
+            ulElement.innerHTML = ''; 
+            if (colorsArray.length === 0) {
+                ulElement.innerHTML = '<p class="text-gray-500 text-sm">No colors configured.</p>';
+                return;
+            }
+            colorsArray.forEach((color, index) => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('inline-block', 'px-3', 'py-1', 'rounded-full', 'font-semibold', 'text-sm', 'border', 'border-gray-300');
+                listItem.style.backgroundColor = color.value;
+                listItem.style.color = getContrastYIQ(color.value);
+                listItem.textContent = `${index + 1}. ${color.label}`; 
+                ulElement.appendChild(listItem);
+            });
+        }
+
+        /**
+         * Loads colors from localStorage or uses defaults if none are saved.
+         */
+        function loadColorsFromLocalStorage() {
+            const savedColors = localStorage.getItem(localStorageKey);
+            let colorsToLoad = [];
+            if (savedColors) {
+                try {
+                    colorsToLoad = JSON.parse(savedColors);
+                    if (!Array.isArray(colorsToLoad) || colorsToLoad.length === 0) {
+                        console.warn("Saved colors data is invalid or empty. Loading defaults.");
+                        colorsToLoad = defaultDiceColors;
+                    }
+                } catch (e) {
+                    console.error("Error parsing saved colors from localStorage:", e);
+                    colorsToLoad = defaultDiceColors;
+                }
+            } else {
+                colorsToLoad = defaultDiceColors;
+            }
+
+            colorsInputContainer.innerHTML = '';
+            colorsToLoad.forEach(color => addColorInput(color.value)); // Pass only value
+            updateCustomDiceColors(); 
+        }
+
+        /**
+         * Resets the color configuration to the default set.
+         */
+        function restoreDefaultColors() {
+            localStorage.removeItem(localStorageKey); 
+            colorsInputContainer.innerHTML = ''; 
+            defaultDiceColors.forEach(color => addColorInput(color.value)); 
+            updateCustomDiceColors(); 
+            diceResultText.textContent = "Colors restored to defaults. Roll the dice!";
+        }
+
+        // Initial setup - load colors
+        loadColorsFromLocalStorage();
+
+        // Event Listeners
+        rollCustomDiceButton.addEventListener('click', rollCustomDice);
+        addColorButton.addEventListener('click', () => addColorInput());
+        restoreDefaultsButton.addEventListener('click', restoreDefaultColors);
+    </script>    
+</body>
+</html>

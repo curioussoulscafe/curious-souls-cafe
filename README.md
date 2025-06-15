@@ -82,7 +82,9 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * Then, have the participant tap **"Generate Questions!"** so that only one random question is displayed.
 
-6. **Advanced Search & Clear:**
+6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/dice-roll.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
+
+7. **Advanced Search & Clear:**
 
    * Searching with **nothing inputted in the search field** will display all questions in the current deck. Be mindful that this could quickly fill up the screen.
 
