@@ -6,6 +6,8 @@
     <title id="app-title">Curious Souls Café</title> 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         :root {
             --highlight-color: #00f9ff; /* Default or initial color, will be overridden by JS */
@@ -239,7 +241,7 @@
         </div>
 
         <button id="back-to-topics" title="Leave Page">
-            Leave Page
+            <i class="fas fa-arrow-left"></i> Leave Page
         </button>
     </div>
 
@@ -277,7 +279,7 @@
         const currentPagePath = window.location.pathname;
         const currentPageFileName = currentPagePath.substring(currentPagePath.lastIndexOf('/') + 1);
         
-        // Extract the base name from the HTML file (e.g., "transitions", "love-relationship", "love_relationship")
+        // Extract the base name from the HTML file (e.g., "transitions", "love-relationship", "write-your-own-questions")
         const htmlFileBaseName = currentPageFileName.split('.')[0]; 
 
         // Define a mapping for specific HTML file base names to their corresponding *exact* .txt file names on GitHub
@@ -334,7 +336,7 @@
         // Modal elements for empty search confirmation
         const emptySearchModal = document.getElementById('empty-search-modal');
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
-        const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+        const confirmEmptySearchNo = document = document.getElementById('confirm-empty-search-no');
 
 
         // Define the list of highlight colors
