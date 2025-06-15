@@ -53,7 +53,7 @@
             margin-right: 0.5rem; /* Space between icon and text */
         }
 
-        /* Styles for Submit Question button with Dark Grey gradient (restored) */
+        /* Styles for Submit Question button with Dark Grey gradient */
         #suggest-question-button {
             background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
             color: white; /* White text for contrast */
@@ -79,7 +79,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Styles for the Roll the Dice button to match Submit a Question (restored) */
+        /* Styles for the Roll the Dice button to match Submit a Question */
         #roll-dice-page-button {
             background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
             color: white; /* White text for contrast */
@@ -209,6 +209,31 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Quote of the Day styles */
+        #quote-of-the-day-section {
+            background-color: #f0f4f8; /* Light blue-gray */
+            border-left: 5px solid #a855f7; /* Purple border */
+            padding: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        #quote-display {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #374151; /* Dark gray */
+            margin-bottom: 0.5rem;
+        }
+
+        #quote-author {
+            font-size: 0.9rem;
+            color: #6b7280; /* Medium gray */
+            font-weight: 600;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -218,6 +243,13 @@
         </div>
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
         <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
+
+        <!-- Quote of the Day Section -->
+        <div id="quote-of-the-day-section">
+            <p id="quote-display">Loading quote...</p>
+            <p id="quote-author"></p>
+        </div>
+        
         <h2 class="text-xl font-semibold text-gray-700 text-center mb-6">Choose a Topic:</h2>
 
         <!-- Live Discussion button container - hidden by default, shown dynamically -->
@@ -238,7 +270,7 @@
             Submit a Question
         </button>
 
-        <!-- Button to Roll the Dice Page (moved and restyled) -->
+        <!-- Button to Roll the Dice Page -->
         <button id="roll-dice-page-button" class="mt-4" onclick="location.href='dice-roll.html'">
             Roll the Dice
         </button>
@@ -304,9 +336,12 @@
     <script>
         const topicsListDiv = document.getElementById('topics-list');
         const errorMessageDiv = document.getElementById('error-message');
+        const quoteDisplay = document.getElementById('quote-display');
+        const quoteAuthor = document.getElementById('quote-author');
 
         // GitHub API endpoint for the 'questions' subfolder
         const githubApiUrl = 'https://api.github.com/repos/curioussoulscafe/curious-souls-cafe/contents/questions';
+        const quotesTxtUrl = 'https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/quotes.txt';
 
         // Variables for the Live Discussion button
         const liveDiscussionButtonContainer = document.getElementById('live-discussion-button-container');
@@ -431,6 +466,40 @@
             }
         }
 
+        /**
+         * Fetches quotes from quotes.txt and displays a random one.
+         */
+        async function fetchAndDisplayQuoteOfDay() {
+            try {
+                const response = await fetch(quotesTxtUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const text = await response.text();
+                const quotes = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+
+                if (quotes.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * quotes.length);
+                    const selectedQuote = quotes[randomIndex];
+                    
+                    const parts = selectedQuote.split('--');
+                    let quoteText = parts[0].trim();
+                    let authorText = parts.length > 1 ? `-- ${parts[1].trim()}` : '';
+
+                    quoteDisplay.textContent = quoteText;
+                    quoteAuthor.textContent = authorText;
+                } else {
+                    quoteDisplay.textContent = "No quotes available.";
+                    quoteAuthor.textContent = "";
+                }
+            } catch (error) {
+                console.error("Error fetching quote of the day:", error);
+                quoteDisplay.textContent = "Failed to load quote.";
+                quoteAuthor.textContent = "";
+            }
+        }
+
+
         // Event listeners for the new suggestion modal
         suggestQuestionButton.addEventListener('click', function() {
             suggestionModal.classList.add('show');
@@ -440,8 +509,9 @@
             suggestionModal.classList.remove('show');
         });
 
-        // Fetch topics when the page loads
+        // Fetch topics and quote when the page loads
         fetchAndCacheTopics();
+        fetchAndDisplayQuoteOfDay();
     </script>    
 </body>
 </html>
