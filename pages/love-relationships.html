@@ -6,6 +6,8 @@
     <title id="app-title">Curious Souls Café - Love Relationships</title> 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         :root {
             --highlight-color: #00f9ff; /* Default or initial color, will be overridden by JS */
@@ -197,7 +199,8 @@
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform hover:scale-105">
         <div class="flex justify-center mb-6">
-            <a href="../index.html"> <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            <a href="../index.html"> <!-- Updated path to index.html -->
+                <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
             </a>
         </div>
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
@@ -246,6 +249,7 @@
         &#9650; Top
     </button>
 
+    <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
@@ -256,6 +260,7 @@
         </div>
     </div>
 
+    <!-- New Confirmation Modal for empty search -->
     <div id="empty-search-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
@@ -264,18 +269,19 @@
             </p>
             <div class="modal-buttons">
                 <button id="confirm-empty-search-yes" class="modal-button confirm">Proceed</button>
-                <button id="confirm-empty-search-no" class="modal-button cancel">Cancel</button>
+                <button id="confirm-empty-search-no" class="modal-button cancel">No</button>
             </div>
         </div>
     </div>
 
     <script>
         // --- Hardcoded Topic Configuration for Love Relationships ---
-        const displayTopicName = "Love Relationships";
-        const githubRawUrl = "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/love-relationships.txt";
+        const displayTopicName = "Love Relationships"; // Display name
+        // The URL for the question file, now a relative path.
+        const githubRawUrl = "../questions/love-relationships.txt"; // Relative path to love-relationships.txt
         // End Hardcoded Configuration
 
-        let itemList = []; // This will be populated dynamically
+        let itemList = []; 
         let lastSearchTerm = "";
         let availableRandomItems = [];
 
@@ -303,6 +309,7 @@
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
         const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
 
+
         // Define the list of highlight colors
         const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
 
@@ -311,23 +318,21 @@
         document.documentElement.style.setProperty('--highlight-color', randomHighlightColor);
 
         // --- Persistent Saved Questions Logic ---
-        const savedQuestionsLocalStorageKey = `csc_saved_questions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`; // Unique key per topic
+        const savedQuestionsLocalStorageKey = `csc_saved_questions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`; 
 
         /**
          * Loads saved questions from localStorage and displays them.
          */
         function loadSavedQuestions() {
             const savedQuestionsJson = localStorage.getItem(savedQuestionsLocalStorageKey);
-            // Parse the JSON, or default to an empty array if not found or invalid
             const savedQuestions = savedQuestionsJson ? JSON.parse(savedQuestionsJson) : [];
 
-            if (savedQuestions.length > 0) { // Check if the array is actually not empty
+            if (savedQuestions.length > 0) { 
                 chosenQuestionsDisplay.innerHTML = ''; 
                 savedQuestions.forEach(questionText => {
-                    addChosenQuestionToDOM(questionText); // Re-add to DOM without saving to localStorage again
+                    addChosenQuestionToDOM(questionText);
                 });
             } else {
-                // This block will now correctly execute if localStorage is empty or contains an empty array
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
             }
             updateClearButtonText();
@@ -343,42 +348,35 @@
 
         // Function to fetch questions from localStorage or GitHub
         async function fetchQuestions() {
-            // Construct the localStorage key based on the displayTopicName
             const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
             const cachedContent = localStorage.getItem(localStorageKey);
 
-            // Set titles immediately
             appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
             topicTitleElement.textContent = `Topic: ${displayTopicName}`;
 
             if (cachedContent) {
-                // Load from localStorage if available
                 console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
                 itemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
                 availableRandomItems = [...itemList];
                 totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
                 displayRandomItems();
-                loadSavedQuestions(); // Load saved questions after topic questions are ready
+                loadSavedQuestions(); 
             } else {
-                // Fallback to fetching from GitHub if not in localStorage
-                console.log(`Loading questions for topic "${displayTopicName}" from GitHub (not found in localStorage).`);
+                console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
                 try {
-                    const response = await fetch(githubRawUrl);
+                    const response = await fetch(githubRawUrl); // Use relative path
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const text = await response.text();
                     itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                    availableRandomItems = [...itemList]; // Initialize available items for random selection
+                    availableRandomItems = [...itemList];
 
-                    // Optionally, save to localStorage for future visits (only if caching is desired for this specific topic)
-                    // You might want to hardcode a 'cache: true/false' flag in this file if you want to control it per subpage
-                    // For now, assuming if it's fetched, it's also cached for efficiency unless explicitly prevented.
                     localStorage.setItem(localStorageKey, text); 
 
                     totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
-                    displayRandomItems(); // Display initial random items once loaded
-                    loadSavedQuestions(); // Load saved questions after topic questions are ready
+                    displayRandomItems(); 
+                    loadSavedQuestions(); 
                 } catch (error) {
                     console.error("Could not load questions:", error);
                     resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
@@ -394,7 +392,6 @@
             if (highlightedItems.length > 0) {
                 clearChosenButton.textContent = "Clear Selected";
             } else {
-                // Check if there are any saved questions at all (even if not highlighted)
                 const allChosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
                 if (allChosenItems.length > 0) {
                     clearChosenButton.textContent = "Clear All Saved";
@@ -405,22 +402,21 @@
         }
 
         function selectUniqueItems(arr, numItems) {
-            // If the requested number of items is greater than available, or if available pool is empty, reset pool
             if (numItems > availableRandomItems.length || availableRandomItems.length === 0) {
-                availableRandomItems = [...itemList]; // Reset to full list
+                availableRandomItems = [...itemList];
             }
 
             let selectedItems = [];
             for (let i = 0; i < numItems; i++) {
                 if (availableRandomItems.length === 0) {
-                    availableRandomItems = [...itemList]; // Reset if somehow empty during loop
-                    if (availableRandomItems.length === 0) { // If original list is also empty
+                    availableRandomItems = [...itemList];
+                    if (availableRandomItems.length === 0) {
                         return "No items available to pick.";
                     }
                 }
                 const randomIndex = Math.floor(Math.random() * availableRandomItems.length);
                 selectedItems.push(availableRandomItems[randomIndex]);
-                availableRandomItems.splice(randomIndex, 1); // Remove selected item from available pool
+                availableRandomItems.splice(randomIndex, 1);
             }
             return selectedItems;
         }
@@ -431,14 +427,11 @@
                 item.addEventListener('click', function() {
                     const questionText = this.textContent;
 
-                    // Toggle the selected-item class
                     this.classList.toggle('selected-item');
 
-                    // If the item is now selected, add it to chosen questions
                     if (this.classList.contains('selected-item')) {
                         addChosenQuestion(questionText);
                     } else {
-                        // If the item is now unselected, remove it from chosen questions
                         removeChosenQuestion(questionText);
                     }
                 });
@@ -450,11 +443,10 @@
          * @param {string} questionText - The text of the question to add.
          */
         function addChosenQuestion(questionText) {
-            // Check if the question is already in the chosen list in DOM
             const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
             if (!existingChosenItems.includes(questionText)) {
                 addChosenQuestionToDOM(questionText);
-                saveCurrentChosenQuestions(); // Save to localStorage after adding
+                saveCurrentChosenQuestions();
             }
             updateClearButtonText();
         }
@@ -470,13 +462,11 @@
             chosenItemDiv.textContent = questionText;
             chosenQuestionsDisplay.appendChild(chosenItemDiv);
 
-            // Add click listener for highlighting chosen items
             chosenItemDiv.addEventListener('click', function() {
                 this.classList.toggle('selected-chosen-item');
                 updateClearButtonText();
             });
 
-            // Remove the initial placeholder text if present
             const placeholder = chosenQuestionsDisplay.querySelector('p.text-gray-500');
             if (placeholder) {
                 chosenQuestionsDisplay.removeChild(placeholder);
@@ -498,10 +488,9 @@
             });
 
             if (removedFromDOM) {
-                saveCurrentChosenQuestions(); // Save to localStorage after removing
+                saveCurrentChosenQuestions();
             }
 
-            // If no chosen questions remain, display the placeholder
             const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
             if (remainingQuestionDivs.length === 0) {
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
@@ -541,10 +530,9 @@
                 return;
             }
 
-            // If search input is empty, show confirmation modal
             if (currentSearchTerm === "") {
                 emptySearchModal.classList.add('show');
-                return; // Stop execution until user confirms
+                return;
             }
             
             executeSearch(currentSearchTerm);
@@ -570,7 +558,6 @@
             searchButton.textContent = "Search / Clear Search";
         }
 
-        // --- MODIFIED: Clear button now shows confirmation modal ---
         clearChosenButton.addEventListener('click', function() {
             confirmationModal.classList.add('show');
         });
@@ -578,32 +565,29 @@
         confirmClearYes.addEventListener('click', function() {
             const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
 
-            if (highlightedItems.length > 0) { // If specific items are highlighted, clear only those
+            if (highlightedItems.length > 0) { 
                 highlightedItems.forEach(item => {
                     chosenQuestionsDisplay.removeChild(item);
                 });
-            } else { // Otherwise, clear all saved questions
-                chosenQuestionsDisplay.innerHTML = ''; // Clear all from DOM
+            } else { 
+                chosenQuestionsDisplay.innerHTML = ''; 
             }
-            saveCurrentChosenQuestions(); // Update localStorage after clearing
+            saveCurrentChosenQuestions();
             
-            // If no chosen questions remain, display the placeholder
             const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
             if (remainingQuestionDivs.length === 0) {
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
             }
             updateClearButtonText();
-            confirmationModal.classList.remove('show'); // Hide modal
+            confirmationModal.classList.remove('show');
         });
 
         confirmClearNo.addEventListener('click', function() {
-            confirmationModal.classList.remove('show'); // Hide modal
+            confirmationModal.classList.remove('show');
         });
-        // --- END MODIFIED ---
 
-        // Event listener for the "Leave Page" button
         backToTopicsButton.addEventListener('click', () => {
-            window.location.href = '../index.html'; // Navigate to the main index.html page
+            window.location.href = '../index.html'; // Path back to index.html
         });
 
         window.addEventListener('scroll', () => {
@@ -621,18 +605,16 @@
             });
         });
 
-        // Event listeners for empty search confirmation modal
         confirmEmptySearchYes.addEventListener('click', function() {
             emptySearchModal.classList.remove('show');
-            executeSearch(""); // Proceed with empty search
+            executeSearch("");
         });
 
         confirmEmptySearchNo.addEventListener('click', function() {
             emptySearchModal.classList.remove('show');
         });
 
-        // Initial calls
-        fetchQuestions(); // Fetch and load topic questions
+        fetchQuestions();
         
         randomizeButton.addEventListener('click', function(event) {
             event.preventDefault();

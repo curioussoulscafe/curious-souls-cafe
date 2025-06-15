@@ -34,21 +34,21 @@ Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com
 
 Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
 
-- **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/authenticity.html)**: Align your actions with your values and embrace your true self.
-- **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
-- **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/icebreaker.html)**: Spark lighthearted, meaningful, and inclusive conversations.
-- **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
-- **[Write-Your-Own Questions](https://curioussoulscafe.github.io/curious-souls-cafe/write-your-own-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
-- **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
-- **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.  
+- **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/pages/authenticity.html)**: Align your actions with your values and embrace your true self.
+- **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
+- **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and inclusive conversations.
+- **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
+- **[Write-Your-Own Questions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/write-your-own-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
+- **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
+- **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.  
 
-💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/write-your-own-questions.html) from our global events.
+💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/write-your-own-questions.html) from our global events.
 
 Let these decks inspire your journey of exploration, connection, and growth!
 
 ## ✨ What You Can Do with the Web App
 
-* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/icebreaker.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/love-relationships.html). Just click (or tap) on a topic button to dive in!
+* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html). Just click (or tap) on a topic button to dive in!
 
 * **Get Random Questions:** Once you're on a topic page, tell the web app how many questions you'd like, and it will instantly give you new ones to ponder.
 
@@ -74,7 +74,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
 3. **Quick Scroll to Top:** The sticky **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
 
-4. **Direct Topic Page Links**: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Icebreaker" topic, you would use: `<URL>/icebreaker.html` like [this](https://curioussoulscafe.github.io/curious-souls-cafe/icebreaker.html).
+4. **Direct Topic Page Links**: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Icebreaker" topic, you would use: `<URL>/pages/icebreaker.html` like [this](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html).
 
 5. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our facilitators) which requires them to randomly choose a question and answer it:
 
@@ -82,7 +82,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * Then, have the participant tap **"Generate Questions!"** so that only one random question is displayed.
 
-6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/dice-roll.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
+6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice-roll.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
 
 7. **Advanced Search & Clear:**
 
@@ -140,7 +140,7 @@ To enable and disable the "Live Discussion" button for an event:
 
    * **Place the `live-discussion.txt` file** (containing the specific event's questions) inside the `questions` folder in the GitHub repository.
 
-   * **Uncomment lines** related to "Live Discussion" in `index.html`.
+   * **Uncomment or unhide** elements related to "Live Discussion" in `index.html`.
 
    * **Commit and push** these changes to the GitHub repository. (The changes should then be automatically deployed to GitHub Pages within a minute.)
 
@@ -150,7 +150,7 @@ To enable and disable the "Live Discussion" button for an event:
 
    * **Remove the `live-discussion.txt` file** from the `questions` folder in the GitHub repository.
 
-   * **Re-comment lines** related to "Live Discussion" in `index.html`.
+   * **Re-comment or hide** elements related to "Live Discussion" in `index.html`.
 
    * **Commit and push** these changes to the GitHub repository.
 

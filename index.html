@@ -6,6 +6,7 @@
     <title>Curious Souls Café</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         body {
@@ -243,6 +244,7 @@
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
         <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
 
+        <!-- Quote of the Day Section -->
         <div id="quote-of-the-day-section">
             <p id="quote-display">Loading quote...</p>
             <p id="quote-author"></p>
@@ -250,6 +252,7 @@
         
         <h2 class="text-xl font-semibold text-gray-700 text-center mb-6">Choose a Topic:</h2>
 
+        <!-- Live Discussion button container - hidden by default, shown dynamically -->
         <div id="live-discussion-button-container" class="mb-4 hidden">
             <button id="live-discussion-button" class="live-discussion-style">
                 Live Discussion
@@ -267,6 +270,7 @@
             Submit a Question
         </button>
 
+        <!-- Button to Roll the Dice Page -->
         <button id="roll-dice-page-button" class="mt-4" onclick="location.href='pages/dice-roll.html'">
             Roll the Dice
         </button>
@@ -284,6 +288,7 @@
                 <a href="https://curioussoulscafe.github.io/curious-souls-cafe/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">curioussoulscafe.github.io/curious-souls-cafe</a>
             </p>
 
+            <!-- Social Media Icons in a single row -->
             <div class="social-icons flex justify-center w-full space-x-4 mt-4 mb-4">
                 <a href="https://x.com/curioussoulcafe" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X">
                     <i class="fa-brands fa-x-twitter"></i>
@@ -298,7 +303,8 @@
                     <i class="fa-solid fa-envelope"></i>
                 </a>
                 <a href="https://curioussoulscafe.substack.com" target="_blank" rel="noopener noreferrer" aria-label="Read us on Substack">
-                    <i class="fa-solid fa-book-open"></i> </a>
+                    <i class="fa-solid fa-book-open"></i> <!-- Using book-open for Substack -->
+                </a>
                 <a href="https://medium.com/@curious.souls.cafe" target="_blank" rel="noopener noreferrer" aria-label="Read us on Medium">
                     <i class="fa-brands fa-medium-m"></i>
                 </a>
@@ -307,7 +313,7 @@
                 </a>
             </div>
 
-            <a href="https://github.com/curioussoulscafe/curious-souls-cafe/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="info-link">
+            <a href="README.md" target="_blank" rel="noopener noreferrer" class="info-link">
                 <i class="fas fa-info-circle"></i>About this
             </a>
         </div>
@@ -333,8 +339,8 @@
         const quoteDisplay = document.getElementById('quote-display');
         const quoteAuthor = document.getElementById('quote-author');
 
-        // Updated path for quotes.txt to the new 'data' folder
-        const quotesTxtUrl = 'https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/data/quotes.txt';
+        // Updated path for quotes.txt to the new 'data' folder (relative)
+        const quotesTxtUrl = 'data/quotes.txt';
 
         // Variables for the Live Discussion button
         const liveDiscussionButtonContainer = document.getElementById('live-discussion-button-container');
@@ -346,58 +352,58 @@
         const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
 
         // --- Hardcoded Topic Configurations with updated htmlFileName paths ---
-        // The txtUrl for question files remains in the 'questions/' folder as requested.
+        // The txtUrl for question files now uses relative paths within the deployed environment.
         const TOPIC_CONFIGS = [
             // "Live Discussion" should only be enabled as needed
             // {
             //    name: "Live Discussion",
             //    htmlFileName: "pages/live-discussion.html",
-            //    txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/live-discussion.txt",
+            //    txtUrl: "questions/live-discussion.txt", // Relative path
             //    cache: false // Live discussion should generally not be cached
             // },
             {
                 name: "Authenticity",
                 htmlFileName: "pages/authenticity.html",
-                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/authenticity.txt",
-                cache: true // Set to true if you want to cache this topic
+                txtUrl: "questions/authenticity.txt", // Relative path
+                cache: true 
             },
             {
                 name: "Icebreaker",
                 htmlFileName: "pages/icebreaker.html",
-                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/icebreaker.txt",
-                cache: true // Set to true if you want to cache this topic
+                txtUrl: "questions/icebreaker.txt", // Relative path
+                cache: true 
             },
             {
                 name: "Transitions",
                 htmlFileName: "pages/transitions.html", // Path to HTML subpage
-                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/transitions.txt", // Hardcoded URL for question file
+                txtUrl: "questions/transitions.txt", // Relative path for question file
                 cache: true 
             },
             {
                 name: "Love Relationships",
                 htmlFileName: "pages/love-relationships.html",
-                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/love-relationships.txt",
+                txtUrl: "questions/love-relationships.txt", // Relative path
                 cache: true
             },
             {
                 name: "Happiness",
                 htmlFileName: "pages/happiness.html",
-                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/happiness.txt",
+                txtUrl: "questions/happiness.txt", // Relative path
                 cache: false 
             },
             {
                 name: "The Mind Speaks",
                 htmlFileName: "pages/the-mind-speaks.html",
-                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/the-mind-speaks.txt",
+                txtUrl: "questions/the-mind-speaks.txt", // Relative path
                 cache: false 
             },
             {
                 name: "Write-Your-Own Questions",
                 htmlFileName: "pages/write-your-own-questions.html",
-                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/write-your-own-questions.txt",
+                txtUrl: "questions/write-your-own-questions.txt", // Relative path
                 cache: false 
             }
-            // Add more topics here as needed
+            // Add more topics here as needed, ensuring txtUrl uses kebab-case filenames and relative paths
         ];
 
         /**
@@ -420,7 +426,8 @@
                 }
 
                 try {
-                    const localStorageKey = `csc_topic_${topicConfig.name.replace(/ /g, '_').toLowerCase()}`;
+                    // Use topicConfig.name for the localStorage key to remain consistent with previous caching
+                    const localStorageKey = `csc_topic_${topicConfig.name.replace(/ /g, '_').toLowerCase()}`; 
                     let content = null;
 
                     if (topicConfig.cache) {
@@ -429,12 +436,9 @@
 
                     if (!content) {
                         // If not cached or not meant to be cached, fetch from raw URL
-                        const response = await fetch(topicConfig.txtUrl);
+                        const response = await fetch(topicConfig.txtUrl); // Use relative path
                         if (!response.ok) {
                             console.warn(`Could not fetch content for ${topicConfig.name} from ${topicConfig.txtUrl}: ${response.statusText}`);
-                            // If fetching fails for a non-cached topic, it's not critical for index.html functionality
-                            // but we still want to create the button if the HTML file exists.
-                            // However, if the text file itself is missing, the subpage will show an error.
                             continue; // Skip this topic if its TXT content cannot be fetched
                         }
                         content = await response.text();
@@ -490,7 +494,7 @@
          */
         async function fetchAndDisplayQuoteOfDay() {
             try {
-                const response = await fetch(quotesTxtUrl);
+                const response = await fetch(quotesTxtUrl); // Use relative path
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
