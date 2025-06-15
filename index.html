@@ -6,7 +6,6 @@
     <title>Curious Souls Café</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         body {
@@ -244,7 +243,6 @@
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
         <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
 
-        <!-- Quote of the Day Section -->
         <div id="quote-of-the-day-section">
             <p id="quote-display">Loading quote...</p>
             <p id="quote-author"></p>
@@ -252,7 +250,6 @@
         
         <h2 class="text-xl font-semibold text-gray-700 text-center mb-6">Choose a Topic:</h2>
 
-        <!-- Live Discussion button container - hidden by default, shown dynamically -->
         <div id="live-discussion-button-container" class="mb-4 hidden">
             <button id="live-discussion-button" class="live-discussion-style">
                 Live Discussion
@@ -270,14 +267,13 @@
             Submit a Question
         </button>
 
-        <!-- Button to Roll the Dice Page -->
         <button id="roll-dice-page-button" class="mt-4" onclick="location.href='dice-roll.html'">
             Roll the Dice
         </button>
 
         <div class="mt-8 pt-4 border-t border-gray-300 text-center">
             <h3 class="text-xl font-semibold text-purple-600 mb-4">Share with friends:</h3>
-            <img src="https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/qr-code.png" 
+            <img src="https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1" 
                     alt="QR Code to launch app" 
                     class="w-48 h-48 mx-auto rounded-lg shadow-md border border-gray-200 mb-4"
                     onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Missing';"
@@ -288,7 +284,6 @@
                 <a href="https://curioussoulscafe.github.io/curious-souls-cafe/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">curioussoulscafe.github.io/curious-souls-cafe</a>
             </p>
 
-            <!-- Social Media Icons in a single row -->
             <div class="social-icons flex justify-center w-full space-x-4 mt-4 mb-4">
                 <a href="https://x.com/curioussoulcafe" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X">
                     <i class="fa-brands fa-x-twitter"></i>
@@ -303,8 +298,7 @@
                     <i class="fa-solid fa-envelope"></i>
                 </a>
                 <a href="https://curioussoulscafe.substack.com" target="_blank" rel="noopener noreferrer" aria-label="Read us on Substack">
-                    <i class="fa-solid fa-book-open"></i> <!-- Using book-open for Substack -->
-                </a>
+                    <i class="fa-solid fa-book-open"></i> </a>
                 <a href="https://medium.com/@curious.souls.cafe" target="_blank" rel="noopener noreferrer" aria-label="Read us on Medium">
                     <i class="fa-brands fa-medium-m"></i>
                 </a>
@@ -313,7 +307,7 @@
                 </a>
             </div>
 
-            <a href="https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/README.md" target="_blank" rel="noopener noreferrer" class="info-link">
+            <a href="https://github.com/curioussoulscafe/curious-souls-cafe/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="info-link">
                 <i class="fas fa-info-circle"></i>About this
             </a>
         </div>
@@ -339,8 +333,6 @@
         const quoteDisplay = document.getElementById('quote-display');
         const quoteAuthor = document.getElementById('quote-author');
 
-        // GitHub API endpoint for the 'questions' subfolder
-        const githubApiUrl = 'https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions';
         const quotesTxtUrl = 'https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/quotes.txt';
 
         // Variables for the Live Discussion button
@@ -352,117 +344,141 @@
         const suggestionModal = document.getElementById('suggestion-modal');
         const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
 
-        // --- List of topics NOT to cache ---
-        // Add the display names of topics whose .txt files should always be fetched fresh
-        // Make sure these names match the topic names exactly (case-sensitive)
-        // "Live Discussion" is intentionally not in DO_NOT_CACHE_TOPICS here; its behavior is determined by its existence.
-        const DO_NOT_CACHE_TOPICS = ["Happiness", "The Mind Speaks", "Write Your Own Questions"];
-
+        // --- Hardcoded Topic Configurations ---
+        const TOPIC_CONFIGS = [
+            // "Live Discussion" should only be enabled as needed
+            // {
+            //    name: "Live Discussion",
+            //    htmlFileName: "live-discussion.html",
+            //    txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Live Discussion.txt",
+            //    cache: false // Live discussion should generally not be cached
+            // },
+            {
+                name: "Authenticity",
+                htmlFileName: "authenticity.html",
+                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Authenticity.txt",
+                cache: true // Set to true if you want to cache this topic
+            },
+            {
+                name: "Icebreaker",
+                htmlFileName: "icebreaker.html",
+                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Icebreaker.txt",
+                cache: true // Set to true if you want to cache this topic
+            },
+            {
+                name: "Transitions",
+                htmlFileName: "transitions.html",
+                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Transitions.txt",
+                cache: true // Set to true if you want to cache this topic
+            },
+            {
+                name: "Love Relationships",
+                htmlFileName: "love-relationships.html",
+                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Love Relationships.txt",
+                cache: true
+            },
+            {
+                name: "Happiness",
+                htmlFileName: "happiness.html",
+                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Happiness.txt",
+                cache: true // Example: Not caching Happiness
+            },
+            {
+                name: "The Mind Speaks",
+                htmlFileName: "the-mind-speaks.html",
+                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/The Mind Speaks.txt",
+                cache: true // Example: Not caching The Mind Speaks
+            },
+            {
+                name: "Write Your Own Questions",
+                htmlFileName: "write-your-own-questions.html",
+                txtUrl: "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Write Your Own Questions.txt",
+                cache: false // Example: Not caching Write Your Own Questions
+            }
+            // Add more topics here as needed
+        ];
 
         /**
-         * Fetches the list of question files from the GitHub repository,
-         * then fetches the content of each file and stores it in localStorage (selectively).
-         * It also checks for the existence of "Live Discussion.txt" and handles caching.
+         * Fetches topic content based on TOPIC_CONFIGS and stores in localStorage (selectively).
+         * Creates buttons for each topic.
          */
         async function fetchAndCacheTopics() {
-            try {
-                // Step 1: Fetch list of files
-                const response = await fetch(githubApiUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+            topicsListDiv.innerHTML = '<div class="loading-spinner"></div><p class="text-gray-500 text-center">Loading topics and questions...</p>';
+            errorMessageDiv.classList.add('hidden'); // Hide error message initially
+
+            let successfulTopics = [];
+            let liveDiscussionFound = false;
+
+            for (const topicConfig of TOPIC_CONFIGS) {
+                if (topicConfig.name === "Live Discussion") {
+                    liveDiscussionFound = true;
+                    // Live Discussion button will be handled separately based on this flag
+                    continue; // Skip creating a regular topic button for Live Discussion here
                 }
-                const data = await response.json();
 
-                // Filter for .txt files and prepare for content fetching
-                const topicFiles = data.filter(item => item.type === 'file' && item.name.endsWith('.txt'));
+                try {
+                    const localStorageKey = `csc_topic_${topicConfig.name.replace(/ /g, '_').toLowerCase()}`;
+                    let content = null;
 
-                let liveDiscussionFileFound = false;
-
-                // Step 2: Process files for Live Discussion and other topics
-                const processFilesPromises = topicFiles.map(async (file) => {
-                    const topicName = file.name.replace('.txt', ''); // Get topic name without .txt
-                    
-                    // Check for "Live Discussion.txt" specifically
-                    if (topicName === "Live Discussion") {
-                        liveDiscussionFileFound = true; // Mark that the file exists
-                        // No need to fetch content here, live-discussion.html will do it
-                        console.log(`Live Discussion.txt found. Button will be shown.`);
-                        return null; // Don't create a regular topic button for Live Discussion
+                    if (topicConfig.cache) {
+                        content = localStorage.getItem(localStorageKey);
                     }
 
-                    // For other topics, determine if it should be cached
-                    const rawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${encodeURIComponent(file.name)}`;
-                    if (DO_NOT_CACHE_TOPICS.includes(topicName)) {
-                        console.log(`Skipping cache for '${topicName}' (marked as non-caching).`);
-                        // This fetch is just to validate existence and populate the topic button.
-                        // The actual topic page will handle its own non-cached fetch.
-                        const contentResponse = await fetch(rawUrl);
-                        if (!contentResponse.ok) {
-                            console.warn(`Could not fetch content for non-cached topic ${file.name}: ${contentResponse.statusText}`);
-                            return null; // Return null for failed fetches
+                    if (!content) {
+                        // If not cached or not meant to be cached, fetch from raw URL
+                        const response = await fetch(topicConfig.txtUrl);
+                        if (!response.ok) {
+                            console.warn(`Could not fetch content for ${topicConfig.name} from ${topicConfig.txtUrl}: ${response.statusText}`);
+                            // If fetching fails for a non-cached topic, it's not critical for index.html functionality
+                            // but we still want to create the button if the HTML file exists.
+                            // However, if the text file itself is missing, the subpage will show an error.
+                            continue; // Skip this topic if its TXT content cannot be fetched
                         }
-                        // For HTML file naming, convert "Write-Your-Own Questions" -> "write-your-own-questions"
-                        // Handle specific overrides for HTML file names here if needed.
-                        let htmlFileName = topicName.toLowerCase().replace(/ /g, '-');
-                        // Specific override for "Write Your Own Questions" to "write-your-own-questions.html"
-                        if (topicName === "Write Your Own Questions") {
-                           htmlFileName = "write-your-own-questions";
+                        content = await response.text();
+                        if (topicConfig.cache) {
+                            localStorage.setItem(localStorageKey, content);
+                            console.log(`Cached content for '${topicConfig.name}'.`);
+                        } else {
+                            console.log(`Fetched content for '${topicConfig.name}' (not cached).`);
                         }
-                        return { name: topicName, htmlFileName: `${htmlFileName}.html` };
                     } else {
-                        // This topic should be cached
-                        const contentResponse = await fetch(rawUrl);
-                        if (!contentResponse.ok) {
-                            console.warn(`Could not fetch content for ${file.name}: ${contentResponse.statusText}`);
-                            return null; // Return null for failed fetches
-                        }
-                        const content = await contentResponse.text();
-                        // Store content in localStorage with a clear key
-                        localStorage.setItem(`csc_topic_${topicName.replace(/ /g, '_').toLowerCase()}`, content);
-                        console.log(`Cached content for '${topicName}'.`);
-                        const htmlFileName = topicName.toLowerCase().replace(/ /g, '-');
-                        return { name: topicName, htmlFileName: `${htmlFileName}.html` };
+                        console.log(`Loaded content for '${topicConfig.name}' from localStorage.`);
                     }
+                    successfulTopics.push(topicConfig); // Add to successful topics to create button
+                } catch (error) {
+                    console.error(`Error processing topic '${topicConfig.name}':`, error);
+                    // Continue to next topic even if one fails
+                }
+            }
+
+            topicsListDiv.innerHTML = ''; // Clear loading message
+
+            // Display Live Discussion button if configured
+            if (liveDiscussionFound) {
+                liveDiscussionButtonContainer.classList.remove('hidden');
+                liveDiscussionButton.addEventListener('click', () => {
+                    window.location.href = 'live-discussion.html';
                 });
+            } else {
+                liveDiscussionButtonContainer.classList.add('hidden'); // Ensure it's hidden if not configured
+            }
 
-                const loadedTopics = await Promise.all(processFilesPromises);
-                // Filter out nulls from live discussion or failed fetches to get only regular topics
-                const successfulTopics = loadedTopics.filter(topic => topic !== null); 
-
-                // Clear loading message
-                topicsListDiv.innerHTML = '';
-
-                // Display Live Discussion button if file found
-                if (liveDiscussionFileFound) {
-                    liveDiscussionButtonContainer.classList.remove('hidden');
-                    liveDiscussionButton.addEventListener('click', () => {
-                        window.location.href = 'live-discussion.html';
+            // Create buttons for successfully processed regular topics
+            if (successfulTopics.length === 0 && !liveDiscussionFound) {
+                topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics could be loaded. Please check the topic configurations.</p>';
+                errorMessageDiv.classList.remove('hidden');
+            } else {
+                // Sort regular topics alphabetically
+                successfulTopics.sort((a, b) => a.name.localeCompare(b.name));
+                successfulTopics.forEach(topic => {
+                    const button = document.createElement('button');
+                    button.classList.add('topic-button');
+                    button.textContent = topic.name;
+                    button.addEventListener('click', () => {
+                        window.location.href = topic.htmlFileName;
                     });
-                } else {
-                    liveDiscussionButtonContainer.classList.add('hidden'); // Ensure it's hidden if file not found
-                }
-
-                // Step 3: Create buttons for successfully loaded regular topics
-                if (successfulTopics.length === 0 && !liveDiscussionFileFound) { 
-                    topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics could be loaded. Please check the source files.</p>';
-                } else {
-                    // Sort regular topics alphabetically
-                    successfulTopics.sort((a, b) => a.name.localeCompare(b.name));
-                    successfulTopics.forEach(topic => {
-                        const button = document.createElement('button');
-                        button.classList.add('topic-button');
-                        button.textContent = topic.name;
-                        button.addEventListener('click', () => {
-                            window.location.href = topic.htmlFileName;
-                        });
-                        topicsListDiv.appendChild(button);
-                    });
-                }
-
-            } catch (error) {
-                console.error("Could not load or cache topics:", error);
-                topicsListDiv.innerHTML = ''; // Clear loading message
-                errorMessageDiv.classList.remove('hidden'); // Show error message
+                    topicsListDiv.appendChild(button);
+                });
             }
         }
 
@@ -498,7 +514,6 @@
                 quoteAuthor.textContent = "";
             }
         }
-
 
         // Event listeners for the new suggestion modal
         suggestQuestionButton.addEventListener('click', function() {

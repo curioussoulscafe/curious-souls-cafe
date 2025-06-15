@@ -112,7 +112,7 @@ If you're an event facilitator looking to add new question sets to the main page
 
 2.  **Duplicate an existing HTML subpage:** Choose an existing topic's HTML file (e.g., `transitions.html`) and duplicate it. Rename the duplicated file to match your new topic (e.g., `mynewtopic.html`).
 
-Since the page title, `questions.txt` link, displayed topic name, and main page link are all handled dynamically and automatically, you don't need to manually update the new HTML file or `index.html`.
+Open the file in a text editor and modify the page title, `questions.txt` link, displayed topic name, and main page link to reflect the new topic. (Tip: If `transitions.html` was copied, search for "Transitions" and replace accordingly.) You will also need to update `index.html` similarly.
 
 By following the these steps, you can seamlessly integrate new question sets into the Curious Souls Café web app for your events!
 
@@ -128,6 +128,8 @@ To enable and disable the "Live Discussion" button for an event:
 
    * **Place the `Live Discussion.txt` file** (containing the specific event's questions) inside the `questions` folder in the GitHub repository.
 
+   * **Uncomment lines** related to "Live Discussion" in `index.html`.
+
    * **Commit and push** these changes to the GitHub repository. (The changes should then be automatically deployed to GitHub Pages within a minute.)
 
    * The "Live Discussion" button will now be visible on the main page for participants. (Note: For those who already have the page loaded, they may need to refresh their mobile browser.)
@@ -135,6 +137,8 @@ To enable and disable the "Live Discussion" button for an event:
 2. **To Disable the "Live Discussion" Button (after the event):**
 
    * **Remove the `Live Discussion.txt` file** from the `questions` folder in the GitHub repository.
+
+   * **Re-comment lines** related to "Live Discussion" in `index.html`.
 
    * **Commit and push** these changes to the GitHub repository.
 

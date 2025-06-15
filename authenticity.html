@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="app-title">Curious Souls Café</title> 
+    <title id="app-title">Curious Souls Café - Authenticity</title> 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         :root {
             --highlight-color: #00f9ff; /* Default or initial color, will be overridden by JS */
@@ -199,14 +197,13 @@
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform hover:scale-105">
         <div class="flex justify-center mb-6">
-            <a href="index.html"> <!-- Added anchor tag around the image -->
-                <img src="https://avatars.githubusercontent.com/u/194744307?v=4" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            <a href="index.html"> <img src="https://avatars.githubusercontent.com/u/194744307?v=4" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
             </a>
         </div>
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
         <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
         
-        <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-4">Topic: Loading...</h2> 
+        <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-4">Topic: Authenticity</h2> 
         <div class="mb-4">
             <label for="item-count" class="block text-gray-700 text-sm font-bold mb-2">No. of questions to pick: <span id="total-questions" class="text-gray-500 text-sm"></span></label>
             <input type="number" id="item-count" value="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -241,7 +238,7 @@
         </div>
 
         <button id="back-to-topics" title="Leave Page">
-            <i class="fas fa-arrow-left"></i> Leave Page
+            Leave Page
         </button>
     </div>
 
@@ -249,7 +246,6 @@
         &#9650; Top
     </button>
 
-    <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
@@ -260,7 +256,6 @@
         </div>
     </div>
 
-    <!-- New Confirmation Modal for empty search -->
     <div id="empty-search-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
@@ -275,40 +270,10 @@
     </div>
 
     <script>
-        // Dynamically determine the topic and GitHub URL based on the current HTML file's name
-        const currentPagePath = window.location.pathname;
-        const currentPageFileName = currentPagePath.substring(currentPagePath.lastIndexOf('/') + 1);
-        
-        // Extract the base name from the HTML file (e.g., "transitions", "love-relationship", "write-your-own-questions")
-        const htmlFileBaseName = currentPageFileName.split('.')[0]; 
-
-        // Define a mapping for specific HTML file base names to their corresponding *exact* .txt file names on GitHub
-        // This is for files that don't follow the standard Title Case with spaces convention after HTML base name conversion.
-        const githubFileNameOverrides = {
-            "write-your-own-questions": "Write-Your-Own Questions.txt", // HTML: write-your-own-questions.html -> GitHub: Write-Your-Own Questions.txt
-            // Add other overrides here if needed in the future, e.g.:
-            // "my-custom-topic": "My-Custom-Topic.txt"
-        };
-
-        let textFileNameForGithub;
-        let displayTopicName;
-
-        if (githubFileNameOverrides[htmlFileBaseName]) {
-            textFileNameForGithub = githubFileNameOverrides[htmlFileBaseName];
-            // For display, we still want a nice name. Derive it from the override filename.
-            // This will convert "Write-Your-Own Questions.txt" -> "Write Your Own Questions" for display
-            displayTopicName = textFileNameForGithub.replace('.txt', '').replace(/-/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-        } else {
-            // Original logic for displayTopicName (converts kebab-case/snake_case to Title Case with Spaces)
-            displayTopicName = htmlFileBaseName.replace(/-/g, ' ').replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-            // Original logic for textFileNameForGithub (uses the display-friendly name + .txt)
-            textFileNameForGithub = `${displayTopicName}.txt`;
-        }
-        
-        // Construct the GitHub raw content URL using the determined text file name, ensuring proper URL encoding
-        const githubRawUrl = `https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/${encodeURIComponent(textFileNameForGithub)}`;
-
-        console.log("Attempting to fetch from URL:", githubRawUrl); // Added for debugging
+        // --- Hardcoded Topic Configuration for Authenticity ---
+        const displayTopicName = "Authenticity";
+        const githubRawUrl = "https://raw.githubusercontent.com/curioussoulscafe/curious-souls-cafe/main/questions/Authenticity.txt";
+        // End Hardcoded Configuration
 
         let itemList = []; // This will be populated dynamically
         let lastSearchTerm = "";
@@ -324,7 +289,7 @@
         const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
         const clearChosenButton = document.getElementById('clear-chosen-button');
         const backToTopButton = document.getElementById('back-to-top');
-        const backToTopicsButton = document.getElementById('back-to-topics'); // Get the new button
+        const backToTopicsButton = document.getElementById('back-to-topics'); 
         const appTitleElement = document.getElementById('app-title');
         const topicTitleElement = document.getElementById('topic-title');
 
@@ -336,8 +301,7 @@
         // Modal elements for empty search confirmation
         const emptySearchModal = document.getElementById('empty-search-modal');
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
-        const confirmEmptySearchNo = document = document.getElementById('confirm-empty-search-no');
-
+        const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
 
         // Define the list of highlight colors
         const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
@@ -383,13 +347,15 @@
             const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
             const cachedContent = localStorage.getItem(localStorageKey);
 
+            // Set titles immediately
+            appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+            topicTitleElement.textContent = `Topic: ${displayTopicName}`;
+
             if (cachedContent) {
                 // Load from localStorage if available
                 console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
                 itemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
                 availableRandomItems = [...itemList];
-                appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
-                topicTitleElement.textContent = `Topic: ${displayTopicName}`;
                 totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
                 displayRandomItems();
                 loadSavedQuestions(); // Load saved questions after topic questions are ready
@@ -397,10 +363,6 @@
                 // Fallback to fetching from GitHub if not in localStorage
                 console.log(`Loading questions for topic "${displayTopicName}" from GitHub (not found in localStorage).`);
                 try {
-                    // Update HTML elements with the dynamic topic immediately before fetching
-                    appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
-                    topicTitleElement.textContent = `Topic: ${displayTopicName}`;
-
                     const response = await fetch(githubRawUrl);
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -409,8 +371,10 @@
                     itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
                     availableRandomItems = [...itemList]; // Initialize available items for random selection
 
-                    // Optionally, save to localStorage for future visits
-                    localStorage.setItem(localStorageKey, text);
+                    // Optionally, save to localStorage for future visits (only if caching is desired for this specific topic)
+                    // You might want to hardcode a 'cache: true/false' flag in this file if you want to control it per subpage
+                    // For now, assuming if it's fetched, it's also cached for efficiency unless explicitly prevented.
+                    localStorage.setItem(localStorageKey, text); 
 
                     totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
                     displayRandomItems(); // Display initial random items once loaded
@@ -669,7 +633,6 @@
 
         // Initial calls
         fetchQuestions(); // Fetch and load topic questions
-        // loadSavedQuestions() is now called within fetchQuestions after itemList is ready
         
         randomizeButton.addEventListener('click', function(event) {
             event.preventDefault();
