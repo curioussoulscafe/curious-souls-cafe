@@ -138,7 +138,7 @@ To enable and disable the "Live Discussion" button for an event:
 
 1. **To Enable the "Live Discussion" Button:**
 
-   * **Place the `Live Discussion.txt` file** (containing the specific event's questions) inside the `questions` folder in the GitHub repository.
+   * **Place the `live-discussion.txt` file** (containing the specific event's questions) inside the `questions` folder in the GitHub repository.
 
    * **Uncomment lines** related to "Live Discussion" in `index.html`.
 
@@ -148,7 +148,7 @@ To enable and disable the "Live Discussion" button for an event:
 
 2. **To Disable the "Live Discussion" Button (after the event):**
 
-   * **Remove the `Live Discussion.txt` file** from the `questions` folder in the GitHub repository.
+   * **Remove the `live-discussion.txt` file** from the `questions` folder in the GitHub repository.
 
    * **Re-comment lines** related to "Live Discussion" in `index.html`.
 
