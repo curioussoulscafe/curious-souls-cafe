@@ -74,7 +74,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
 3. **Quick Scroll to Top:** The sticky **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
 
-4. **Direct Topic Page Links**: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Transitions" topic, you would use: `<URL>/transitions.html` like [this](https://curioussoulscafe.github.io/curious-souls-cafe/transitions.html).
+4. **Direct Topic Page Links**: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Icebreaker" topic, you would use: `<URL>/icebreaker.html` like [this](https://curioussoulscafe.github.io/curious-souls-cafe/icebreaker.html).
 
 5. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) colors used by our facilitators) which requires them to randomly choose a question and answer it:
 
@@ -92,15 +92,19 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * In case the screen becomes too crowded after a search, simply tap the sticky **"Top" button** and then click the **"Search" button** again (or "Clear Search") to clear the search results and tidy up the display.
 
-## 📂 For the Tech-Savvy: How the Source Code is Structured
+## 📂 How Files Are Organized
 
-The Curious Souls Café web app keeps its questions organized in a simple way:
+The Curious Souls Café web app keeps its files organized in a clear and maintainable way:
 
-* The main page (`index.html`) is where you choose your topic.
+* The main page (`index.html`) is located in the **root folder**.
 
-* Each topic (like "Transitions" or "Love Relationships") has its own separate page (e.g., `transitions.html`).
+* All individual topic pages (like `icebreaker.html`, `love-relationships.html`, etc.) are located in the **`pages/` folder**.
 
-* All the questions for each topic are stored in simple text files (`.txt`) inside the `questions/` folder. For example, all "Transitions" questions are in `questions/Transitions.txt`.
+* All the questions for each topic are stored in simple text files (`.txt`) inside the **`questions/` folder**. For example, all "Icebreaker" questions are in `questions/Icebreaker.txt`.
+
+* Other data files, such as `quotes.txt`, are located in the **`data/` folder**.
+
+* Image files, including `qr-code.png` and `csc_logo.jpg`, are stored in the **`images/` folder**.
 
 ## 💪 For Event Facilitators
 
@@ -110,9 +114,17 @@ If you're an event facilitator looking to add new question sets to the main page
 
 1.  **Add a new `questions.txt` file:** Create a new text file inside the `questions/` folder. Name it clearly, reflecting your new topic (e.g., `questions/MyNewTopic.txt`). Populate this file with your questions, one per line.
 
-2.  **Duplicate an existing HTML subpage:** Choose an existing topic's HTML file (e.g., `transitions.html`) and duplicate it. Rename the duplicated file to match your new topic (e.g., `mynewtopic.html`).
+2.  **Duplicate an existing HTML subpage:** Choose an existing topic's HTML file (e.g., `icebreaker.html`) and duplicate it. Rename the duplicated file to match your new topic (e.g., `mynewtopic.html`).
 
-Open the file in a text editor and modify the page title, `questions.txt` link, displayed topic name, and main page link to reflect the new topic. (Tip: If `transitions.html` was copied, search for "Transitions" and replace accordingly.) You will also need to update `index.html` similarly.
+Open the file in a text editor and modify the page title, `questions.txt` link, displayed topic name, and main page link to reflect the new topic. (Tip: If `icebreaker.html` was copied, search for "Icebreaker" and replace each word accordingly.) You will also need to update `index.html` similarly.
+
+3. **Add to `index.html` Configuration:**
+
+   * Edit `index.html` file (located in the root of the project).
+
+   * Find the `TOPIC_CONFIGS` array in the `<script>` section.
+
+   * Add a new entry for your topic, ensuring the `name`, `htmlFileName` (pointing to your new file in `pages/`), and `txtUrl` (pointing to your `.txt` file in `questions/`) are correct. You can also set `cache: true` for faster loading after the first visit.
 
 By following the these steps, you can seamlessly integrate new question sets into the Curious Souls Café web app for your events!
 
