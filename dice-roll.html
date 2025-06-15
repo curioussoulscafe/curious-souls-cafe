@@ -230,6 +230,74 @@
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* Above all other content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+        }
+
+        .modal-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* Full rounded */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .modal-button.confirm {
+            background-color: #c53030; /* Red-600 */
+            color: white;
+        }
+        .modal-button.confirm:hover {
+            background-color: #9b2c2c; /* Red-700 */
+        }
+
+        .modal-button.cancel {
+            background-color: #e2e8f0; /* Gray-200 */
+            color: #4a5568; /* Gray-700 */
+        }
+        .modal-button.cancel:hover {
+            background-color: #cbd5e0; /* Gray-300 */
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -299,6 +367,17 @@
         </button>
     </div>
 
+    <!-- Confirmation Modal for Restore Defaults -->
+    <div id="restore-confirm-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to restore all custom color settings to defaults?</p>
+            <div class="modal-buttons">
+                <button id="confirm-restore-yes" class="modal-button confirm">Yes</button>
+                <button id="confirm-restore-no" class="modal-button cancel">No</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const virtualDice = document.getElementById('virtual-dice').querySelector('.dice-cube');
         const diceFaces = virtualDice.querySelectorAll('.dice-face');
@@ -324,6 +403,12 @@
             { value: "#B0BEC5", label: "Grey" },  
             { value: "#CE93D8", label: "Purple" } 
         ];
+
+        // Restore Confirmation Modal elements
+        const restoreConfirmModal = document.getElementById('restore-confirm-modal');
+        const confirmRestoreYes = document.getElementById('confirm-restore-yes');
+        const confirmRestoreNo = document.getElementById('confirm-restore-no');
+
 
         /**
          * Converts a color string (hex) to an RGB object.
@@ -685,7 +770,21 @@
         // Event Listeners
         rollCustomDiceButton.addEventListener('click', rollCustomDice);
         addColorButton.addEventListener('click', () => addColorInput());
-        restoreDefaultsButton.addEventListener('click', restoreDefaultColors);
+        
+        // Event listener for Restore Defaults button (shows confirmation modal)
+        restoreDefaultsButton.addEventListener('click', () => {
+            restoreConfirmModal.classList.add('show');
+        });
+
+        // Event listeners for Restore Confirmation Modal
+        confirmRestoreYes.addEventListener('click', () => {
+            restoreDefaultColors();
+            restoreConfirmModal.classList.remove('show');
+        });
+
+        confirmRestoreNo.addEventListener('click', () => {
+            restoreConfirmModal.classList.remove('show');
+        });
     </script>    
 </body>
 </html>
