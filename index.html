@@ -342,8 +342,10 @@
         const quoteDisplay = document.getElementById('quote-display');
         const quoteAuthor = document.getElementById('quote-author');
 
-        // Updated path for quotes.txt to the new 'data' folder (relative)
+        // Path for quotes.txt (relative)
         const quotesTxtUrl = 'data/quotes.txt';
+        // LocalStorage key for quotes data
+        const quotesLocalStorageKey = 'csc_quotes_data'; 
 
         // Variables for the Live Discussion button
         const liveDiscussionButtonContainer = document.getElementById('live-discussion-button-container');
@@ -354,8 +356,7 @@
         const suggestionModal = document.getElementById('suggestion-modal');
         const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
 
-        // --- Hardcoded Topic Configurations with updated htmlFileName paths ---
-        // The txtUrl for question files now uses relative paths within the deployed environment.
+        // --- Hardcoded Topic Configurations ---
         const TOPIC_CONFIGS = [
             // "Live Discussion" should only be enabled as needed
             // {
@@ -367,46 +368,45 @@
             {
                 name: "Authenticity",
                 htmlFileName: "pages/authenticity.html",
-                txtUrl: "questions/authenticity.txt", // Relative path
+                txtUrl: "questions/authenticity.txt", // Relative path, kebab-case
                 cache: true 
             },
             {
                 name: "Icebreaker",
                 htmlFileName: "pages/icebreaker.html",
-                txtUrl: "questions/icebreaker.txt", // Relative path
+                txtUrl: "questions/icebreaker.txt", // Relative path, kebab-case
                 cache: true 
             },
             {
                 name: "Transitions",
                 htmlFileName: "pages/transitions.html", // Path to HTML subpage
-                txtUrl: "questions/transitions.txt", // Relative path for question file
+                txtUrl: "questions/transitions.txt", // Relative path for question file, kebab-case
                 cache: true 
             },
             {
                 name: "Love Relationships",
                 htmlFileName: "pages/love-relationships.html",
-                txtUrl: "questions/love-relationships.txt", // Relative path
+                txtUrl: "questions/love-relationships.txt", // Relative path, kebab-case
                 cache: true
             },
             {
                 name: "Happiness",
                 htmlFileName: "pages/happiness.html",
-                txtUrl: "questions/happiness.txt", // Relative path
-                cache: false 
+                txtUrl: "questions/happiness.txt", // Relative path, kebab-case
+                cache: true 
             },
             {
                 name: "The Mind Speaks",
                 htmlFileName: "pages/the-mind-speaks.html",
-                txtUrl: "questions/the-mind-speaks.txt", // Relative path
-                cache: false 
+                txtUrl: "questions/the-mind-speaks.txt", // Relative path, kebab-case
+                cache: true 
             },
             {
                 name: "Write-Your-Own Questions",
                 htmlFileName: "pages/write-your-own-questions.html",
-                txtUrl: "questions/write-your-own-questions.txt", // Relative path
+                txtUrl: "questions/write-your-own-questions.txt", // Relative path, kebab-case
                 cache: false 
             }
-            // Add more topics here as needed, ensuring txtUrl uses kebab-case filenames and relative paths
         ];
 
         /**
@@ -420,16 +420,19 @@
             let successfulTopics = [];
             let liveDiscussionFound = false;
 
-            for (const topicConfig of TOPIC_CONFIGS) {
-                if (topicConfig.name === "Live Discussion") {
+            // Check for Live Discussion file existence first
+            try {
+                const liveDiscussionCheckResponse = await fetch('questions/live-discussion.txt', { method: 'HEAD' });
+                if (liveDiscussionCheckResponse.ok) {
                     liveDiscussionFound = true;
-                    // Live Discussion button will be handled separately based on this flag
-                    // and will link directly to its HTML file
-                    continue; // Skip creating a regular topic button for Live Discussion here
+                    console.log('live-discussion.txt found. Live Discussion button will be shown.');
                 }
+            } catch (error) {
+                console.warn('Could not check for live-discussion.txt:', error);
+            }
 
+            for (const topicConfig of TOPIC_CONFIGS) {
                 try {
-                    // Use topicConfig.name for the localStorage key to remain consistent with previous caching
                     const localStorageKey = `csc_topic_${topicConfig.name.replace(/ /g, '_').toLowerCase()}`; 
                     let content = null;
 
@@ -438,14 +441,13 @@
                     }
 
                     if (!content) {
-                        // If not cached or not meant to be cached, fetch from raw URL
-                        const response = await fetch(topicConfig.txtUrl); // Use relative path
+                        const response = await fetch(topicConfig.txtUrl); 
                         if (!response.ok) {
                             console.warn(`Could not fetch content for ${topicConfig.name} from ${topicConfig.txtUrl}: ${response.statusText}`);
-                            continue; // Skip this topic if its TXT content cannot be fetched
+                            continue; 
                         }
                         content = await response.text();
-                        if (topicConfig.cache) {
+                        if (topicConfig.cache) { 
                             localStorage.setItem(localStorageKey, content);
                             console.log(`Cached content for '${topicConfig.name}'.`);
                         } else {
@@ -454,38 +456,35 @@
                     } else {
                         console.log(`Loaded content for '${topicConfig.name}' from localStorage.`);
                     }
-                    successfulTopics.push(topicConfig); // Add to successful topics to create button
+                    successfulTopics.push(topicConfig); 
                 } catch (error) {
                     console.error(`Error processing topic '${topicConfig.name}':`, error);
-                    // Continue to next topic even if one fails
                 }
             }
 
-            topicsListDiv.innerHTML = ''; // Clear loading message
+            topicsListDiv.innerHTML = ''; 
 
             // Display Live Discussion button if configured
             if (liveDiscussionFound) {
                 liveDiscussionButtonContainer.classList.remove('hidden');
                 liveDiscussionButton.addEventListener('click', () => {
-                    window.location.href = 'pages/live-discussion.html'; // Updated path for the HTML page
+                    window.location.href = 'pages/live-discussion.html'; 
                 });
             } else {
-                liveDiscussionButtonContainer.classList.add('hidden'); // Ensure it's hidden if not configured
+                liveDiscussionButtonContainer.classList.add('hidden'); 
             }
 
-            // Create buttons for successfully processed regular topics
             if (successfulTopics.length === 0 && !liveDiscussionFound) {
-                topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics could be loaded. Please check the topic configurations.</p>';
+                topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics could be loaded. Please check the topic configurations and file paths.</p>';
                 errorMessageDiv.classList.remove('hidden');
             } else {
-                // Sort regular topics alphabetically
                 successfulTopics.sort((a, b) => a.name.localeCompare(b.name));
                 successfulTopics.forEach(topic => {
                     const button = document.createElement('button');
                     button.classList.add('topic-button');
                     button.textContent = topic.name;
                     button.addEventListener('click', () => {
-                        window.location.href = topic.htmlFileName; // Uses the updated htmlFileName (e.g., pages/transitions.html)
+                        window.location.href = topic.htmlFileName; 
                     });
                     topicsListDiv.appendChild(button);
                 });
@@ -493,16 +492,32 @@
         }
 
         /**
-         * Fetches quotes from quotes.txt and displays a random one.
+         * Fetches quotes from quotes.txt and displays a random one, utilizing localStorage caching.
          */
         async function fetchAndDisplayQuoteOfDay() {
-            try {
-                const response = await fetch(quotesTxtUrl); // Use relative path
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+            let quotesText = localStorage.getItem(quotesLocalStorageKey);
+
+            if (!quotesText) {
+                console.log("Fetching quotes from network and caching...");
+                try {
+                    const response = await fetch(quotesTxtUrl);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    quotesText = await response.text();
+                    localStorage.setItem(quotesLocalStorageKey, quotesText); // Cache the fetched quotes
+                } catch (error) {
+                    console.error("Error fetching quotes of the day:", error);
+                    quoteDisplay.textContent = "Failed to load quote.";
+                    quoteAuthor.textContent = "";
+                    return; // Exit if fetch fails
                 }
-                const text = await response.text();
-                const quotes = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+            } else {
+                console.log("Loading quotes from localStorage cache.");
+            }
+
+            try {
+                const quotes = quotesText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
                 if (quotes.length > 0) {
                     const randomIndex = Math.floor(Math.random() * quotes.length);
@@ -518,10 +533,12 @@
                     quoteDisplay.textContent = "No quotes available.";
                     quoteAuthor.textContent = "";
                 }
-            } catch (error) {
-                console.error("Error fetching quote of the day:", error);
-                quoteDisplay.textContent = "Failed to load quote.";
+            } catch (parseError) {
+                console.error("Error parsing quotes:", parseError);
+                quoteDisplay.textContent = "Failed to parse quotes.";
                 quoteAuthor.textContent = "";
+                // Optionally, clear invalid cache if parsing fails
+                localStorage.removeItem(quotesLocalStorageKey); 
             }
         }
 
