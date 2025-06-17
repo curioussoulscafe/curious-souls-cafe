@@ -317,17 +317,17 @@
 
         <!-- Custom Dice Configuration -->
         <div id="custom-dice-config-section" class="my-4 text-center">
-            <h2 class="text-xl font-semibold text-gray-700 mb-4">Customize Sides</h2>
+            <button id="add-color-button">
+                Add Color / Side
+            </button>
+            <br><br>
 
             <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Tap the colored box (left of each hex code) to open a color picker!:</label>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Click the colored box to open a color picker:</label>
                 <div id="colors-input-container">
                     <!-- Default colors will be added here by JS -->
                 </div>
                 <p id="sides-count-message" class="text-gray-700 text-sm mb-2 text-center"></p>
-                <button id="add-color-button">
-                    Add Color / Side
-                </button>
             </div>
 
             <p id="dice-result-text" class="text-lg font-medium text-gray-800 mt-4">Configure your dice and roll!</p>
@@ -396,12 +396,12 @@
 
         // Default colors for initial load/restore
         const defaultDiceColors = [
-            { value: "#57FCFF", label: "Blue" },
-            { value: "#FFFFAD", label: "Yellow" },
-            { value: "#FFC6C6", label: "Red" },
-            { value: "#C5E1A5", label: "Green" }, 
-            { value: "#B0BEC5", label: "Grey" },  
-            { value: "#CE93D8", label: "Purple" } 
+            { value: "#57fcff", label: "Blue" },
+            { value: "#ffffad", label: "Yellow" },
+            { value: "#ffc6c6", label: "Red" },
+            { value: "#c5e1a5", label: "Green" }, 
+            { value: "#b0bec5", label: "Grey" },  
+            { value: "#ce93d8", label: "Purple" } 
         ];
 
         // Restore Confirmation Modal elements
