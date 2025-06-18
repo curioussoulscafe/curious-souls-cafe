@@ -18,7 +18,11 @@ Step into meaningful conversations with ease! Here's how you can join the fun:
    Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin!
 
 4. **Start the Conversation**  
-   Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion). Picture each question on the app as a physical card, and follow the instructions for an engaging and seamless experience.
+   Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion): With the three questions presented (by default), each person chooses their favorite one, and then rolls a [colorful dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice-roll.html) to determine whose question goes first (e.g., the person whose virtual question card matches the dice color). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.
+   
+   Participants take turns answering the chosen question, with the option to pass if they feel uncomfortable. This style fosters a relaxed and organic way to engage with the group while ensuring everyone has the opportunity to participate. If the group size is large, consider forming smaller breakout groups for a more intimate and manageable discussion.
+   
+   For a more personal approach, explore [Style Two – Paired Discussion](https://curioussoulscafe.substack.com/i/154389021/style-two-paired-discussion), which encourages deeper one-on-one conversations before regrouping for collective sharing.
 
 Enjoy diving into thought-provoking topics, building connections, and sharing perspectives with fellow curious minds! 😊
 
