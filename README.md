@@ -22,11 +22,11 @@ Step into meaningful conversations with ease! Here's how you can join the fun:
    
    Participants take turns answering the chosen question, with the option to pass if they feel uncomfortable. This style fosters a relaxed and organic way to engage with the group while ensuring everyone has the opportunity to participate. For a more personal approach, explore [Style Two – Paired Discussion](https://curioussoulscafe.substack.com/i/154389021/style-two-paired-discussion), which encourages deeper one-on-one conversations before regrouping.
 
-Enjoy diving into thought-provoking topics, building connections, and sharing perspectives with fellow curious minds! 😊
-
 **Pro Tip:**
 - For a deeper understanding of how our events are structured, including different conversation styles, check out our [Event Structure Guide](https://curioussoulscafe.substack.com/i/154389021/event-structure).
-- Curious about what we've discussed before? Check out our [Event Archive](https://curioussoulscafe.substack.com/archive) for highlights from previous meetups.
+- Curious about how our past events went? Explore our [Event Archive](https://curioussoulscafe.substack.com/archive) for anonymous highlights from some of our previous meetups.
+
+Enjoy diving into thought-provoking topics, deepening connections, and sharing perspectives with fellow curious souls! 😊
 
 <!--<img src="https://github.com/user-attachments/assets/a31b8885-76f9-4dee-bc48-5795d32221f1" alt="QR Code" width="300">-->
 

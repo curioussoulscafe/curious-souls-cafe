@@ -5,14 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Curious Souls Café</title>
   <style>
-    /* GitHub README-like CSS */
+    /* GitHub-like CSS */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
       line-height: 1.6;
       color: #24292e;
       background-color: #ffffff;
       margin: 0;
-      padding: 2rem;
+      padding: 0 1rem;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      margin: 0.5rem 0;
     }
 
     a {
@@ -24,112 +49,63 @@
       text-decoration: underline;
     }
 
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.5em;
-      margin-bottom: 0.5em;
-      font-weight: 600;
-      line-height: 1.25;
-    }
-
-    h1 {
-      font-size: 2em;
-      border-bottom: 1px solid #eaecef;
-      padding-bottom: 0.3em;
-    }
-
-    h2 {
-      font-size: 1.5em;
-      border-bottom: 1px solid #eaecef;
-      padding-bottom: 0.3em;
-    }
-
-    h3 {
-      font-size: 1.25em;
-    }
-
-    h4 {
-      font-size: 1em;
-    }
-
-    p {
-      margin-top: 0;
-      margin-bottom: 1em;
-    }
-
     ul, ol {
-      padding-left: 2em;
-      margin-top: 0;
-      margin-bottom: 1em;
-    }
-
-    ul ul, ul ol, ol ul, ol ol {
-      margin-top: 0;
-      margin-bottom: 0;
+      margin: 1rem 0;
+      padding-left: 1.5rem;
     }
 
     li {
-      margin-bottom: 0.5em;
-    }
-
-    strong {
-      font-weight: 600;
+      margin-bottom: 0.5rem;
     }
 
     code {
-      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 0.875em;
-      background-color: rgba(27, 31, 35, 0.05);
-      padding: 0.2em 0.4em;
+      background-color: #f6f8fa;
       border-radius: 3px;
+      font-size: 85%;
+      padding: 0.2em 0.4em;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
     }
 
     pre {
-      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 0.875em;
-      line-height: 1.45;
       background-color: #f6f8fa;
+      padding: 1rem;
+      border-radius: 6px;
       overflow: auto;
-      padding: 1em;
-      border-radius: 3px;
-      margin-top: 0;
-      margin-bottom: 1em;
+      font-size: 85%;
+      line-height: 1.45;
     }
 
     blockquote {
-      padding: 0.5em 1em;
+      margin: 0.5rem 0;
+      padding: 0.5rem 1rem;
       color: #6a737d;
       border-left: 0.25em solid #dfe2e5;
-      margin: 0;
       background-color: #f6f8fa;
-      border-radius: 3px;
     }
 
     img {
       max-width: 100%;
       height: auto;
+      border-radius: 4px;
     }
 
     hr {
       border: 0;
-      border-top: 1px solid #eaecef;
-      margin: 1.5em 0;
+      height: 1px;
+      background-color: #eaecef;
+      margin: 1.5rem 0;
     }
 
-    table {
-      border-spacing: 0;
-      border-collapse: collapse;
-      margin-bottom: 1em;
-      width: 100%;
-    }
-
-    th, td {
-      padding: 0.5em 1em;
-      border: 1px solid #dfe2e5;
-    }
-
-    th {
+    .pro-tip {
       background-color: #f6f8fa;
-      font-weight: 600;
+      border-left: 4px solid #0366d6;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+    }
+
+    .pro-tip strong {
+      font-weight: bold;
+      color: #0366d6;
     }
   </style>
 </head>
@@ -137,28 +113,17 @@
   <h1 id="curious-souls-caf-">Curious Souls Café</h1>
   <p>Welcome to the <a href="https://curioussoulscafe.substack.com/about">Curious Souls Café</a>! This <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">live web app</a> is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.</p>
   <p>Originally created to facilitate meaningful discussions during Curious Souls Café <a href="https://curioussoulscafe.substack.com/p/event-structure">meetup events</a>, this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)</p>
+  
   <h2 id="-getting-started">🚀 Getting Started</h2>
-  <p>Step into meaningful conversations with ease! Here&#39;s how you can join the fun:</p>
+  <p>Step into meaningful conversations with ease! Here's how you can join the fun:</p>
   <ol>
-    <li>
-      <p><strong>Launch the Live Web App</strong><br>Open the Curious Souls Café web app in your browser by clicking this link: <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Curious Souls Café Web App</a>.</p>
-    </li>
-    <li>
-      <p><strong>Invite Others</strong><br>On the main page, you&#39;ll find a QR code. Share it with friends or participants—anyone can scan it to instantly join the conversation.</p>
-    </li>
-    <li>
-      <p><strong>Pick a Topic</strong><br>Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin!</p>
-    </li>
-    <li><p><strong>Start the Conversation</strong><br>Unsure where to start? Try <a href="https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion">Style One – Open Discussion</a>: With the three questions presented (by default), each person chooses their favorite one, and then rolls a <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice-roll.html">colorful dice</a> to determine whose question goes first (e.g., the person whose virtual question card matches the dice color). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.</p>
-      <p>Participants take turns answering the chosen question, with the option to pass if they feel uncomfortable. This style fosters a relaxed and organic way to engage with the group while ensuring everyone has the opportunity to participate. For a more personal approach, explore <a href="https://curioussoulscafe.substack.com/i/154389021/style-two-paired-discussion">Style Two – Paired Discussion</a>, which encourages deeper one-on-one conversations before regrouping.</p>
-    </li>
+    <li><p><strong>Launch the Live Web App</strong><br>Open the Curious Souls Café web app in your browser by clicking this link: <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Curious Souls Café Web App</a>.</p></li>
+    <li><p><strong>Invite Others</strong><br>On the main page, you'll find a QR code. Share it with friends or participants—anyone can scan it to instantly join the conversation.</p></li>
+    <li><p><strong>Pick a Topic</strong><br>Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin!</p></li>
+    <li><p><strong>Start the Conversation</strong><br>Unsure where to start? Try <a href="https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion">Style One – Open Discussion</a>: With the three questions presented (by default), each person chooses their favorite one, and then rolls a <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice-roll.html">colorful dice</a> to determine whose question goes first (e.g., the person whose virtual question card matches the dice color). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.</p></li>
   </ol>
-<p>Enjoy diving into thought-provoking topics, building connections, and sharing perspectives with fellow curious minds! 😊</p>
-<p><strong>Pro Tip:</strong></p>
-<ul>
-  <li>For a deeper understanding of how our events are structured, including different conversation styles, check out our <a href="https://curioussoulscafe.substack.com/i/154389021/event-structure">Event Structure Guide</a>.</li>
-  <li>Curious about what we&#39;ve discussed before? Check out our <a href="https://curioussoulscafe.substack.com/archive">Event Archive</a> for highlights from previous meetups.</li>
-</ul>
+  <p class="pro-tip"><strong>Pro Tip:</strong> For a deeper understanding of how our events are structured, including different conversation styles, check out our <a href="https://curioussoulscafe.substack.com/i/154389021/event-structure">Event Structure Guide</a>.</p>
+  <hr>
   <h2 id="-introducing-the-question-decks">📚 Introducing the Question Decks</h2>
 <p>Our in-person Curious Souls Café <a href="https://curioussoulscafe.substack.com/p/event-structure">meetup</a> is your space for meaningful conversations and deep self-reflection. Like a cozy neighborhood café, it’s a place to share ideas, explore life’s big questions, and connect with others in an open and welcoming way. At the heart of the Curious Souls Café experience are <strong>questions</strong>, thoughtfully designed by our facilitators or third parties to guide you through soul-searching discussions. Whether you&#39;re reflecting on your personal journey, navigating life changes, or building deeper connections, these decks spark introspection and encourage engaging dialogue.</p>
 <p>Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you&#39;ve been, and where you’re headed:</p>
