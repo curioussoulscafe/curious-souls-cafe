@@ -15,7 +15,7 @@ Step into meaningful conversations with ease! Here's how you can join the fun:
    On the main page, you'll find a QR code. Share it with friends or participants—anyone can scan it to instantly join the conversation.
 
 3. **Pick a Topic**  
-   Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin!
+   Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin! [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) is recommended for first-timers.
 
 4. **Start the Conversation**  
    Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion): With the three questions presented (by default), each person chooses their favorite one, and then rolls a [colorful dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice-roll.html) to determine whose question goes first (e.g., the person whose virtual question card matches the dice color). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.
