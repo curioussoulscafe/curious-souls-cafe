@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="app-title">Curious Souls Café - Live Discussion</title> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        :root {
+            --highlight-color: #00f9ff; /* Default or initial color, will be overridden by JS */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Styling for the original items to add space */
+        .item {
+            margin-bottom: 0.5rem; /* Increased margin-bottom for more space between items */
+            padding: 0.75rem; /* Slightly less padding than original 1rem */
+            font-size: 1.25rem; /* Default font size is now larger */
+            background-color: #f8fafc; /* Light background color to make them stand out */
+            border: 1px solid #e2e8f0; /* Subtle border */
+            border-radius: 0.375rem; /* Rounded corners */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            transition: all 0.2s ease-in-out; /* Smooth transition for selection */
+            cursor: pointer; /* Indicate it's clickable */
+        }
+
+        /* This class is for highlighting the original items when clicked to be chosen */
+        .item.selected-item {
+            background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
+            padding: 1rem; /* Slightly larger padding on selection (was 1.25rem) */
+            font-size: 1.35rem; /* Slightly larger font size on selection */
+            margin-bottom: 1rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.05); /* Slightly enlarge when selected */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* More prominent shadow when selected */
+        }
+        /* Styling for the chosen items */
+        .chosen-item {
+            margin-bottom: 0.5rem; /* Increased margin-bottom for more space between items */
+            padding: 0.75rem; /* Slightly less padding than original 1rem */
+            font-size: 1.25rem; /* Default font size is now larger */
+            background-color: #f8fafc; /* Light background color to make them stand out */
+            border: 1px solid #e2e8f0; /* Subtle border */
+            border-radius: 0.375rem; /* Rounded corners */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            transition: all 0.2s ease-in-out; /* Smooth transition for selection */
+            cursor: pointer; /* Indicate it's clickable */
+            text-align: center; /* Centered text */
+        }
+
+        /* Highlight for chosen items when clicked */
+        .chosen-item.selected-chosen-item {
+            background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
+            padding: 1rem; /* Slightly larger padding on selection (was 1.25rem) */
+            font-size: 1.35rem; /* Slightly larger font size on selection */
+            margin-bottom: 1rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.05); /* Slightly enlarge when selected */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* More prominent shadow when selected */
+        }
+
+        /* Styles for the back-to-top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6b46c1; /* Purple-500 */
+            color: white;
+            padding: 0.5rem 1rem; /* Matched padding */
+            font-size: 1rem; /* Matched font size */
+            border-radius: 9999px; /* Full rounded */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: none; /* Hidden by default */
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+        #back-to-top:hover {
+            background-color: #805ad5; /* Purple-600 */
+        }
+
+        /* Styles for the embedded leave page button */
+        #back-to-topics {
+            background-color: #c53030; /* Deeper red for "Leave Page" */
+            color: white; /* White text */
+            border: none; /* No border */
+            padding: 0.5rem 1rem; /* Matched padding */
+            font-size: 1rem; /* Matched font size */
+            font-weight: bold; /* Added font-weight bold */
+            border-radius: 9999px; /* Full rounded */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out; /* Smooth transition for hover */
+            width: 100%; /* Make it full width */
+            margin-top: 1rem; /* Adjusted top margin to be closer to Clear Saved Questions */
+            margin-bottom: 0; /* No bottom margin as it's the last element in the container */
+            display: block; /* Ensure it takes full width */
+            text-align: center; /* Center the text */
+        }
+        #back-to-topics:hover {
+            background-color: #9b2c2c; /* Slightly darker red on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
+        }
+
+        /* Styles for Clear Saved Questions button */
+        #clear-chosen-button {
+            background-color: #fc8181; /* Lighter red for "Clear Saved Questions" */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem; /* Matched padding */
+            font-size: 1rem; /* Matched font size */
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem; /* Adjusted margin-top */
+            transition: all 0.3s ease-in-out;
+        }
+        #clear-chosen-button:hover {
+            background-color: #f56565; /* Slightly darker light red on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #random-result {
+            min-height: 60px;
+        }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* Above all other content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+        }
+
+        .modal-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* Full rounded */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .modal-button.confirm {
+            background-color: #c53030; /* Red-600 */
+            color: white;
+        }
+        .modal-button.confirm:hover {
+            background-color: #9b2c2c; /* Red-700 */
+        }
+
+        .modal-button.cancel {
+            background-color: #e2e8f0; /* Gray-200 */
+            color: #4a5568; /* Gray-700 */
+        }
+        .modal-button.cancel:hover {
+            background-color: #cbd5e0; /* Gray-300 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform hover:scale-105">
+        <div class="flex justify-center mb-6">
+            <a href="../index.html"> <!-- Updated path to index.html -->
+                <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            </a>
+        </div>
+        <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
+        <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
+        
+        <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-4">Topic: Live Discussion</h2> 
+        <div class="mb-4">
+            <label for="item-count" class="block text-gray-700 text-sm font-bold mb-2">No. of questions to pick: <span id="total-questions" class="text-gray-500 text-sm"></span></label>
+            <input type="number" id="item-count" value="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <button id="randomize-button" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out mb-6">
+            Generate Questions!
+        </button>
+
+        <div class="mb-4">
+            <p id="random-result" class="text-gray-800 text-center font-medium">Loading questions...</p>
+        </div>
+
+        <div class="mb-4">
+            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search questions:</label>
+            <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
+                Search
+            </button>
+        </div>
+
+        <div id="search-results" class="mb-4"></div>
+
+        <div class="mt-8 pt-4 border-t border-gray-300">
+            <h3 class="text-xl font-semibold text-purple-600 mb-4">Saved Questions:</h3>
+            <div id="chosen-questions-display" class="text-gray-800 text-left">
+                <p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>
+            </div>
+            <button id="clear-chosen-button" title="Clear Saved Questions">
+                Clear Saved Questions
+            </button>
+        </div>
+
+        <button id="back-to-topics" title="Leave Page">
+            <i class="fas fa-arrow-left"></i> Leave Page
+        </button>
+    </div>
+
+    <button id="back-to-top" title="Back to Top">
+        &#9650; Top
+    </button>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
+            <div class="modal-buttons">
+                <button id="confirm-clear-yes" class="modal-button confirm">Yes</button>
+                <button id="confirm-clear-no" class="modal-button cancel">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Confirmation Modal for empty search -->
+    <div id="empty-search-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">
+                Searching with an empty field will display ALL questions, which could quickly fill the screen.
+                To clear results if the screen gets crowded, tap "Top" and then click "Search" again.
+            </p>
+            <div class="modal-buttons">
+                <button id="confirm-empty-search-yes" class="modal-button confirm">Proceed</button>
+                <button id="confirm-empty-search-no" class="modal-button cancel">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Hardcoded Topic Configuration for Live Discussion ---
+        const displayTopicName = "Live Discussion"; // Display name
+        // The URL for the question file, now a relative path.
+        const githubRawUrl = "../questions/live-discussion.txt"; // Relative path to live-discussion.txt
+        // End Hardcoded Configuration
+
+        let itemList = []; 
+        let lastSearchTerm = "";
+        let availableRandomItems = [];
+
+        const randomizeButton = document.getElementById('randomize-button');
+        const resultDisplay = document.getElementById('random-result');
+        const itemCountInput = document.getElementById('item-count');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const searchResultsDisplay = document.getElementById('search-results');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
+        const clearChosenButton = document.getElementById('clear-chosen-button');
+        const backToTopButton = document.getElementById('back-to-top');
+        const backToTopicsButton = document.getElementById('back-to-topics'); 
+        const appTitleElement = document.getElementById('app-title');
+        const topicTitleElement = document.getElementById('topic-title');
+
+        // Modal elements
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const confirmClearYes = document.getElementById('confirm-clear-yes');
+        const confirmClearNo = document.getElementById('confirm-clear-no');
+
+        // Modal elements for empty search confirmation
+        const emptySearchModal = document.getElementById('empty-search-modal');
+        const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
+        const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
+
+        // Define the list of highlight colors
+        const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
+
+        // Pick a random highlight color on load and apply it to the CSS variable
+        const randomHighlightColor = highlightColors[Math.floor(Math.random() * highlightColors.length)];
+        document.documentElement.style.setProperty('--highlight-color', randomHighlightColor);
+
+        // --- Persistent Saved Questions Logic ---
+        const savedQuestionsLocalStorageKey = `csc_saved_questions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`; 
+
+        /**
+         * Loads saved questions from localStorage and displays them.
+         */
+        function loadSavedQuestions() {
+            const savedQuestionsJson = localStorage.getItem(savedQuestionsLocalStorageKey);
+            const savedQuestions = savedQuestionsJson ? JSON.parse(savedQuestionsJson) : [];
+
+            if (savedQuestions.length > 0) { 
+                chosenQuestionsDisplay.innerHTML = ''; 
+                savedQuestions.forEach(questionText => {
+                    addChosenQuestionToDOM(questionText);
+                });
+            } else {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            }
+            updateClearButtonText();
+        }
+
+        /**
+         * Saves the current list of chosen questions to localStorage.
+         */
+        function saveCurrentChosenQuestions() {
+            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.textContent);
+            localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
+        }
+
+        // Function to fetch questions from localStorage or GitHub
+        async function fetchQuestions() {
+            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
+            const cachedContent = localStorage.getItem(localStorageKey);
+
+            appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+            topicTitleElement.textContent = `Topic: ${displayTopicName}`;
+
+            if (cachedContent) {
+                console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
+                itemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                availableRandomItems = [...itemList];
+                totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
+                displayRandomItems();
+                loadSavedQuestions(); 
+            } else {
+                console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
+                try {
+                    const response = await fetch(githubRawUrl); // Use relative path
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const text = await response.text();
+                    itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                    availableRandomItems = [...itemList];
+
+                    localStorage.setItem(localStorageKey, text); 
+
+                    totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
+                    displayRandomItems(); 
+                    loadSavedQuestions(); 
+                } catch (error) {
+                    console.error("Could not load questions:", error);
+                    resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
+                    appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
+                    topicTitleElement.textContent = `Topic: Error`;
+                }
+            }
+        }
+
+        // Function to update the "Clear Saved Questions" button text
+        function updateClearButtonText() {
+            const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
+            if (highlightedItems.length > 0) {
+                clearChosenButton.textContent = "Clear Selected";
+            } else {
+                const allChosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+                if (allChosenItems.length > 0) {
+                    clearChosenButton.textContent = "Clear All Saved";
+                } else {
+                    clearChosenButton.textContent = "Clear Saved Questions";
+                }
+            }
+        }
+
+        function selectUniqueItems(arr, numItems) {
+            if (numItems > availableRandomItems.length || availableRandomItems.length === 0) {
+                availableRandomItems = [...itemList];
+            }
+
+            let selectedItems = [];
+            for (let i = 0; i < numItems; i++) {
+                if (availableRandomItems.length === 0) {
+                    availableRandomItems = [...itemList];
+                    if (availableRandomItems.length === 0) {
+                        return "No items available to pick.";
+                    }
+                }
+                const randomIndex = Math.floor(Math.random() * availableRandomItems.length);
+                selectedItems.push(availableRandomItems[randomIndex]);
+                availableRandomItems.splice(randomIndex, 1);
+            }
+            return selectedItems;
+        }
+
+        function addHighlightingAndChooseLogic(targetElement) {
+            const items = targetElement.querySelectorAll('.item');
+            items.forEach(item => {
+                item.addEventListener('click', function() {
+                    const questionText = this.textContent;
+
+                    this.classList.toggle('selected-item');
+
+                    if (this.classList.contains('selected-item')) {
+                        addChosenQuestion(questionText);
+                    } else {
+                        removeChosenQuestion(questionText);
+                    }
+                });
+            });
+        }
+
+        /**
+         * Adds a question to the DOM display and saves it to localStorage.
+         * @param {string} questionText - The text of the question to add.
+         */
+        function addChosenQuestion(questionText) {
+            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
+            if (!existingChosenItems.includes(questionText)) {
+                addChosenQuestionToDOM(questionText);
+                saveCurrentChosenQuestions();
+            }
+            updateClearButtonText();
+        }
+
+        /**
+         * Helper function to add a question div to the DOM without affecting localStorage.
+         * Used for both initial loading and user interaction.
+         * @param {string} questionText - The text of the question to add.
+         */
+        function addChosenQuestionToDOM(questionText) {
+            const chosenItemDiv = document.createElement('div');
+            chosenItemDiv.classList.add('chosen-item');
+            chosenItemDiv.textContent = questionText;
+            chosenQuestionsDisplay.appendChild(chosenItemDiv);
+
+            chosenItemDiv.addEventListener('click', function() {
+                this.classList.toggle('selected-chosen-item');
+                updateClearButtonText();
+            });
+
+            const placeholder = chosenQuestionsDisplay.querySelector('p.text-gray-500');
+            if (placeholder) {
+                chosenQuestionsDisplay.removeChild(placeholder);
+            }
+        }
+
+        /**
+         * Removes a question from the DOM display and from localStorage.
+         * @param {string} questionText - The text of the question to remove.
+         */
+        function removeChosenQuestion(questionText) {
+            const chosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            let removedFromDOM = false;
+            chosenItems.forEach(item => {
+                if (item.textContent === questionText) {
+                    chosenQuestionsDisplay.removeChild(item);
+                    removedFromDOM = true;
+                }
+            });
+
+            if (removedFromDOM) {
+                saveCurrentChosenQuestions();
+            }
+
+            const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            if (remainingQuestionDivs.length === 0) {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            } 
+            updateClearButtonText();
+        }
+
+        function displayRandomItems() {
+            if (itemList.length === 0) {
+                resultDisplay.textContent = "No questions available to pick. Please load questions first.";
+                return;
+            }
+            const numItemsToPick = parseInt(itemCountInput.value);
+            const result = selectUniqueItems(itemList, numItemsToPick);
+
+            if (typeof result === "string") {
+                resultDisplay.textContent = result;
+            } else {
+                let itemDivs = result.map(item => `<div class="item">${item}</div>`);
+                let resultHTML = itemDivs.join('');
+                resultDisplay.innerHTML = resultHTML;
+                addHighlightingAndChooseLogic(resultDisplay);
+            }
+        }
+
+        function displayFilteredItems() {
+            if (itemList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                return;
+            }
+            const currentSearchTerm = searchInput.value.trim().toLowerCase();
+
+            if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
+                searchResultsDisplay.innerHTML = '';
+                searchButton.textContent = "Search";
+                lastSearchTerm = "";
+                return;
+            }
+
+            if (currentSearchTerm === "") {
+                emptySearchModal.classList.add('show');
+                return;
+            }
+            
+            executeSearch(currentSearchTerm);
+        }
+
+        function executeSearch(searchTerm) {
+            if (itemList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                return;
+            }
+            
+            const filteredResult = itemList.filter(item => item.toLowerCase().includes(searchTerm));
+
+            if (filteredResult.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
+            } else {
+                let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
+                let resultHTML = itemDivs.join('');
+                searchResultsDisplay.innerHTML = resultHTML;
+                addHighlightingAndChooseLogic(searchResultsDisplay);
+            }
+            lastSearchTerm = searchTerm;
+            searchButton.textContent = "Search / Clear Search";
+        }
+
+        clearChosenButton.addEventListener('click', function() {
+            confirmationModal.classList.add('show');
+        });
+
+        confirmClearYes.addEventListener('click', function() {
+            const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
+
+            if (highlightedItems.length > 0) { 
+                highlightedItems.forEach(item => {
+                    chosenQuestionsDisplay.removeChild(item);
+                });
+            } else { 
+                chosenQuestionsDisplay.innerHTML = ''; 
+            }
+            saveCurrentChosenQuestions();
+            
+            const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            if (remainingQuestionDivs.length === 0) {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            }
+            updateClearButtonText();
+            confirmationModal.classList.remove('show');
+        });
+
+        confirmClearNo.addEventListener('click', function() {
+            confirmationModal.classList.remove('show');
+        });
+
+        backToTopicsButton.addEventListener('click', () => {
+            window.location.href = '../index.html'; // Path back to index.html
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 1) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        confirmEmptySearchYes.addEventListener('click', function() {
+            emptySearchModal.classList.remove('show');
+            executeSearch("");
+        });
+
+        confirmEmptySearchNo.addEventListener('click', function() {
+            emptySearchModal.classList.remove('show');
+        });
+
+        fetchQuestions();
+        
+        randomizeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            displayRandomItems();
+        });
+
+        searchButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            displayFilteredItems();
+        });
+
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                displayFilteredItems();
+            }
+        });
+
+        updateClearButtonText();
+    </script>
+</body>
+</html>
