@@ -266,9 +266,9 @@
 
         <p id="error-message" class="text-red-500 text-center mt-4 hidden">Failed to load topics. Please check your GitHub repository and network connection.</p>
         
-        <button id="suggest-question-button" title="Submit a Question">
+        <!-- <button id="suggest-question-button" title="Submit a Question">
             Submit Questions | Feedback
-        </button>
+        </button> -->
 
         <!-- Button to Roll the Dice Page -->
         <button id="roll-dice-page-button" class="mt-4" onclick="location.href='pages/dice-roll.html'">
@@ -341,7 +341,7 @@
         </div>
     </div>
 
-    <div id="suggestion-modal" class="modal-overlay">
+    <!-- <div id="suggestion-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
                 To share your question for group discussion or provide feedback, please use one of our web forms:
@@ -358,7 +358,7 @@
             </p>
             <button id="close-suggestion-modal" class="modal-button cancel">Close</button>
         </div>
-    </div>
+    </div> -->
 
     <script>
         const topicsListDiv = document.getElementById('topics-list');
@@ -376,9 +376,9 @@
         const liveDiscussionButton = document.getElementById('live-discussion-button');
 
         // New suggestion modal elements
-        const suggestQuestionButton = document.getElementById('suggest-question-button');
-        const suggestionModal = document.getElementById('suggestion-modal');
-        const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
+        // const suggestQuestionButton = document.getElementById('suggest-question-button');
+        // const suggestionModal = document.getElementById('suggestion-modal');
+        // const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
 
         // --- Hardcoded Topic Configurations ---
         const TOPIC_CONFIGS = [
@@ -579,13 +579,13 @@
         }
 
         // Event listeners for the new suggestion modal
-        suggestQuestionButton.addEventListener('click', function() {
-            suggestionModal.classList.add('show');
-        });
+        // suggestQuestionButton.addEventListener('click', function() {
+        //     suggestionModal.classList.add('show');
+        // });
 
-        closeSuggestionModalButton.addEventListener('click', function() {
-            suggestionModal.classList.remove('show');
-        });
+        // closeSuggestionModalButton.addEventListener('click', function() {
+        //     suggestionModal.classList.remove('show');
+        // });
 
         // Fetch topics and quote when the page loads
         fetchAndCacheTopics();
