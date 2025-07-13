@@ -40,13 +40,12 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
 - **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and inclusive conversations.
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
-- **[Write-Your-Own Questions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/write-your-own-questions.html)**: Engage with prompts shared by curious souls (participants) from around the world.  
 - **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
 - **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.
 - **[Reflections](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflections.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
 - **[Reimagine](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
 
-💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/write-your-own-questions.html) from our global events.
+💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed past questions from our global events.
 
 Let these decks inspire your journey of exploration, connection, and growth!
 
