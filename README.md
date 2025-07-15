@@ -42,7 +42,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.  
 - **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, and personal well-being.
 - **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.
-- **[Reflections](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflections.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
+- **[Reflection](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
 - **[Reimagine](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
 - **[Parenting](https://curioussoulscafe.github.io/curious-souls-cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
 
