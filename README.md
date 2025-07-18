@@ -45,6 +45,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Reflection](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
 - **[Reimagine](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
 - **[Parenting](https://curioussoulscafe.github.io/curious-souls-cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
+- **[Friendship](https://curioussoulscafe.github.io/curious-souls-cafe/pages/friendship.html)**: Deepen connection, celebrate shared moments, and explore the many facets of meaningful friendships.
 
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed past questions from our global events.
 
