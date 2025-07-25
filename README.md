@@ -52,6 +52,8 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 
 Let these decks inspire your journey of exploration, connection, and growth!
 
+Note: Questions with a spiral emoiji 🌀 are deeper ones
+
 ## ✨ What You Can Do with the Web App
 
 * **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html). Just click (or tap) on a topic button to dive in!
