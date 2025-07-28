@@ -72,8 +72,8 @@
             width: 100%; /* Make it full width */
             margin-top: 1rem; /* Adjusted to match other subpages */
             margin-bottom: 0; /* Ensures it's the last element with no extra space */
-            display: block; /* Ensure it takes full width */
-            text-align: center; /* Center the text */
+            display: block;
+            text-align: center;
         }
         .leave-page-button:hover {
             background-color: #9b2c2c; /* Slightly darker red on hover */
@@ -298,6 +298,85 @@
         .modal-button.cancel:hover {
             background-color: #cbd5e0; /* Gray-300 */
         }
+
+        /* New styles for the punishment button */
+        .punishment-button {
+            background-color: #ef4444; /* Red-500 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            width: 100%;
+            display: block;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+        .punishment-button:hover {
+            background-color: #dc2626; /* Red-600 */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .punishment-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Toggle switch styles */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #a855f7; /* Purple-500 */
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #a855f7;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -310,13 +389,22 @@
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
         
         <p class="text-gray-700 text-center mb-4 leading-relaxed">
-            Discover the playful twist behind our <a href="https://curioussoulscafe.substack.com/i/154389021/the-dice-decides" target="_blank" rel="noopener noreferrer" class="text-purple-600 hover:underline font-bold">dice</a>. Let's spark fun discussions with it!
+            Discover the playful twist <a href="https://curioussoulscafe.substack.com/i/154389021/the-dice-decides" target="_blank" rel="noopener noreferrer" class="text-purple-600 hover:underline font-bold">behind our dice</a>. Let's spark fun discussions with it!
         </p>
 
         <hr class="border-gray-300 my-4 w-full mx-auto">
 
+        <!-- Stripe Mode Toggle -->
+        <div class="flex items-center justify-center mb-2">
+            <label for="stripe-mode-toggle" class="mr-3 text-gray-700 font-semibold">Stripe Mode (Punishment):</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="stripe-mode-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
         <!-- Custom Dice Configuration -->
-        <div id="custom-dice-config-section" class="my-4 text-center">
+        <div id="custom-dice-config-section" class="my-4 text-center mt-2">
             <button id="add-color-button">
                 Add Color / Side
             </button>
@@ -389,10 +477,12 @@
         const diceResultText = document.getElementById('dice-result-text');
         const configuredColorsUl = document.getElementById('configured-colors-ul');
         const sidesCountMessage = document.getElementById('sides-count-message'); 
+        const stripeModeToggle = document.getElementById('stripe-mode-toggle');
         
         let customDiceColors = []; 
 
         const localStorageKey = 'customDiceColors'; 
+        const stripeModeLocalStorageKey = 'stripeModeEnabled';
 
         // Default colors for initial load/restore
         const defaultDiceColors = [
@@ -592,15 +682,23 @@
          * @param {HTMLElement} faceElement The div element for the face.
          * @param {object} outcome The outcome object ({type: 'color', value: string, label: string}).
          * @param {string} displayText - The text to actually display on the dice face (e.g., number or label).
+         * @param {boolean} isStriped - Whether this face should display a stripe.
          */
-        function setFaceContent(faceElement, outcome, displayText) {
-            faceElement.textContent = '';
-            faceElement.style.backgroundColor = '';
-            faceElement.style.color = '#333';
-
+        function setFaceContent(faceElement, outcome, displayText, isStriped = false) {
+            faceElement.textContent = displayText;
             faceElement.style.backgroundColor = outcome.value;
-            faceElement.textContent = displayText; 
             faceElement.style.color = getContrastYIQ(outcome.value);
+
+            // Remove any previous stripe
+            faceElement.style.backgroundImage = ''; // Clear any previous gradient
+
+            if (isStriped) {
+                // Add a diagonal stripe pattern
+                const stripeColor = getContrastYIQ(outcome.value) === 'black' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)';
+                faceElement.style.backgroundImage = `
+                    repeating-linear-gradient(45deg, transparent, transparent 10px, ${stripeColor} 10px, ${stripeColor} 20px)
+                `;
+            }
         }
         
         /**
@@ -648,6 +746,7 @@
                     face.textContent = '';
                     face.style.backgroundColor = '#f0f0f0'; 
                     face.style.color = '#333';
+                    face.style.backgroundImage = ''; // Clear any stripes
                 }
             });
         }
@@ -668,7 +767,32 @@
             rollCustomDiceButton.disabled = true;
             diceResultText.textContent = "Rolling...";
 
-            updateDiceFaceVisuals(false); 
+            let hasStripe = false; // Default to no stripe
+            const isStripeModeEnabled = stripeModeToggle.checked;
+
+            // Determine which outcomes will be "striped" for this roll
+            const stripedOutcomeIndices = [];
+            if (isStripeModeEnabled && numSides > 1) { // Only add stripes if mode is enabled and more than one side
+                let numStripesToApply = 0;
+                if (numSides === 2) {
+                    numStripesToApply = 1; // If 2 sides, 1 stripe
+                } else {
+                    // Randomly pick 1 to 3 stripes, but never all sides
+                    numStripesToApply = Math.floor(Math.random() * Math.min(numSides - 1, 3)) + 1; 
+                }
+
+                const allIndices = Array.from({ length: numSides }, (_, i) => i);
+                // Shuffle indices and pick the first `numStripesToApply`
+                for (let i = allIndices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [allIndices[i], allIndices[j]] = [allIndices[j], allIndices[i]];
+                }
+                for (let i = 0; i < numStripesToApply; i++) {
+                    stripedOutcomeIndices.push(allIndices[i]);
+                }
+            }
+            console.log("Striped outcome indices for this roll:", stripedOutcomeIndices);
+
 
             virtualDice.classList.add('rolling');
 
@@ -679,9 +803,14 @@
             virtualDice.style.transition = 'transform 1.5s ease-out';
             virtualDice.style.transform = `rotateX(${finalRollDegreeX}deg) rotateY(${finalRollDegreeY}deg) rotateZ(${finalRollDegreeZ}deg)`;
 
-            const randomSideIndex = Math.floor(Math.random() * numSides); 
-            const finalOutcome = customDiceColors[randomSideIndex]; 
+            // Randomly select the final side
+            const randomSideIndex = Math.floor(Math.random() * numSides);
+            const finalOutcome = customDiceColors[randomSideIndex];
+            
+            // Determine if the final outcome HAS a stripe, considering the toggle
+            hasStripe = isStripeModeEnabled && stripedOutcomeIndices.includes(randomSideIndex);
 
+            // Update dice faces during animation (no numbers or stripes during animation, just colors)
             diceFaces.forEach((face, index) => {
                 const faceColor = customDiceColors[index % customDiceColors.length];
                 setFaceContent(face, faceColor, ''); 
@@ -690,20 +819,48 @@
             setTimeout(() => {
                 virtualDice.classList.remove('rolling');
                 
-                setFaceContent(diceFaces[0], finalOutcome, `${randomSideIndex + 1}`);
+                // Reset the 3D cube to a default orientation (e.g., showing face 1 or blank)
+                // and then display the result clearly in text.
+                virtualDice.style.transition = 'none'; // Temporarily disable transition for snap back
+                virtualDice.style.transform = 'rotateX(0deg) rotateY(0deg) rotateZ(0deg)';
 
-                diceResultText.innerHTML = `You rolled: <span style="background-color: ${finalOutcome.value}; padding: 2px 8px; border-radius: 4px; color: ${getContrastYIQ(finalOutcome.value)};">${finalOutcome.label}</span>`;
-                
+                // Set the background color of all faces to the final rolled color
+                // And apply the stripe if the final outcome has one
+                diceFaces.forEach(face => { 
+                    setFaceContent(face, finalOutcome, (randomSideIndex + 1).toString(), hasStripe); 
+                });
+
+                // Display the result in text, including stripe information
+                let resultHtml = `You rolled: <span style="background-color: ${finalOutcome.value}; padding: 2px 8px; border-radius: 4px; color: ${getContrastYIQ(finalOutcome.value)};">${finalOutcome.label}</span>`;
+                if (hasStripe) {
+                    resultHtml += ` <span class="text-red-600 font-bold">(With a Stripe!)</span>`; 
+                } else if (isStripeModeEnabled) { 
+                    resultHtml += ` <span class="text-green-600 font-bold">(No Stripe. Safe!)</span>`;
+                }
+                // If isStripeModeEnabled is false, nothing is added here.
+
+                diceResultText.innerHTML = resultHtml;
+
+                // Add punishment button if hasStripe is true
+                if (hasStripe) {
+                    const punishmentButton = document.createElement('button');
+                    punishmentButton.textContent = 'Go to Punishment!';
+                    punishmentButton.classList.add('punishment-button');
+                    punishmentButton.onclick = () => {
+                        window.location.href = 'https://curioussoulscafe.github.io/curious-souls-cafe/pages/action-prompts.html';
+                    };
+                    diceResultText.appendChild(punishmentButton); // Append button below the text result
+                }
+
+
                 rollCustomDiceButton.disabled = false;
                 
-                virtualDice.style.transition = 'none';
-                virtualDice.style.transform = 'rotateX(0deg) rotateY(0deg) rotateZ(0deg)'; 
-                
+                // Re-enable transition for next roll
                 setTimeout(() => {
                     virtualDice.style.transition = 'transform 1.5s ease-in-out'; 
                 }, 50);
 
-            }, 1500);
+            }, 1500); // Match this timeout to the CSS transition duration
         }
 
         /**
@@ -764,12 +921,25 @@
             diceResultText.textContent = "Colors restored to defaults. Roll the dice!";
         }
 
-        // Initial setup - load colors
+        // --- Stripe Mode Toggle Logic ---
+        function loadStripeModeState() {
+            const savedState = localStorage.getItem(stripeModeLocalStorageKey);
+            // Default to true if no state is saved (mode is on by default)
+            stripeModeToggle.checked = (savedState === 'false') ? false : true; 
+        }
+
+        function saveStripeModeState() {
+            localStorage.setItem(stripeModeLocalStorageKey, stripeModeToggle.checked);
+        }
+
+        // Initial setup - load colors and stripe mode state
         loadColorsFromLocalStorage();
+        loadStripeModeState();
 
         // Event Listeners
         rollCustomDiceButton.addEventListener('click', rollCustomDice);
         addColorButton.addEventListener('click', () => addColorInput());
+        stripeModeToggle.addEventListener('change', saveStripeModeState); // Save state on change
         
         // Event listener for Restore Defaults button (shows confirmation modal)
         restoreDefaultsButton.addEventListener('click', () => {
