@@ -250,7 +250,10 @@
             <p id="quote-author"></p>
         </div>
         
-        <h2 class="text-xl font-semibold text-gray-700 text-center mb-6">Pick a Topic or Action:</h2>
+        <h2 class="text-xl font-semibold text-gray-700 text-center mb-2">Pick a Topic or Action:</h2>
+        <p class="text-sm text-gray-500 text-center mb-6">
+            💡 Tap and hold a topic to favorite it!
+        </p>
 
         <!-- Live Discussion button container - hidden by default, shown dynamically -->
         <div id="live-discussion-button-container" class="mb-4 hidden">
@@ -361,6 +364,10 @@
     </div> -->
 
     <script>
+        // Define the base URL for your GitHub Pages site
+
+        const STARRED_TOPICS_KEY = 'csc_starred_topics'; // Local Storage key for starred topics
+
         const topicsListDiv = document.getElementById('topics-list');
         const errorMessageDiv = document.getElementById('error-message');
         const quoteDisplay = document.getElementById('quote-display');
@@ -420,19 +427,19 @@
                 cache: true 
             },
             {
-                name: "⭐ Love Relationships",
+                name: "Love Relationships",
                 htmlFileName: "pages/love-relationships.html",
                 txtUrl: "questions/love-relationships.txt", // Relative path, kebab-case
                 cache: true
             },
             {
-                name: "⭐ Happiness",
+                name: "Happiness",
                 htmlFileName: "pages/happiness.html",
                 txtUrl: "questions/happiness.txt", // Relative path, kebab-case
                 cache: true 
             },
             {
-                name: "⭐ The Mind Speaks",
+                name: "The Mind Speaks",
                 htmlFileName: "pages/the-mind-speaks.html",
                 txtUrl: "questions/the-mind-speaks.txt", // Relative path, kebab-case
                 cache: true 
@@ -456,6 +463,16 @@
                 cache: true 
             }
         ];
+
+        // --- Local Storage Helper Functions for Starred Topics ---
+        function getStarredTopics() {
+            const starredTopicsJson = localStorage.getItem(STARRED_TOPICS_KEY);
+            return starredTopicsJson ? JSON.parse(starredTopicsJson) : [];
+        }
+
+        function setStarredTopics(topics) {
+            localStorage.setItem(STARRED_TOPICS_KEY, JSON.stringify(topics));
+        }
 
         /**
          * Fetches topic content based on TOPIC_CONFIGS and stores in localStorage (selectively).
@@ -526,14 +543,79 @@
                 topicsListDiv.innerHTML = '<p class="text-gray-500 text-center">No topics could be loaded. Please check the topic configurations and file paths.</p>';
                 errorMessageDiv.classList.remove('hidden');
             } else {
-                successfulTopics.sort((a, b) => a.name.localeCompare(b.name));
-                successfulTopics.forEach(topic => {
+                const starredTopics = getStarredTopics();
+
+                // Separate starred and unstarred topics for sorting
+                const starred = successfulTopics.filter(topic => starredTopics.includes(topic.name));
+                const unstarred = successfulTopics.filter(topic => !starredTopics.includes(topic.name));
+
+                // Sort unstarred topics alphabetically
+                unstarred.sort((a, b) => a.name.localeCompare(b.name));
+
+                // Combine starred (unsorted among themselves, but appear first) and then sorted unstarred
+                const sortedTopics = [...starred, ...unstarred];
+
+
+                sortedTopics.forEach(topic => {
                     const button = document.createElement('button');
                     button.classList.add('topic-button');
-                    button.textContent = topic.name;
-                    button.addEventListener('click', () => {
-                        window.location.href = topic.htmlFileName; 
+                    
+                    // Prepend star if it's a starred topic
+                    const isStarred = starredTopics.includes(topic.name);
+                    button.textContent = isStarred ? `⭐ ${topic.name}` : topic.name;
+
+                    let pressTimer;
+                    const longPressDuration = 500; // milliseconds
+
+                    const clearTimer = () => {
+                        clearTimeout(pressTimer);
+                        pressTimer = null;
+                    };
+
+                    const handleLongPress = (e) => {
+                        clearTimer(); // Clear any existing timer
+                        e.preventDefault(); // Prevent default click/touch behavior
+
+                        const currentStarred = getStarredTopics();
+                        const index = currentStarred.indexOf(topic.name);
+
+                        if (index > -1) {
+                            // Topic is already starred, unstar it
+                            currentStarred.splice(index, 1);
+                            button.textContent = topic.name; // Remove star from text
+                        } else {
+                            // Topic is not starred, star it
+                            currentStarred.push(topic.name);
+                            button.textContent = `⭐ ${topic.name}`; // Add star to text
+                        }
+                        setStarredTopics(currentStarred);
+                        // Re-render topics to apply sorting based on new starred state
+                        fetchAndCacheTopics(); 
+                    };
+
+                    button.addEventListener('mousedown', (e) => {
+                        pressTimer = setTimeout(() => handleLongPress(e), longPressDuration);
                     });
+                    button.addEventListener('mouseup', clearTimer);
+                    button.addEventListener('mouseleave', clearTimer); // Important for mouse events
+
+                    button.addEventListener('touchstart', (e) => {
+                        // Prevent default touch behavior (like scrolling) for a short duration
+                        e.preventDefault(); 
+                        pressTimer = setTimeout(() => handleLongPress(e), longPressDuration);
+                    }, { passive: false }); // Use passive: false to allow preventDefault
+                    button.addEventListener('touchend', clearTimer);
+                    button.addEventListener('touchcancel', clearTimer); // If touch is interrupted
+
+                    // Handle regular click (if not a long press)
+                    button.addEventListener('click', (e) => {
+                        if (pressTimer === null) { // If timer was cleared, it was a short click
+                             window.location.href = topic.htmlFileName;
+                        }
+                        // If pressTimer is still active, it means it's a long press that hasn't completed yet
+                        // or just completed, so we let handleLongPress take over.
+                    });
+
                     topicsListDiv.appendChild(button);
                 });
             }
