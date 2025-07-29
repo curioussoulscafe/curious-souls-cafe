@@ -11,6 +11,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            /* Removed touch-action: manipulation as it's no longer strictly needed with separate star icons */
         }
         .topic-button {
             background-color: #a855f7; /* Purple-500 */
@@ -23,8 +24,12 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             width: 100%; /* Full width */
-            text-align: center;
-            display: block; /* Ensures padding and margin work as expected */
+            text-align: left; /* Align text to left to make space for star */
+            display: flex; /* Use flexbox for alignment of text and star */
+            justify-content: space-between; /* Space out text and star */
+            align-items: center; /* Vertically align items */
+            position: relative; /* For absolute positioning of star */
+            padding-right: 3rem; /* Add padding for the star icon */
         }
         .topic-button:hover {
             background-color: #9333ea; /* Purple-600 */
@@ -260,6 +265,25 @@
             color: #6b7280; /* Medium gray */
             font-weight: 600;
         }
+
+        /* Star icon specific styling */
+        .star-icon {
+            font-size: 1.25rem; /* Slightly larger star */
+            color: white; /* Default color, will be overridden for filled */
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+            position: absolute;
+            right: 1.5rem; /* Position from the right edge of the button */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .star-icon.fa-solid {
+            color: #FFD700; /* Gold color for starred */
+        }
+        .star-icon:hover {
+            color: #FFEA00; /* Lighter gold on hover */
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -277,8 +301,8 @@
         </div>
         
         <h2 class="text-xl font-semibold text-gray-700 text-center mb-2">Pick a Topic or Action:</h2>
-        <p class="text-sm text-gray-500 text-center mb-6">
-            💡 Tap and hold a topic to favorite it!
+        <p class="text-sm text-gray-500 text-center mb-4"> <!-- Reduced mb-6 to mb-4 -->
+            💡 Tap the star to favorite a topic!
         </p>
 
         <!-- Live Discussion button container - hidden by default, shown dynamically -->
@@ -300,21 +324,21 @@
         </button> -->
 
         <!-- Button to Action Prompts Page -->
-        <button id="action-prompts-button" class="mt-4" onclick="location.href='pages/action-prompts.html'"> <!-- Changed ID and reduced mt-4 to mt-2 -->
+        <button id="action-prompts-button" class="mt-2" onclick="location.href='pages/action-prompts.html'"> <!-- Changed ID and reduced mt-4 to mt-2 -->
             Action Prompts
         </button>
 
         <!-- Button to Roll the Dice Page -->
-        <button id="dice-roll-button" class="mt-4" onclick="location.href='pages/dice-roll.html'"> <!-- Changed ID and reduced mt-4 to mt-2 -->
+        <button id="dice-roll-button" class="mt-2" onclick="location.href='pages/dice-roll.html'"> <!-- Changed ID and reduced mt-4 to mt-2 -->
             Roll the Dice
         </button>
 
         <div class="mt-8 pt-4 border-t border-gray-300 text-center">
             <h3 class="text-xl font-semibold text-purple-600 mb-4">Share with friends:</h3>
             <img src="images/qr-code.png" 
-                    alt="QR Code to launch app" 
-                    class="w-48 h-48 mx-auto rounded-lg shadow-md border border-gray-200 mb-4"
-                    onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Missing';"
+                        alt="QR Code to launch app" 
+                        class="w-48 h-48 mx-auto rounded-lg shadow-md border border-gray-200 mb-4"
+                        onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Missing';"
             >
             <p class="text-gray-500 text-sm mt-4">Let's help fellow curious souls scan the QR code to launch this page and start the conversation! 😊</p>
             <p class="text-sm text-gray-700 mt-2">
@@ -591,62 +615,49 @@
                     const button = document.createElement('button');
                     button.classList.add('topic-button');
                     
-                    // Prepend star if it's a starred topic
+                    const topicNameSpan = document.createElement('span');
+                    topicNameSpan.textContent = topic.name;
+                    topicNameSpan.style.pointerEvents = 'none'; // Ensure clicks on text pass through to button
+
+                    const starIcon = document.createElement('i');
+                    starIcon.classList.add('star-icon', 'fa-star'); // Base classes
+                    
                     const isStarred = starredTopics.includes(topic.name);
-                    button.textContent = isStarred ? `⭐ ${topic.name}` : topic.name;
+                    if (isStarred) {
+                        starIcon.classList.add('fa-solid'); // Filled star
+                    } else {
+                        starIcon.classList.add('fa-regular'); // Outline star
+                    }
 
-                    let pressTimer;
-                    const longPressDuration = 500; // milliseconds
-
-                    const clearTimer = () => {
-                        clearTimeout(pressTimer);
-                        pressTimer = null;
-                    };
-
-                    const handleLongPress = (e) => {
-                        clearTimer(); // Clear any existing timer
-                        e.preventDefault(); // Prevent default click/touch behavior
-
+                    // Event listener for the star icon
+                    starIcon.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent the button's click event from firing
                         const currentStarred = getStarredTopics();
                         const index = currentStarred.indexOf(topic.name);
 
                         if (index > -1) {
                             // Topic is already starred, unstar it
                             currentStarred.splice(index, 1);
-                            button.textContent = topic.name; // Remove star from text
+                            starIcon.classList.remove('fa-solid');
+                            starIcon.classList.add('fa-regular');
                         } else {
                             // Topic is not starred, star it
                             currentStarred.push(topic.name);
-                            button.textContent = `⭐ ${topic.name}`; // Add star to text
+                            starIcon.classList.remove('fa-regular');
+                            starIcon.classList.add('fa-solid');
                         }
                         setStarredTopics(currentStarred);
                         // Re-render topics to apply sorting based on new starred state
                         fetchAndCacheTopics(); 
-                    };
-
-                    button.addEventListener('mousedown', (e) => {
-                        pressTimer = setTimeout(() => handleLongPress(e), longPressDuration);
-                    });
-                    button.addEventListener('mouseup', clearTimer);
-                    button.addEventListener('mouseleave', clearTimer); // Important for mouse events
-
-                    button.addEventListener('touchstart', (e) => {
-                        // Prevent default touch behavior (like scrolling) for a short duration
-                        e.preventDefault(); 
-                        pressTimer = setTimeout(() => handleLongPress(e), longPressDuration);
-                    }, { passive: false }); // Use passive: false to allow preventDefault
-                    button.addEventListener('touchend', clearTimer);
-                    button.addEventListener('touchcancel', clearTimer); // If touch is interrupted
-
-                    // Handle regular click (if not a long press)
-                    button.addEventListener('click', (e) => {
-                        if (pressTimer === null) { // If timer was cleared, it was a short click
-                             window.location.href = topic.htmlFileName;
-                        }
-                        // If pressTimer is still active, it means it's a long press that hasn't completed yet
-                        // or just completed, so we let handleLongPress take over.
                     });
 
+                    // Event listener for the main button area (for navigation)
+                    button.addEventListener('click', () => {
+                        window.location.href = topic.htmlFileName;
+                    });
+
+                    button.appendChild(topicNameSpan);
+                    button.appendChild(starIcon);
                     topicsListDiv.appendChild(button);
                 });
             }
