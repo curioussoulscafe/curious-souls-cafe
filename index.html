@@ -85,7 +85,7 @@
         }
 
         /* Styles for the Action Prompts button */
-        #action-prompts-button {
+        #action-prompts-button, #dice-roll-button { /* Combined styles for both buttons */
             background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
             color: white; /* White text for contrast */
             font-weight: bold;
@@ -97,41 +97,18 @@
             width: 100%;
             margin-top: 0.5rem; /* Reduced margin */
             transition: all 0.2s ease-in-out;
-            display: block;
-            text-align: center;
+            display: flex; /* Changed to flex */
+            justify-content: space-between; /* Space out text and star */
+            align-items: center; /* Vertically align items */
+            position: relative; /* For absolute positioning of star */
+            padding-right: 3rem; /* Add padding for the star icon */
         }
-        #action-prompts-button:hover {
+        #action-prompts-button:hover, #dice-roll-button:hover {
             background: linear-gradient(to right, #000000, #333333); /* Even darker gradient on hover */
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
-        #action-prompts-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Styles for the Roll the Dice button */
-        #dice-roll-button {
-            background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
-            color: white; /* White text for contrast */
-            font-weight: bold;
-            padding: 1rem 1.5rem;
-            font-size: 1.125rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            width: 100%;
-            margin-top: 0.5rem; /* Reduced margin */
-            transition: all 0.2s ease-in-out;
-            display: block;
-            text-align: center;
-        }
-        #dice-roll-button:hover {
-            background: linear-gradient(to right, #000000, #333333); /* Even darker gradient on hover */
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #dice-roll-button:active {
+        #action-prompts-button:active, #dice-roll-button:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -324,13 +301,15 @@
         </button> -->
 
         <!-- Button to Action Prompts Page -->
-        <button id="action-prompts-button" class="mt-2" onclick="location.href='pages/action-prompts.html'"> <!-- Changed ID and reduced mt-4 to mt-2 -->
-            Action Prompts
+        <button id="action-prompts-button">
+            <span>Action Prompts</span>
+            <i class="star-icon fa-star"></i>
         </button>
 
         <!-- Button to Roll the Dice Page -->
-        <button id="dice-roll-button" class="mt-2" onclick="location.href='pages/dice-roll.html'"> <!-- Changed ID and reduced mt-4 to mt-2 -->
-            Roll the Dice
+        <button id="dice-roll-button">
+            <span>Roll the Dice</span>
+            <i class="star-icon fa-star"></i>
         </button>
 
         <div class="mt-8 pt-4 border-t border-gray-300 text-center">
@@ -422,6 +401,8 @@
         // Define the base URL for your GitHub Pages site
 
         const STARRED_TOPICS_KEY = 'csc_starred_topics'; // Local Storage key for starred topics
+        const STARRED_ACTION_PROMPTS_KEY = 'csc_starred_action_prompts';
+        const STARRED_DICE_ROLL_KEY = 'csc_starred_dice_roll';
 
         const topicsListDiv = document.getElementById('topics-list');
         const errorMessageDiv = document.getElementById('error-message');
@@ -437,10 +418,11 @@
         const liveDiscussionButtonContainer = document.getElementById('live-discussion-button-container');
         const liveDiscussionButton = document.getElementById('live-discussion-button');
 
-        // New suggestion modal elements
-        // const suggestQuestionButton = document.getElementById('suggest-question-button');
-        // const suggestionModal = document.getElementById('suggestion-modal');
-        // const closeSuggestionModalButton = document.getElementById('close-suggestion-modal');
+        // Get references to the Action Prompts and Roll the Dice buttons and their stars
+        const actionPromptsButton = document.getElementById('action-prompts-button');
+        const actionPromptsStar = actionPromptsButton.querySelector('.star-icon');
+        const diceRollButton = document.getElementById('dice-roll-button');
+        const diceRollStar = diceRollButton.querySelector('.star-icon');
 
         // --- Hardcoded Topic Configurations ---
         const TOPIC_CONFIGS = [
@@ -527,6 +509,31 @@
 
         function setStarredTopics(topics) {
             localStorage.setItem(STARRED_TOPICS_KEY, JSON.stringify(topics));
+        }
+
+        // --- Local Storage Helper Functions for Starred Buttons ---
+        function getStarredButtonState(key) {
+            const state = localStorage.getItem(key);
+            return state === 'true'; // Returns true if 'true', false otherwise (including null)
+        }
+
+        function setStarredButtonState(key, isStarred) {
+            localStorage.setItem(key, isStarred ? 'true' : 'false');
+        }
+
+        /**
+         * Updates the star icon's visual state.
+         * @param {HTMLElement} starElement The <i> element for the star.
+         * @param {boolean} isStarred Whether the item is starred.
+         */
+        function updateStarIcon(starElement, isStarred) {
+            if (isStarred) {
+                starElement.classList.remove('fa-regular');
+                starElement.classList.add('fa-solid');
+            } else {
+                starElement.classList.remove('fa-solid');
+                starElement.classList.add('fa-regular');
+            }
         }
 
         /**
@@ -623,11 +630,7 @@
                     starIcon.classList.add('star-icon', 'fa-star'); // Base classes
                     
                     const isStarred = starredTopics.includes(topic.name);
-                    if (isStarred) {
-                        starIcon.classList.add('fa-solid'); // Filled star
-                    } else {
-                        starIcon.classList.add('fa-regular'); // Outline star
-                    }
+                    updateStarIcon(starIcon, isStarred); // Set initial star icon state
 
                     // Event listener for the star icon
                     starIcon.addEventListener('click', (e) => {
@@ -638,13 +641,9 @@
                         if (index > -1) {
                             // Topic is already starred, unstar it
                             currentStarred.splice(index, 1);
-                            starIcon.classList.remove('fa-solid');
-                            starIcon.classList.add('fa-regular');
                         } else {
                             // Topic is not starred, star it
                             currentStarred.push(topic.name);
-                            starIcon.classList.remove('fa-regular');
-                            starIcon.classList.add('fa-solid');
                         }
                         setStarredTopics(currentStarred);
                         // Re-render topics to apply sorting based on new starred state
@@ -662,6 +661,45 @@
                 });
             }
         }
+
+        /**
+         * Initializes the star state and click listener for the Action Prompts and Roll the Dice buttons.
+         */
+        function initializeFixedButtonsStarring() {
+            // Action Prompts Button
+            const isActionPromptsStarred = getStarredButtonState(STARRED_ACTION_PROMPTS_KEY);
+            updateStarIcon(actionPromptsStar, isActionPromptsStarred);
+            actionPromptsStar.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const newState = !getStarredButtonState(STARRED_ACTION_PROMPTS_KEY);
+                setStarredButtonState(STARRED_ACTION_PROMPTS_KEY, newState);
+                updateStarIcon(actionPromptsStar, newState);
+            });
+            // Ensure the main button still navigates
+            actionPromptsButton.addEventListener('click', () => {
+                window.location.href = 'pages/action-prompts.html';
+            });
+            // Prevent text clicks from interfering with button navigation
+            actionPromptsButton.querySelector('span').style.pointerEvents = 'none';
+
+
+            // Roll the Dice Button
+            const isDiceRollStarred = getStarredButtonState(STARRED_DICE_ROLL_KEY);
+            updateStarIcon(diceRollStar, isDiceRollStarred);
+            diceRollStar.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const newState = !getStarredButtonState(STARRED_DICE_ROLL_KEY);
+                setStarredButtonState(STARRED_DICE_ROLL_KEY, newState);
+                updateStarIcon(diceRollStar, newState);
+            });
+            // Ensure the main button still navigates
+            diceRollButton.addEventListener('click', () => {
+                window.location.href = 'pages/dice-roll.html';
+            });
+            // Prevent text clicks from interfering with button navigation
+            diceRollButton.querySelector('span').style.pointerEvents = 'none';
+        }
+
 
         /**
          * Fetches quotes from quotes.txt and displays a random one, utilizing localStorage caching.
@@ -714,18 +752,10 @@
             }
         }
 
-        // Event listeners for the new suggestion modal
-        // suggestQuestionButton.addEventListener('click', function() {
-        //     suggestionModal.classList.add('show');
-        // });
-
-        // closeSuggestionModalButton.addEventListener('click', function() {
-        //     suggestionModal.classList.remove('show');
-        // });
-
         // Fetch topics and quote when the page loads
         fetchAndCacheTopics();
         fetchAndDisplayQuoteOfDay();
+        initializeFixedButtonsStarring(); // Initialize starring for fixed buttons
     </script>    
 </body>
 </html>
