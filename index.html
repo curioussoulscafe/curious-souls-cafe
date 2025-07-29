@@ -95,7 +95,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             width: 100%;
-            margin-top: 0.5rem; /* Reduced margin */
+            /* Removed margin-top here as it will be handled by the parent space-y-4 */
             transition: all 0.2s ease-in-out;
             display: flex; /* Changed to flex */
             justify-content: space-between; /* Space out text and star */
@@ -306,17 +306,20 @@
             Submit Questions | Feedback
         </button> -->
 
-        <!-- Button to Action Prompts Page -->
-        <button id="action-prompts-button">
-            <span>Action Prompts</span>
-            <i class="star-icon fa-star"></i>
-        </button>
+        <!-- Action Buttons Container -->
+        <div class="space-y-4 mt-4"> <!-- Added space-y-4 and mt-4 for consistent spacing -->
+            <!-- Button to Action Prompts Page -->
+            <button id="action-prompts-button">
+                <span>Action Prompts</span>
+                <i class="star-icon fa-star"></i>
+            </button>
 
-        <!-- Button to Roll the Dice Page -->
-        <button id="dice-roll-button">
-            <span>Roll the Dice</span>
-            <i class="star-icon fa-star"></i>
-        </button>
+            <!-- Button to Roll the Dice Page -->
+            <button id="dice-roll-button">
+                <span>Roll the Dice</span>
+                <i class="star-icon fa-star"></i>
+            </button>
+        </div>
 
         <div class="mt-8 pt-4 border-t border-gray-300 text-center">
             <h3 class="text-xl font-semibold text-purple-600 mb-4">Share with friends:</h3>
