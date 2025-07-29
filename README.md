@@ -58,6 +58,8 @@ Note: Questions with a spiral emoiji 🌀 are deeper ones
 
 * **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html). Just click (or tap) on a topic button to dive in!
 
+* **Favorite Topics & Actions:** Easily mark your favorite topics by tapping the star icon next to them. Favorited items will appear at the top of the list for quick access, and your preferences are saved for your next visit.
+
 * **Get Random Questions:** Once you're on a topic page, tell the web app how many questions you'd like, and it will instantly give you new ones to ponder.
 
 * **Find Specific Questions:** Looking for something particular? Use the search bar to find questions that match your keywords.
