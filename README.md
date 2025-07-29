@@ -61,6 +61,8 @@ Note: Questions with a spiral emoiji 🌀 are deeper ones
 
 * **Favorite Topics & Actions:** Easily mark your favorite topics by tapping the star icon next to them. Favorited items will appear at the top of the list for quick access, and your preferences are saved for your next visit.
 
+* **Search and Filter:** Use the search bar on the main page to quickly filter and find specific topics or actions among a growing list of options.
+
 * **Get Random Questions:** Once you're on a topic page, tell the web app how many questions you'd like, and it will instantly give you new ones to ponder.
 
 * **Find Specific Questions:** Looking for something particular? Use the search bar to find questions that match your keywords.
