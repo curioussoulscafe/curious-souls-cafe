@@ -289,6 +289,12 @@
             </button>
         </div>
 
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input type="text" id="search-bar" placeholder="Filter topics and actions..."
+                   class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+        </div>
+
         <div id="topics-list" class="space-y-4">
             <div class="loading-spinner"></div>
             <p class="text-gray-500 text-center">Loading topics and questions...</p>
@@ -408,6 +414,7 @@
         const errorMessageDiv = document.getElementById('error-message');
         const quoteDisplay = document.getElementById('quote-display');
         const quoteAuthor = document.getElementById('quote-author');
+        const searchBar = document.getElementById('search-bar'); // Reference to the search bar
 
         // Path for quotes.txt (relative)
         const quotesTxtUrl = 'data/quotes.txt';
@@ -423,6 +430,9 @@
         const actionPromptsStar = actionPromptsButton.querySelector('.star-icon');
         const diceRollButton = document.getElementById('dice-roll-button');
         const diceRollStar = diceRollButton.querySelector('.star-icon');
+
+        // Store all topic and action buttons after they are created
+        let allButtons = [];
 
         // --- Hardcoded Topic Configurations ---
         const TOPIC_CONFIGS = [
@@ -498,12 +508,6 @@
                 htmlFileName: "pages/interdependence.html", // Path to HTML subpage
                 txtUrl: "questions/interdependence.txt", // Relative path for question file, kebab-case
                 cache: true 
-            },
-            {
-                name: "Inner Child",
-                htmlFileName: "pages/inner-child.html", // Path to HTML subpage
-                txtUrl: "questions/inner-child.txt", // Relative path for question file, kebab-case
-                cache: true 
             }
         ];
 
@@ -543,12 +547,29 @@
         }
 
         /**
+         * Filters the displayed topic and action buttons based on the search input.
+         */
+        function filterButtons() {
+            const searchTerm = searchBar.value.toLowerCase();
+            allButtons.forEach(button => {
+                // Get the text content of the span (which holds the topic/action name)
+                const buttonText = button.querySelector('span').textContent.toLowerCase();
+                if (buttonText.includes(searchTerm)) {
+                    button.style.display = 'flex'; // Show the button (using flex display)
+                } else {
+                    button.style.display = 'none'; // Hide the button
+                }
+            });
+        }
+
+        /**
          * Fetches topic content based on TOPIC_CONFIGS and stores in localStorage (selectively).
          * Creates buttons for each topic.
          */
         async function fetchAndCacheTopics() {
             topicsListDiv.innerHTML = '<div class="loading-spinner"></div><p class="text-gray-500 text-center">Loading topics and questions...</p>';
             errorMessageDiv.classList.add('hidden'); // Hide error message initially
+            allButtons = []; // Clear previous buttons before re-rendering
 
             let successfulTopics = [];
             let liveDiscussionFound = false;
@@ -603,6 +624,7 @@
                 liveDiscussionButton.addEventListener('click', () => {
                     window.location.href = 'pages/live-discussion.html'; 
                 });
+                allButtons.push(liveDiscussionButton); // Add to allButtons for filtering
             } else {
                 liveDiscussionButtonContainer.classList.add('hidden'); 
             }
@@ -664,8 +686,11 @@
                     button.appendChild(topicNameSpan);
                     button.appendChild(starIcon);
                     topicsListDiv.appendChild(button);
+                    allButtons.push(button); // Add to allButtons for filtering
                 });
             }
+            // After all buttons are rendered, apply current filter
+            filterButtons(); 
         }
 
         /**
@@ -687,6 +712,7 @@
             });
             // Prevent text clicks from interfering with button navigation
             actionPromptsButton.querySelector('span').style.pointerEvents = 'none';
+            allButtons.push(actionPromptsButton); // Add to allButtons for filtering
 
 
             // Roll the Dice Button
@@ -704,6 +730,7 @@
             });
             // Prevent text clicks from interfering with button navigation
             diceRollButton.querySelector('span').style.pointerEvents = 'none';
+            allButtons.push(diceRollButton); // Add to allButtons for filtering
         }
 
 
@@ -758,10 +785,22 @@
             }
         }
 
+        // Event listeners for the new suggestion modal
+        // suggestQuestionButton.addEventListener('click', function() {
+        //     suggestionModal.classList.add('show');
+        // });
+
+        // closeSuggestionModalButton.addEventListener('click', function() {
+        //     suggestionModal.classList.remove('show');
+        // });
+
         // Fetch topics and quote when the page loads
         fetchAndCacheTopics();
         fetchAndDisplayQuoteOfDay();
         initializeFixedButtonsStarring(); // Initialize starring for fixed buttons
+
+        // Add event listener for the search bar
+        searchBar.addEventListener('input', filterButtons);
     </script>    
 </body>
 </html>
