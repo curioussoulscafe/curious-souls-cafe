@@ -79,8 +79,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Styles for the Roll the Dice button to match Submit a Question */
-        #roll-dice-page-button {
+        /* Styles for the Action Prompts button */
+        #action-prompts-button {
             background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
             color: white; /* White text for contrast */
             font-weight: bold;
@@ -90,17 +90,43 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             width: 100%;
-            margin-top: 1rem;
+            margin-top: 0.5rem; /* Reduced margin */
             transition: all 0.2s ease-in-out;
             display: block;
             text-align: center;
         }
-        #roll-dice-page-button:hover {
+        #action-prompts-button:hover {
             background: linear-gradient(to right, #000000, #333333); /* Even darker gradient on hover */
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
-        #roll-dice-page-button:active {
+        #action-prompts-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styles for the Roll the Dice button */
+        #dice-roll-button {
+            background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
+            color: white; /* White text for contrast */
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+            font-size: 1.125rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.5rem; /* Reduced margin */
+            transition: all 0.2s ease-in-out;
+            display: block;
+            text-align: center;
+        }
+        #dice-roll-button:hover {
+            background: linear-gradient(to right, #000000, #333333); /* Even darker gradient on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #dice-roll-button:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -273,13 +299,13 @@
             Submit Questions | Feedback
         </button> -->
 
-        <!-- Button to Roll the Dice Page -->
-        <button id="roll-dice-page-button" class="mt-4" onclick="location.href='pages/action-prompts.html'">
+        <!-- Button to Action Prompts Page -->
+        <button id="action-prompts-button" class="mt-4" onclick="location.href='pages/action-prompts.html'"> <!-- Changed ID and reduced mt-4 to mt-2 -->
             Action Prompts
         </button>
 
         <!-- Button to Roll the Dice Page -->
-        <button id="roll-dice-page-button" class="mt-4" onclick="location.href='pages/dice-roll.html'">
+        <button id="dice-roll-button" class="mt-4" onclick="location.href='pages/dice-roll.html'"> <!-- Changed ID and reduced mt-4 to mt-2 -->
             Roll the Dice
         </button>
 
