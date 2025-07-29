@@ -85,7 +85,7 @@
         }
 
         /* Styles for the Action Prompts button */
-        #action-prompts-button, #dice-roll-button { /* Combined styles for both buttons */
+        .action-button { /* Applied to both action and dice buttons */
             background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
             color: white; /* White text for contrast */
             font-weight: bold;
@@ -95,7 +95,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             width: 100%;
-            /* Removed margin-top here as it will be handled by the parent space-y-4 */
             transition: all 0.2s ease-in-out;
             display: flex; /* Changed to flex */
             justify-content: space-between; /* Space out text and star */
@@ -103,12 +102,12 @@
             position: relative; /* For absolute positioning of star */
             padding-right: 3rem; /* Add padding for the star icon */
         }
-        #action-prompts-button:hover, #dice-roll-button:hover {
+        .action-button:hover {
             background: linear-gradient(to right, #000000, #333333); /* Even darker gradient on hover */
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
-        #action-prompts-button:active, #dice-roll-button:active {
+        .action-button:active {
             transform: translateY(0);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -307,18 +306,8 @@
         </button> -->
 
         <!-- Action Buttons Container -->
-        <div class="space-y-4 mt-4"> <!-- Added space-y-4 and mt-4 for consistent spacing -->
-            <!-- Button to Action Prompts Page -->
-            <button id="action-prompts-button">
-                <span>Action Prompts</span>
-                <i class="star-icon fa-star"></i>
-            </button>
-
-            <!-- Button to Roll the Dice Page -->
-            <button id="dice-roll-button">
-                <span>Roll the Dice</span>
-                <i class="star-icon fa-star"></i>
-            </button>
+        <div id="action-buttons-container" class="space-y-4 mt-4"> 
+            <!-- Buttons will be dynamically added here by JavaScript -->
         </div>
 
         <div class="mt-8 pt-4 border-t border-gray-300 text-center">
@@ -418,6 +407,7 @@
         const quoteDisplay = document.getElementById('quote-display');
         const quoteAuthor = document.getElementById('quote-author');
         const searchBar = document.getElementById('search-bar'); // Reference to the search bar
+        const actionButtonsContainer = document.getElementById('action-buttons-container'); // New container for action buttons
 
         // Path for quotes.txt (relative)
         const quotesTxtUrl = 'data/quotes.txt';
@@ -427,12 +417,6 @@
         // Variables for the Live Discussion button
         const liveDiscussionButtonContainer = document.getElementById('live-discussion-button-container');
         const liveDiscussionButton = document.getElementById('live-discussion-button');
-
-        // Get references to the Action Prompts and Roll the Dice buttons and their stars
-        const actionPromptsButton = document.getElementById('action-prompts-button');
-        const actionPromptsStar = actionPromptsButton.querySelector('.star-icon');
-        const diceRollButton = document.getElementById('dice-roll-button');
-        const diceRollStar = diceRollButton.querySelector('.star-icon');
 
         // Store all topic and action buttons after they are created
         let allButtons = [];
@@ -572,8 +556,7 @@
         async function fetchAndCacheTopics() {
             topicsListDiv.innerHTML = '<div class="loading-spinner"></div><p class="text-gray-500 text-center">Loading topics and questions...</p>';
             errorMessageDiv.classList.add('hidden'); // Hide error message initially
-            allButtons = []; // Clear previous buttons before re-rendering
-
+            
             let successfulTopics = [];
             let liveDiscussionFound = false;
 
@@ -627,7 +610,7 @@
                 liveDiscussionButton.addEventListener('click', () => {
                     window.location.href = 'pages/live-discussion.html'; 
                 });
-                allButtons.push(liveDiscussionButton); // Add to allButtons for filtering
+                // Note: liveDiscussionButton is added to allButtons in renderAllContent
             } else {
                 liveDiscussionButtonContainer.classList.add('hidden'); 
             }
@@ -678,7 +661,7 @@
                         }
                         setStarredTopics(currentStarred);
                         // Re-render topics to apply sorting based on new starred state
-                        fetchAndCacheTopics(); 
+                        renderAllContent(); // Re-render all content to re-sort topics
                     });
 
                     // Event listener for the main button area (for navigation)
@@ -689,51 +672,75 @@
                     button.appendChild(topicNameSpan);
                     button.appendChild(starIcon);
                     topicsListDiv.appendChild(button);
-                    allButtons.push(button); // Add to allButtons for filtering
+                    // Note: Buttons are added to allButtons in renderAllContent
                 });
             }
-            // After all buttons are rendered, apply current filter
-            filterButtons(); 
         }
 
         /**
-         * Initializes the star state and click listener for the Action Prompts and Roll the Dice buttons.
+         * Renders the Action Prompts and Roll the Dice buttons, handling their starring state and order.
          */
-        function initializeFixedButtonsStarring() {
-            // Action Prompts Button
-            const isActionPromptsStarred = getStarredButtonState(STARRED_ACTION_PROMPTS_KEY);
-            updateStarIcon(actionPromptsStar, isActionPromptsStarred);
-            actionPromptsStar.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const newState = !getStarredButtonState(STARRED_ACTION_PROMPTS_KEY);
-                setStarredButtonState(STARRED_ACTION_PROMPTS_KEY, newState);
-                updateStarIcon(actionPromptsStar, newState);
-            });
-            // Ensure the main button still navigates
-            actionPromptsButton.addEventListener('click', () => {
-                window.location.href = 'pages/action-prompts.html';
-            });
-            // Prevent text clicks from interfering with button navigation
-            actionPromptsButton.querySelector('span').style.pointerEvents = 'none';
-            allButtons.push(actionPromptsButton); // Add to allButtons for filtering
+        function renderActionButtons() {
+            actionButtonsContainer.innerHTML = ''; // Clear existing buttons
+            const actionButtons = [];
 
+            // Define action button data
+            const actionPromptsData = {
+                name: "Action Prompts",
+                htmlFileName: "pages/action-prompts.html",
+                localStorageKey: STARRED_ACTION_PROMPTS_KEY
+            };
+            const diceRollData = {
+                name: "Roll the Dice",
+                htmlFileName: "pages/dice-roll.html",
+                localStorageKey: STARRED_DICE_ROLL_KEY
+            };
 
-            // Roll the Dice Button
-            const isDiceRollStarred = getStarredButtonState(STARRED_DICE_ROLL_KEY);
-            updateStarIcon(diceRollStar, isDiceRollStarred);
-            diceRollStar.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const newState = !getStarredButtonState(STARRED_DICE_ROLL_KEY);
-                setStarredButtonState(STARRED_DICE_ROLL_KEY, newState);
-                updateStarIcon(diceRollStar, newState);
+            // Determine order based on starred state
+            const isActionPromptsStarred = getStarredButtonState(actionPromptsData.localStorageKey);
+            const isDiceRollStarred = getStarredButtonState(diceRollData.localStorageKey);
+
+            if (isActionPromptsStarred && !isDiceRollStarred) {
+                actionButtons.push(actionPromptsData);
+                actionButtons.push(diceRollData);
+            } else if (!isActionPromptsStarred && isDiceRollStarred) {
+                actionButtons.push(diceRollData);
+                actionButtons.push(actionPromptsData);
+            } else {
+                // Default order (alphabetical or original if both/neither starred)
+                actionButtons.push(actionPromptsData);
+                actionButtons.push(diceRollData);
+                actionButtons.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            actionButtons.forEach(buttonData => {
+                const button = document.createElement('button');
+                button.classList.add('action-button'); // Use a common class for styling
+                button.id = buttonData.name.toLowerCase().replace(/ /g, '-') + '-button'; // Assign a unique ID
+
+                const buttonNameSpan = document.createElement('span');
+                buttonNameSpan.textContent = buttonData.name;
+                buttonNameSpan.style.pointerEvents = 'none'; // Ensure clicks on text pass through to button
+
+                const starIcon = document.createElement('i');
+                starIcon.classList.add('star-icon', 'fa-star');
+                updateStarIcon(starIcon, getStarredButtonState(buttonData.localStorageKey));
+
+                starIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const newState = !getStarredButtonState(buttonData.localStorageKey);
+                    setStarredButtonState(buttonData.localStorageKey, newState);
+                    renderAllContent(); // Re-render all content to re-sort action buttons
+                });
+
+                button.addEventListener('click', () => {
+                    window.location.href = buttonData.htmlFileName;
+                });
+
+                button.appendChild(buttonNameSpan);
+                button.appendChild(starIcon);
+                actionButtonsContainer.appendChild(button);
             });
-            // Ensure the main button still navigates
-            diceRollButton.addEventListener('click', () => {
-                window.location.href = 'pages/dice-roll.html';
-            });
-            // Prevent text clicks from interfering with button navigation
-            diceRollButton.querySelector('span').style.pointerEvents = 'none';
-            allButtons.push(diceRollButton); // Add to allButtons for filtering
         }
 
 
@@ -788,19 +795,39 @@
             }
         }
 
-        // Event listeners for the new suggestion modal
-        // suggestQuestionButton.addEventListener('click', function() {
-        //     suggestionModal.classList.add('show');
-        // });
+        /**
+         * Renders all dynamic content on the page (topics and action buttons) and applies filtering.
+         */
+        async function renderAllContent() {
+            allButtons = []; // Clear the global list of buttons
 
-        // closeSuggestionModalButton.addEventListener('click', function() {
-        //     suggestionModal.classList.remove('show');
-        // });
+            // Render Live Discussion button if applicable
+            // This button is not part of the `topicsListDiv` or `action-buttons-container` but exists independently
+            // and should be included in `allButtons` for filtering.
+            let liveDiscussionButtonElement = document.getElementById('live-discussion-button');
+            if (liveDiscussionButtonElement && !liveDiscussionButtonContainer.classList.contains('hidden')) {
+                allButtons.push(liveDiscussionButtonElement);
+            }
 
-        // Fetch topics and quote when the page loads
-        fetchAndCacheTopics();
+            await fetchAndCacheTopics(); // This populates topicsListDiv and adds topic buttons to allButtons
+            renderActionButtons(); // This populates actionButtonsContainer and adds action buttons to allButtons
+
+            // After all buttons are rendered, collect them into allButtons for filtering
+            allButtons = Array.from(topicsListDiv.querySelectorAll('.topic-button'))
+                         .concat(Array.from(actionButtonsContainer.querySelectorAll('.action-button')));
+            
+            // Add Live Discussion button if it's visible
+            if (liveDiscussionButtonElement && !liveDiscussionButtonContainer.classList.contains('hidden')) {
+                allButtons.push(liveDiscussionButtonElement);
+            }
+
+            filterButtons(); // Apply current filter to all rendered buttons
+        }
+
+
+        // Initial load
         fetchAndDisplayQuoteOfDay();
-        initializeFixedButtonsStarring(); // Initialize starring for fixed buttons
+        renderAllContent(); // Call the new main rendering function
 
         // Add event listener for the search bar
         searchBar.addEventListener('input', filterButtons);
