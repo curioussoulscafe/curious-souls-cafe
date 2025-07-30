@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Curious Souls Café</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
     /* GitHub-like CSS */
     body {
@@ -113,6 +114,24 @@
     .pro-tip strong {
       font-weight: bold;
       color: #0366d6;
+    }
+
+    /* Styling for the GitHub icon */
+    .github-icon-footer {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+    .github-icon-footer a {
+        color: #333; /* Dark grey for GitHub icon */
+        font-size: 2.5em; /* Larger icon size */
+        transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+    }
+    .github-icon-footer a:hover {
+        color: #6b46c1; /* Purple on hover */
+        transform: scale(1.1);
     }
   </style>
 </head>
@@ -273,6 +292,11 @@
 </ol>
 <p>Thank you for visiting the Curious Souls Café! We hope it sparks many interesting conversations.</p>
 <p>⬅️ <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Leave this page</a> (go to Curious Souls Café web app)</p>
+</div>
+<div class="github-icon-footer">
+    <a href="https://github.com/curioussoulscafe/curious-souls-cafe" target="_blank" rel="noopener noreferrer" aria-label="Check out our GitHub repository">
+        <i class="fa-brands fa-github"></i>
+    </a>
 </div>
 </body>
 </html>
