@@ -124,6 +124,7 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
 
     <script>
         const CUSTOM_QUESTIONS_STORAGE_KEY = 'csc_custom_questions_data'; // LocalStorage key for custom questions
+        const MIN_QUESTIONS = 3; // Minimum number of questions required
 
         const questionInput = document.getElementById('question-input');
         const saveQuestionsBtn = document.getElementById('save-questions-btn');
@@ -145,12 +146,18 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
                                      .map(line => line.trim())
                                      .filter(line => line.length > 0);
 
+            if (questions.length < MIN_QUESTIONS) {
+                alert(`Please enter at least ${MIN_QUESTIONS} questions to submit.`);
+                return; // Stop the function if not enough questions
+            }
+
             if (questions.length > 0) {
                 localStorage.setItem(CUSTOM_QUESTIONS_STORAGE_KEY, JSON.stringify(questions));
-                alert('Your questions have been saved! Redirecting to Custom Questions page.'); // Using alert for simplicity as per instructions
+                alert('Your questions have been saved! Redirecting to Custom Questions page.');
                 window.location.href = 'custom-questions-display.html'; // Redirect to the display page
             } else {
-                alert('Please enter some questions before saving.'); // Using alert for simplicity
+                // This case should ideally be caught by the MIN_QUESTIONS check, but kept as a fallback
+                alert('Please enter some questions before saving.');
             }
         });
 
@@ -158,7 +165,7 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
         clearInputBtn.addEventListener('click', () => {
             questionInput.value = ''; // Clear the textarea
             localStorage.removeItem(CUSTOM_QUESTIONS_STORAGE_KEY); // Also clear from localStorage
-            alert('Input and saved custom questions cleared!'); // Using alert for simplicity
+            alert('Input and saved custom questions cleared!');
         });
     </script>
 </body>
