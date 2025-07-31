@@ -174,7 +174,6 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
 
             if (questions.length > 0) {
                 localStorage.setItem(CUSTOM_QUESTIONS_STORAGE_KEY, JSON.stringify(questions));
-                alert('Your questions have been saved! Redirecting to Custom Questions page.');
                 window.location.href = 'custom-questions-display.html'; // Redirect to the display page
             } else {
                 // This case should ideally be caught by the MIN_QUESTIONS check, but kept as a fallback
