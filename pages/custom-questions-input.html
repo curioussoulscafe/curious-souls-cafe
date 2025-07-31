@@ -24,15 +24,20 @@
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
             padding: 2rem;
             width: 100%;
-            max-width: 500px; /* Adjusted max-width for widescreen monitors */
+            max-width: 448px; /* Adjusted max-width for consistency with other pages */
             margin-top: 2rem; /* Space from top */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added for consistency */
+        }
+        .container:hover {
+            transform: scale(1.02); /* Slightly enlarge on hover for consistency */
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         }
         h1 {
             font-size: 1.875rem; /* text-3xl */
             font-weight: 700; /* font-bold */
             color: #6b46c1; /* Purple-600 */
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.5rem; /* Adjusted for consistency */
         }
         textarea {
             width: 100%;
@@ -51,54 +56,65 @@
             border-color: #a855f7; /* Purple-500 */
             box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); /* Purple-500 with opacity */
         }
-        .button-group {
-            display: flex;
-            gap: 1rem; /* Space between buttons */
-            margin-bottom: 1.5rem;
-        }
+        /* Updated button styles for consistency */
         .btn {
-            flex-grow: 1; /* Make buttons take equal width */
-            padding: 0.75rem 1.25rem;
-            border-radius: 0.5rem;
+            padding: 0.75rem 1.25rem; /* Adjusted padding */
+            border-radius: 9999px; /* Full rounded corners for consistency */
             font-weight: 600;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease-in-out;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Full width for consistency */
+            margin-top: 1rem; /* Space between buttons */
+            display: block; /* Ensure it takes full width */
         }
         .btn-primary {
-            background-color: #8b5cf6; /* Violet-500 */
+            background: linear-gradient(to right, #8b5cf6, #ec4899); /* Violet-500 to Pink-500 gradient */
             color: white;
         }
         .btn-primary:hover {
-            background-color: #7c3aed; /* Violet-600 */
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(to right, #7c3aed, #db2777); /* Darker gradient on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .btn-secondary {
-            background-color: #e5e7eb; /* Gray-200 */
-            color: #374151; /* Gray-700 */
+            background-color: #fc8181; /* Lighter red for "Clear Saved Questions" consistency */
+            color: white; /* White text */
         }
         .btn-secondary:hover {
-            background-color: #d1d5db; /* Gray-300 */
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+            background-color: #f56565; /* Slightly darker light red on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
-        .back-button {
+        .btn-secondary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Back button styling consistent with topic pages */
+        #back-to-main {
+            background-color: #c53030; /* Deeper red for "Leave Page" consistency */
+            color: white; /* White text */
+            border: none; /* No border */
+            padding: 0.75rem 1.5rem; /* Adjusted padding */
+            font-size: 1rem; /* Matched font size */
+            font-weight: bold;
+            border-radius: 9999px; /* Full rounded */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            width: 100%;
+            margin-top: 2rem; /* Adjusted top margin */
             display: block;
-            margin-top: 2rem;
             text-align: center;
-            color: #6b46c1; /* Purple-600 */
-            font-weight: 600;
-            text-decoration: none;
-            transition: color 0.2s ease-in-out;
         }
-        .back-button:hover {
-            color: #805ad5; /* Darker purple on hover */
-            text-decoration: underline;
-        }
-        .back-button i {
-            margin-right: 0.5rem;
+        #back-to-main:hover {
+            background-color: #9b2c2c; /* Slightly darker red on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
@@ -109,22 +125,31 @@
                 <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
             </a>
         </div>
-        <h1>Submit Your Custom Questions</h1>
-        <p class="text-gray-600 text-center mb-4">Paste your questions below, one question per line. Your questions will be saved in your browser and will be available on the "Custom Questions" page.</p>
+        <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
+        <hr class="border-purple-300 mb-4 w-1/2 mx-auto"> <!-- Consistent hr styling -->
+        
+        <h2 class="text-xl font-semibold text-purple-600 text-center mb-4">Submit Your Custom Questions</h2>
+        <p class="text-gray-600 text-center mb-4">
+            Paste your questions below, one question per line. Your questions will be saved locally in your browser and will be available on the "Custom Questions" page.
+        </p>
+        <p class="text-gray-600 text-center mb-4">
+            <strong>Please note: This data is local and impermanent.</strong> If you clear your browser data or switch devices, your questions will be lost.
+            Consider backing up your questions elsewhere if they are important.
+        </p>
         
         <textarea id="question-input" placeholder="Example:
 What is one thing you're truly passionate about?
 If you could travel anywhere in time, where would you go and why?
 What's a small act of kindness you've witnessed or performed recently?"></textarea>
         
-        <div class="button-group">
+        <div> <!-- Removed button-group and applied styles directly to buttons -->
             <button id="save-questions-btn" class="btn btn-primary">Save & View Questions</button>
             <button id="clear-input-btn" class="btn btn-secondary">Clear Input</button>
         </div>
 
-        <a href="../index.html" class="back-button">
+        <button id="back-to-main" title="Back to Main Page">
             <i class="fas fa-arrow-left"></i> Back to Main Page
-        </a>
+        </button>
     </div>
 
     <script>
@@ -134,6 +159,7 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
         const questionInput = document.getElementById('question-input');
         const saveQuestionsBtn = document.getElementById('save-questions-btn');
         const clearInputBtn = document.getElementById('clear-input-btn');
+        const backToMainButton = document.getElementById('back-to-main'); // Get the new back button
 
         // Load previously saved questions into the textarea on page load
         window.addEventListener('load', () => {
@@ -171,6 +197,11 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
             questionInput.value = ''; // Clear the textarea
             localStorage.removeItem(CUSTOM_QUESTIONS_STORAGE_KEY); // Also clear from localStorage
             alert('Input and saved custom questions cleared!');
+        });
+
+        // Event listener for the new back to main button
+        backToMainButton.addEventListener('click', () => {
+            window.location.href = '../index.html'; // Path back to index.html
         });
     </script>
 </body>
