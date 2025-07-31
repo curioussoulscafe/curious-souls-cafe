@@ -11,7 +11,6 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            /* Removed touch-action: manipulation as it's no longer strictly needed with separate star icons */
         }
         .topic-button {
             background-color: #a855f7; /* Purple-500 */
@@ -46,52 +45,26 @@
             margin-top: 1rem; /* Add some space above the link */
             color: #6b46c1; /* Purple text color */
             font-weight: 600; /* Semi-bold font */
-            text-decoration: none; /* No underline by default */
+            text-decoration: none;
             transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
         }
 
         .info-link:hover {
             color: #805ad5; /* Darker purple on hover */
-            text-decoration: underline; /* Underline on hover */
+            text-decoration: underline;
         }
         .info-link i {
             margin-right: 0.5rem; /* Space between icon and text */
         }
 
-        /* Styles for Submit Question button with Dark Grey gradient */
-        #suggest-question-button {
+        /* Styles for the Action Prompts, Roll the Dice, and Submit Questions buttons */
+        .action-button { 
             background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
             color: white; /* White text for contrast */
             font-weight: bold;
             padding: 1rem 1.5rem;
-            font-size: 1.125rem;
             border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            width: 100%;
-            margin-top: 1rem;
-            transition: all 0.2s ease-in-out;
-            display: block;
-            text-align: center;
-        }
-        #suggest-question-button:hover {
-            background: linear-gradient(to right, #000000, #333333); /* Even darker gradient on hover */
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #suggest-question-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Styles for the Action Prompts button */
-        .action-button { /* Applied to both action and dice buttons */
-            background: linear-gradient(to right, #1A1A1A, #4A4A4A); /* Very Dark Grey to Medium Dark Grey gradient */
-            color: white; /* White text for contrast */
-            font-weight: bold;
-            padding: 1rem 1.5rem;
             font-size: 1.125rem;
-            border-radius: 0.5rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             width: 100%;
@@ -277,7 +250,7 @@
         </div>
         
         <h2 class="text-xl font-semibold text-gray-700 text-center mb-2">Pick a Topic or Action:</h2>
-        <p class="text-sm text-gray-500 text-center mb-4"> <!-- Reduced mb-6 to mb-4 -->
+        <p class="text-sm text-gray-500 text-center mb-4">
             💡 Tap the star to favorite a topic!
         </p>
 
@@ -301,10 +274,6 @@
 
         <p id="error-message" class="text-red-500 text-center mt-4 hidden">Failed to load topics. Please check your GitHub repository and network connection.</p>
         
-        <!-- <button id="suggest-question-button" title="Submit a Question">
-            Submit Questions | Feedback
-        </button> -->
-
         <!-- Action Buttons Container -->
         <div id="action-buttons-container" class="space-y-4 mt-4"> 
             <!-- Buttons will be dynamically added here by JavaScript -->
@@ -376,135 +345,48 @@
         </div>
     </div>
 
-    <!-- <div id="suggestion-modal" class="modal-overlay">
-        <div class="modal-content">
-            <p class="text-lg font-semibold text-gray-800 mb-4">
-                To share your question for group discussion or provide feedback, please use one of our web forms:
-            </p>
-            <p class="mb-4">
-                <a href="https://forms.cloud.microsoft/r/dsAARctR0y" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-bold">
-                    Form 1. Share a Question
-                </a>
-            </p>
-            <p class="mb-4">
-                <a href="https://forms.cloud.microsoft/r/fzqBdrHRpv" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline font-bold">
-                    Form 2. Provide Feedback
-                </a>
-            </p>
-            <button id="close-suggestion-modal" class="modal-button cancel">Close</button>
-        </div>
-    </div> -->
-
     <script>
-        // Define the base URL for your GitHub Pages site
-
-        const STARRED_TOPICS_KEY = 'csc_starred_topics'; // Local Storage key for starred topics
+        const STARRED_TOPICS_KEY = 'csc_starred_topics';
         const STARRED_ACTION_PROMPTS_KEY = 'csc_starred_action_prompts';
         const STARRED_DICE_ROLL_KEY = 'csc_starred_dice_roll';
+        const STARRED_SUBMIT_QUESTIONS_KEY = 'csc_starred_submit_questions'; // New key for submit questions button
 
         const topicsListDiv = document.getElementById('topics-list');
         const errorMessageDiv = document.getElementById('error-message');
         const quoteDisplay = document.getElementById('quote-display');
         const quoteAuthor = document.getElementById('quote-author');
-        const searchBar = document.getElementById('search-bar'); // Reference to the search bar
-        const actionButtonsContainer = document.getElementById('action-buttons-container'); // New container for action buttons
+        const searchBar = document.getElementById('search-bar');
+        const actionButtonsContainer = document.getElementById('action-buttons-container');
 
-        // Path for quotes.txt (relative)
         const quotesTxtUrl = 'data/quotes.txt';
-        // LocalStorage key for quotes data
         const quotesLocalStorageKey = 'csc_quotes_data'; 
 
-        // Variables for the Live Discussion button
         const liveDiscussionButtonContainer = document.getElementById('live-discussion-button-container');
         const liveDiscussionButton = document.getElementById('live-discussion-button');
 
-        // Store all topic and action buttons after they are created
         let allButtons = [];
 
-        // --- Hardcoded Topic Configurations ---
         const TOPIC_CONFIGS = [
-            // "Live Discussion" should only be enabled as needed
             {
                name: "Live Discussion",
                htmlFileName: "pages/live-discussion.html",
-               txtUrl: "questions/live-discussion.txt", // Relative path
-               cache: false // Live discussion should generally not be cached
+               txtUrl: "questions/live-discussion.txt",
+               cache: false
             },
-            {
-                name: "Authenticity",
-                htmlFileName: "pages/authenticity.html",
-                txtUrl: "questions/authenticity.txt", // Relative path, kebab-case
-                cache: true 
-            },
-            {
-                name: "Icebreaker",
-                htmlFileName: "pages/icebreaker.html",
-                txtUrl: "questions/icebreaker.txt", // Relative path, kebab-case
-                cache: true 
-            },
-            {
-                name: "Transitions",
-                htmlFileName: "pages/transitions.html", // Path to HTML subpage
-                txtUrl: "questions/transitions.txt", // Relative path for question file, kebab-case
-                cache: true 
-            },
-            {
-                name: "Reimagine",
-                htmlFileName: "pages/reimagine.html", // Path to HTML subpage
-                txtUrl: "questions/reimagine.txt", // Relative path for question file, kebab-case
-                cache: true 
-            },
-            {
-                name: "Reflection",
-                htmlFileName: "pages/reflection.html", // Path to HTML subpage
-                txtUrl: "questions/reflection.txt", // Relative path for question file, kebab-case
-                cache: true 
-            },
-            {
-                name: "Love Relationships",
-                htmlFileName: "pages/love-relationships.html",
-                txtUrl: "questions/love-relationships.txt", // Relative path, kebab-case
-                cache: true
-            },
-            {
-                name: "Happiness",
-                htmlFileName: "pages/happiness.html",
-                txtUrl: "questions/happiness.txt", // Relative path, kebab-case
-                cache: true 
-            },
-            {
-                name: "The Mind Speaks",
-                htmlFileName: "pages/the-mind-speaks.html",
-                txtUrl: "questions/the-mind-speaks.txt", // Relative path, kebab-case
-                cache: true 
-            },
-            {
-                name: "Parenting",
-                htmlFileName: "pages/parenting.html",
-                txtUrl: "questions/parenting.txt", // Relative path, kebab-case
-                cache: true 
-            },
-            {
-                name: "Friendship",
-                htmlFileName: "pages/friendship.html", // Path to HTML subpage
-                txtUrl: "questions/friendship.txt", // Relative path for question file, kebab-case
-                cache: true 
-            },
-            {
-                name: "Interdependence",
-                htmlFileName: "pages/interdependence.html", // Path to HTML subpage
-                txtUrl: "questions/interdependence.txt", // Relative path for question file, kebab-case
-                cache: true 
-            },
-            {
-                name: "Inner Child",
-                htmlFileName: "pages/inner-child.html", // Path to HTML subpage
-                txtUrl: "questions/inner-child.txt", // Relative path for question file, kebab-case
-                cache: true 
-            }
+            { name: "Authenticity", htmlFileName: "pages/authenticity.html", txtUrl: "questions/authenticity.txt", cache: true },
+            { name: "Icebreaker", htmlFileName: "pages/icebreaker.html", txtUrl: "questions/icebreaker.txt", cache: true },
+            { name: "Transitions", htmlFileName: "pages/transitions.html", txtUrl: "questions/transitions.txt", cache: true },
+            { name: "Reimagine", htmlFileName: "pages/reimagine.html", txtUrl: "questions/reimagine.txt", cache: true },
+            { name: "Reflection", htmlFileName: "pages/reflection.html", txtUrl: "questions/reflection.txt", cache: true },
+            { name: "Love Relationships", htmlFileName: "pages/love-relationships.html", txtUrl: "questions/love-relationships.txt", cache: true },
+            { name: "Happiness", htmlFileName: "pages/happiness.html", txtUrl: "questions/happiness.txt", cache: true },
+            { name: "The Mind Speaks", htmlFileName: "pages/the-mind-speaks.html", txtUrl: "questions/the-mind-speaks.txt", cache: true },
+            { name: "Parenting", htmlFileName: "pages/parenting.html", txtUrl: "questions/parenting.txt", cache: true },
+            { name: "Friendship", htmlFileName: "pages/friendship.html", txtUrl: "questions/friendship.txt", cache: true },
+            { name: "Interdependence", htmlFileName: "pages/interdependence.html", txtUrl: "questions/interdependence.txt", cache: true },
+            { name: "Inner Child", htmlFileName: "pages/inner-child.html", txtUrl: "questions/inner-child.txt", cache: true }
         ];
 
-        // --- Local Storage Helper Functions for Starred Topics ---
         function getStarredTopics() {
             const starredTopicsJson = localStorage.getItem(STARRED_TOPICS_KEY);
             return starredTopicsJson ? JSON.parse(starredTopicsJson) : [];
@@ -514,7 +396,6 @@
             localStorage.setItem(STARRED_TOPICS_KEY, JSON.stringify(topics));
         }
 
-        // --- Local Storage Helper Functions for Starred Buttons ---
         function getStarredButtonState(key) {
             const state = localStorage.getItem(key);
             return state === 'true'; // Returns true if 'true', false otherwise (including null)
@@ -530,12 +411,14 @@
          * @param {boolean} isStarred Whether the item is starred.
          */
         function updateStarIcon(starElement, isStarred) {
-            if (isStarred) {
-                starElement.classList.remove('fa-regular');
-                starElement.classList.add('fa-solid');
-            } else {
-                starElement.classList.remove('fa-solid');
-                starElement.classList.add('fa-regular');
+            if (starElement) {
+                if (isStarred) {
+                    starElement.classList.remove('fa-regular');
+                    starElement.classList.add('fa-solid');
+                } else {
+                    starElement.classList.remove('fa-solid');
+                    starElement.classList.add('fa-regular');
+                }
             }
         }
 
@@ -546,11 +429,21 @@
             const searchTerm = searchBar.value.toLowerCase();
             allButtons.forEach(button => {
                 // Get the text content of the span (which holds the topic/action name)
-                const buttonText = button.querySelector('span').textContent.toLowerCase();
-                if (buttonText.includes(searchTerm)) {
-                    button.style.display = 'flex'; // Show the button (using flex display)
-                } else {
-                    button.style.display = 'none'; // Hide the button
+                const buttonTextSpan = button.querySelector('span');
+                if (buttonTextSpan) { // Check if span exists for topic/action buttons
+                    const buttonText = buttonTextSpan.textContent.toLowerCase();
+                    if (buttonText.includes(searchTerm)) {
+                        button.style.display = 'flex'; // Show the button (using flex display)
+                    } else {
+                        button.style.display = 'none'; // Hide the button
+                    }
+                } else if (button.id === 'live-discussion-button') { // Handle live discussion button separately
+                    const buttonText = button.textContent.toLowerCase();
+                    if (buttonText.includes(searchTerm)) {
+                        button.style.display = 'block'; // Live discussion button is block
+                    } else {
+                        button.style.display = 'none';
+                    }
                 }
             });
         }
@@ -561,7 +454,7 @@
          */
         async function fetchAndCacheTopics() {
             topicsListDiv.innerHTML = '<div class="loading-spinner"></div><p class="text-gray-500 text-center">Loading topics and questions...</p>';
-            errorMessageDiv.classList.add('hidden'); // Hide error message initially
+            errorMessageDiv.classList.add('hidden');
             
             let successfulTopics = [];
             let liveDiscussionFound = false;
@@ -616,7 +509,6 @@
                 liveDiscussionButton.addEventListener('click', () => {
                     window.location.href = 'pages/live-discussion.html'; 
                 });
-                // Note: liveDiscussionButton is added to allButtons in renderAllContent
             } else {
                 liveDiscussionButtonContainer.classList.add('hidden'); 
             }
@@ -678,55 +570,51 @@
                     button.appendChild(topicNameSpan);
                     button.appendChild(starIcon);
                     topicsListDiv.appendChild(button);
-                    // Note: Buttons are added to allButtons in renderAllContent
                 });
             }
         }
 
         /**
-         * Renders the Action Prompts and Roll the Dice buttons, handling their starring state and order.
+         * Renders the Action Prompts, Roll the Dice, and Submit Questions buttons, handling their starring state and order.
          */
         function renderActionButtons() {
             actionButtonsContainer.innerHTML = ''; // Clear existing buttons
-            const actionButtons = [];
+            const actionButtonsData = [];
 
-            // Define action button data
-            const actionPromptsData = {
+            actionButtonsData.push({
                 name: "Action Prompts",
                 htmlFileName: "pages/action-prompts.html",
                 localStorageKey: STARRED_ACTION_PROMPTS_KEY
-            };
-            const diceRollData = {
+            });
+            actionButtonsData.push({
                 name: "Roll the Dice",
                 htmlFileName: "pages/dice-roll.html",
                 localStorageKey: STARRED_DICE_ROLL_KEY
-            };
+            });
+            actionButtonsData.push({ // New button data for Submit Questions
+                name: "Submit Questions",
+                htmlFileName: "pages/custom-questions-input.html", // Link to the input page
+                localStorageKey: STARRED_SUBMIT_QUESTIONS_KEY
+            });
 
-            // Determine order based on starred state
-            const isActionPromptsStarred = getStarredButtonState(actionPromptsData.localStorageKey);
-            const isDiceRollStarred = getStarredButtonState(diceRollData.localStorageKey);
+            // Sort action buttons: starred first, then alphabetical
+            actionButtonsData.sort((a, b) => {
+                const aStarred = getStarredButtonState(a.localStorageKey);
+                const bStarred = getStarredButtonState(b.localStorageKey);
 
-            if (isActionPromptsStarred && !isDiceRollStarred) {
-                actionButtons.push(actionPromptsData);
-                actionButtons.push(diceRollData);
-            } else if (!isActionPromptsStarred && isDiceRollStarred) {
-                actionButtons.push(diceRollData);
-                actionButtons.push(actionPromptsData);
-            } else {
-                // Default order (alphabetical or original if both/neither starred)
-                actionButtons.push(actionPromptsData);
-                actionButtons.push(diceRollData);
-                actionButtons.sort((a, b) => a.name.localeCompare(b.name));
-            }
+                if (aStarred && !bStarred) return -1;
+                if (!aStarred && bStarred) return 1;
+                return a.name.localeCompare(b.name);
+            });
 
-            actionButtons.forEach(buttonData => {
+            actionButtonsData.forEach(buttonData => {
                 const button = document.createElement('button');
-                button.classList.add('action-button'); // Use a common class for styling
-                button.id = buttonData.name.toLowerCase().replace(/ /g, '-') + '-button'; // Assign a unique ID
+                button.classList.add('action-button');
+                button.id = buttonData.name.toLowerCase().replace(/ /g, '-') + '-button';
 
                 const buttonNameSpan = document.createElement('span');
                 buttonNameSpan.textContent = buttonData.name;
-                buttonNameSpan.style.pointerEvents = 'none'; // Ensure clicks on text pass through to button
+                buttonNameSpan.style.pointerEvents = 'none';
 
                 const starIcon = document.createElement('i');
                 starIcon.classList.add('star-icon', 'fa-star');
@@ -748,7 +636,6 @@
                 actionButtonsContainer.appendChild(button);
             });
         }
-
 
         /**
          * Fetches quotes from quotes.txt and displays a random one, utilizing localStorage caching.
@@ -808,8 +695,6 @@
             allButtons = []; // Clear the global list of buttons
 
             // Render Live Discussion button if applicable
-            // This button is not part of the `topicsListDiv` or `action-buttons-container` but exists independently
-            // and should be included in `allButtons` for filtering.
             let liveDiscussionButtonElement = document.getElementById('live-discussion-button');
             if (liveDiscussionButtonElement && !liveDiscussionButtonContainer.classList.contains('hidden')) {
                 allButtons.push(liveDiscussionButtonElement);
@@ -820,16 +705,11 @@
 
             // After all buttons are rendered, collect them into allButtons for filtering
             allButtons = Array.from(topicsListDiv.querySelectorAll('.topic-button'))
-                         .concat(Array.from(actionButtonsContainer.querySelectorAll('.action-button')));
+                         .concat(Array.from(actionButtonsContainer.querySelectorAll('.action-button')))
+                         .concat(liveDiscussionButtonElement && !liveDiscussionButtonContainer.classList.contains('hidden') ? [liveDiscussionButtonElement] : []);
             
-            // Add Live Discussion button if it's visible
-            if (liveDiscussionButtonElement && !liveDiscussionButtonContainer.classList.contains('hidden')) {
-                allButtons.push(liveDiscussionButtonElement);
-            }
-
             filterButtons(); // Apply current filter to all rendered buttons
         }
-
 
         // Initial load
         fetchAndDisplayQuoteOfDay();

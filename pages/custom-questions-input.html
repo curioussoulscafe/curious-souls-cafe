@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Your Questions - Curious Souls Café</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 2rem; /* Space from top */
+        }
+        h1 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+            color: #6b46c1; /* Purple-600 */
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db; /* Gray-300 */
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            min-height: 150px;
+            resize: vertical; /* Allow vertical resizing */
+            margin-bottom: 1rem;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #a855f7; /* Purple-500 */
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); /* Purple-500 with opacity */
+        }
+        .button-group {
+            display: flex;
+            gap: 1rem; /* Space between buttons */
+            margin-bottom: 1.5rem;
+        }
+        .btn {
+            flex-grow: 1; /* Make buttons take equal width */
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #8b5cf6; /* Violet-500 */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #7c3aed; /* Violet-600 */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+        .btn-secondary {
+            background-color: #e5e7eb; /* Gray-200 */
+            color: #374151; /* Gray-700 */
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db; /* Gray-300 */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+        .back-button {
+            display: block;
+            margin-top: 2rem;
+            text-align: center;
+            color: #6b46c1; /* Purple-600 */
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+        .back-button:hover {
+            color: #805ad5; /* Darker purple on hover */
+            text-decoration: underline;
+        }
+        .back-button i {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Submit Your Custom Questions</h1>
+        <p class="text-gray-600 text-center mb-4">Paste your questions below, one question per line. Your questions will be saved in your browser and will be available on the "Custom Questions" page.</p>
+        
+        <textarea id="question-input" placeholder="Example:
+What is one thing you're truly passionate about?
+If you could travel anywhere in time, where would you go and why?
+What's a small act of kindness you've witnessed or performed recently?"></textarea>
+        
+        <div class="button-group">
+            <button id="save-questions-btn" class="btn btn-primary">Save & View Questions</button>
+            <button id="clear-input-btn" class="btn btn-secondary">Clear Input</button>
+        </div>
+
+        <a href="../index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Main Page
+        </a>
+    </div>
+
+    <script>
+        const CUSTOM_QUESTIONS_STORAGE_KEY = 'csc_custom_questions_data'; // LocalStorage key for custom questions
+
+        const questionInput = document.getElementById('question-input');
+        const saveQuestionsBtn = document.getElementById('save-questions-btn');
+        const clearInputBtn = document.getElementById('clear-input-btn');
+
+        // Load previously saved questions into the textarea on page load
+        window.addEventListener('load', () => {
+            const savedQuestions = localStorage.getItem(CUSTOM_QUESTIONS_STORAGE_KEY);
+            if (savedQuestions) {
+                questionInput.value = JSON.parse(savedQuestions).join('\n');
+            }
+        });
+
+        // Event listener for the Save & View Questions button
+        saveQuestionsBtn.addEventListener('click', () => {
+            const rawText = questionInput.value.trim();
+            // Split by newline, filter out empty lines, and trim each question
+            const questions = rawText.split('\n')
+                                     .map(line => line.trim())
+                                     .filter(line => line.length > 0);
+
+            if (questions.length > 0) {
+                localStorage.setItem(CUSTOM_QUESTIONS_STORAGE_KEY, JSON.stringify(questions));
+                alert('Your questions have been saved! Redirecting to Custom Questions page.'); // Using alert for simplicity as per instructions
+                window.location.href = 'custom-questions-display.html'; // Redirect to the display page
+            } else {
+                alert('Please enter some questions before saving.'); // Using alert for simplicity
+            }
+        });
+
+        // Event listener for the Clear Input button
+        clearInputBtn.addEventListener('click', () => {
+            questionInput.value = ''; // Clear the textarea
+            localStorage.removeItem(CUSTOM_QUESTIONS_STORAGE_KEY); // Also clear from localStorage
+            alert('Input and saved custom questions cleared!'); // Using alert for simplicity
+        });
+    </script>
+</body>
+</html>

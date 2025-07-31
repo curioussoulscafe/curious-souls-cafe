@@ -69,6 +69,8 @@ Note: Questions with a spiral emoiji 🌀 are deeper ones
 
 * **Save Questions:** See a question you like? Simply click or tap on it, and it will be added to your "Saved Questions" list at the bottom of the page. You can clear them anytime.
 
+* **Submit Custom Questions:** Want to use your own questions? Click the "Submit Questions" button on the main page. You can paste a list of questions (one per line) into the input page. These questions will be saved locally in your browser and will be available for use on the "Custom Questions" page, which offers the same randomization, search, and saving features as the pre-defined topics.
+
 * **Optimized for On-the-Go:** The web app is designed to work seamlessly on smartphones and tablets, making it the ideal companion for dynamic, on-the-go interactions.
 
 * **Join a Live Discussion**: During special events, a prominent "Live Discussion" button will appear on the main page, giving you access to real-time questions curated for that event.
