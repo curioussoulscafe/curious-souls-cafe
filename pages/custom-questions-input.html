@@ -110,6 +110,74 @@
         .back-button i {
             margin-right: 0.5rem;
         }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* Above all other content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+        }
+
+        .modal-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* Full rounded */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .modal-button.confirm {
+            background-color: #c53030; /* Red-600 */
+            color: white;
+        }
+        .modal-button.confirm:hover {
+            background-color: #9b2c2c; /* Red-700 */
+        }
+
+        .modal-button.cancel {
+            background-color: #e2e8f0; /* Gray-200 */
+            color: #4a5568; /* Gray-700 */
+        }
+        .modal-button.cancel:hover {
+            background-color: #cbd5e0; /* Gray-300 */
+        }
     </style>
 </head>
 <body>
@@ -142,6 +210,17 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
         </a>
     </div>
 
+    <!-- Confirmation Modal for Clear Input -->
+    <div id="clear-confirm-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear all custom questions?</p>
+            <div class="modal-buttons">
+                <button id="confirm-clear-yes" class="modal-button confirm">Yes</button>
+                <button id="confirm-clear-no" class="modal-button cancel">No</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const CUSTOM_QUESTIONS_STORAGE_KEY = 'csc_custom_questions_data'; // LocalStorage key for custom questions
         const MIN_QUESTIONS = 3; // Minimum number of questions required
@@ -149,7 +228,11 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
         const questionInput = document.getElementById('question-input');
         const saveQuestionsBtn = document.getElementById('save-questions-btn');
         const clearInputBtn = document.getElementById('clear-input-btn');
-        // Removed backToMainButton const as it's now an anchor tag
+        
+        // Modal elements
+        const clearConfirmModal = document.getElementById('clear-confirm-modal');
+        const confirmClearYes = document.getElementById('confirm-clear-yes');
+        const confirmClearNo = document.getElementById('confirm-clear-no');
 
         // Load previously saved questions into the textarea on page load
         window.addEventListener('load', () => {
@@ -174,6 +257,8 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
 
             if (questions.length > 0) {
                 localStorage.setItem(CUSTOM_QUESTIONS_STORAGE_KEY, JSON.stringify(questions));
+                // Using alert() here as it's a success message before redirect, not a confirmation
+                alert('Your questions have been saved! Redirecting to Custom Questions page.'); 
                 window.location.href = 'custom-questions-display.html'; // Redirect to the display page
             } else {
                 // This case should ideally be caught by the MIN_QUESTIONS check, but kept as a fallback
@@ -181,11 +266,23 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
             }
         });
 
-        // Event listener for the Clear Input button
+        // Event listener for the Clear Input button - now shows confirmation modal
         clearInputBtn.addEventListener('click', () => {
+            clearConfirmModal.classList.add('show');
+        });
+
+        // Event listener for modal's Yes button
+        confirmClearYes.addEventListener('click', () => {
             questionInput.value = ''; // Clear the textarea
             localStorage.removeItem(CUSTOM_QUESTIONS_STORAGE_KEY); // Also clear from localStorage
-            alert('Input and saved custom questions cleared!');
+            // Using alert() here as it's a success message after action
+            alert('Input and saved custom questions cleared!'); 
+            clearConfirmModal.classList.remove('show'); // Hide the modal
+        });
+
+        // Event listener for modal's No button
+        confirmClearNo.addEventListener('click', () => {
+            clearConfirmModal.classList.remove('show'); // Hide the modal
         });
 
         // The back-to-main functionality is now handled by the <a> tag directly, no JS listener needed
