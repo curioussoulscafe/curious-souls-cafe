@@ -20,11 +20,9 @@
             min-width: 100vw;
             margin: 0;
             padding: 0;
-            /* Center everything using flexbox */
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Subtle background */
             background: linear-gradient(
                 to right,
                 #f3f4f6 0%,
@@ -40,8 +38,9 @@
             padding: 2rem;
             width: 100%;
             max-width: 28rem;
-            min-height: 650px; /* <--- made taller here */
+            min-height: 650px;
             transition: transform 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
         }
         .container:hover {
             transform: scale(1.02);
@@ -60,7 +59,7 @@
             border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             font-size: 1rem;
-            min-height: 350px; /* <--- made taller here */
+            min-height: 350px;
             resize: vertical;
             margin-bottom: 1rem;
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -120,7 +119,6 @@
         .back-button i {
             margin-right: 0.5rem;
         }
-        /* Modal styles unchanged */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -180,10 +178,15 @@
         .modal-button.cancel:hover {
             background-color: #cbd5e0;
         }
-        @media (max-width: 480px) {
+        @media (max-width: 640px) {
             .container {
                 padding: 1rem;
-                min-height: 400px; /* Responsive min-height */
+                min-height: 400px;
+                margin-left: 1rem;
+                margin-right: 1rem;
+                width: auto;
+                max-width: 100%;
+                box-sizing: border-box;
             }
             .modal-content {
                 padding: 1rem;
@@ -216,7 +219,6 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
             <i class="fas fa-arrow-left"></i> Back to Main Page
         </a>
     </div>
-    <!-- Modal unchanged -->
     <div id="clear-confirm-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear all custom questions?</p>
