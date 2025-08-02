@@ -264,7 +264,7 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
         confirmClearYes.addEventListener('click', () => {
             questionInput.value = '';
             localStorage.removeItem(CUSTOM_QUESTIONS_STORAGE_KEY);
-            alert('Input and saved custom questions cleared!');
+            // alert('Input and saved custom questions cleared!');
             clearConfirmModal.classList.remove('show');
         });
         confirmClearNo.addEventListener('click', () => {
