@@ -48,13 +48,11 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .info-link {
-            display: block; /* Makes it a block element to take full width */
-            text-align: center; /* Center the text */
-            margin-top: 1rem; /* Add some space above the link */
             color: #6b46c1; /* Purple text color */
             font-weight: 600; /* Semi-bold font */
             text-decoration: none;
             transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+            /* Remove display: block and text-align: center */
         }
 
         .info-link:hover {
@@ -347,9 +345,16 @@
                     <i class="fa-solid fa-book-open"></i> </a>
             </div>
 
-            <a href="readme.html" target="_blank" rel="noopener noreferrer" class="info-link">
-                <i class="fas fa-info-circle"></i>About this
-            </a>
+            <div class="flex justify-center items-center space-x-3 mt-4">
+                <a href="readme.html" target="_blank" rel="noopener noreferrer" class="info-link inline-flex items-center">
+                    <i class="fas fa-info-circle mr-1"></i>About
+                </a>
+                <span class="text-gray-400 text-lg select-none">|</span>
+                <a href="https://curioussoulscafe.github.io/links/share-feedback" target="_blank" rel="noopener noreferrer" class="info-link inline-flex items-center">
+                    <i class="fas fa-comment-dots mr-1"></i>Feedback
+                </a>
+            </div>
+
         </div>
     </div>
 
