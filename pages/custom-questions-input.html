@@ -7,17 +7,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Light gray background */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Align to top */
             min-height: 100vh;
-            padding: 1rem;
+            min-width: 100vw;
+            margin: 0;
+            padding: 0;
+            /* Center everything using flexbox */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Subtle background */
+            background: linear-gradient(
+                to right,
+                #f3f4f6 0%,
+                #ede9fe 20%,
+                #ede9fe 80%,
+                #f3f4f6 100%
+            );
         }
         .container {
             background-color: #ffffff;
@@ -25,115 +39,106 @@
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
             padding: 2rem;
             width: 100%;
-            max-width: 28rem; /* Set to 28rem for exact consistency with display pages */
-            margin-top: 2rem; /* Space from top */
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added for consistency */
+            max-width: 28rem;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .container:hover {
-            transform: scale(1.02); /* Slightly enlarge on hover for consistency */
+            transform: scale(1.02);
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         }
         h1 {
-            font-size: 1.875rem; /* text-3xl */
-            font-weight: 700; /* font-bold */
-            color: #6b46c1; /* Purple-600 */
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #6b46c1;
             text-align: center;
-            margin-bottom: 0.5rem; /* Adjusted for consistency */
+            margin-bottom: 0.5rem;
         }
         textarea {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #d1d5db; /* Gray-300 */
+            border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             font-size: 1rem;
-            min-height: 250px; /* Increased height to fit more text */
-            resize: vertical; /* Allow vertical resizing */
+            min-height: 250px;
+            resize: vertical;
             margin-bottom: 1rem;
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
         textarea:focus {
             outline: none;
-            border-color: #a855f7; /* Purple-500 */
-            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); /* Purple-500 with opacity */
+            border-color: #a855f7;
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.20);
         }
-        /* Original button-group for flex layout */
         .button-group {
             display: flex;
-            gap: 1rem; /* Space between buttons */
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
-        /* Original general button style */
         .btn {
-            flex-grow: 1; /* Make buttons take equal width */
+            flex-grow: 1;
             padding: 0.75rem 1.25rem;
-            border-radius: 0.5rem; /* Original rounded corners */
+            border-radius: 0.5rem;
             font-weight: 600;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.10);
         }
-        /* Original primary button style (Save & View Questions) */
         .btn-primary {
-            background-color: #8b5cf6; /* Original Violet-500 */
+            background-color: #8b5cf6;
             color: white;
         }
         .btn-primary:hover {
-            background-color: #7c3aed; /* Original Violet-600 */
+            background-color: #7c3aed;
             transform: translateY(-1px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
         }
-        /* Original secondary button style (Clear Input) */
         .btn-secondary {
-            background-color: #e5e7eb; /* Original Gray-200 */
-            color: #374151; /* Original Gray-700 */
+            background-color: #e5e7eb;
+            color: #374151;
         }
         .btn-secondary:hover {
-            background-color: #d1d5db; /* Original Gray-300 */
+            background-color: #d1d5db;
             transform: translateY(-1px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
         }
-        /* Original back-button styling */
         .back-button {
             display: block;
             margin-top: 2rem;
             text-align: center;
-            color: #6b46c1; /* Original Purple text color */
-            font-weight: 600; /* Original Semi-bold font */
+            color: #6b46c1;
+            font-weight: 600;
             text-decoration: none;
-            transition: color 0.2s ease-in-out;
+            transition: color 0.2s;
         }
         .back-button:hover {
-            color: #805ad5; /* Original Darker purple on hover */
+            color: #805ad5;
             text-decoration: underline;
         }
         .back-button i {
             margin-right: 0.5rem;
         }
-
-        /* Modal specific styles */
+        /* Modal styles unchanged */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             background-color: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 2000; /* Above all other content */
+            z-index: 2000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            transition: opacity 0.3s, visibility 0.3s;
         }
-
         .modal-overlay.show {
             opacity: 1;
             visibility: visible;
         }
-
         .modal-content {
             background-color: white;
             padding: 2rem;
@@ -143,75 +148,73 @@
             max-width: 300px;
             width: 90%;
             transform: translateY(-20px);
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.3s;
         }
-
         .modal-overlay.show .modal-content {
             transform: translateY(0);
         }
-
         .modal-buttons {
             display: flex;
             justify-content: space-around;
             margin-top: 1.5rem;
         }
-
         .modal-button {
             padding: 0.75rem 1.5rem;
-            border-radius: 9999px; /* Full rounded */
+            border-radius: 9999px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.2s;
         }
-
         .modal-button.confirm {
-            background-color: #c53030; /* Red-600 */
+            background-color: #c53030;
             color: white;
         }
         .modal-button.confirm:hover {
-            background-color: #9b2c2c; /* Red-700 */
+            background-color: #9b2c2c;
         }
-
         .modal-button.cancel {
-            background-color: #e2e8f0; /* Gray-200 */
-            color: #4a5568; /* Gray-700 */
+            background-color: #e2e8f0;
+            color: #4a5568;
         }
         .modal-button.cancel:hover {
-            background-color: #cbd5e0; /* Gray-300 */
+            background-color: #cbd5e0;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+            .modal-content {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="flex justify-center mb-6">
-            <a href="../index.html"> <!-- Link to index.html -->
+            <a href="../index.html">
                 <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
             </a>
         </div>
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
-        <hr class="border-purple-300 mb-4 w-1/2 mx-auto"> <!-- Consistent hr styling -->
-        
+        <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
         <h2 class="text-xl font-semibold text-purple-600 text-center mb-4">Submit Your Custom Questions</h2>
         <p class="text-gray-600 text-center mb-4">
             To use your own questions to make a temporary topic, paste them below, one question per line.
         </p>
-        
         <textarea id="question-input" placeholder="Example:
 What is one thing you're truly passionate about?
 If you could travel anywhere in time, where would you go and why?
 What's a small act of kindness you've witnessed or performed recently?"></textarea>
-        
-        <div class="button-group"> <!-- Re-added button-group for flex layout -->
+        <div class="button-group">
             <button id="save-questions-btn" class="btn btn-primary">Save & View Questions</button>
             <button id="clear-input-btn" class="btn btn-secondary">Clear Input</button>
         </div>
-
-        <a href="../index.html" class="back-button" title="Back to Main Page"> <!-- Reverted to anchor tag with original class -->
+        <a href="../index.html" class="back-button" title="Back to Main Page">
             <i class="fas fa-arrow-left"></i> Back to Main Page
         </a>
     </div>
-
-    <!-- Confirmation Modal for Clear Input -->
+    <!-- Modal unchanged -->
     <div id="clear-confirm-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear all custom questions?</p>
@@ -221,72 +224,48 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
             </div>
         </div>
     </div>
-
     <script>
-        const CUSTOM_QUESTIONS_STORAGE_KEY = 'csc_custom_questions_data'; // LocalStorage key for custom questions
-        const MIN_QUESTIONS = 3; // Minimum number of questions required
-
+        const CUSTOM_QUESTIONS_STORAGE_KEY = 'csc_custom_questions_data';
+        const MIN_QUESTIONS = 3;
         const questionInput = document.getElementById('question-input');
         const saveQuestionsBtn = document.getElementById('save-questions-btn');
         const clearInputBtn = document.getElementById('clear-input-btn');
-        
-        // Modal elements
         const clearConfirmModal = document.getElementById('clear-confirm-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
         const confirmClearNo = document.getElementById('confirm-clear-no');
-
-        // Load previously saved questions into the textarea on page load
         window.addEventListener('load', () => {
             const savedQuestions = localStorage.getItem(CUSTOM_QUESTIONS_STORAGE_KEY);
             if (savedQuestions) {
                 questionInput.value = JSON.parse(savedQuestions).join('\n');
             }
         });
-
-        // Event listener for the Save & View Questions button
         saveQuestionsBtn.addEventListener('click', () => {
             const rawText = questionInput.value.trim();
-            // Split by newline, filter out empty lines, and trim each question
-            const questions = rawText.split('\n')
-                                     .map(line => line.trim())
-                                     .filter(line => line.length > 0);
-
+            const questions = rawText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
             if (questions.length < MIN_QUESTIONS) {
                 alert(`Please enter at least ${MIN_QUESTIONS} questions to submit.`);
-                return; // Stop the function if not enough questions
+                return;
             }
-
             if (questions.length > 0) {
                 localStorage.setItem(CUSTOM_QUESTIONS_STORAGE_KEY, JSON.stringify(questions));
-                // Using alert() here as it's a success message before redirect, not a confirmation
-                alert('Your questions have been saved! Redirecting to Custom Questions page.'); 
-                window.location.href = 'custom-questions-display.html'; // Redirect to the display page
+                alert('Your questions have been saved! Redirecting to Custom Questions page.');
+                window.location.href = 'custom-questions-display.html';
             } else {
-                // This case should ideally be caught by the MIN_QUESTIONS check, but kept as a fallback
                 alert('Please enter some questions before saving.');
             }
         });
-
-        // Event listener for the Clear Input button - now shows confirmation modal
         clearInputBtn.addEventListener('click', () => {
             clearConfirmModal.classList.add('show');
         });
-
-        // Event listener for modal's Yes button
         confirmClearYes.addEventListener('click', () => {
-            questionInput.value = ''; // Clear the textarea
-            localStorage.removeItem(CUSTOM_QUESTIONS_STORAGE_KEY); // Also clear from localStorage
-            // Using alert() here as it's a success message after action
-            alert('Input and saved custom questions cleared!'); 
-            clearConfirmModal.classList.remove('show'); // Hide the modal
+            questionInput.value = '';
+            localStorage.removeItem(CUSTOM_QUESTIONS_STORAGE_KEY);
+            alert('Input and saved custom questions cleared!');
+            clearConfirmModal.classList.remove('show');
         });
-
-        // Event listener for modal's No button
         confirmClearNo.addEventListener('click', () => {
-            clearConfirmModal.classList.remove('show'); // Hide the modal
+            clearConfirmModal.classList.remove('show');
         });
-
-        // The back-to-main functionality is now handled by the <a> tag directly, no JS listener needed
     </script>
 </body>
 </html>
