@@ -40,6 +40,7 @@
             padding: 2rem;
             width: 100%;
             max-width: 28rem;
+            min-height: 650px; /* <--- made taller here */
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .container:hover {
@@ -59,7 +60,7 @@
             border: 1px solid #d1d5db;
             border-radius: 0.5rem;
             font-size: 1rem;
-            min-height: 250px;
+            min-height: 350px; /* <--- made taller here */
             resize: vertical;
             margin-bottom: 1rem;
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -182,6 +183,7 @@
         @media (max-width: 480px) {
             .container {
                 padding: 1rem;
+                min-height: 400px; /* Responsive min-height */
             }
             .modal-content {
                 padding: 1rem;
