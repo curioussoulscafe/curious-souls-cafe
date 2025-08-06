@@ -917,6 +917,22 @@
         window.addEventListener('appinstalled', () => {
             btn.classList.remove('show');
         });
+
+        function updateInstallButtonText() {
+            const btn = document.getElementById('add-to-homescreen-btn');
+            if (isIOS() && isSafari() && !isInStandaloneMode()) {
+                btn.innerHTML = '<i class="fa-solid fa-house-medical-circle-check mr-2"></i>Add to Home Screen';
+            } else if (isAndroid() && !isInStandaloneMode()) {
+                btn.innerHTML = '<i class="fa-solid fa-house-medical-circle-check mr-2"></i>Add to Home Screen';
+            } else {
+                // Default to desktop wording
+                btn.innerHTML = '<i class="fa-solid fa-download mr-2"></i>Install App';
+            }
+        }
+
+        // Call after DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', updateInstallButtonText);
+        
     </script>    
 </body>
 </html>
