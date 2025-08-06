@@ -7,6 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#a855f7">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
@@ -239,6 +241,75 @@
         .star-icon:hover {
             color: #FFEA00; /* Lighter gold on hover */
         }
+        /* AddToHomescreen Button and Modal styles */
+        #add-to-homescreen-btn {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 3000;
+            background: #fff;
+            color: #9333ea;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: 2px solid #a855f7;
+            border-radius: 2rem;
+            padding: 0.85rem 1.5rem;
+            box-shadow: 0 6px 24px rgba(80, 30, 120, 0.08);
+            cursor: pointer;
+            display: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        #add-to-homescreen-btn.show {
+            display: block;
+        }
+
+        #add-to-homescreen-btn:hover {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        /* iOS Modal */
+        #ios-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.44);
+            display: none;
+            z-index: 4000;
+            justify-content: center;
+            align-items: center;
+        }
+        #ios-modal-overlay.show {
+            display: flex;
+        }
+        #ios-modal-content {
+            background: white;
+            border-radius: 1.2rem;
+            box-shadow: 0 8px 32px rgba(50,0,80,.19);
+            padding: 2rem 1.2rem 1.5rem 1.2rem;
+            max-width: 350px;
+            width: 90vw;
+            text-align: center;
+        }
+        #ios-modal-content img {
+            width: 38px;
+            margin: 0.5rem 0 0.8rem 0;
+        }
+        #ios-modal-content .close-modal {
+            background: #e5e7eb;
+            color: #555;
+            border: none;
+            border-radius: 9999px;
+            padding: 0.4rem 1.1rem;
+            font-size: 1rem;
+            margin-top: 1.2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        #ios-modal-content .close-modal:hover {
+            background: #c7d2fe;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -364,6 +435,25 @@
         </div>
     </div>
 
+    <!-- Add to Homescreen button -->
+    <button id="add-to-homescreen-btn">
+        <i class="fa-solid fa-house-medical-circle-check mr-2"></i>
+        Add to Home Screen
+    </button>
+
+    <!-- iOS Instructions Modal -->
+    <div id="ios-modal-overlay">
+        <div id="ios-modal-content">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/IOS_Safari_logo.svg/48px-IOS_Safari_logo.svg.png" alt="Safari Icon">
+            <h3 class="text-lg font-semibold mb-2 text-purple-600">Add to Home Screen</h3>
+            <p class="text-gray-700 mb-2">
+                1. Tap the <span style="font-weight:600;">Share</span> <span style="font-size:1.5em;">&#x1f5d2;&#xfe0f;</span> button in Safari.<br>
+                2. Scroll and tap <span style="font-weight:600;">"Add to Home Screen"</span>.<br>
+                3. Tap <span style="font-weight:600;">Add</span> in the top right.
+            </p>
+            <button class="close-modal">Close</button>
+        </div>
+    </div>
     <script>
         const STARRED_TOPICS_KEY = 'csc_starred_topics';
         const STARRED_ACTION_PROMPTS_KEY = 'csc_starred_action_prompts';
@@ -736,6 +826,81 @@
 
         // Add event listener for the search bar
         searchBar.addEventListener('input', filterButtons);
+
+        // Utility: Detect iOS and in Safari
+        function isIOS() {
+            return /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+        }
+        function isSafari() {
+            return /^((?!chrome|android).)*safari/i.test(window.navigator.userAgent);
+        }
+        function isInStandaloneMode() {
+            return (window.navigator.standalone === true) || window.matchMedia('(display-mode: standalone)').matches;
+        }
+        function isAndroid() {
+            return /android/i.test(window.navigator.userAgent);
+        }
+
+        // Add to Homescreen logic
+        let deferredPrompt;
+        const btn = document.getElementById('add-to-homescreen-btn');
+        const iosModal = document.getElementById('ios-modal-overlay');
+        const closeIosModalBtn = iosModal.querySelector('.close-modal');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // For Chrome/Android PWA
+            e.preventDefault();
+            deferredPrompt = e;
+            if (!isInStandaloneMode()) {
+                btn.classList.add('show');
+            }
+        });
+
+        btn.addEventListener('click', async function() {
+            if (isIOS() && isSafari() && !isInStandaloneMode()) {
+                // Show iOS instructions modal
+                iosModal.classList.add('show');
+            } else if (deferredPrompt) {
+                // Show Chrome/Android PWA native prompt
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                btn.classList.remove('show');
+            } else {
+                // Fallback: instructions
+                alert('To add this app to your homescreen, use your browser menu and select "Add to Home screen".');
+            }
+        });
+
+        closeIosModalBtn.addEventListener('click', () => {
+            iosModal.classList.remove('show');
+        });
+
+        // Show the button proactively for iOS Safari
+        document.addEventListener('DOMContentLoaded', function() {
+            if (
+                isIOS() && isSafari() && !isInStandaloneMode() &&
+                !localStorage.getItem('csc_ios_modal_dismissed')
+            ) {
+                btn.classList.add('show');
+            }
+        });
+
+        // Hide the button if already installed
+        if (isInStandaloneMode()) {
+            btn.classList.remove('show');
+        }
+
+        // Dismiss modal and remember
+        closeIosModalBtn.addEventListener('click', () => {
+            iosModal.classList.remove('show');
+            localStorage.setItem('csc_ios_modal_dismissed', '1');
+        });
+
+        // Optional: Hide button if installed via event
+        window.addEventListener('appinstalled', () => {
+            btn.classList.remove('show');
+        });
     </script>    
 </body>
 </html>
