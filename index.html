@@ -700,37 +700,29 @@
         }
 
         /**
-         * Renders the Action Prompts, Roll the Dice, and Submit Questions buttons, handling their starring state and order.
+         * Renders the Action Prompts, Roll the Dice, and Import Questions buttons
+         * WITHOUT any starring capability.
          */
         function renderActionButtons() {
             actionButtonsContainer.innerHTML = ''; // Clear existing buttons
-            const actionButtonsData = [];
 
-            actionButtonsData.push({
-                name: "Action Prompts",
-                htmlFileName: "pages/action-prompts.html",
-                localStorageKey: STARRED_ACTION_PROMPTS_KEY
-            });
-            actionButtonsData.push({
-                name: "Roll the Dice",
-                htmlFileName: "pages/dice-roll.html",
-                localStorageKey: STARRED_DICE_ROLL_KEY
-            });
-            actionButtonsData.push({ // New button data for Submit Questions
-                name: "Import Questions",
-                htmlFileName: "pages/custom-questions-input.html", // Link to the input page
-                localStorageKey: STARRED_SUBMIT_QUESTIONS_KEY
-            });
+            const actionButtonsData = [
+                {
+                    name: "Action Prompts",
+                    htmlFileName: "pages/action-prompts.html"
+                },
+                {
+                    name: "Roll the Dice",
+                    htmlFileName: "pages/dice-roll.html"
+                },
+                {
+                    name: "Import Questions",
+                    htmlFileName: "pages/custom-questions-input.html"
+                }
+            ];
 
-            // Sort action buttons: starred first, then alphabetical
-            actionButtonsData.sort((a, b) => {
-                const aStarred = getStarredButtonState(a.localStorageKey);
-                const bStarred = getStarredButtonState(b.localStorageKey);
-
-                if (aStarred && !bStarred) return -1;
-                if (!aStarred && bStarred) return 1;
-                return a.name.localeCompare(b.name);
-            });
+            // Alphabetical order
+            actionButtonsData.sort((a, b) => a.name.localeCompare(b.name));
 
             actionButtonsData.forEach(buttonData => {
                 const button = document.createElement('button');
@@ -741,23 +733,13 @@
                 buttonNameSpan.textContent = buttonData.name;
                 buttonNameSpan.style.pointerEvents = 'none';
 
-                const starIcon = document.createElement('i');
-                starIcon.classList.add('star-icon', 'fa-star');
-                updateStarIcon(starIcon, getStarredButtonState(buttonData.localStorageKey));
+                // No star icon for these action buttons
 
-                starIcon.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const newState = !getStarredButtonState(buttonData.localStorageKey);
-                    setStarredButtonState(buttonData.localStorageKey, newState);
-                    renderAllContent(); // Re-render all content to re-sort action buttons
-                });
-
+                button.appendChild(buttonNameSpan);
                 button.addEventListener('click', () => {
                     window.location.href = buttonData.htmlFileName;
                 });
 
-                button.appendChild(buttonNameSpan);
-                button.appendChild(starIcon);
                 actionButtonsContainer.appendChild(button);
             });
         }
