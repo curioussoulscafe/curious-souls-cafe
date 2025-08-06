@@ -23,6 +23,10 @@
                 #f3f4f6 100%
             );
         }
+        .line-break {
+            height: 5px; /* Adjust this value */
+            width: 100%; /* Make it span the width */
+        }
         .topic-button {
             background-color: #a855f7; /* Purple-500 */
             color: white;
@@ -312,6 +316,9 @@
         #ios-modal-content .close-modal:hover {
             background: #c7d2fe;
         }
+        footer {
+            margin-bottom: 4.5rem; /* ensures footer links are above the button */
+        }
         /* Use media queries to shrink the 'add to homescreen button' so it covers less space on small screens. */
         @media (max-width: 600px) {
             #add-to-homescreen-btn {
@@ -440,7 +447,7 @@
                     <i class="fas fa-rss mr-1"></i>Blog
                 </a>
             </div>
-
+             <div class="line-break"></div>
         </div>
     </div>
 
@@ -909,6 +916,29 @@
         // Optional: Hide button if installed via event
         window.addEventListener('appinstalled', () => {
             btn.classList.remove('show');
+        });
+
+        // Make the Button Hide or Fade When Near Footer (this has to be added right before closing of body)
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('add-to-homescreen-btn');
+            const mainDiv = document.querySelector('.main-content');
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        btn.style.opacity = '0.3'; // or use 'none' for display
+                        btn.style.pointerEvents = 'none';
+                    } else {
+                        btn.style.opacity = '1';
+                        btn.style.pointerEvents = '';
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0,
+            });
+            // Observe the container's line break at the bottom (last child)
+            const lineBreak = mainDiv.querySelector('.line-break');
+            if (lineBreak) observer.observe(lineBreak);
         });
     </script>    
 </body>
