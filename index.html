@@ -242,11 +242,7 @@
         .star-icon:hover {
             color: #FFEA00; /* Lighter gold on hover */
         }
-
-        footer {
-            margin-bottom: 4.5rem; /* ensures footer links are above the button */
-        }
-
+        
         /* AddToHomescreen Button and Modal styles */
         #add-to-homescreen-btn {
             position: fixed;
@@ -315,6 +311,13 @@
         }
         #ios-modal-content .close-modal:hover {
             background: #c7d2fe;
+        }
+        /* Use media queries to shrink the 'add to homescreen button' so it covers less space on small screens. */
+        @media (max-width: 600px) {
+            #add-to-homescreen-btn {
+                padding: 0.65rem 1rem;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
