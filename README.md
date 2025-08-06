@@ -143,6 +143,17 @@ Open the file in a text editor and modify the page title, `questions.txt` link, 
 
 By following the these steps, you can seamlessly integrate new question sets into the Curious Souls Café web app for your events!
 
+## ⚡️ Important: Update Service Worker for Offline Access
+
+Whenever you add a new question file (e.g., `questions/yourtopic.txt`) or a new topic page (e.g., `pages/yourtopic.html`), you must also add these files to the `FILES_TO_CACHE` array in `service-worker.js`.  
+This ensures that your new content is available even when the app is used offline.
+
+1. Open `service-worker.js`.
+2. Add the new file path(s) to the `FILES_TO_CACHE` array.
+3. Save, commit, and publish the changes.
+
+If you skip this, your new topic or questions will only load when the user is online!
+
 ### ➡️ Managing Live Discussion Questions
 
 The "Live Discussion" feature or button is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in `index.html`.
