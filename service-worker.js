@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curious-souls-cafe-v2';
+const CACHE_NAME = 'curious-souls-cafe-v3';
 
 const FILES_TO_CACHE = [
   // Root and main pages
@@ -22,6 +22,7 @@ const FILES_TO_CACHE = [
   '/questions/parenting.txt',
   '/questions/reflection.txt',
   '/questions/reimagine.txt',
+  '/questions/resonant-work.txt',
   '/questions/the-mind-speaks.txt',
   '/questions/transitions.txt',
 
@@ -41,6 +42,7 @@ const FILES_TO_CACHE = [
   '/pages/parenting.html',
   '/pages/reflection.html',
   '/pages/reimagine.html',
+  '/pages/resonant-work.html',
   '/pages/the-mind-speaks.html',
   '/pages/transitions.html',
   '/pages/welcome.html',
