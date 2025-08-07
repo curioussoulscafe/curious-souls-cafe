@@ -267,12 +267,12 @@
 </li>
 </ol>
 <p>By following the these steps, you can seamlessly integrate new question sets into the Curious Souls Café web app for your events!</p>
-<h3><span role="img" aria-label="lightning">⚡️</span> Important: Update Service Worker for Offline Access</h3>
+<h3><span role="img" aria-label="lightning">⚡️</span> Update Service Worker for Offline Access</h3>
 <p>
-  <span class="important">Whenever you add a new question file</span> (e.g., <code>questions/yourtopic.txt</code>) or a new topic page (e.g., <code>pages/yourtopic.html</code>), you must also add these files to the <code>FILES_TO_CACHE</code> array in <code>service-worker.js</code>.
+  <span class="important">Whenever adding a new question file</span> (e.g., <code>questions/yourtopic.txt</code>) or a new topic page (e.g., <code>pages/yourtopic.html</code>), one must also add these files to the <code>FILES_TO_CACHE</code> array in <code>service-worker.js</code>.
 </p>
 <p>
-    This ensures that your new content is available even when the app is used offline.
+    This ensures that the new content is available even when the app is used offline.
 </p>
 <ol>
     <li>Open <code>service-worker.js</code>.</li>
@@ -280,7 +280,7 @@
     <li>Save, commit, and publish the changes.</li>
 </ol>
 <p>
-    <span class="important">If you skip this, your new topic or questions will only load when the user is online!</span>
+    <span class="important">If this is skipped, the new topic or questions will only load when the user is online.</span>
 </p>
 <h3 id="-managing-live-discussion-questions">➡️ Managing Live Discussion Questions</h3>
 <p>The &quot;Live Discussion&quot; feature or button is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in <code>index.html</code>.</p>
