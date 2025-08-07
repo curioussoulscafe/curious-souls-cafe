@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curious-souls-cafe-v3';
+const CACHE_NAME = 'curious-souls-cafe-v4';
 
 const FILES_TO_CACHE = [
   // Root and main pages
