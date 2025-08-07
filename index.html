@@ -912,6 +912,36 @@
             }
         }
 
+        function shouldShowInstallButton() {
+            // Your existing logic for whether the button should be shown
+            return btn.classList.contains('show');
+        }
+
+        function updateInstallButtonVisibility() {
+            if (!shouldShowInstallButton()) return; // Don't show if not active anyway
+
+            // How close to bottom before hiding? (px)
+            const buffer = 120;
+            const scrollY = window.scrollY || window.pageYOffset;
+            const visibleHeight = window.innerHeight || document.documentElement.clientHeight;
+            const fullHeight = document.documentElement.scrollHeight;
+
+            // How far from bottom?
+            const distanceFromBottom = fullHeight - (scrollY + visibleHeight);
+            if (distanceFromBottom < buffer) {
+                btn.style.display = 'none'; // Hide when near bottom
+            } else {
+                btn.style.display = 'block'; // Show otherwise
+            }
+        }
+
+        // Re-check on scroll, resize, and page load
+        window.addEventListener('scroll', updateInstallButtonVisibility);
+        window.addEventListener('resize', updateInstallButtonVisibility);
+        window.addEventListener('DOMContentLoaded', updateInstallButtonVisibility);
+
+        // If you ever show/hide the button class in other logic, also call updateInstallButtonVisibility after that.
+
         // Call after DOMContentLoaded
         document.addEventListener('DOMContentLoaded', updateInstallButtonText);
         
