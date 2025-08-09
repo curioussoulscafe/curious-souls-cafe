@@ -247,7 +247,7 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
             const rawText = questionInput.value.trim();
             const questions = rawText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
             if (questions.length < MIN_QUESTIONS) {
-                alert(`Please enter at least ${MIN_QUESTIONS} questions to submit.`);
+                alert(`Please enter at least ${MIN_QUESTIONS} question to submit.`);
                 return;
             }
             if (questions.length > 0) {
