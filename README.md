@@ -36,6 +36,7 @@ Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com
 
 Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
 
+- **[Adulthood](https://curioussoulscafe.github.io/curious-souls-cafe/pages/adulthood.html)**: Explore the holistic journey of adulting—personal growth, authenticity, maturity, and connection to self, others, and the world.
 - **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/pages/authenticity.html)**: Align your actions with your values and embrace your true self.
 - **[Friendship](https://curioussoulscafe.github.io/curious-souls-cafe/pages/friendship.html)**: Deepen connection, celebrate shared moments, and explore the many facets of meaningful friendships.
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
