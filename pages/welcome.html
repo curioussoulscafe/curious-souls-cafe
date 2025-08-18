@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome Leaflet - Curious Souls Café</title>
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <!-- Font Awesome for icons, used for the QR code icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
     /* GitHub-style CSS */
     body {
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-      line-height: 1.6;
+      line-height: 1.6; /* Reverted line-height */
       color: #24292e;
       background-color: #f6f8fa;
     }
@@ -20,31 +22,39 @@
     .container {
       max-width: 800px; /* Set a reasonable maximum width */
       margin: 0 auto; /* Center the container */
-      padding: 2rem; /* Add padding for smaller screens */
+      padding: 2rem; /* Reverted padding */
     }
 
     h2 {
-      font-size: 1.5rem;
-      margin-top: 2rem;
+      font-size: 1.5rem; /* Reverted font-size */
+      margin-top: 2rem; /* Reverted margin-top */
       border-bottom: 1px solid #eaecef;
-      padding-bottom: 0.3rem;
+      padding-bottom: 0.3rem; /* Reverted padding-bottom */
       color: #0366d6;
     }
+    h3 {
+      /* Added h3 style from previous version for consistency */
+      font-size: 1.25rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+      font-weight: 600;
+    }
     p {
-      margin: 1rem 0;
+      margin: 1rem 0; /* Reverted margin */
     }
     ul, ol {
-      padding-left: 2rem;
-      margin: 1rem 0;
+      padding-left: 2rem; /* Reverted padding-left */
+      margin: 1rem 0; /* Reverted margin */
     }
     ul li, ol li {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.5rem; /* Reverted margin-bottom */
     }
     blockquote {
-      margin: 1rem 0;
-      padding: 0.5rem 1rem;
+      margin: 1rem 0; /* Reverted margin */
+      padding: 0.5rem 1rem; /* Reverted padding */
       color: #6a737d;
-      border-left: 4px solid #dfe2e5;
+      border-left: 4px solid #dfe2e5; /* Reverted border-left thickness */
       background-color: #f6f8fa;
     }
     a {
@@ -58,18 +68,18 @@
       border: 0;
       height: 1px;
       background: #eaecef;
-      margin: 2rem 0;
+      margin: 2rem 0; /* Reverted margin */
     }
     code, pre {
       font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 0.9rem;
+      font-size: 0.9rem; /* Reverted font-size */
       background-color: #f6f8fa;
       border: 1px solid #eaecef;
       border-radius: 3px;
-      padding: 0.2rem 0.4rem;
+      padding: 0.2rem 0.4rem; /* Reverted padding */
     }
     pre {
-      padding: 1rem;
+      padding: 1rem; /* Reverted padding */
       overflow: auto;
     }
     img {
@@ -86,35 +96,177 @@
     del {
       color: #6a737d;
     }
+
+    /* General Modal styles for the overlay and content box (retained from previous version) */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+    }
+    .modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 300px;
+        width: 90%;
+        transform: translateY(-20px);
+        transition: transform 0.3s;
+    }
+    .modal-overlay.show .modal-content {
+        transform: translateY(0);
+    }
+
+    /* QR Code Modal specific styles to match GitHub aesthetic (retained from previous version) */
+    #qr-modal-content {
+        max-width: 350px;
+        padding: 1.5rem;
+        position: relative;
+    }
+    #qr-modal-content img {
+        width: 100%;
+        height: auto;
+        max-width: 250px;
+        margin: 0 auto 1rem auto;
+        display: block;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .qr-modal-close-button {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #4a5568;
+        line-height: 1;
+        padding: 0.25rem;
+        border-radius: 50%;
+        transition: background-color 0.2s, color 0.2s;
+    }
+    .qr-modal-close-button:hover {
+        background-color: #e2e8f0;
+        color: #2d3748;
+    }
+    .qr-code-link {
+        font-size: 0.875rem;
+        color: #0366d6;
+        text-decoration: none;
+        transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-top: 1.5rem; /* Spacing for the link */
+        justify-content: center;
+    }
+    .qr-code-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-  <h2 id="welcome-leaflet">Welcome Leaflet</h2>
-  <p>This is the welcome leaflet participants may come across if they come to our events for the first time. If you went to one but didn’t come across it, here it is for you. 😊</p>
-  <hr>
-  <h2 id="dear-curious-souls">Dear Curious Souls</h2>
-  <p>💖 <strong>Welcome to Curious Souls Café</strong>—a fresh concept designed to spark engaging conversations and build a vibrant community. We believe our city thrives on diverse interactions, and we’re excited to create a space where shared curiosity flourishes.</p>
-  <p>In today’s world, where personalized feeds often isolate us, our events aim to enhance cross-cultural awareness and mutual understanding. We recognize that our increasingly autonomous lifestyles can limit opportunities for meaningful, face-to-face conversations. By coming together, we can break these barriers and forge meaningful connections.</p>
-  <hr>
-  <h2 id="-what-to-expect">📅 What to Expect</h2>
-  <ul>
-    <li><p><strong>Regular Meetings</strong>:<br>Join us regularly to explore a wide range of topics. Each meeting will be a platform for open dialogue and exploration.</p></li>
-    <li><p><strong>Facilitating for All</strong>:<br>Whether you’re experienced or new, anyone can take the lead, provided that we respect one another. The floor is open for sharing ideas, practicing empathy, and enhancing communication skills.</p></li>
-    <li><p><strong>Respectful Dialogue</strong>:<br>Remember, there are no right or wrong answers here. We value respect and understanding in all discussions, encouraging a safe space for everyone’s thoughts.</p></li>
-    <li><p><strong>Peer-Powered Gatherings</strong>:<br>We’re not affiliated with any organization or restaurant. This is a grassroots effort, a meaningful hangout for everyone.</p></li>
-    <li><p><strong>Building Community</strong>:<br>After a couple of meetings, we’ll hope to pass the facilitator’s torch to someone new, encouraging a cycle of participation.</p></li>
-  </ul>
-  <hr>
-  <h2 id="-inspired-by-global-communities">🌍 Inspired by Global Communities</h2>
-  <p>We draw inspiration from various global groups that host similar events. These models encourage curiosity and dialogue, and we believe the world needs more of such events.</p>
-  <p>We welcome your suggestions and ideas as we grow together. If this initiative inspires you to start your own group, whether similar or different, we consider that the ultimate success.</p>
-  <p>Let’s embark on this journey of knowledge, wisdom, and philosophy—broadly defined—in a supportive environment. Together, we can cultivate a community that thrives on curiosity and connection.</p>
-  <p>Looking forward to meeting each of you! 😊</p>
-  <hr>
-  <h2 id="disclaimer">Disclaimer</h2>
-  <p>Curious Souls Café fosters open discussions for idea exploration, not professional advice; participants are responsible for their well-being and encouraged to consult qualified professionals when needed.</p>
-  <p>⬅️ <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Leave this page</a> (go to Curious Souls Café web app)</p>
+    <h2 id="welcome-leaflet">Welcome Leaflet</h2>
+    <p>This is the welcome leaflet participants may come across if they come to our events for the first time. If you went to one but didn’t come across it, here it is for you. 😊</p>
+    <hr>
+    <h2 id="dear-curious-souls">Dear Curious Souls</h2>
+    <p>💖 <strong>Welcome to Curious Souls Café</strong>—a fresh concept designed to spark engaging conversations and build a vibrant community. We believe our city thrives on diverse interactions, and we’re excited to create a space where shared curiosity flourishes.</p>
+    <p>In today’s world, where personalized feeds often isolate us, our events aim to enhance cross-cultural awareness and mutual understanding. We recognize that our increasingly autonomous lifestyles can limit opportunities for meaningful, face-to-face conversations. By coming together, we can break these barriers and forge meaningful connections.</p>
+    <hr>
+    <h2 id="-what-to-expect">📅 What to Expect</h2>
+    <ul>
+      <li><p><strong>Regular Meetings</strong>:<br>Join us regularly to explore a wide range of topics. Each meeting will be a platform for open dialogue and exploration.</p></li>
+      <li><p><strong>Facilitating for All</strong>:<br>Whether you’re experienced or new, anyone can take the lead, provided that we respect one another. The floor is open for sharing ideas, practicing empathy, and enhancing communication skills.</p></li>
+      <li><p><strong>Respectful Dialogue</strong>:<br>Remember, there are no right or wrong answers here. We value respect and understanding in all discussions, encouraging a safe space for everyone’s thoughts.</p></li>
+      <li><p><strong>Peer-Powered Gatherings</strong>:<br>We’re not affiliated with any organization or restaurant. This is a grassroots effort, a meaningful hangout for everyone.</p></li>
+      <li><p><strong>Building Community</strong>:<br>After a couple of meetings, we’ll hope to pass the facilitator’s torch to someone new, encouraging a cycle of participation.</p></li>
+    </ul>
+    <hr>
+    <h2 id="-inspired-by-global-communities">🌍 Inspired by Global Communities</h2>
+    <p>We draw inspiration from various global groups that host similar events. These models encourage curiosity and dialogue, and we believe the world needs more of such events.</p>
+    <p>We welcome your suggestions and ideas as we grow together. If this initiative inspires you to start your own group, whether similar or different, we consider that the ultimate success.</p>
+    <p>Let’s embark on this journey of knowledge, wisdom, and philosophy—broadly defined—in a supportive environment. Together, we can cultivate a community that thrives on curiosity and connection.</p>
+    <p>Looking forward to meeting each of you! 😊</p>
+    <hr>
+    <h2 id="disclaimer">Disclaimer</h2>
+    <p>Curious Souls Café fosters open discussions for idea exploration, not professional advice; participants are responsible for their well-being and encouraged to consult qualified professionals when needed.</p>
+    <p>⬅️ <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Leave this page</a> (go to Curious Souls Café web app)</p>
+    <!-- Link to show QR Code (retained and styled to fit original design) -->
+    <a href="#" id="show-qr-code-link" class="qr-code-link">
+      <i class="fas fa-qrcode"></i> Show a QR Code for this Page
+    </a>
   </div>
+
+  <!-- QR Code Modal (retained from previous version) -->
+  <div id="qr-code-modal" class="modal-overlay">
+      <div id="qr-modal-content" class="modal-content">
+          <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Share this Page</h3>
+          <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
+          <!-- The src attribute is dynamically set by JavaScript. The onerror provides a fallback placeholder. -->
+          <img id="qr-modal-image" src="images/qr/qr-code-welcome.png" alt="QR Code for this page"
+               onerror="this.onerror=null;this.src='https://placehold.co/250x250/E0E0E0/6B46C1?text=QR+Code+Loading';">
+      </div>
+  </div>
+
+  <script>
+    // Get references to the QR Code Modal elements
+    const showQrCodeLink = document.getElementById('show-qr-code-link');
+    const qrCodeModal = document.getElementById('qr-code-modal');
+    const qrModalImage = document.getElementById('qr-modal-image');
+    const qrModalCloseButton = document.getElementById('qr-modal-close-button');
+
+    // --- QR Code Modal Logic ---
+    /**
+     * Handles the click event for the "Share this Page" link.
+     * Generates a QR code for the current page URL and displays it in a modal.
+     * @param {Event} event The click event object.
+     */
+    showQrCodeLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default link navigation
+        const pageUrl = window.location.href; // Get the current page's URL
+        // Construct the API URL to generate a QR code image
+        const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+        qrModalImage.src = qrCodeApiUrl; // Set the source of the QR code image
+        qrCodeModal.classList.add('show'); // Add the 'show' class to display the modal
+    });
+
+    /**
+     * Handles the click event for the modal close button.
+     * Hides the QR code modal.
+     */
+    qrModalCloseButton.addEventListener('click', function() {
+        qrCodeModal.classList.remove('show'); // Remove the 'show' class to hide the modal
+    });
+
+    /**
+     * Handles clicks on the modal overlay.
+     * If the click is on the overlay itself (not the content), hides the modal.
+     * @param {Event} event The click event object.
+     */
+    qrCodeModal.addEventListener('click', function(event) {
+        if (event.target === qrCodeModal) { // Check if the click was directly on the overlay
+            qrCodeModal.classList.remove('show'); // Hide the modal
+        }
+    });
+  </script>
 </body>
 </html>

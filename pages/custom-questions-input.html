@@ -178,6 +178,54 @@
         .modal-button.cancel:hover {
             background-color: #cbd5e0;
         }
+        /* New QR Modal specific styles */
+        #qr-modal-content {
+            max-width: 350px; /* Adjust max width for QR code to be readable */
+            padding: 1.5rem;
+            position: relative; /* For close button positioning */
+        }
+        #qr-modal-content img {
+            width: 100%; /* Make image responsive within modal */
+            height: auto;
+            max-width: 250px; /* Max size for QR code image */
+            margin: 0 auto 1rem auto; /* Center and add margin below */
+            display: block; /* Ensure it takes up its own line */
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .qr-modal-close-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568; /* Gray-700 */
+            line-height: 1; /* Ensure icon is vertically centered */
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .qr-modal-close-button:hover {
+            background-color: #e2e8f0; /* Gray-200 */
+            color: #2d3748; /* Gray-800 */
+        }
+        .qr-code-link {
+            font-size: 0.875rem; /* text-sm */
+            color: #6b46c1; /* Purple-600 */
+            text-decoration: none;
+            transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem; /* Space between icon and text */
+            margin-top: 0.5rem; /* Added margin-top to separate it from "Back to Main Page" */
+            justify-content: center; /* Center the link */
+        }
+        .qr-code-link:hover {
+            color: #805ad5; /* Darker purple on hover */
+            text-decoration: underline;
+        }
         @media (max-width: 640px) {
             .container {
                 padding: 1rem;
@@ -218,6 +266,11 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
         <a href="../index.html" class="back-button" title="Back to Main Page">
             <i class="fas fa-arrow-left"></i> Back to Main Page
         </a>
+        <!-- Link to show QR Code -->
+        <!-- <br>
+        <a href="#" id="show-qr-code-link" class="qr-code-link">
+            <i class="fas fa-qrcode"></i> Show a QR Code for this Page
+        </a> -->
     </div>
     <div id="clear-confirm-modal" class="modal-overlay">
         <div class="modal-content">
@@ -228,6 +281,18 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
             </div>
         </div>
     </div>
+
+    <!-- QR Code Modal -->
+    <div id="qr-code-modal" class="modal-overlay">
+        <div id="qr-modal-content" class="modal-content">
+            <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Share this Page</h3>
+            <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
+            <img id="qr-modal-image" src="images/qr/qr-code-function-custom-questions-input.png" alt="QR Code for this page"
+                 onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Loading';">
+        </div>
+    </div>
+
     <script>
         const CUSTOM_QUESTIONS_STORAGE_KEY = 'csc_custom_questions_data';
         const MIN_QUESTIONS = 1;
@@ -237,6 +302,13 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
         const clearConfirmModal = document.getElementById('clear-confirm-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
         const confirmClearNo = document.getElementById('confirm-clear-no');
+
+        // QR Code Modal elements
+        const showQrCodeLink = document.getElementById('show-qr-code-link');
+        const qrCodeModal = document.getElementById('qr-code-modal');
+        const qrModalImage = document.getElementById('qr-modal-image');
+        const qrModalCloseButton = document.getElementById('qr-modal-close-button');
+
         window.addEventListener('load', () => {
             const savedQuestions = localStorage.getItem(CUSTOM_QUESTIONS_STORAGE_KEY);
             if (savedQuestions) {
@@ -269,6 +341,26 @@ What's a small act of kindness you've witnessed or performed recently?"></textar
         });
         confirmClearNo.addEventListener('click', () => {
             clearConfirmModal.classList.remove('show');
+        });
+
+        // --- QR Code Modal Logic ---
+        showQrCodeLink.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            const pageUrl = window.location.href;
+            const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+            qrModalImage.src = qrCodeApiUrl; // Set the QR code image source
+            qrCodeModal.classList.add('show'); // Show the modal
+        });
+
+        qrModalCloseButton.addEventListener('click', function() {
+            qrCodeModal.classList.remove('show'); // Hide the modal
+        });
+
+        // Close modal if clicked outside content
+        qrCodeModal.addEventListener('click', function(event) {
+            if (event.target === qrCodeModal) { // Check if the click was on the overlay itself
+                qrCodeModal.classList.remove('show');
+            }
         });
     </script>
 </body>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curious-souls-cafe-v8';
+const CACHE_NAME = 'curious-souls-cafe-v9';
 
 const FILES_TO_CACHE = [
   // Root and main pages
@@ -52,7 +52,27 @@ const FILES_TO_CACHE = [
   // Images
   '/images/csc_logo.jpg',
   '/images/favicon.ico',
-  '/images/qr-code.png',
+  '/images/qr/qr-code.png',
+  '/images/qr/qr-code-function-action-prompts.png',
+  '/images/qr/qr-code-function-custom-questions-display.png',
+  '/images/qr/qr-code-function-custom-questions-input.png',
+  '/images/qr/qr-code-function-dice-roll.png',
+  '/images/qr/qr-code-readme.png',
+  '/images/qr/qr-code-topic-adulthood.png',
+  '/images/qr/qr-code-topic-authenticity.png',
+  '/images/qr/qr-code-topic-friendship.png',
+  '/images/qr/qr-code-topic-happiness.png',
+  '/images/qr/qr-code-topic-icebreaker.png',
+  '/images/qr/qr-code-topic-inner-child.png',
+  '/images/qr/qr-code-topic-interdependence.png',
+  '/images/qr/qr-code-topic-love-relationships.png',
+  '/images/qr/qr-code-topic-parenting.png',
+  '/images/qr/qr-code-topic-reflection.png',
+  '/images/qr/qr-code-topic-reimagine.png',
+  '/images/qr/qr-code-topic-the-mind-speaks.png',
+  '/images/qr/qr-code-topic-transitions.png',
+  '/images/qr/qr-code-topic-work-that-resonates.png',
+  '/images/qr/qr-code-welcome.png',
 
   // Icons
   '/images/icons/apple-touch-icon.png',
