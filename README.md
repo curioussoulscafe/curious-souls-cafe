@@ -38,6 +38,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 
 - **[Adulthood](https://curioussoulscafe.github.io/curious-souls-cafe/pages/adulthood.html)**: Explore the holistic journey of adulting—personal growth, authenticity, maturity, and connection to self, others, and the world.
 - **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/pages/authenticity.html)**: Align your actions with your values and embrace your true self.
+- **[Entrepreneurship](https://curioussoulscafe.github.io/curious-souls-cafe/pages/entrepreneurship.html)**: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.
 - **[Friendship](https://curioussoulscafe.github.io/curious-souls-cafe/pages/friendship.html)**: Deepen connection, celebrate shared moments, and explore the many facets of meaningful friendships.
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
 - **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and inclusive conversations.
