@@ -311,7 +311,7 @@
         <!-- Link to show QR Code -->
         <br>
         <a href="#" id="show-qr-code-link" class="qr-code-link">
-            <i class="fas fa-qrcode"></i> Show QR Code for this Page
+            <i class="fas fa-qrcode"></i> Show QR Code/Link for this Page
         </a>
     </div>
 
@@ -352,6 +352,15 @@
             <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
             <img id="qr-modal-image" src="images/qr/qr-code-topic-happiness.png" alt="QR Code for this page"
                  onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Loading';">
+
+            <p class="text-sm text-gray-700 mt-2">
+                <i class="fa-solid fa-link mr-1"></i> 
+                <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html</a>
+                <br>
+                <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link</button>
+            </p>
+            <p class="text-gray-500 text-sm mt-4" >Let's help fellow curious souls launch this page and start the conversation! 😊</p>
+
         </div>
     </div>
 
@@ -723,6 +732,21 @@
 
         // Initial calls on page load
         fetchQuestions();
+
+        // Copy Link Button Logic (now a text link)
+        const copyLinkTextLink = document.getElementById('copy-link-text-link'); // Changed ID
+        copyLinkTextLink.addEventListener('click', function(event) { // Changed to button
+            event.preventDefault(); // Prevent default link behavior
+            const pageUrl = window.location.href;
+            // Use a temporary textarea to copy the URL to clipboard
+            const tempInput = document.createElement('textarea');
+            tempInput.value = pageUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showAlertMessage('Link copied to clipboard!');
+        });
         
         randomizeButton.addEventListener('click', function(event) {
             event.preventDefault();
