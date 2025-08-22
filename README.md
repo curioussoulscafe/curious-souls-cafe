@@ -98,7 +98,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * Set the **"No. of questions to pick"** field to `1` (instead of the default value, e.g., `3`).
 
-   * Then, have the participant tap **"Generate Questions!"** so that only one random question is displayed.
+   * Then, have the participant tap **"Next Questions!"** so that only one random question is displayed.
 
 6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice-roll.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
 
