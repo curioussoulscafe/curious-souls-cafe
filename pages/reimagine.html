@@ -25,13 +25,13 @@
         }
         /* Styling for the original items to add space */
         .item {
-            margin-bottom: 0.5rem; /* Increased margin-bottom for more space between items */
-            padding: 0.75rem; /* Slightly less padding than original 1rem */
+            margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
+            padding: 1rem; 
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
-            border-radius: 0.375rem; /* Rounded corners */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
         }
@@ -39,21 +39,21 @@
         /* This class is for highlighting the original items when clicked to be chosen */
         .item.selected-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
-            padding: 1rem; /* Slightly larger padding on selection (was 1.25rem) */
+            padding: 1.15rem; /* Slightly larger padding on selection */
             font-size: 1.35rem; /* Slightly larger font size on selection */
-            margin-bottom: 1rem; /* Adjusted margin to prevent overlap when enlarged */
-            transform: scale(1.05); /* Slightly enlarge when selected */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* More prominent shadow when selected */
+            margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.03); /* Slightly enlarge when selected */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Even more prominent shadow when selected */
         }
         /* Styling for the chosen items */
         .chosen-item {
-            margin-bottom: 0.5rem; /* Increased margin-bottom for more space between items */
-            padding: 0.75rem; /* Slightly less padding than original 1rem */
+            margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
+            padding: 1rem; 
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
-            border-radius: 0.375rem; /* Rounded corners */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
             text-align: center; /* Centered text */
@@ -62,11 +62,11 @@
         /* Highlight for chosen items when clicked */
         .chosen-item.selected-chosen-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
-            padding: 1rem; /* Slightly larger padding on selection (was 1.25rem) */
+            padding: 1.15rem; /* Slightly larger padding on selection */
             font-size: 1.35rem; /* Slightly larger font size on selection */
-            margin-bottom: 1rem; /* Adjusted margin to prevent overlap when enlarged */
-            transform: scale(1.05); /* Slightly enlarge when selected */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* More prominent shadow when selected */
+            margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.03); /* Slightly enlarge when selected */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Even more prominent shadow when selected */
         }
 
         /* Styles for the back-to-top button */
