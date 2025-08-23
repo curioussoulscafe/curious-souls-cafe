@@ -202,7 +202,22 @@
         .modal-button.cancel:hover {
             background-color: #cbd5e0; /* Gray-300 */
         }
-
+        
+        /* Loading spinner styles for modals */
+        .loading-spinner-modal {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #a855f7; /* Purple */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         /* New QR Modal specific styles */
         #qr-modal-content {
             max-width: 350px; /* Adjust max width for QR code to be readable */
@@ -251,6 +266,205 @@
             color: #805ad5; /* Darker purple on hover */
             text-decoration: underline;
         }
+
+        /* New style for the description link */
+        .description-link {
+            display: block;
+            text-align: center;
+            margin-top: -0.5rem; /* Adjust to bring it closer to the title */
+            margin-bottom: 1rem;
+            color: #6b46c1; /* Purple text color */
+            font-weight: 500; /* Medium font weight */
+            font-size: 0.9rem; /* Slightly smaller text */
+            text-decoration: none;
+            transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+        }
+        .description-link:hover {
+            color: #805ad5; /* Darker purple on hover */
+            text-decoration: underline;
+        }
+        .description-link i {
+            margin-right: 0.25rem; /* Small space between icon and text */
+        }
+
+        /* Specific styles for search engine choice buttons within the modal */
+        #search-google-choice-btn {
+            background-color: #4285F4; /* Google Blue */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #search-google-choice-btn:hover {
+            background-color: #357ae8; /* Darker Google Blue on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #search-google-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        #search-bing-choice-btn {
+            background-color: #008AD6; /* Bing Blue */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #search-bing-choice-btn:hover {
+            background-color: #006FB7; /* Darker Bing Blue on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #search-bing-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* DuckDuckGo button style */
+        #search-duckduckgo-choice-btn {
+            background-color: #e3722a; /* DuckDuckGo Orange-Yellow */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #search-duckduckgo-choice-btn:hover {
+            background-color: #c96024; /* Darker DuckDuckGo Orange-Yellow on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #search-duckduckgo-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Brave Search button style */
+        #search-brave-choice-btn {
+            background-color: #FB542B; /* Brave Orange */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #search-brave-choice-btn:hover {
+            background-color: #d14424; /* Darker Brave Orange on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #search-brave-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Translate (Google) button style */
+        #translate-google-choice-btn { 
+            background-color: #60a5fa; /* Blue-400 */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #translate-google-choice-btn:hover {
+            background-color: #3b82f6; /* Blue-500 on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #translate-google-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* New Translate (Bing) button style */
+        #translate-bing-choice-btn {
+            background-color: #008AD6; /* Bing Blue (same as search for consistency) */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #translate-bing-choice-btn:hover {
+            background-color: #006FB7; /* Darker Bing Blue on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #translate-bing-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Copy Question Button Style */
+        #copy-question-btn {
+            background-color: #48bb78; /* Green-500 */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #copy-question-btn:hover {
+            background-color: #38a169; /* Darker Green-500 on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #copy-question-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Styling for headings inside the modal */
+        .modal-subheading {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            color: #4a5568; /* Gray-700 */
+            margin-top: 1rem;
+            margin-bottom: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0; /* Subtle separator */
+            padding-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -269,6 +483,11 @@
             Spark lighthearted, meaningful, and inclusive conversations.
         </p>
 
+        <!-- Hyperlink to the full description page -->
+        <a href="event-templates\icebreaker.html" target="_blank" class="description-link">
+            <i class="fas fa-info-circle"></i>Read Event Description
+        </a>
+
         <hr class="border-gray-300 my-4 w-full mx-auto">
 
         <div class="mb-4">
@@ -284,7 +503,16 @@
             <p id="random-result" class="text-gray-800 text-center font-medium">Loading questions...</p>
         </div>
 
-        <div class="mb-4">
+        <!-- Consolidated Look Up Online Button -->
+        <div class="mt-4 pt-4 border-t border-gray-300 flex flex-col items-center">
+            <button id="look-up-online-btn" class="bg-gradient-to-r from-blue-400 to-green-400 hover:from-blue-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded-full shadow-md
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
+                   w-full transition duration-300 ease-in-out mb-2 hidden">
+                <i class="fas fa-search"></i> Look Up Online / Translate
+            </button>
+        </div>
+
+        <div class="mb-8"> <!-- Added mb-8 for more separation -->
             <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search questions:</label>
             <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
@@ -342,6 +570,48 @@
                 <button id="confirm-empty-search-no" class="modal-button cancel">No</button>
             </div>
         </div>
+    </div>    
+
+    <!-- Search/Translate Choice Modal -->
+    <div id="search-engine-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">What would you like to do with this question?</p>
+            
+            <h4 class="modal-subheading">Web Search</h4>
+            <div class="flex flex-col items-center">
+                <button id="search-google-choice-btn">
+                    <i class="fab fa-google"></i> Look up on Google
+                </button>
+                <button id="search-bing-choice-btn">
+                    <i class="fab fa-microsoft"></i> Look up on Bing
+                </button>
+                <button id="search-duckduckgo-choice-btn">
+                    <i class="fas fa-search"></i> Look up on DuckDuckGo
+                </button>
+                <button id="search-brave-choice-btn">
+                    <i class="fas fa-magnifying-glass"></i> Look up on Brave Search
+                </button>
+            </div>
+
+            <h4 class="modal-subheading">Translation Services</h4>
+            <div class="flex flex-col items-center">
+                <button id="translate-google-choice-btn">
+                    <i class="fas fa-language"></i> Translate with Google
+                </button>
+                <button id="translate-bing-choice-btn">
+                    <i class="fas fa-language"></i> Translate with Bing
+                </button>
+            </div>
+
+            <h4 class="modal-subheading">Other Actions</h4>
+            <div class="flex flex-col items-center">
+                <button id="copy-question-btn">
+                    <i class="fas fa-copy"></i> Copy Question
+                </button>
+            </div>
+
+            <button id="close-search-engine-modal" class="modal-button cancel mt-4">Cancel</button>
+        </div>
     </div>
 
     <!-- QR Code Modal -->
@@ -374,6 +644,7 @@
         let itemList = []; 
         let lastSearchTerm = "";
         let availableRandomItems = [];
+        let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
 
         const randomizeButton = document.getElementById('randomize-button');
         const resultDisplay = document.getElementById('random-result');
@@ -398,6 +669,22 @@
         const emptySearchModal = document.getElementById('empty-search-modal');
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
         const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
+        // Look Up Online button
+        const lookUpOnlineBtn = document.getElementById('look-up-online-btn'); 
+
+        // Search Engine/Translate Choice Modal elements
+        const searchEngineModal = document.getElementById('search-engine-modal');
+        const searchGoogleChoiceBtn = document.getElementById('search-google-choice-btn');
+        const searchBingChoiceBtn = document.getElementById('search-bing-choice-btn');
+        const searchDuckDuckGoChoiceBtn = document.getElementById('search-duckduckgo-choice-btn'); 
+        const searchBraveChoiceBtn = document.getElementById('search-brave-choice-btn'); 
+        const translateGoogleChoiceBtn = document.getElementById('translate-google-choice-btn'); 
+        const translateBingChoiceBtn = document.getElementById('translate-bing-choice-btn'); 
+        const closeSearchEngineModalBtn = document.getElementById('close-search-engine-modal');
+        
+        // Copy Question button
+        const copyQuestionBtn = document.getElementById('copy-question-btn');
 
         // New QR Code Modal elements
         const showQrCodeLink = document.getElementById('show-qr-code-link');
@@ -516,18 +803,33 @@
             return selectedItems;
         }
 
+        /**
+         * Adds highlighting logic and click handler for selecting questions.
+         * Controls visibility of the LLM features button based on selection.
+         * @param {HTMLElement} targetElement The container element holding the items (e.g., resultDisplay, searchResultsDisplay).
+         */
         function addHighlightingAndChooseLogic(targetElement) {
             const items = targetElement.querySelectorAll('.item');
             items.forEach(item => {
                 item.addEventListener('click', function() {
                     const questionText = this.textContent;
 
+                    // Remove selected-item from previously selected item in resultDisplay or searchResultsDisplay
+                    const previouslySelected = document.querySelector('.item.selected-item');
+                    if (previouslySelected && previouslySelected !== this) {
+                        previouslySelected.classList.remove('selected-item');
+                    }
+
                     this.classList.toggle('selected-item');
 
                     if (this.classList.contains('selected-item')) {
-                        addChosenQuestion(questionText);
+                        selectedRandomQuestionText = questionText;
+                        addChosenQuestion(questionText); // Also add to saved questions if selected
+                        lookUpOnlineBtn.classList.remove('hidden'); // Show consolidated look up online button
                     } else {
-                        removeChosenQuestion(questionText);
+                        selectedRandomQuestionText = null;
+                        removeChosenQuestion(questionText); // Remove from saved questions if deselected
+                        lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
                     }
                 });
             });
@@ -596,6 +898,7 @@
         function displayRandomItems() {
             if (itemList.length === 0) {
                 resultDisplay.textContent = "No questions available to pick. Please load questions first.";
+                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
                 return;
             }
             const numItemsToPick = parseInt(itemCountInput.value);
@@ -603,17 +906,23 @@
 
             if (typeof result === "string") {
                 resultDisplay.textContent = result;
+                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
             } else {
                 let itemDivs = result.map(item => `<div class="item">${item}</div>`);
                 let resultHTML = itemDivs.join('');
                 resultDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(resultDisplay);
             }
+            selectedRandomQuestionText = null; // Reset selection on new generation
+            const previouslySelected = document.querySelector('.item.selected-item');
+            if (previouslySelected) previously.classList.remove('selected-item');
+            lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button on new generation until selection
         }
 
         function displayFilteredItems() {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
                 return;
             }
             const currentSearchTerm = searchInput.value.trim().toLowerCase();
@@ -622,6 +931,8 @@
                 searchResultsDisplay.innerHTML = '';
                 searchButton.textContent = "Search";
                 lastSearchTerm = "";
+                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
+                selectedRandomQuestionText = null; // Clear selection
                 return;
             }
 
@@ -636,6 +947,8 @@
         function executeSearch(searchTerm) {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
+                selectedRandomQuestionText = null; // Clear selection
                 return;
             }
             
@@ -643,6 +956,8 @@
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
+                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
+                selectedRandomQuestionText = null; // Clear selection
             } else {
                 let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
                 let resultHTML = itemDivs.join('');
@@ -651,8 +966,129 @@
             }
             lastSearchTerm = searchTerm;
             searchButton.textContent = "Search / Clear Search";
+            selectedRandomQuestionText = null; // Reset selection on new search
+            const previouslySelected = document.querySelector('.item.selected-item');
+            if (previouslySelected) previouslySelected.classList.remove('selected-item');
+            lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button on new search until selection
         }
 
+        /**
+         * Removes any leading emoji or symbol from a string.
+         * @param {string} text The input string.
+         * @returns {string} The string with leading emojis/symbols removed.
+         */
+        function removeEmojiPrefix(text) {
+            // This regex matches one or more non-word characters (including emojis)
+            // at the beginning of the string, followed by optional whitespace.
+            return text.replace(/^[\W_]+\s*/, '').trim();
+        }
+
+        // --- Search Engine Functions ---
+        /**
+         * Opens a new tab to search the selected question on Google.
+         */
+        function searchQuestionOnGoogle() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(googleSearchUrl, '_blank');
+            } else {
+                // This scenario should be prevented by the 'lookUpOnlineBtn' click handler
+                // but included for robustness.
+                alert("Please select a question first to look up on Google.");
+            }
+        }
+
+        /**
+         * Opens a new tab to search the selected question on Bing.
+         */
+        function searchQuestionOnBing() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const bingSearchUrl = `https://www.bing.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(bingSearchUrl, '_blank');
+            } else {
+                alert("Please select a question first to look up on Bing.");
+            }
+        }
+
+        /**
+         * Opens a new tab to search the selected question on DuckDuckGo.
+         */
+        function searchQuestionOnDuckDuckGo() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const duckduckgoSearchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(duckduckgoSearchUrl, '_blank');
+            } else {
+                alert("Please select a question first to look up on DuckDuckGo.");
+            }
+        }
+
+        /**
+         * Opens a new tab to search the selected question on Brave Search.
+         */
+        function searchQuestionOnBrave() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const braveSearchUrl = `https://search.brave.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(braveSearchUrl, '_blank');
+            } else {
+                alert("Please select a question first to look up on Brave Search.");
+            }
+        }
+
+        /**
+         * Opens a new tab to translate the selected question using Google Translate.
+         */
+        function translateQuestionWithGoogle() { 
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                // Use Google Translate with auto-detect source language and target English
+                // User can change target language on Google Translate page
+                const translateUrl = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(translateUrl, '_blank');
+            } else {
+                alert("Please select a question first to translate with Google.");
+            }
+        }
+
+        /**
+         * Opens a new tab to translate the selected question using Bing Translate.
+         */
+        function translateQuestionWithBing() { 
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                // Bing Translate with auto-detect source language and target English
+                const translateUrl = `https://www.bing.com/translator/?from=auto&to=en&text=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(translateUrl, '_blank');
+            } else {
+                alert("Please select a question first to translate with Bing.");
+            }
+        }
+
+        /**
+         * Copies the selected question text to the clipboard.
+         */
+        function copyQuestionToClipboard() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                // Create a temporary textarea element to copy the text
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = cleanedQuestion;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                // Provide visual feedback (could be a temporary message in the modal or a toast notification)
+                alert("Question copied to clipboard!"); // Using alert for simplicity, consider custom modal/toast
+            } else {
+                alert("No question selected to copy.");
+            }
+        }
+
+
+        // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
             confirmationModal.classList.add('show');
         });
@@ -707,6 +1143,56 @@
 
         confirmEmptySearchNo.addEventListener('click', function() {
             emptySearchModal.classList.remove('show');
+        });
+        
+        // Consolidated Look Up Online Button Listener
+        lookUpOnlineBtn.addEventListener('click', function() {
+            if (selectedRandomQuestionText) {
+                searchEngineModal.classList.add('show'); // Show the choice modal
+            } else {
+                alert("Please select a question first to look up online / translate.");
+            }
+        });
+
+        // Search Engine/Translate Choice Modal Listeners
+        searchGoogleChoiceBtn.addEventListener('click', function() {
+            searchQuestionOnGoogle();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchBingChoiceBtn.addEventListener('click', function() {
+            searchQuestionOnBing();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchDuckDuckGoChoiceBtn.addEventListener('click', function() { 
+            searchQuestionOnDuckDuckGo();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchBraveChoiceBtn.addEventListener('click', function() { 
+            searchQuestionOnBrave();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        translateGoogleChoiceBtn.addEventListener('click', function() { 
+            translateQuestionWithGoogle();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        translateBingChoiceBtn.addEventListener('click', function() { 
+            translateQuestionWithBing();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        // Copy Question Listener
+        copyQuestionBtn.addEventListener('click', function() {
+            copyQuestionToClipboard();
+            searchEngineModal.classList.remove('show'); // Hide modal after copying
+        });
+
+        closeSearchEngineModalBtn.addEventListener('click', function() {
+            searchEngineModal.classList.remove('show'); // Hide modal on cancel
         });
 
         // --- QR Code Modal Logic ---
