@@ -46,6 +46,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Interdependence](https://curioussoulscafe.github.io/curious-souls-cafe/pages/interdependence.html)**: Explore interdependent connection, and the invisible threads that sustain our relationships and communities.
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.
 - **[Parenting](https://curioussoulscafe.github.io/curious-souls-cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
+- **[Purpose](https://curioussoulscafe.github.io/curious-souls-cafe/pages/purpose.html)**: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.
 - **[Reflection](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
 - **[Reimagine](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
 - **[Work that Resonates](https://curioussoulscafe.github.io/curious-souls-cafe/pages/work-that-resonates.html)**: Explore your evolving relationship with work, purpose, and fulfillment.
@@ -56,7 +57,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 
 Let these decks inspire your journey of exploration, connection, and growth!
 
-Note: Questions with a spiral emoiji 🌀 are deeper ones
+Note: Questions with a spiral emoiji 🌀 are deeper ones, whereas those with a seeding emoiji 🌱 are introductory or foundational ones.
 
 ## ✨ What You Can Do with the Web App
 

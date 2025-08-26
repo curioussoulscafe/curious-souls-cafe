@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curious-souls-cafe-v10';
+const CACHE_NAME = 'curious-souls-cafe-v11';
 
 const FILES_TO_CACHE = [
   // Root and main pages
@@ -20,6 +20,7 @@ const FILES_TO_CACHE = [
   '/questions/interdependence.txt',
   '/questions/love-relationships.txt',
   '/questions/parenting.txt',
+  '/questions/purpose.txt',
   '/questions/reflection.txt',
   '/questions/reimagine.txt',
   '/questions/work-that-resonates.txt',
@@ -42,6 +43,7 @@ const FILES_TO_CACHE = [
   '/pages/live-discussion.html',
   '/pages/love-relationships.html',
   '/pages/parenting.html',
+  '/pages/purpose.html',
   '/pages/reflection.html',
   '/pages/reimagine.html',
   '/pages/work-that-resonates.html',
@@ -69,6 +71,7 @@ const FILES_TO_CACHE = [
   '/images/qr/qr-code-topic-interdependence.png',
   '/images/qr/qr-code-topic-love-relationships.png',
   '/images/qr/qr-code-topic-parenting.png',
+  '/images/qr/qr-code-topic-purpose.png',
   '/images/qr/qr-code-topic-reflection.png',
   '/images/qr/qr-code-topic-reimagine.png',
   '/images/qr/qr-code-topic-the-mind-speaks.png',
