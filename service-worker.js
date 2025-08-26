@@ -53,6 +53,24 @@ const FILES_TO_CACHE = [
   '/pages/adulthood.html',
   '/pages/entrepreneurship.html',
 
+  // Pages (descriptions)
+  '/pages/descriptions/authenticity.html',
+  '/pages/descriptions/friendship.html',
+  '/pages/descriptions/happiness.html',
+  '/pages/descriptions/icebreaker.html',
+  '/pages/descriptions/inner-child.html',
+  '/pages/descriptions/interdependence.html',
+  '/pages/descriptions/love-relationships.html',
+  '/pages/descriptions/parenting.html',
+  '/pages/descriptions/purpose.html',
+  '/pages/descriptions/reflection.html',
+  '/pages/descriptions/reimagine.html',
+  '/pages/descriptions/work-that-resonates.html',
+  '/pages/descriptions/the-mind-speaks.html',
+  '/pages/descriptions/transitions.html',
+  '/pages/descriptions/adulthood.html',
+  '/pages/descriptions/entrepreneurship.html',
+
   // Images
   '/images/csc_logo.jpg',
   '/images/favicon.ico',
