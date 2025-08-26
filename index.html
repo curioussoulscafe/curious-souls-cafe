@@ -824,10 +824,9 @@
         const copyLinkTextLink = document.getElementById('copy-link-text-link'); // Changed ID
         copyLinkTextLink.addEventListener('click', function(event) { // Changed to button
             event.preventDefault(); // Prevent default link behavior
-            const pageUrl = window.location.href;
-            // Use a temporary textarea to copy the URL to clipboard
+            // Use a temporary textarea to copy the fixed URL to clipboard
             const tempInput = document.createElement('textarea');
-            tempInput.value = pageUrl;
+            tempInput.value = "https://curioussoulscafe.github.io"; // Fixed URL
             document.body.appendChild(tempInput);
             tempInput.select();
             document.execCommand('copy');
