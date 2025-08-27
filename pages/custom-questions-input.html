@@ -19,9 +19,9 @@
             min-height: 100vh;
             min-width: 100vw;
             margin: 0;
-            padding: 0;
+            padding: 1rem 0; /* Add padding to prevent top chopping */
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* Align content to the top */
             justify-content: center;
             background: linear-gradient(
                 to right,
@@ -30,6 +30,7 @@
                 #ede9fe 80%,
                 #f3f4f6 100%
             );
+            overflow-y: auto; /* Allow vertical scrolling */
         }
         .container {
             background-color: #ffffff;
@@ -39,12 +40,17 @@
             width: 100%;
             max-width: 28rem;
             min-height: 650px;
+            margin-top: 1rem; /* Add margin to separate from top */
             transition: transform 0.2s, box-shadow 0.2s;
             box-sizing: border-box;
         }
         .container:hover {
             /* transform: scale(1.02); */
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+        .container img {
+            max-width: 100%; /* Ensure responsiveness */
+            height: auto;
         }
         h1 {
             font-size: 1.875rem;
@@ -227,9 +233,12 @@
             text-decoration: underline;
         }
         @media (max-width: 640px) {
+            body {
+                padding: 1rem; /* Add extra padding for smaller screens */
+            }
             .container {
                 padding: 1rem;
-                min-height: 400px;
+                min-height: auto; /* Allow content to grow */
                 margin-left: 1rem;
                 margin-right: 1rem;
                 width: auto;
