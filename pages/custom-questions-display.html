@@ -25,13 +25,13 @@
         }
         /* Styling for the original items to add space */
         .item {
-            margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
-            padding: 1rem; 
+            margin-bottom: 0.5rem; /* Increased margin-bottom for more space between items */
+            padding: 0.75rem; /* Slightly less padding than original 1rem */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
-            border-radius: 1rem; /* More rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+            border-radius: 0.375rem; /* Rounded corners */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
         }
@@ -39,21 +39,21 @@
         /* This class is for highlighting the original items when clicked to be chosen */
         .item.selected-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
-            padding: 1.15rem; /* Slightly larger padding on selection */
+            padding: 1rem; /* Slightly larger padding on selection (was 1.25rem) */
             font-size: 1.35rem; /* Slightly larger font size on selection */
-            margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
-            transform: scale(1.03); /* Slightly enlarge when selected */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Even more prominent shadow when selected */
+            margin-bottom: 1rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.05); /* Slightly enlarge when selected */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* More prominent shadow when selected */
         }
         /* Styling for the chosen items */
         .chosen-item {
-            margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
-            padding: 1rem; 
+            margin-bottom: 0.5rem; /* Increased margin-bottom for more space between items */
+            padding: 0.75rem; /* Slightly less padding than original 1rem */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
-            border-radius: 1rem; /* More rounded corners */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+            border-radius: 0.375rem; /* Rounded corners */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
             text-align: center; /* Centered text */
@@ -62,11 +62,11 @@
         /* Highlight for chosen items when clicked */
         .chosen-item.selected-chosen-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
-            padding: 1.15rem; /* Slightly larger padding on selection */
+            padding: 1rem; /* Slightly larger padding on selection (was 1.25rem) */
             font-size: 1.35rem; /* Slightly larger font size on selection */
-            margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
-            transform: scale(1.03); /* Slightly enlarge when selected */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Even more prominent shadow when selected */
+            margin-bottom: 1rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.05); /* Slightly enlarge when selected */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* More prominent shadow when selected */
         }
 
         /* Styles for the back-to-top button */
@@ -202,373 +202,6 @@
         .modal-button.cancel:hover {
             background-color: #cbd5e0; /* Gray-300 */
         }
-        
-        /* Loading spinner styles for modals */
-        .loading-spinner-modal {
-            border: 4px solid #f3f3f3; /* Light grey */
-            border-top: 4px solid #a855f7; /* Purple */
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-
-        /* New style for the description link */
-        .description-link-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: -0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            color: #6b46c1;
-        }
-        .description-link {
-            display: inline-flex;
-            align-items: center;
-            text-align: center;
-            color: #6b46c1;
-            font-weight: 500;
-            text-decoration: none;
-            transition: color 0.2s ease-in-out;
-            border: none;
-            background: none;
-            cursor: pointer;
-            padding: 0;
-        }
-        .description-link:hover {
-            color: #805ad5;
-            text-decoration: underline;
-        }
-        .description-link i {
-            margin-right: 0.35rem;
-        }
-        .separator {
-            display: inline-flex;
-            align-items: center;
-            margin: 0 0.35rem;
-            color: #6b46c1;
-            font-size: 1em;
-            height: 1em;
-        }
-        
-        /* New QR Modal specific styles */
-        #qr-modal-content {
-            max-width: 350px; /* Adjust max width for QR code to be readable */
-            padding: 1.5rem;
-            position: relative; /* For close button positioning */
-        }
-        #qr-modal-content img {
-            width: 100%; /* Make image responsive within modal */
-            height: auto;
-            max-width: 250px; /* Max size for QR code image */
-            margin: 0 auto 1rem auto; /* Center and add margin below */
-            display: block; /* Ensure it takes up its own line */
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .qr-modal-close-button {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #4a5568; /* Gray-700 */
-            line-height: 1; /* Ensure icon is vertically centered */
-            padding: 0.25rem;
-            border-radius: 50%;
-            transition: background-color 0.2s, color 0.2s;
-        }
-        .qr-modal-close-button:hover {
-            background-color: #e2e8f0; /* Gray-200 */
-            color: #2d3748; /* Gray-800 */
-        }
-        .qr-code-link {
-            font-size: 0.875rem; /* text-sm */
-            color: #6b46c1; /* Purple-600 */
-            text-decoration: none;
-            transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem; /* Space between icon and text */
-            margin-top: 0.5rem; /* Added margin-top to separate it from "Back to Main Page" */
-            justify-content: center; /* Center the link */
-        }
-        .qr-code-link:hover {
-            color: #805ad5; /* Darker purple on hover */
-            text-decoration: underline;
-        }
-
-        /* New style for the description link */
-        .description-link {
-            display: inline-flex;
-            align-items: center;
-            text-align: center;
-            color: #6b46c1;
-            font-weight: 500;
-            text-decoration: none;
-            transition: color 0.2s ease-in-out;
-            border: none;
-            background: none;
-            cursor: pointer;
-            padding: 0;
-        }
-        .description-link:hover {
-            color: #805ad5; /* Darker purple on hover */
-            text-decoration: underline;
-        }
-        .description-link i {
-            margin-right: 0.35rem; /* Small space between icon and text */
-        }
-
-        /* Specific styles for search engine choice buttons within the modal */
-        #search-google-choice-btn {
-            background-color: #4285F4; /* Google Blue */
-            color: white;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem; /* Space between choices */
-        }
-        #search-google-choice-btn:hover {
-            background-color: #357ae8; /* Darker Google Blue on hover */
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #search-google-choice-btn i {
-            margin-right: 0.5rem;
-        }
-
-        #search-bing-choice-btn {
-            background-color: #008AD6; /* Bing Blue */
-            color: white;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem; /* Space between choices */
-        }
-        #search-bing-choice-btn:hover {
-            background-color: #006FB7; /* Darker Bing Blue on hover */
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #search-bing-choice-btn i {
-            margin-right: 0.5rem;
-        }
-
-        /* DuckDuckGo button style */
-        #search-duckduckgo-choice-btn {
-            background-color: #e3722a; /* DuckDuckGo Orange-Yellow */
-            color: white;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem; /* Space between choices */
-        }
-        #search-duckduckgo-choice-btn:hover {
-            background-color: #c96024; /* Darker DuckDuckGo Orange-Yellow on hover */
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #search-duckduckgo-choice-btn i {
-            margin-right: 0.5rem;
-        }
-
-        /* Brave Search button style */
-        #search-brave-choice-btn {
-            background-color: #FB542B; /* Brave Orange */
-            color: white;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem; /* Space between choices */
-        }
-        #search-brave-choice-btn:hover {
-            background-color: #d14424; /* Darker Brave Orange on hover */
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #search-brave-choice-btn i {
-            margin-right: 0.5rem;
-        }
-
-        /* Translate (Google) button style */
-        #translate-google-choice-btn { 
-            background-color: #60a5fa; /* Blue-400 */
-            color: white;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem; /* Space between choices */
-        }
-        #translate-google-choice-btn:hover {
-            background-color: #3b82f6; /* Blue-500 on hover */
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #translate-google-choice-btn i {
-            margin-right: 0.5rem;
-        }
-
-        /* New Translate (Bing) button style */
-        #translate-bing-choice-btn {
-            background-color: #008AD6; /* Bing Blue (same as search for consistency) */
-            color: white;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem; /* Space between choices */
-        }
-        #translate-bing-choice-btn:hover {
-            background-color: #006FB7; /* Darker Bing Blue on hover */
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #translate-bing-choice-btn i {
-            margin-right: 0.5rem;
-        }
-
-        /* Copy Question Button Style */
-        #copy-question-btn {
-            background-color: #48bb78; /* Green-500 */
-            color: white;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-            border-radius: 9999px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.5rem; /* Space between choices */
-        }
-        #copy-question-btn:hover {
-            background-color: #38a169; /* Darker Green-500 on hover */
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-        }
-        #copy-question-btn i {
-            margin-right: 0.5rem;
-        }
-
-        /* Styling for headings inside the modal */
-        .modal-subheading {
-            font-size: 1.125rem; /* text-lg */
-            font-weight: 600; /* font-semibold */
-            color: #4a5568; /* Gray-700 */
-            margin-top: 1rem;
-            margin-bottom: 0.75rem;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0; /* Subtle separator */
-            padding-bottom: 0.5rem;
-        }
-
-        /* Styling for list items in getting started modal */
-        .getting-started-list {
-            list-style-type: none; /* Remove default bullet points */
-            padding-left: 0;
-            text-align: left;
-            counter-reset: step-counter; /* Initialize counter */
-        }
-
-        .getting-started-list li {
-            margin-bottom: 0.75rem;
-            padding-left: 1.5rem; /* Indent content */
-            position: relative;
-        }
-
-        .getting-started-list li::before {
-            content: counter(step-counter); /* Use a counter for numbering */
-            counter-increment: step-counter;
-            position: absolute;
-            left: 0;
-            top: 0;
-            background-color: #9f7aea; /* Purple for the step number */
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        /* Standard hyperlink color for dice link in modal */
-        #getting-started-modal .getting-started-list a {
-            color: #0000EE !important;
-            font-weight: normal !important;
-            background: none !important;
-            border: none !important;
-        }
-
-        #getting-started-modal .getting-started-list a:hover,
-        #getting-started-modal .getting-started-list a:focus {
-            color: #551A8B !important;
-            text-decoration: underline !important;
-        }
-
-        /* Inline share trigger button style (looks like italic text) */
-        #inline-share-trigger {
-            background: none;
-            border: none;
-            padding: 0;
-            margin: 0;
-            color: #0000EE;
-            font-style: italic;
-            cursor: pointer;
-        }
-        #inline-share-trigger:hover, #inline-share-trigger:focus {
-            text-decoration: underline;
-            color: #551A8B;
-            outline: none;
-        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -587,13 +220,6 @@
             Your personalized discussion, made using your submitted list of <a href="custom-questions-input.html" class="text-purple-600 hover:underline font-bold">questions</a>. 
         </p>
 
-        <!-- Hyperlink to the full description and getting started page -->
-        <!-- <div class="description-link-container">
-            <button id="getting-started-link" class="description-link">
-                <i class="fas fa-info-circle"></i>Getting Started
-            </button>
-        </div> -->
-
         <hr class="border-gray-300 my-4 w-full mx-auto">
 
         <div class="mb-4">
@@ -602,7 +228,7 @@
         </div>
 
         <button id="randomize-button" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out mb-6">
-            Next Questions!
+            Generate Questions!
         </button>
 
         <div class="mb-4">
@@ -661,24 +287,6 @@
                 <button id="confirm-empty-search-no" class="modal-button cancel">No</button>
             </div>
         </div>
-    <!-- Getting Started Modal -->
-    <div id="getting-started-modal" class="modal-overlay">
-        <div class="modal-content max-w-sm"> <!-- Max width adjusted for readability -->
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
-            
-            <ol class="getting-started-list">
-                <li>
-                    <b>Invite Others:</b> Share the <button id="inline-share-trigger" type="button"><i>QR code or link</i></button> at the bottom of any topic page to get everyone onboard.
-                </li>
-                <li>
-                    <b>Pick a Question:</b> Each person chooses one of three questions that speaks to them. Tap a question to save it.
-                </li>
-                <li>
-                    <b>Start the Conversation:</b> Invite a person to share their question and answer first, then everyone goes around (e.g., clockwise) answering the same question.<br><br>Once everyone has answered, the next person shares their chosen question, and the process repeats.
-                </li>
-            </ol>
-            <button id="close-getting-started-modal" class="modal-button cancel mt-4">Got it!</button>
-        </div>
     </div>
 
     <script>
@@ -711,14 +319,6 @@
         const emptySearchModal = document.getElementById('empty-search-modal');
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
         const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
-
-        // Getting Started Modal elements
-        const gettingStartedIcon = document.getElementById('getting-started-link');
-        const gettingStartedModal = document.getElementById('getting-started-modal');
-        const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
-
-        // Inline trigger inside Getting Started modal
-        const inlineShareTrigger = document.getElementById('inline-share-trigger');
 
         // Define the list of highlight colors
         const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
@@ -1008,47 +608,6 @@
 
         confirmEmptySearchNo.addEventListener('click', function() {
             emptySearchModal.classList.remove('show');
-        });
-
-        // Getting Started Modal Event Listeners
-        gettingStartedIcon.addEventListener('click', () => {
-            gettingStartedModal.classList.add('show');
-        });
-
-        closeGettingStartedModalBtn.addEventListener('click', () => {
-            gettingStartedModal.classList.remove('show');
-        });
-        
-        // --- QR Code Modal Logic ---
-        function openShareModal() {
-            const pageUrl = window.location.href;
-            const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-            qrModalImage.src = qrCodeApiUrl; // Set the QR code image source
-            qrCodeModal.classList.add('show'); // Show the modal
-        }
-
-        showQrCodeLink.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default link behavior
-            openShareModal();
-        });
-
-        // Inline share trigger inside Getting Started modal
-        inlineShareTrigger.addEventListener('click', function(event) {
-            event.preventDefault();
-            // Also close the Getting Started modal to focus on Share modal
-            gettingStartedModal.classList.remove('show');
-            openShareModal();
-        });
-
-        qrModalCloseButton.addEventListener('click', function() {
-            qrCodeModal.classList.remove('show'); // Hide the modal
-        });
-
-        // Close modal if clicked outside content
-        qrCodeModal.addEventListener('click', function(event) {
-            if (event.target === qrCodeModal) { // Check if the click was on the overlay itself
-                qrCodeModal.classList.remove('show');
-            }
         });
 
         fetchQuestions();
