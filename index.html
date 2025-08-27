@@ -335,6 +335,11 @@
         #topics-list {
             margin-top: 0;
         }
+
+        /* Apply 1rem (same as space-y-4) top margin to topics when starred actions are above */
+        #topics-list.has-starred-actions-above {
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -851,6 +856,14 @@
                 btn.setAttribute('data-injected-starred-action', '1');
                 parentContainer.insertBefore(btn, topicsAnchor);
             });
+
+            // Ensure consistent spacing between the last injected action and the first topic
+            // If we injected any starred actions, add a top margin to topics equal to space-y-4 (1rem)
+            if (starredButtons.length > 0) {
+                topicsAnchor.classList.add('has-starred-actions-above');
+            } else {
+                topicsAnchor.classList.remove('has-starred-actions-above');
+            }
         }
 
         /**
