@@ -217,6 +217,46 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+
+        /* New style for the description link */
+        .description-link-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #6b46c1;
+        }
+        .description-link {
+            display: inline-flex;
+            align-items: center;
+            text-align: center;
+            color: #6b46c1;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .description-link:hover {
+            color: #805ad5;
+            text-decoration: underline;
+        }
+        .description-link i {
+            margin-right: 0.35rem;
+        }
+        .separator {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 0.35rem;
+            color: #6b46c1;
+            font-size: 1em;
+            height: 1em;
+        }
         
         /* New QR Modal specific styles */
         #qr-modal-content {
@@ -269,22 +309,24 @@
 
         /* New style for the description link */
         .description-link {
-            display: block;
+            display: inline-flex;
+            align-items: center;
             text-align: center;
-            margin-top: -0.5rem; /* Adjust to bring it closer to the title */
-            margin-bottom: 1rem;
-            color: #6b46c1; /* Purple text color */
-            font-weight: 500; /* Medium font weight */
-            font-size: 0.9rem; /* Slightly smaller text */
+            color: #6b46c1;
+            font-weight: 500;
             text-decoration: none;
-            transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+            transition: color 0.2s ease-in-out;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
         }
         .description-link:hover {
             color: #805ad5; /* Darker purple on hover */
             text-decoration: underline;
         }
         .description-link i {
-            margin-right: 0.25rem; /* Small space between icon and text */
+            margin-right: 0.35rem; /* Small space between icon and text */
         }
 
         /* Specific styles for search engine choice buttons within the modal */
@@ -465,6 +507,52 @@
             border-bottom: 1px solid #e2e8f0; /* Subtle separator */
             padding-bottom: 0.5rem;
         }
+
+        /* Styling for list items in getting started modal */
+        .getting-started-list {
+            list-style-type: none; /* Remove default bullet points */
+            padding-left: 0;
+            text-align: left;
+            counter-reset: step-counter; /* Initialize counter */
+        }
+
+        .getting-started-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem; /* Indent content */
+            position: relative;
+        }
+
+        .getting-started-list li::before {
+            content: counter(step-counter); /* Use a counter for numbering */
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: #9f7aea; /* Purple for the step number */
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Standard hyperlink color for dice link in modal */
+        #getting-started-modal .getting-started-list a {
+            color: #0000EE !important;
+            font-weight: normal !important;
+            background: none !important;
+            border: none !important;
+        }
+
+        #getting-started-modal .getting-started-list a:hover,
+        #getting-started-modal .getting-started-list a:focus {
+            color: #551A8B !important;
+            text-decoration: underline !important;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -483,10 +571,18 @@
             Spark meaningful conversations about the joys, challenges, and growth in raising children.
         </p>
 
-        <!-- Hyperlink to the full description page -->
-        <a href="descriptions\purpose.html" target="_blank" class="description-link">
-            <i class="fas fa-info-circle"></i>Read Full Description
-        </a>
+        <!-- Hyperlink to the full description and getting started page -->
+        <div class="description-link-container">
+            <!-- Getting Started button now with info icon -->
+            <button id="getting-started-link" class="description-link">
+                <i class="fas fa-info-circle"></i> Getting Started
+            </button>
+            <span class="separator">|</span>
+            <!-- Topic Description without icon -->
+            <a href="descriptions\parenting.html" class="description-link">
+                Topic Description
+            </a>
+        </div>
 
         <hr class="border-gray-300 my-4 w-full mx-auto">
 
@@ -571,6 +667,26 @@
             </div>
         </div>
     </div>    
+
+    <!-- Getting Started Modal -->
+    <div id="getting-started-modal" class="modal-overlay">
+        <div class="modal-content max-w-sm"> <!-- Max width adjusted for readability -->
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Spark Connection</h3>
+            
+            <ol class="getting-started-list">
+                <li>
+                    <b>Invite Others:</b> Share the <i>QR code or link</i> at the bottom of any topic page to get everyone onboard.
+                </li>
+                <li>
+                    <b>Pick a Question:</b> Each person chooses one of three questions that speaks to them.
+                </li>
+                <li>
+                    <b>Start the Conversation:</b> The first person shares their question and answer, then everyone goes around (e.g., clockwise) answering the same question.<br><br>Once everyone has answered, the next person shares their chosen question, and the process repeats.
+                </li>
+            </ol>
+            <button id="close-getting-started-modal" class="modal-button cancel mt-4">Got it!</button>
+        </div>
+    </div>
 
     <!-- Search/Translate Choice Modal -->
     <div id="search-engine-modal" class="modal-overlay">
@@ -669,6 +785,11 @@
         const emptySearchModal = document.getElementById('empty-search-modal');
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
         const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
+        // Getting Started Modal elements
+        const gettingStartedIcon = document.getElementById('getting-started-link');
+        const gettingStartedModal = document.getElementById('getting-started-modal');
+        const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
 
         // Look Up Online button
         const lookUpOnlineBtn = document.getElementById('look-up-online-btn'); 
@@ -1143,6 +1264,15 @@
 
         confirmEmptySearchNo.addEventListener('click', function() {
             emptySearchModal.classList.remove('show');
+        });
+
+        // Getting Started Modal Event Listeners
+        gettingStartedIcon.addEventListener('click', () => {
+            gettingStartedModal.classList.add('show');
+        });
+
+        closeGettingStartedModalBtn.addEventListener('click', () => {
+            gettingStartedModal.classList.remove('show');
         });
         
         // Consolidated Look Up Online Button Listener
