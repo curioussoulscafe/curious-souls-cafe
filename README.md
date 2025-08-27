@@ -57,7 +57,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 
 Let these decks inspire your journey of exploration, connection, and growth!
 
-Note: Questions with a spiral emoiji 🌀 are deeper ones, whereas those with a seeding emoiji 🌱 are introductory or foundational ones.
+Note: Questions with a spiral emoiji 🌀 are deeper, thought-provoking ones, whereas those with a seeding emoiji 🌱 are introductory or foundational ones.
 
 ## ✨ What You Can Do with the Web App
 
