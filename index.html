@@ -516,6 +516,9 @@
             { name: "Entrepreneurship", htmlFileName: "pages/entrepreneurship.html", txtUrl: "questions/entrepreneurship.txt", cache: true }
         ];
 
+        // Added: unified starred actions storage (for Action Prompts, Roll the Dice, Import Questions)
+        const STARRED_ACTIONS_KEY = 'csc_starred_actions';
+
         function getStarredTopics() {
             const starredTopicsJson = localStorage.getItem(STARRED_TOPICS_KEY);
             return starredTopicsJson ? JSON.parse(starredTopicsJson) : [];
@@ -532,6 +535,25 @@
 
         function setStarredButtonState(key, isStarred) {
             localStorage.setItem(key, isStarred ? 'true' : 'false');
+        }
+
+        // Helpers for action starring
+        function getStarredActions() {
+            const json = localStorage.getItem(STARRED_ACTIONS_KEY);
+            return json ? JSON.parse(json) : []; // array of action names
+        }
+        function setStarredActions(list) {
+            localStorage.setItem(STARRED_ACTIONS_KEY, JSON.stringify(list));
+        }
+        function toggleActionStar(name) {
+            const current = getStarredActions();
+            const idx = current.indexOf(name);
+            if (idx >= 0) current.splice(idx, 1);
+            else current.push(name);
+            setStarredActions(current);
+        }
+        function isActionStarred(name) {
+            return getStarredActions().includes(name);
         }
 
         /**
@@ -562,7 +584,7 @@
                 if (buttonTextSpan) { // Check if span exists for topic/action buttons
                     const buttonText = buttonTextSpan.textContent.toLowerCase();
                     if (buttonText.includes(searchTerm)) {
-                        button.style.display = 'flex'; // Show the button (using flex display)
+                        button.style.display = button.classList.contains('live-discussion-style') ? 'block' : 'flex'; // Show the button (using flex display)
                     } else {
                         button.style.display = 'none'; // Hide the button
                     }
@@ -758,7 +780,12 @@
             // Alphabetical order
             actionButtonsData.sort((a, b) => a.name.localeCompare(b.name));
 
-            actionButtonsData.forEach(buttonData => {
+            // Determine starred actions; starred ones must appear above all topics.
+            const starredActions = getStarredActions();
+            const isStarredAction = name => starredActions.includes(name);
+
+            // We'll create buttons; starred ones will be inserted above topics elsewhere.
+            const createActionButton = (buttonData, starred) => {
                 const button = document.createElement('button');
                 button.classList.add('action-button');
                 button.id = buttonData.name.toLowerCase().replace(/ /g, '-') + '-button';
@@ -767,14 +794,50 @@
                 buttonNameSpan.textContent = buttonData.name;
                 buttonNameSpan.style.pointerEvents = 'none';
 
-                // No star icon for these action buttons
+                // Add star icon for these action buttons
+                const starIcon = document.createElement('i');
+                starIcon.classList.add('star-icon', 'fa-star');
+                updateStarIcon(starIcon, starred);
+
+                starIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleActionStar(buttonData.name);
+                    renderAllContent(); // re-render to reposition
+                });
 
                 button.appendChild(buttonNameSpan);
+                button.appendChild(starIcon);
+
                 button.addEventListener('click', () => {
                     window.location.href = buttonData.htmlFileName;
                 });
 
-                actionButtonsContainer.appendChild(button);
+                return button;
+            };
+
+            // Build buttons and append only unstarred to the container (keep starred for top insertion)
+            const unstarredButtons = actionButtonsData
+                .filter(a => !isStarredAction(a.name))
+                .map(a => createActionButton(a, false));
+            unstarredButtons.forEach(btn => actionButtonsContainer.appendChild(btn));
+
+            // Store starred buttons for injection above topics
+            const starredButtons = actionButtonsData
+                .filter(a => isStarredAction(a.name))
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(a => createActionButton(a, true));
+
+            // Inject starred action buttons above ALL topics and even above All Questions
+            // Place them just before the topics-list element.
+            const parentContainer = document.querySelector('.bg-white.rounded-lg.shadow-xl.p-8.w-full.max-w-md.transition-transform');
+            const topicsAnchor = document.getElementById('topics-list');
+
+            // Remove previously injected starred action buttons if any
+            document.querySelectorAll('[data-injected-starred-action="1"]').forEach(el => el.remove());
+
+            starredButtons.forEach(btn => {
+                btn.setAttribute('data-injected-starred-action', '1');
+                parentContainer.insertBefore(btn, topicsAnchor);
             });
         }
 
@@ -842,12 +905,20 @@
             }
 
             await fetchAndCacheTopics(); // This populates topicsListDiv and adds topic buttons to allButtons
-            renderActionButtons(); // This populates actionButtonsContainer and adds action buttons to allButtons
+
+            // Render action buttons with starring, ensuring starred actions get injected above topics
+            renderActionButtons(); // This populates actionButtonsContainer and injects starred actions above topics
 
             // After all buttons are rendered, collect them into allButtons for filtering
-            allButtons = Array.from(topicsListDiv.querySelectorAll('.topic-button'))
-                         .concat(Array.from(actionButtonsContainer.querySelectorAll('.action-button')))
-                         .concat(liveDiscussionButtonElement && !liveDiscussionButtonContainer.classList.contains('hidden') ? [liveDiscussionButtonElement] : []);
+            allButtons = []
+                // Starred action buttons injected above topics (always on top, even above All Questions)
+                .concat(Array.from(document.querySelectorAll('[data-injected-starred-action="1"]')))
+                // Topic buttons
+                .concat(Array.from(topicsListDiv.querySelectorAll('.topic-button')))
+                // Unstarred action buttons in their container
+                .concat(Array.from(actionButtonsContainer.querySelectorAll('.action-button')))
+                // Live discussion (if visible)
+                .concat(liveDiscussionButtonElement && !liveDiscussionButtonContainer.classList.contains('hidden') ? [liveDiscussionButtonElement] : []);
             
             filterButtons(); // Apply current filter to all rendered buttons
         }
