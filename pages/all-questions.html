@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="app-title">Curious Souls Café - All Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        :root { --highlight-color: #00f9ff; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to right,#f3f4f6 0%,#ede9fe 20%,#ede9fe 80%,#f3f4f6 100%);
+        }
+        .item {
+            margin-bottom: 0.75rem; padding: 1rem; font-size: 1.25rem;
+            background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: all 0.2s ease-in-out; cursor: pointer;
+        }
+        .item.selected-item {
+            background-color: var(--highlight-color); padding: 1.15rem; font-size: 1.35rem;
+            margin-bottom: 1.25rem; transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .chosen-item {
+            margin-bottom: 0.75rem; padding: 1rem; font-size: 1.25rem;
+            background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: all 0.2s ease-in-out; cursor: pointer; text-align: center;
+        }
+        .chosen-item.selected-chosen-item {
+            background-color: var(--highlight-color); padding: 1.15rem; font-size: 1.35rem;
+            margin-bottom: 1.25rem; transform: scale(1.03);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        #back-to-top {
+            position: fixed; bottom: 20px; right: 20px; background-color: #6b46c1; color: white;
+            padding: 0.5rem 1rem; font-size: 1rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer; display: none; transition: opacity 0.3s ease-in-out; z-index: 1000;
+        }
+        #back-to-top:hover { background-color: #805ad5; }
+        #back-to-topics {
+            background-color: #c53030; color: white; border: none; padding: 0.5rem 1rem; font-size: 1rem; font-weight: bold;
+            border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
+            width: 100%; margin-top: 1rem; margin-bottom: 0; display: block; text-align: center;
+        }
+        #back-to-topics:hover { background-color: #9b2c2c; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+        #clear-chosen-button {
+            background-color: #fc8181; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 1rem;
+            border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; width: 100%;
+            margin-top: 1rem; transition: all 0.3s ease-in-out;
+        }
+        #clear-chosen-button:hover { background-color: #f56565; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+        #random-result { min-height: 60px; }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;
+            z-index: 2000; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background-color: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+            text-align: center; max-width: 300px; width: 90%; transform: translateY(-20px); transition: transform 0.3s;
+        }
+        .modal-overlay.show .modal-content { transform: translateY(0); }
+        .modal-buttons { display: flex; justify-content: space-around; margin-top: 1.5rem; }
+        .modal-button { padding: 0.75rem 1.5rem; border-radius: 9999px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .modal-button.confirm { background-color: #c53030; color: white; }
+        .modal-button.confirm:hover { background-color: #9b2c2c; }
+        .modal-button.cancel { background-color: #e2e8f0; color: #4a5568; }
+        .modal-button.cancel:hover { background-color: #cbd5e0; }
+        .loading-spinner-modal {
+            border: 4px solid #f3f3f3; border-top: 4px solid #a855f7; border-radius: 50%; width: 40px; height: 40px;
+            animation: spin 1s linear infinite; margin: 20px auto;
+        }
+        @keyframes spin { 0%{transform:rotate(0)}100%{transform:rotate(360deg)} }
+        .description-link-container { display:flex; justify-content:center; align-items:center; margin-top:-0.5rem; margin-bottom:1rem; font-size:0.9rem; color:#6b46c1; }
+        .description-link { display:inline-flex; align-items:center; text-align:center; color:#6b46c1; font-weight:500; text-decoration:none; transition: color 0.2s; border:none; background:none; cursor:pointer; padding:0; }
+        .description-link:hover { color:#805ad5; text-decoration: underline; }
+        .description-link i { margin-right:0.35rem; }
+        .separator { display:inline-flex; align-items:center; margin:0 0.35rem; color:#6b46c1; font-size:1em; height:1em; }
+        #qr-modal-content { max-width: 350px; padding: 1.5rem; position: relative; }
+        #qr-modal-content img { width: 100%; height: auto; max-width: 250px; margin: 0 auto 1rem auto; display: block; border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .qr-modal-close-button { position:absolute; top:0.75rem; right:0.75rem; background:none; border:none; font-size:1.5rem; cursor:pointer; color:#4a5568; line-height:1; padding:0.25rem; border-radius:50%; transition: background-color 0.2s, color 0.2s; }
+        .qr-modal-close-button:hover { background-color:#e2e8f0; color:#2d3748; }
+        .qr-code-link { font-size:0.875rem; color:#6b46c1; text-decoration:none; transition: color 0.2s, text-decoration 0.2s; display:flex; align-items:center; gap:0.25rem; margin-top:0.5rem; justify-content:center; }
+        .qr-code-link:hover { color:#805ad5; text-decoration: underline; }
+        #search-google-choice-btn,
+        #search-bing-choice-btn,
+        #search-duckduckgo-choice-btn,
+        #search-brave-choice-btn,
+        #translate-google-choice-btn,
+        #translate-bing-choice-btn,
+        #copy-question-btn {
+            color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s; display:flex; align-items:center; justify-content:center; margin-bottom:0.5rem;
+        }
+        #search-google-choice-btn { background-color:#4285F4; } #search-google-choice-btn:hover{ background-color:#357ae8; }
+        #search-bing-choice-btn { background-color:#008AD6; } #search-bing-choice-btn:hover{ background-color:#006FB7; }
+        #search-duckduckgo-choice-btn { background-color:#e3722a; } #search-duckduckgo-choice-btn:hover{ background-color:#c96024; }
+        #search-brave-choice-btn { background-color:#FB542B; } #search-brave-choice-btn:hover{ background-color:#d14424; }
+        #translate-google-choice-btn { background-color:#60a5fa; } #translate-google-choice-btn:hover{ background-color:#3b82f6; }
+        #translate-bing-choice-btn { background-color:#008AD6; } #translate-bing-choice-btn:hover{ background-color:#006FB7; }
+        #copy-question-btn { background-color:#48bb78; } #copy-question-btn:hover{ background-color:#38a169; }
+        #search-google-choice-btn i, #search-bing-choice-btn i, #search-duckduckgo-choice-btn i, #search-brave-choice-btn i,
+        #translate-google-choice-btn i, #translate-bing-choice-btn i, #copy-question-btn i { margin-right:0.5rem; }
+        .modal-subheading { font-size:1.125rem; font-weight:600; color:#4a5568; margin-top:1rem; margin-bottom:0.75rem; text-align:left; border-bottom:1px solid #e2e8f0; padding-bottom:0.5rem; }
+        .getting-started-list { list-style-type:none; padding-left:0; text-align:left; counter-reset: step-counter; }
+        .getting-started-list li { margin-bottom:0.75rem; padding-left:1.5rem; position:relative; }
+        .getting-started-list li::before {
+            content: counter(step-counter); counter-increment: step-counter; position:absolute; left:0; top:0;
+            background-color:#9f7aea; color:white; border-radius:50%; width:20px; height:20px; display:flex; justify-content:center; align-items:center; font-size:0.8rem; font-weight:bold;
+        }
+        #getting-started-modal .getting-started-list a { color:#0000EE !important; font-weight:normal !important; background:none !important; border:none !important; }
+        #getting-started-modal .getting-started-list a:hover, #getting-started-modal .getting-started-list a:focus { color:#551A8B !important; text-decoration: underline !important; }
+        #inline-share-trigger { background:none; border:none; padding:0; margin:0; color:#0000EE; font-style:italic; cursor:pointer; }
+        #inline-share-trigger:hover, #inline-share-trigger:focus { text-decoration: underline; color:#551A8B; outline:none; }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
+        <div class="flex justify-center mb-6">
+            <a href="../index.html">
+                <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            </a>
+        </div>
+        <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
+        <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
+        <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-4">Topic: All Questions</h2>
+
+        <p class="text-gray-700 text-center mb-4 leading-relaxed">
+            Spark meaningful conversations across every topic in the collection.
+        </p>
+
+        <div class="description-link-container">
+            <button id="getting-started-link" class="description-link">
+                <i class="fas fa-info-circle"></i> Get started
+            </button>
+            <span class="separator">|</span>
+            <a href="descriptions/all-questions.html" class="description-link">
+                About the topic
+            </a>
+        </div>
+
+        <hr class="border-gray-300 my-4 w-full mx-auto">
+
+        <div class="mb-4">
+            <label for="item-count" class="block text-gray-700 text-sm font-bold mb-2">
+                No. of questions to pick: <span id="total-questions" class="text-gray-500 text-sm"></span>
+            </label>
+            <input type="number" id="item-count" value="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <button id="randomize-button" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out mb-6">
+            Next Questions!
+        </button>
+
+        <div class="mb-4">
+            <p id="random-result" class="text-gray-800 text-center font-medium">Loading questions...</p>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-gray-300 flex flex-col items-center">
+            <button id="look-up-online-btn" class="bg-gradient-to-r from-blue-400 to-green-400 hover:from-blue-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded-full shadow-md
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
+                   w-full transition duration-300 ease-in-out mb-2 hidden">
+                <i class="fas fa-search"></i> Look Up Online / Translate
+            </button>
+        </div>
+
+        <div class="mb-8">
+            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search questions:</label>
+            <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
+                Search
+            </button>
+        </div>
+
+        <div id="search-results" class="mb-4"></div>
+
+        <div class="mt-8 pt-4 border-t border-gray-300">
+            <h3 class="text-xl font-semibold text-purple-600 mb-4">Saved Questions:</h3>
+            <div id="chosen-questions-display" class="text-gray-800 text-left">
+                <p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>
+            </div>
+            <button id="clear-chosen-button" title="Clear Saved Questions">
+                Clear Saved Questions
+            </button>
+        </div>
+
+        <button id="back-to-topics" title="Leave Page">
+            <i class="fas fa-arrow-left"></i> Leave Page
+        </button>
+
+        <br>
+        <a href="#" id="show-qr-code-link" class="qr-code-link">
+            <i class="fas fa-qrcode"></i> Get page link/QR code
+        </a>
+    </div>
+
+    <button id="back-to-top" title="Back to Top">&#9650; Top</button>
+
+    <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
+            <div class="modal-buttons">
+                <button id="confirm-clear-yes" class="modal-button confirm">Yes</button>
+                <button id="confirm-clear-no" class="modal-button cancel">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="empty-search-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">
+                Searching with an empty field will display ALL questions, which could quickly fill the screen.
+                To clear results if the screen gets crowded, tap "Top" and then click "Search" again.
+            </p>
+            <div class="modal-buttons">
+                <button id="confirm-empty-search-yes" class="modal-button confirm">Proceed</button>
+                <button id="confirm-empty-search-no" class="modal-button cancel">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="getting-started-modal" class="modal-overlay">
+        <div class="modal-content max-w-sm">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
+            <ol class="getting-started-list">
+                <li><b>Invite Others:</b> Share the <button id="inline-share-trigger" type="button"><i>QR code or link</i></button> to get everyone onboard.</li>
+                <li><b>Pick a Question:</b> Each person chooses one of three questions shown on the app that resonates with them. Tap a question to save it.</li>
+                <li><b>Start the Conversation:</b> Invite a person to share their question and answer first, then everyone goes around (e.g., clockwise) answering the same question.<br><br>Once everyone has answered, the next person shares their chosen question, and so on.<br><br>🌀 = deep 🌱 = introductory</li>
+            </ol>
+            <button id="close-getting-started-modal" class="modal-button cancel mt-4">Got it!</button>
+        </div>
+    </div>
+
+    <div id="search-engine-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">What would you like to do with this question?</p>
+            <h4 class="modal-subheading">Web Search</h4>
+            <div class="flex flex-col items-center">
+                <button id="search-google-choice-btn"><i class="fab fa-google"></i> Look up on Google</button>
+                <button id="search-bing-choice-btn"><i class="fab fa-microsoft"></i> Look up on Bing</button>
+                <button id="search-duckduckgo-choice-btn"><i class="fas fa-search"></i> Look up on DuckDuckGo</button>
+                <button id="search-brave-choice-btn"><i class="fas fa-magnifying-glass"></i> Look up on Brave Search</button>
+            </div>
+            <h4 class="modal-subheading">Translation Services</h4>
+            <div class="flex flex-col items-center">
+                <button id="translate-google-choice-btn"><i class="fas fa-language"></i> Translate with Google</button>
+                <button id="translate-bing-choice-btn"><i class="fas fa-language"></i> Translate with Bing</button>
+            </div>
+            <h4 class="modal-subheading">Other Actions</h4>
+            <div class="flex flex-col items-center">
+                <button id="copy-question-btn"><i class="fas fa-copy"></i> Copy Question</button>
+            </div>
+            <button id="close-search-engine-modal" class="modal-button cancel mt-4">Cancel</button>
+        </div>
+    </div>
+
+    <div id="qr-code-modal" class="modal-overlay">
+        <div id="qr-modal-content" class="modal-content">
+            <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Share this Topic</h3>
+            <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
+            <img id="qr-modal-image" src="" alt="QR Code for this page"
+                 onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Loading';">
+            <p class="text-sm text-gray-700 mt-2">
+                <i class="fa-solid fa-link mr-1"></i>
+                <a id="page-link-anchor" href="#" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all"></a>
+                <br>
+                <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline">
+                    <i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link
+                </button>
+            </p>
+            <p class="text-gray-500 text-sm mt-4">Let's help fellow curious souls launch this page and start the conversation! 😊</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuration for "All Questions"
+        const displayTopicName = "All Questions";
+        const questionFiles = [
+            "../questions/adulthood.txt",
+            "../questions/authenticity.txt",
+            "../questions/entrepreneurship.txt",
+            "../questions/friendship.txt",
+            "../questions/happiness.txt",
+            "../questions/icebreaker.txt",
+            "../questions/inner-child.txt",
+            "../questions/interdependence.txt",
+            "../questions/parenting.txt",
+            "../questions/purpose.txt",
+            "../questions/reflection.txt",
+            "../questions/reimagine.txt",
+            "../questions/the-heart-talks.txt",
+            "../questions/the-mind-speaks.txt",
+            "../questions/transitions.txt",
+            "../questions/work-that-resonates.txt"
+        ];
+
+        let itemList = [];
+        let lastSearchTerm = "";
+        let availableRandomItems = [];
+        let selectedRandomQuestionText = null;
+
+        const randomizeButton = document.getElementById('randomize-button');
+        const resultDisplay = document.getElementById('random-result');
+        const itemCountInput = document.getElementById('item-count');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const searchResultsDisplay = document.getElementById('search-results');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
+        const clearChosenButton = document.getElementById('clear-chosen-button');
+        const backToTopButton = document.getElementById('back-to-top');
+        const backToTopicsButton = document.getElementById('back-to-topics');
+        const appTitleElement = document.getElementById('app-title');
+        const topicTitleElement = document.getElementById('topic-title');
+
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const confirmClearYes = document.getElementById('confirm-clear-yes');
+        const confirmClearNo = document.getElementById('confirm-clear-no');
+
+        const emptySearchModal = document.getElementById('empty-search-modal');
+        const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
+        const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
+        const gettingStartedIcon = document.getElementById('getting-started-link');
+        const gettingStartedModal = document.getElementById('getting-started-modal');
+        const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
+
+        const lookUpOnlineBtn = document.getElementById('look-up-online-btn');
+
+        const searchEngineModal = document.getElementById('search-engine-modal');
+        const searchGoogleChoiceBtn = document.getElementById('search-google-choice-btn');
+        const searchBingChoiceBtn = document.getElementById('search-bing-choice-btn');
+        const searchDuckDuckGoChoiceBtn = document.getElementById('search-duckduckgo-choice-btn');
+        const searchBraveChoiceBtn = document.getElementById('search-brave-choice-btn');
+        const translateGoogleChoiceBtn = document.getElementById('translate-google-choice-btn');
+        const translateBingChoiceBtn = document.getElementById('translate-bing-choice-btn');
+        const closeSearchEngineModalBtn = document.getElementById('close-search-engine-modal');
+        const copyQuestionBtn = document.getElementById('copy-question-btn');
+
+        const showQrCodeLink = document.getElementById('show-qr-code-link');
+        const qrCodeModal = document.getElementById('qr-code-modal');
+        const qrModalImage = document.getElementById('qr-modal-image');
+        const qrModalCloseButton = document.getElementById('qr-modal-close-button');
+        const pageLinkAnchor = document.getElementById('page-link-anchor');
+
+        const inlineShareTrigger = document.getElementById('inline-share-trigger');
+
+        const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
+        document.documentElement.style.setProperty('--highlight-color', highlightColors[Math.floor(Math.random() * highlightColors.length)]);
+
+        const savedQuestionsLocalStorageKey = `csc_saved_questions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
+
+        function loadSavedQuestions() {
+            const savedQuestionsJson = localStorage.getItem(savedQuestionsLocalStorageKey);
+            const savedQuestions = savedQuestionsJson ? JSON.parse(savedQuestionsJson) : [];
+            if (savedQuestions.length > 0) {
+                chosenQuestionsDisplay.innerHTML = '';
+                savedQuestions.forEach(questionText => addChosenQuestionToDOM(questionText));
+            } else {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            }
+            updateClearButtonText();
+        }
+
+        function saveCurrentChosenQuestions() {
+            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.textContent);
+            localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
+        }
+
+        // Fetch and combine all files; cache combined text
+        async function fetchQuestions() {
+            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
+            const cachedContent = localStorage.getItem(localStorageKey);
+
+            appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+            topicTitleElement.textContent = `Topic: ${displayTopicName}`;
+
+            if (cachedContent) {
+                itemList = cachedContent.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                availableRandomItems = [...itemList];
+                totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
+                displayRandomItems();
+                loadSavedQuestions();
+                return;
+            }
+
+            try {
+                const fetches = questionFiles.map(path => fetch(path).then(r => {
+                    if (!r.ok) throw new Error(`Failed ${path}: ${r.status}`);
+                    return r.text();
+                }).then(txt => txt.split('\n').map(l => l.trim()).filter(Boolean))
+                .catch(err => {
+                    console.warn(err.message);
+                    return []; // Skip missing files gracefully
+                }));
+
+                const lists = await Promise.all(fetches);
+                const combined = lists.flat();
+
+                if (combined.length === 0) {
+                    throw new Error("No questions could be loaded from the provided files.");
+                }
+
+                const combinedText = combined.join('\n');
+                localStorage.setItem(localStorageKey, combinedText);
+
+                itemList = combined;
+                availableRandomItems = [...itemList];
+                totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
+                displayRandomItems();
+                loadSavedQuestions();
+            } catch (error) {
+                console.error("Could not load questions:", error);
+                resultDisplay.textContent = `Failed to load questions for "${displayTopicName}". Please ensure the files exist and are publicly accessible.`;
+                appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
+                topicTitleElement.textContent = `Topic: Error`;
+            }
+        }
+
+        function updateClearButtonText() {
+            const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
+            if (highlightedItems.length > 0) {
+                clearChosenButton.textContent = "Clear Selected";
+            } else {
+                const allChosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+                if (allChosenItems.length > 0) {
+                    clearChosenButton.textContent = "Clear All Saved";
+                } else {
+                    clearChosenButton.textContent = "Clear Saved Questions";
+                }
+            }
+        }
+
+        function selectUniqueItems(arr, numItems) {
+            if (numItems > availableRandomItems.length || availableRandomItems.length === 0) {
+                availableRandomItems = [...itemList];
+            }
+            let selectedItems = [];
+            for (let i = 0; i < numItems; i++) {
+                if (availableRandomItems.length === 0) {
+                    availableRandomItems = [...itemList];
+                    if (availableRandomItems.length === 0) return "No items available to pick.";
+                }
+                const randomIndex = Math.floor(Math.random() * availableRandomItems.length);
+                selectedItems.push(availableRandomItems[randomIndex]);
+                availableRandomItems.splice(randomIndex, 1);
+            }
+            return selectedItems;
+        }
+
+        function addHighlightingAndChooseLogic(targetElement) {
+            const items = targetElement.querySelectorAll('.item');
+            items.forEach(item => {
+                item.addEventListener('click', function() {
+                    const questionText = this.textContent;
+                    const previouslySelected = document.querySelector('.item.selected-item');
+                    if (previouslySelected && previouslySelected !== this) {
+                        previouslySelected.classList.remove('selected-item');
+                    }
+                    this.classList.toggle('selected-item');
+                    if (this.classList.contains('selected-item')) {
+                        selectedRandomQuestionText = questionText;
+                        addChosenQuestion(questionText);
+                        lookUpOnlineBtn.classList.remove('hidden');
+                    } else {
+                        selectedRandomQuestionText = null;
+                        removeChosenQuestion(questionText);
+                        lookUpOnlineBtn.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        function addChosenQuestion(questionText) {
+            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
+            if (!existingChosenItems.includes(questionText)) {
+                addChosenQuestionToDOM(questionText);
+                saveCurrentChosenQuestions();
+            }
+            updateClearButtonText();
+        }
+
+        function addChosenQuestionToDOM(questionText) {
+            const chosenItemDiv = document.createElement('div');
+            chosenItemDiv.classList.add('chosen-item');
+            chosenItemDiv.textContent = questionText;
+            chosenQuestionsDisplay.appendChild(chosenItemDiv);
+            chosenItemDiv.addEventListener('click', function() {
+                this.classList.toggle('selected-chosen-item');
+                updateClearButtonText();
+            });
+            const placeholder = chosenQuestionsDisplay.querySelector('p.text-gray-500');
+            if (placeholder) chosenQuestionsDisplay.removeChild(placeholder);
+        }
+
+        function removeChosenQuestion(questionText) {
+            const chosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            let removed = false;
+            chosenItems.forEach(item => {
+                if (item.textContent === questionText) {
+                    chosenQuestionsDisplay.removeChild(item);
+                    removed = true;
+                }
+            });
+            if (removed) saveCurrentChosenQuestions();
+            if (chosenQuestionsDisplay.querySelectorAll('.chosen-item').length === 0) {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            }
+            updateClearButtonText();
+        }
+
+        function displayRandomItems() {
+            if (itemList.length === 0) {
+                resultDisplay.textContent = "No questions available to pick. Please load questions first.";
+                lookUpOnlineBtn.classList.add('hidden');
+                return;
+            }
+            const numItemsToPick = Math.max(1, parseInt(itemCountInput.value) || 1);
+            const result = selectUniqueItems(itemList, numItemsToPick);
+            if (typeof result === "string") {
+                resultDisplay.textContent = result;
+                lookUpOnlineBtn.classList.add('hidden');
+            } else {
+                resultDisplay.innerHTML = result.map(item => `<div class="item">${item}</div>`).join('');
+                addHighlightingAndChooseLogic(resultDisplay);
+            }
+            selectedRandomQuestionText = null;
+            const previouslySelected = document.querySelector('.item.selected-item');
+            if (previouslySelected) previouslySelected.classList.remove('selected-item');
+            lookUpOnlineBtn.classList.add('hidden');
+        }
+
+        function displayFilteredItems() {
+            if (itemList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                lookUpOnlineBtn.classList.add('hidden');
+                return;
+            }
+            const currentSearchTerm = searchInput.value.trim().toLowerCase();
+            if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
+                searchResultsDisplay.innerHTML = '';
+                searchButton.textContent = "Search";
+                lastSearchTerm = "";
+                lookUpOnlineBtn.classList.add('hidden');
+                selectedRandomQuestionText = null;
+                return;
+            }
+            if (currentSearchTerm === "") {
+                emptySearchModal.classList.add('show');
+                return;
+            }
+            executeSearch(currentSearchTerm);
+        }
+
+        function executeSearch(searchTerm) {
+            if (itemList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                lookUpOnlineBtn.classList.add('hidden');
+                selectedRandomQuestionText = null;
+                return;
+            }
+            const filteredResult = itemList.filter(item => item.toLowerCase().includes(searchTerm));
+            if (filteredResult.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
+                lookUpOnlineBtn.classList.add('hidden');
+                selectedRandomQuestionText = null;
+            } else {
+                searchResultsDisplay.innerHTML = filteredResult.map(item => `<div class="item">${item}</div>`).join('');
+                addHighlightingAndChooseLogic(searchResultsDisplay);
+            }
+            lastSearchTerm = searchTerm;
+            searchButton.textContent = "Search / Clear Search";
+            selectedRandomQuestionText = null;
+            const previouslySelected = document.querySelector('.item.selected-item');
+            if (previouslySelected) previouslySelected.classList.remove('selected-item');
+            lookUpOnlineBtn.classList.add('hidden');
+        }
+
+        function removeEmojiPrefix(text) {
+            return text.replace(/^[\W_]+\s*/, '').trim();
+        }
+
+        function searchQuestionOnGoogle() {
+            if (selectedRandomQuestionText) {
+                const cleaned = removeEmojiPrefix(selectedRandomQuestionText);
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(cleaned)}`, '_blank');
+            } else alert("Please select a question first to look up on Google.");
+        }
+        function searchQuestionOnBing() {
+            if (selectedRandomQuestionText) {
+                const cleaned = removeEmojiPrefix(selectedRandomQuestionText);
+                window.open(`https://www.bing.com/search?q=${encodeURIComponent(cleaned)}`, '_blank');
+            } else alert("Please select a question first to look up on Bing.");
+        }
+        function searchQuestionOnDuckDuckGo() {
+            if (selectedRandomQuestionText) {
+                const cleaned = removeEmojiPrefix(selectedRandomQuestionText);
+                window.open(`https://duckduckgo.com/?q=${encodeURIComponent(cleaned)}`, '_blank');
+            } else alert("Please select a question first to look up on DuckDuckGo.");
+        }
+        function searchQuestionOnBrave() {
+            if (selectedRandomQuestionText) {
+                const cleaned = removeEmojiPrefix(selectedRandomQuestionText);
+                window.open(`https://search.brave.com/search?q=${encodeURIComponent(cleaned)}`, '_blank');
+            } else alert("Please select a question first to look up on Brave Search.");
+        }
+        function translateQuestionWithGoogle() {
+            if (selectedRandomQuestionText) {
+                const cleaned = removeEmojiPrefix(selectedRandomQuestionText);
+                window.open(`https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(cleaned)}`, '_blank');
+            } else alert("Please select a question first to translate with Google.");
+        }
+        function translateQuestionWithBing() {
+            if (selectedRandomQuestionText) {
+                const cleaned = removeEmojiPrefix(selectedRandomQuestionText);
+                window.open(`https://www.bing.com/translator/?from=auto&to=en&text=${encodeURIComponent(cleaned)}`, '_blank');
+            } else alert("Please select a question first to translate with Bing.");
+        }
+        function copyQuestionToClipboard() {
+            if (selectedRandomQuestionText) {
+                const cleaned = removeEmojiPrefix(selectedRandomQuestionText);
+                const ta = document.createElement('textarea');
+                ta.value = cleaned;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                alert("Question copied to clipboard!");
+            } else alert("No question selected to copy.");
+        }
+
+        clearChosenButton.addEventListener('click', () => confirmationModal.classList.add('show'));
+        confirmClearYes.addEventListener('click', () => {
+            const highlighted = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
+            if (highlighted.length > 0) {
+                highlighted.forEach(item => chosenQuestionsDisplay.removeChild(item));
+            } else {
+                chosenQuestionsDisplay.innerHTML = '';
+            }
+            saveCurrentChosenQuestions();
+            if (chosenQuestionsDisplay.querySelectorAll('.chosen-item').length === 0) {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            }
+            updateClearButtonText();
+            confirmationModal.classList.remove('show');
+        });
+        confirmClearNo.addEventListener('click', () => confirmationModal.classList.remove('show'));
+
+        backToTopicsButton.addEventListener('click', () => { window.location.href = '../index.html'; });
+
+        window.addEventListener('scroll', () => { backToTopButton.style.display = (window.scrollY > 1) ? 'block' : 'none'; });
+        backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        confirmEmptySearchYes.addEventListener('click', () => {
+            emptySearchModal.classList.remove('show');
+            executeSearch("");
+        });
+        confirmEmptySearchNo.addEventListener('click', () => emptySearchModal.classList.remove('show'));
+
+        gettingStartedIcon.addEventListener('click', () => gettingStartedModal.classList.add('show'));
+        closeGettingStartedModalBtn.addEventListener('click', () => gettingStartedModal.classList.remove('show'));
+
+        lookUpOnlineBtn.addEventListener('click', () => {
+            if (selectedRandomQuestionText) searchEngineModal.classList.add('show');
+            else alert("Please select a question first to look up online / translate.");
+        });
+
+        searchGoogleChoiceBtn.addEventListener('click', () => { searchQuestionOnGoogle(); searchEngineModal.classList.remove('show'); });
+        searchBingChoiceBtn.addEventListener('click', () => { searchQuestionOnBing(); searchEngineModal.classList.remove('show'); });
+        searchDuckDuckGoChoiceBtn.addEventListener('click', () => { searchQuestionOnDuckDuckGo(); searchEngineModal.classList.remove('show'); });
+        searchBraveChoiceBtn.addEventListener('click', () => { searchQuestionOnBrave(); searchEngineModal.classList.remove('show'); });
+        translateGoogleChoiceBtn.addEventListener('click', () => { translateQuestionWithGoogle(); searchEngineModal.classList.remove('show'); });
+        translateBingChoiceBtn.addEventListener('click', () => { translateQuestionWithBing(); searchEngineModal.classList.remove('show'); });
+        copyQuestionBtn.addEventListener('click', () => { copyQuestionToClipboard(); searchEngineModal.classList.remove('show'); });
+        closeSearchEngineModalBtn.addEventListener('click', () => searchEngineModal.classList.remove('show'));
+
+        function openShareModal() {
+            const pageUrl = window.location.href;
+            const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+            qrModalImage.src = qrCodeApiUrl;
+            pageLinkAnchor.textContent = pageUrl;
+            pageLinkAnchor.href = pageUrl;
+            qrCodeModal.classList.add('show');
+        }
+        showQrCodeLink.addEventListener('click', (e) => { e.preventDefault(); openShareModal(); });
+        inlineShareTrigger.addEventListener('click', (e) => { e.preventDefault(); gettingStartedModal.classList.remove('show'); openShareModal(); });
+        qrModalCloseButton.addEventListener('click', () => qrCodeModal.classList.remove('show'));
+        qrCodeModal.addEventListener('click', (e) => { if (e.target === qrCodeModal) qrCodeModal.classList.remove('show'); });
+
+        const copyLinkTextLink = document.getElementById('copy-link-text-link');
+        copyLinkTextLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pageUrl = window.location.href;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = pageUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert("Link copied to clipboard!");
+        });
+
+        randomizeButton.addEventListener('click', (e) => { e.preventDefault(); displayRandomItems(); });
+        searchButton.addEventListener('click', (e) => { e.preventDefault(); displayFilteredItems(); });
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); displayFilteredItems(); } });
+
+        // Initialize
+        fetchQuestions();
+        updateClearButtonText();
+    </script>
+</body>
+</html>
