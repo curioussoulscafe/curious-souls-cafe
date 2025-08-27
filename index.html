@@ -323,6 +323,18 @@
                 font-size: 1rem;
             }
         }
+
+        /* Ensure injected starred action buttons have the same vertical spacing as topics and actions */
+        /* space-y-4 = 1rem between items, so we give each injected button a bottom margin of 1rem */
+        [data-injected-starred-action="1"] {
+            margin-bottom: 1rem;
+        }
+        /* If multiple starred actions exist, they already get 1rem via margin-bottom above */
+        /* Now ensure the block that follows injected starred actions (topics-list) has NO extra margin collapse issue */
+        /* Give topics-list a top margin of 0 and rely on the injected buttons' bottom margin to create the gap */
+        #topics-list {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
