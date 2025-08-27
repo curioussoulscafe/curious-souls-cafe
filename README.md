@@ -49,7 +49,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Reflection](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
 - **[Reimagine](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
 - **[Work that Resonates](https://curioussoulscafe.github.io/curious-souls-cafe/pages/work-that-resonates.html)**: Explore your evolving relationship with work, purpose, and fulfillment.
-- **The Heart Talks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-heart-talks.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.
+- **The Heart Talks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-heart-talks.html)**: Reflect on the dynamics of love and intimacy.
 - **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, mindfulness, and personal well-being.
 - **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.
 
