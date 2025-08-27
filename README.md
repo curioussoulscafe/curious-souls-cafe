@@ -44,16 +44,16 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and inclusive conversations.
 - **[Inner Child](https://curioussoulscafe.github.io/curious-souls-cafe/pages/inner-child.html)**: Reconnect with your playful younger self, nurture creativity, and explore the transformative power of curiosity, wonder, and self-compassion.
 - **[Interdependence](https://curioussoulscafe.github.io/curious-souls-cafe/pages/interdependence.html)**: Explore interdependent connection, and the invisible threads that sustain our relationships and communities.
-- **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.
 - **[Parenting](https://curioussoulscafe.github.io/curious-souls-cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
 - **[Purpose](https://curioussoulscafe.github.io/curious-souls-cafe/pages/purpose.html)**: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.
 - **[Reflection](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
 - **[Reimagine](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
 - **[Work that Resonates](https://curioussoulscafe.github.io/curious-souls-cafe/pages/work-that-resonates.html)**: Explore your evolving relationship with work, purpose, and fulfillment.
+- **The Heart Talks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-heart-talks.html)**: Deepen your connections and reflect on the dynamics of love and intimacy.
 - **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, mindfulness, and personal well-being.
 - **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.
 
-💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html), [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed past questions from our global events.
+💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html), [The Heart Talks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-heart-talks.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed past questions from our global events.
 
 Let these decks inspire your journey of exploration, connection, and growth!
 
@@ -61,7 +61,7 @@ Note: Questions with a spiral emoiji 🌀 are deeper ones, whereas those with a 
 
 ## ✨ What You Can Do with the Web App
 
-* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html). Just click (or tap) on a topic button to dive in!
+* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html) or [The Heart Talks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-heart-talks.html). Just click (or tap) on a topic button to dive in!
 
 * **Favorite Topics & Actions:** Easily mark your favorite topics by tapping the star icon next to them. Favorited items will appear at the top of the list for quick access, and your preferences are saved for your next visit.
 
@@ -117,7 +117,7 @@ The Curious Souls Café web app keeps its files organized in a clear and maintai
 
 * The main page (`index.html`) is located in the **root folder**.
 
-* All individual topic pages (like `icebreaker.html`, `love-relationships.html`, etc.) are located in the **`pages/` folder**.
+* All individual topic pages (like `icebreaker.html`, `the-heart-talks.html`, etc.) are located in the **`pages/` folder**.
 
 * All the questions for each topic are stored in simple text files (`.txt`) inside the **`questions/` folder**. For example, all "Icebreaker" questions are in `questions/icebreaker.txt`.
 
