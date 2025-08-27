@@ -52,36 +52,54 @@
             100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
         }
 
-        /* Center and slightly reduce width of color rows */
+        /* Compact, wrapping color rows that don't expand container */
         .color-input-group {
-            display:flex; align-items:center; gap:.5rem; width:100%;
-            max-width: 520px; /* was full width; now a bit narrower */
-            margin: 0.375rem auto; /* center rows horizontally with small vertical spacing */
+            display:flex;
+            flex-wrap:wrap;              /* allow wrapping when needed */
+            align-items:center;
+            gap:.5rem;
+            width:100%;
+            max-width: 520px;
+            margin: 0.375rem auto;
             padding: 0 .25rem;
         }
 
-        .color-number { font-weight:bold; width:1.5rem; text-align:right; flex-shrink:0; }
+        .color-number { font-weight:bold; width:1.5rem; text-align:right; flex: 0 0 auto; }
 
         input[type="color"].color-picker-input {
-            width:32px; height:32px; border-radius:6px; border:1px solid #d1d5db; padding:0; cursor:pointer; appearance:none; background-color:transparent; flex-shrink:0;
+            width:32px; height:32px; border-radius:6px; border:1px solid #d1d5db; padding:0; cursor:pointer; appearance:none; background-color:transparent; flex:0 0 auto;
         }
         input[type="color"].color-picker-input::-webkit-color-swatch-wrapper { padding:0; }
         input[type="color"].color-picker-input::-webkit-color-swatch { border:none; border-radius:4px; }
         input[type="color"].color-picker-input::-moz-color-swatch-wrapper { padding:0; }
         input[type="color"].color-picker-input::-moz-color-swatch { border:none; border-radius:4px; }
 
-        /* Name input slightly narrower but flexible */
+        /* Name input flexible but bounded; truncates text */
         .name-input {
             min-width: 140px;
-            max-width: 260px;    /* reduced from full-grow to a compact max */
-            flex: 1 1 200px;     /* allow wrap on very narrow screens */
+            max-width: 260px;
+            flex: 1 1 160px;     /* can shrink/wrap on narrow screens */
+            overflow:hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        /* Hex input narrower */
+        /* Hex input: fixed max width, can wrap to next line; never forces row growth */
         .hex-input {
-            width: 92px;         /* reduced from w-28 (~112px) */
-            flex: 0 0 auto;
+            max-width: 100px;     /* narrower than before */
+            width: 100px;         /* stable width when shown */
+            flex: 0 1 100px;      /* allow shrink if needed */
             font-family: monospace;
+        }
+
+        /* Remove button stays compact */
+        .remove-btn {
+            flex: 0 0 auto;
+        }
+
+        /* When advanced is off, keep hex input hidden without layout shift */
+        .advanced-hidden {
+            display: none !important;
         }
 
         #add-color-button {
@@ -131,8 +149,14 @@
         .description-link:hover { color:#805ad5; text-decoration:underline; }
         .description-link i { margin-right:.35rem; }
 
-        .advanced-hidden { display:none; }
         .pill { display:inline-flex; align-items:center; gap:.5rem; padding:.25rem .5rem; border-radius:9999px; border:1px solid rgba(0,0,0,.1); font-weight:600; }
+
+        /* Small screens: allow inputs to stack neatly */
+        @media (max-width: 420px) {
+            .name-input { max-width: 100%; flex: 1 1 100%; }
+            .hex-input { flex: 1 1 120px; width: 100%; max-width: 160px; }
+            .color-number { width: 1.25rem; }
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -346,12 +370,13 @@
             const hexInput = document.createElement('input');
             hexInput.type='text';
             hexInput.placeholder='#RRGGBB';
+            hexInput.inputMode = 'text';
             hexInput.className='hex-input shadow appearance-none border rounded py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline advanced-hidden';
 
             const removeButton = document.createElement('button');
             removeButton.title='Remove';
             removeButton.innerHTML='&times;';
-            removeButton.className='bg-red-400 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-full text-xs';
+            removeButton.className='remove-btn bg-red-400 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-full text-xs';
 
             const valueHex = initialHex || findSharplyDifferentColor(customDiceColors);
             picker.value = toHex(valueHex);
@@ -379,9 +404,10 @@
             hexInput.addEventListener('input', () => {
                 const val = hexInput.value.trim();
                 if(/^#([A-Fa-f0-9]{6})$/.test(val)){
-                    picker.value = val;
+                    const up = val.toUpperCase();
+                    picker.value = up;
                     if(!nameInput.dataset.userTyped || nameInput.value.trim()===''){
-                        nameInput.value = friendlyNameFromHex(val.toUpperCase());
+                        nameInput.value = friendlyNameFromHex(up);
                     }
                     updateCustomDiceColors();
                 }
@@ -465,7 +491,7 @@
             if(isStripeModeEnabled && numSides>1){
                 let count = (numSides===2) ? 1 : Math.floor(Math.random()*Math.min(numSides-1,3))+1;
                 const idxs = Array.from({length:numSides}, (_,i)=>i);
-                for(let i=idxs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idxs[i],idxs[j]]=[idxs[j],idxs[i]]; }
+                for(let i=idxs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idxs[i],idxs[j]]=[idxs[j]]; }
                 for(let i=0;i<count;i++) stripedOutcomeIndices.push(idxs[i]);
             }
 
