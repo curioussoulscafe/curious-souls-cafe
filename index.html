@@ -578,6 +578,44 @@
         }
 
         /**
+         * Order topics so that:
+         * - If "All Questions" is starred, it is first.
+         * - Else, starred topics (except "All Questions") first (alphabetical),
+         *   then "All Questions",
+         *   then other unstarred topics (alphabetical).
+         */
+        function orderTopicsWithAllQuestionsPriority(successfulTopics, starredTopics) {
+            const ALL = "All Questions";
+
+            // Split topics
+            const isStarred = t => starredTopics.includes(t.name);
+            const isAll = t => t.name === ALL;
+
+            const allTopic = successfulTopics.find(isAll);
+            const others = successfulTopics.filter(t => !isAll(t));
+
+            const starredOthers = others.filter(isStarred).sort((a, b) => a.name.localeCompare(b.name));
+            const unstarredOthers = others.filter(t => !isStarred(t)).sort((a, b) => a.name.localeCompare(b.name));
+
+            const allIsStarred = allTopic ? starredTopics.includes(ALL) : false;
+
+            if (!allTopic) {
+                // Fallback: no "All Questions" present; starred first (alpha), then unstarred (alpha)
+                const starred = others.filter(isStarred).sort((a, b) => a.name.localeCompare(b.name));
+                const unstarred = others.filter(t => !isStarred(t)).sort((a, b) => a.name.localeCompare(b.name));
+                return [...starred, ...unstarred];
+            }
+
+            if (allIsStarred) {
+                // "All Questions" on top regardless of others
+                return [allTopic, ...starredOthers, ...unstarredOthers];
+            } else {
+                // Starred others first, then "All Questions", then unstarred others
+                return [...starredOthers, allTopic, ...unstarredOthers];
+            }
+        }
+
+        /**
          * Fetches topic content based on TOPIC_CONFIGS and stores in localStorage (selectively).
          * Creates buttons for each topic.
          */
@@ -648,16 +686,8 @@
             } else {
                 const starredTopics = getStarredTopics();
 
-                // Separate starred and unstarred topics for sorting
-                const starred = successfulTopics.filter(topic => starredTopics.includes(topic.name));
-                const unstarred = successfulTopics.filter(topic => !starredTopics.includes(topic.name));
-
-                // Sort unstarred topics alphabetically
-                unstarred.sort((a, b) => a.name.localeCompare(b.name));
-
-                // Combine starred (unsorted among themselves, but appear first) and then sorted unstarred
-                const sortedTopics = [...starred, ...unstarred];
-
+                // Apply custom ordering with "All Questions" rules
+                const sortedTopics = orderTopicsWithAllQuestionsPriority(successfulTopics, starredTopics);
 
                 sortedTopics.forEach(topic => {
                     const button = document.createElement('button');
