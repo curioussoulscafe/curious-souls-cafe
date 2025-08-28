@@ -84,12 +84,12 @@
             white-space: nowrap;
         }
 
-        /* Hex input: fixed max width, can wrap to next line; never forces row growth */
+        /* Hex input: slightly narrower and fluid, avoids over-extension on large text */
         .hex-input {
-            max-width: 100px;     /* narrower than before */
-            width: 100px;         /* stable width when shown */
-            flex: 0 1 100px;      /* allow shrink if needed */
-            font-family: monospace;
+            width: 8.5ch;           /* fits '#RRGGBB' comfortably */
+            max-width: 9.5ch;
+            flex: 0 1 8.5ch;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         }
 
         /* Remove button stays compact */
@@ -184,7 +184,12 @@
         /* Small screens: allow inputs to stack neatly */
         @media (max-width: 420px) {
             .name-input { max-width: 100%; flex: 1 1 100%; }
-            .hex-input { flex: 1 1 120px; width: 100%; max-width: 160px; }
+            /* Keep hex input compact even with large text sizes */
+            .hex-input {
+                flex: 1 1 7.5ch;
+                width: 7.5ch;
+                max-width: 8.5ch;
+            }
             .color-number { width: 1.25rem; }
         }
     </style>
