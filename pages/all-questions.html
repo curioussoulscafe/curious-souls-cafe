@@ -50,9 +50,6 @@
             transition: opacity 0.3s ease-in-out;
             z-index: 1000; /* Ensure it's above other content */
         }
-		
-		
-		
         #back-to-top:hover {
             background-color: #805ad5; /* Purple-600 */
             transform: translateY(-2px);
@@ -767,19 +764,47 @@
         copyQuestionBtn.addEventListener('click', () => { copyQuestionToClipboard(); searchEngineModal.classList.remove('show'); });
         closeSearchEngineModalBtn.addEventListener('click', () => searchEngineModal.classList.remove('show'));
 
-        function openShareModal() {
+        // --- QR Code Modal Logic ---
+        // Track whether Share was opened from the Getting Started ("Meaningful Talk") modal
+        let shouldReturnToGettingStarted = false;
+
+        function openShareModal(openedFromGettingStarted = false) {
+            shouldReturnToGettingStarted = openedFromGettingStarted;
             const pageUrl = window.location.href;
             const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-            qrModalImage.src = qrCodeApiUrl;
+            qrModalImage.src = qrCodeApiUrl; // Set the QR code image source
             pageLinkAnchor.textContent = pageUrl;
             pageLinkAnchor.href = pageUrl;
-            qrCodeModal.classList.add('show');
+            qrCodeModal.classList.add('show'); // Show the modal
         }
-        showQrCodeLink.addEventListener('click', (e) => { e.preventDefault(); openShareModal(); });
-        inlineShareTrigger.addEventListener('click', (e) => { e.preventDefault(); gettingStartedModal.classList.remove('show'); openShareModal(); });
-        qrModalCloseButton.addEventListener('click', () => qrCodeModal.classList.remove('show'));
-        qrCodeModal.addEventListener('click', (e) => { if (e.target === qrCodeModal) qrCodeModal.classList.remove('show'); });
 
+        function closeShareModal() {
+            qrCodeModal.classList.remove('show'); // Hide the modal
+            // If we came from Getting Started modal, restore it; otherwise, stay on the page
+            if (shouldReturnToGettingStarted) {
+                gettingStartedModal.classList.add('show');
+            }
+            shouldReturnToGettingStarted = false; // Reset flag
+        }
+
+        // Bottom page link opens Share without returning to Getting Started
+        showQrCodeLink.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            openShareModal(false); 
+        });
+
+        // Inline share trigger inside Getting Started modal closes it and opens Share, remembering origin
+        inlineShareTrigger.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            gettingStartedModal.classList.remove('show'); 
+            openShareModal(true); 
+        });
+
+        // Close button and overlay click both honor the return flag
+        qrModalCloseButton.addEventListener('click', () => closeShareModal());
+        qrCodeModal.addEventListener('click', (e) => { if (e.target === qrCodeModal) closeShareModal(); });
+
+        // Copy Link Button Logic (text link)
         const copyLinkTextLink = document.getElementById('copy-link-text-link');
         copyLinkTextLink.addEventListener('click', (e) => {
             e.preventDefault();

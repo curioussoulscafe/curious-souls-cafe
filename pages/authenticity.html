@@ -1113,7 +1113,7 @@
             }
             selectedRandomQuestionText = null; // Reset selection on new generation
             const previouslySelected = document.querySelector('.item.selected-item');
-            if (previouslySelected) previously.classList.remove('selected-item');
+            if (previouslySelected) previouslySelected.classList.remove('selected-item');
             lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button on new generation until selection
         }
 
@@ -1403,34 +1403,50 @@
         });
 
         // --- QR Code Modal Logic ---
-        function openShareModal() {
+        // Track whether Share was opened from the Getting Started ("Meaningful Talk") modal
+        let shouldReturnToGettingStarted = false;
+
+        function openShareModal(openedFromGettingStarted = false) {
+            shouldReturnToGettingStarted = openedFromGettingStarted;
             const pageUrl = window.location.href;
             const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
             document.getElementById('qr-modal-image').src = qrCodeApiUrl; // Set the QR code image source
             document.getElementById('qr-code-modal').classList.add('show'); // Show the modal
         }
 
+        function closeShareModal() {
+            const qrOverlay = document.getElementById('qr-code-modal');
+            qrOverlay.classList.remove('show');
+
+            // If we came from Getting Started modal, restore it; otherwise, do nothing.
+            if (shouldReturnToGettingStarted) {
+                document.getElementById('getting-started-modal').classList.add('show');
+            }
+            // Reset the flag after handling
+            shouldReturnToGettingStarted = false;
+        }
+
         document.getElementById('show-qr-code-link').addEventListener('click', function(event) {
             event.preventDefault(); // Prevent default link behavior
-            openShareModal();
+            openShareModal(false); // Opened from page link at bottom; do not return to Getting Started
         });
 
         // Inline share trigger inside Getting Started modal
         document.getElementById('inline-share-trigger').addEventListener('click', function(event) {
             event.preventDefault();
-            // Also close the Getting Started modal to focus on Share modal
+            // Close the Getting Started modal and open Share modal, remembering origin
             document.getElementById('getting-started-modal').classList.remove('show');
-            openShareModal();
+            openShareModal(true); // Opened from Getting Started; should return there on close
         });
 
         document.getElementById('qr-modal-close-button').addEventListener('click', function() {
-            document.getElementById('qr-code-modal').classList.remove('show'); // Hide the modal
+            closeShareModal();
         });
 
         // Close modal if clicked outside content
         document.getElementById('qr-code-modal').addEventListener('click', function(event) {
             if (event.target === document.getElementById('qr-code-modal')) { // Check if the click was on the overlay itself
-                document.getElementById('qr-code-modal').classList.remove('show');
+                closeShareModal();
             }
         });
 
