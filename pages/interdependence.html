@@ -82,11 +82,58 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             display: none; /* Hidden by default */
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out, transform 0.15s ease-in-out;
             z-index: 1000; /* Ensure it's above other content */
         }
         #back-to-top:hover {
             background-color: #805ad5; /* Purple-600 */
+            transform: translateY(-2px);
+        }
+
+        /* Floating Dice Button */
+        #floating-dice {
+            position: fixed;
+            bottom: 80px; /* sits above the Top button */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #10b981, #06b6d4); /* teal to cyan */
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1100; /* above Top button */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+        }
+        #floating-dice:hover, #floating-dice:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-dice:active {
+            transform: translateY(0) scale(0.98);
+        }
+        #floating-dice .fa-dice {
+            font-size: 1.4rem;
+        }
+        @media (max-width: 480px) {
+            #floating-dice {
+                width: 52px;
+                height: 52px;
+                bottom: 76px;
+                right: 16px;
+            }
+            #floating-dice .fa-dice {
+                font-size: 1.25rem;
+            }
+            #back-to-top {
+                bottom: 16px;
+                right: 16px;
+            }
         }
 
         /* Styles for the embedded leave page button */
@@ -546,12 +593,18 @@
             font-weight: normal !important;
             background: none !important;
             border: none !important;
+            text-decoration: none !important;
+            cursor: pointer;
         }
 
         #getting-started-modal .getting-started-list a:hover,
         #getting-started-modal .getting-started-list a:focus {
             color: #551A8B !important;
-            text-decoration: underline !important;
+            text-decoration: underline !important; /* underline on hover/focus */
+            outline: none;
+        }
+        #getting-started-modal .getting-started-list a:active {
+            color: #551A8B !important; /* optional visited/active tone */
         }
 
         /* Inline share trigger button style (looks like italic text) */
@@ -655,6 +708,11 @@
         </a>
     </div>
 
+    <!-- Floating Dice Button (links to dice-roll.html in the same folder) -->
+    <a id="floating-dice" href="dice-roll.html" aria-label="Open Dice Roller" title="Open Dice Roller">
+        <i class="fas fa-dice"></i>
+    </a>
+
     <button id="back-to-top" title="Back to Top">
         &#9650; Top
     </button>
@@ -697,7 +755,7 @@
                     <b>Pick a Question:</b> Each person chooses one of three questions shown on the app that resonates with them. Tap a question to save it.
                 </li>
                 <li>
-                    <b>Start the Conversation:</b> Invite a person to share their question and answer first, then everyone goes around (e.g., clockwise) answering the same question.<br><br>Once everyone has answered, the next person shares their chosen question, and so on.<br><br>🌀 = deep 🌱 = introductory
+                    <b>Start the Conversation:</b> Invite a person to share their question and answer first, then everyone goes around (e.g., clockwise) answering the same question.<br><br>Once everyone has answered, the next person shares their chosen question, and so on.<br><br><strong>Optional:</strong> Roll the <a href="dice-roll.html">dice</a> and match its color to the question’s color (revealed after tapping) to decide who goes first/next.<br><br>🌀 = deep 🌱 = introductory
                 </li>
             </ol>
             
@@ -1349,31 +1407,31 @@
         function openShareModal() {
             const pageUrl = window.location.href;
             const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-            qrModalImage.src = qrCodeApiUrl; // Set the QR code image source
-            qrCodeModal.classList.add('show'); // Show the modal
+            document.getElementById('qr-modal-image').src = qrCodeApiUrl; // Set the QR code image source
+            document.getElementById('qr-code-modal').classList.add('show'); // Show the modal
         }
 
-        showQrCodeLink.addEventListener('click', function(event) {
+        document.getElementById('show-qr-code-link').addEventListener('click', function(event) {
             event.preventDefault(); // Prevent default link behavior
             openShareModal();
         });
 
         // Inline share trigger inside Getting Started modal
-        inlineShareTrigger.addEventListener('click', function(event) {
+        document.getElementById('inline-share-trigger').addEventListener('click', function(event) {
             event.preventDefault();
             // Also close the Getting Started modal to focus on Share modal
-            gettingStartedModal.classList.remove('show');
+            document.getElementById('getting-started-modal').classList.remove('show');
             openShareModal();
         });
 
-        qrModalCloseButton.addEventListener('click', function() {
-            qrCodeModal.classList.remove('show'); // Hide the modal
+        document.getElementById('qr-modal-close-button').addEventListener('click', function() {
+            document.getElementById('qr-code-modal').classList.remove('show'); // Hide the modal
         });
 
         // Close modal if clicked outside content
-        qrCodeModal.addEventListener('click', function(event) {
-            if (event.target === qrCodeModal) { // Check if the click was on the overlay itself
-                qrCodeModal.classList.remove('show');
+        document.getElementById('qr-code-modal').addEventListener('click', function(event) {
+            if (event.target === document.getElementById('qr-code-modal')) { // Check if the click was on the overlay itself
+                document.getElementById('qr-code-modal').classList.remove('show');
             }
         });
 

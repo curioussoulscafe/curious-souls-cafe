@@ -34,12 +34,76 @@
             margin-bottom: 1.25rem; transform: scale(1.03);
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         }
+        /* Styles for the back-to-top button */
         #back-to-top {
-            position: fixed; bottom: 20px; right: 20px; background-color: #6b46c1; color: white;
-            padding: 0.5rem 1rem; font-size: 1rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            cursor: pointer; display: none; transition: opacity 0.3s ease-in-out; z-index: 1000;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6b46c1; /* Purple-500 */
+            color: white;
+            padding: 0.5rem 1rem; /* Matched padding */
+            font-size: 1rem; /* Matched font size */
+            border-radius: 9999px; /* Full rounded */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: none; /* Hidden by default */
+            transition: opacity 0.3s ease-in-out;
+            z-index: 1000; /* Ensure it's above other content */
         }
-        #back-to-top:hover { background-color: #805ad5; }
+		
+		
+		
+        #back-to-top:hover {
+            background-color: #805ad5; /* Purple-600 */
+            transform: translateY(-2px);
+        }
+
+        /* Floating Dice Button */
+        #floating-dice {
+            position: fixed;
+            bottom: 80px; /* sits above the Top button */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #10b981, #06b6d4); /* teal to cyan */
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1100; /* above Top button */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+        }
+        #floating-dice:hover, #floating-dice:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-dice:active {
+            transform: translateY(0) scale(0.98);
+        }
+        #floating-dice .fa-dice {
+            font-size: 1.4rem;
+        }
+        @media (max-width: 480px) {
+            #floating-dice {
+                width: 52px;
+                height: 52px;
+                bottom: 76px;
+                right: 16px;
+            }
+            #floating-dice .fa-dice {
+                font-size: 1.25rem;
+            }
+            #back-to-top {
+                bottom: 16px;
+                right: 16px;
+            }
+        }
+        
         #back-to-topics {
             background-color: #c53030; color: white; border: none; padding: 0.5rem 1rem; font-size: 1rem; font-weight: bold;
             border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
@@ -111,9 +175,28 @@
         .getting-started-list li::before {
             content: counter(step-counter); counter-increment: step-counter; position:absolute; left:0; top:0;
             background-color:#9f7aea; color:white; border-radius:50%; width:20px; height:20px; display:flex; justify-content:center; align-items:center; font-size:0.8rem; font-weight:bold;
+        }	
+		
+        /* Standard hyperlink color for dice link in modal */
+        #getting-started-modal .getting-started-list a {
+            color: #0000EE !important;
+            font-weight: normal !important;
+            background: none !important;
+            border: none !important;
+            text-decoration: none !important;
+            cursor: pointer;
         }
-        #getting-started-modal .getting-started-list a { color:#0000EE !important; font-weight:normal !important; background:none !important; border:none !important; }
-        #getting-started-modal .getting-started-list a:hover, #getting-started-modal .getting-started-list a:focus { color:#551A8B !important; text-decoration: underline !important; }
+
+        #getting-started-modal .getting-started-list a:hover,
+        #getting-started-modal .getting-started-list a:focus {
+            color: #551A8B !important;
+            text-decoration: underline !important; /* underline on hover/focus */
+            outline: none;
+        }
+        #getting-started-modal .getting-started-list a:active {
+            color: #551A8B !important; /* optional visited/active tone */
+        }
+		
         #inline-share-trigger { background:none; border:none; padding:0; margin:0; color:#0000EE; font-style:italic; cursor:pointer; }
         #inline-share-trigger:hover, #inline-share-trigger:focus { text-decoration: underline; color:#551A8B; outline:none; }
     </style>
@@ -198,6 +281,11 @@
         </a>
     </div>
 
+    <!-- Floating Dice Button (links to dice-roll.html in the same folder) -->
+    <a id="floating-dice" href="dice-roll.html" aria-label="Open Dice Roller" title="Open Dice Roller">
+        <i class="fas fa-dice"></i>
+    </a>
+    
     <button id="back-to-top" title="Back to Top">&#9650; Top</button>
 
     <div id="confirmation-modal" class="modal-overlay">
