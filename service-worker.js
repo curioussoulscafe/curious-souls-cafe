@@ -35,7 +35,7 @@ const FILES_TO_CACHE = [
   '/pages/authenticity.html',
   '/pages/custom-questions-display.html',
   '/pages/custom-questions-input.html',
-  '/pages/dice-roll.html',
+  '/pages/dice.html',
   '/pages/friendship.html',
   '/pages/happiness.html',
   '/pages/icebreaker.html',

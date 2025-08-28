@@ -18,7 +18,7 @@ Step into meaningful conversations with ease! Here's how you can join the fun:
    Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin! [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) is recommended for first-timers.
 
 4. **Start the Conversation**  
-   Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion): With the three questions presented (by default), each person chooses their favorite one, and then determine whose question goes first (e.g., the particpant who arrives first, or the one whose virtual question card matches the color of a [virtual dice roll](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice-roll.html)). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.
+   Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion): With the three questions presented (by default), each person chooses their favorite one, and then determine whose question goes first (e.g., the particpant who arrives first, or the one whose virtual question card matches the color of a [virtual dice roll](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html)). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.
    
    Participants take turns answering the chosen question, with the option to pass if they feel uncomfortable. This style fosters a relaxed and organic way to engage with the group while ensuring everyone has the opportunity to participate.
 
@@ -101,7 +101,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * Then, have the participant tap **"Next Questions!"** so that only one random question is displayed.
 
-6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice-roll.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
+6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](https://curioussoulscafe.substack.com/i/154389021/the-dice-decides) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
 
 7. **Advanced Search & Clear:**
 
