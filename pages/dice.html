@@ -92,12 +92,12 @@
 
         /* Hex input: compact, non-intrusive; can shrink slightly */
         .hex-input {
-            width: 8.5ch;
-            max-width: 9.5ch;
-            flex: 0 1 8.5ch;            /* allow a bit of shrink before truncation */
+            width: 10ch;               /* '#RRGGBB' fits fully; leaves room for caret/padding */
+            max-width: 12ch;           /* a touch of headroom */
+            flex: 0 0 10ch;            /* do not shrink; keeps full visibility */
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             overflow: hidden;
-            text-overflow: ellipsis;
+            text-overflow: clip;
             white-space: nowrap;
         }
 
@@ -209,7 +209,8 @@
 
             /* Move text inputs to the second line, full width, truncating if needed */
             .name-input { order: 3; flex: 1 1 100%; max-width: 100%; }
-            .hex-input  { order: 4; flex: 0 1 8.5ch; }
+            /* Keep hex visible and non-shrinking on the second line too */
+            .hex-input  { order: 4; flex: 0 0 10ch; width: 10ch; max-width: 12ch; }
 
             /* Fine-tune spacing on wrap */
             .color-input-group { row-gap: .35rem; }
