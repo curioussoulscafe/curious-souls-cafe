@@ -52,16 +52,17 @@
             100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
         }
 
-        /* Compact, wrapping color rows that don't expand container */
+        /* Compact, single-line row with robust truncation and no wrapping of the remove button */
         .color-input-group {
             display:flex;
-            flex-wrap:wrap;              /* allow wrapping when needed */
             align-items:center;
             gap:.5rem;
             width:100%;
             max-width: 520px;
             margin: 0.375rem auto;
             padding: 0 .25rem;
+            /* prevent unexpected wrapping that pushes the remove button down */
+            flex-wrap: nowrap;
         }
 
         .color-number { font-weight:bold; width:1.5rem; text-align:right; flex: 0 0 auto; }
@@ -74,22 +75,37 @@
         input[type="color"].color-picker-input::-moz-color-swatch-wrapper { padding:0; }
         input[type="color"].color-picker-input::-moz-color-swatch { border:none; border-radius:4px; }
 
-        /* Name input flexible but bounded; truncates text */
+        /* Make flex items shrinkable and truncate before wrapping */
+        .name-input,
+        .hex-input {
+            min-width: 0;               /* allow shrinking below content width */
+        }
+
+        /* Name input: flexible and truncates text */
         .name-input {
-            min-width: 140px;
-            max-width: 260px;
-            flex: 1 1 160px;     /* can shrink/wrap on narrow screens */
+            flex: 1 1 auto;             /* take remaining space, can shrink */
             overflow:hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+
+        /* Hex input: compact, non-intrusive; can shrink slightly */
+        .hex-input {
+            width: 8.5ch;
+            max-width: 9.5ch;
+            flex: 0 1 8.5ch;            /* allow a bit of shrink before truncation */
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
-        /* Hex input: slightly narrower and fluid, avoids over-extension on large text */
-        .hex-input {
-            width: 8.5ch;           /* fits '#RRGGBB' comfortably */
-            max-width: 9.5ch;
-            flex: 0 1 8.5ch;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        /* Keep number, color picker, and remove button from shrinking */
+        .color-number,
+        .color-picker-input,
+        .remove-btn {
+            flex-shrink: 0;
         }
 
         /* Remove button stays compact */
@@ -181,16 +197,22 @@
             box-shadow: 0 6px 12px rgba(0,0,0,.15);
         }
 
-        /* Small screens: allow inputs to stack neatly */
+        /* Small screens: allow a controlled wrap without pushing the X down alone */
         @media (max-width: 420px) {
-            .name-input { max-width: 100%; flex: 1 1 100%; }
-            /* Keep hex input compact even with large text sizes */
-            .hex-input {
-                flex: 1 1 7.5ch;
-                width: 7.5ch;
-                max-width: 8.5ch;
+            .color-input-group {
+                flex-wrap: wrap; /* two-line layout if needed */
             }
-            .color-number { width: 1.25rem; }
+            /* Keep first row compact: number, picker, remove button stay on line 1 */
+            .color-number { width: 1.25rem; order: 0; }
+            .color-picker-input { order: 1; }
+            .remove-btn { order: 2; margin-left: auto; } /* stays on the first line, right aligned */
+
+            /* Move text inputs to the second line, full width, truncating if needed */
+            .name-input { order: 3; flex: 1 1 100%; max-width: 100%; }
+            .hex-input  { order: 4; flex: 0 1 8.5ch; }
+
+            /* Fine-tune spacing on wrap */
+            .color-input-group { row-gap: .35rem; }
         }
     </style>
 </head>
@@ -418,6 +440,7 @@
             const removeButton = document.createElement('button');
             removeButton.title='Remove';
             removeButton.innerHTML='&times;';
+            removeButton.setAttribute('aria-label','Remove color');
             removeButton.className='remove-btn bg-red-400 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-full text-xs';
 
             const valueHex = initialHex || findSharplyDifferentColor(customDiceColors);
