@@ -662,9 +662,16 @@
       diceResultText.textContent = "Colors restored to defaults. Roll the dice!";
     }
 
+    // Load saved state only if it exists; otherwise keep the default true
     function loadStripeModeState(){
-      const saved = localStorage.getItem(stripeModeLocalStorageKey);
-      stripeModeToggle.checked = saved === 'true';
+        const saved = localStorage.getItem(stripeModeLocalStorageKey);
+        if (saved === null) {
+            // No prior preference; keep default ON and persist it
+            stripeModeToggle.checked = true;
+            saveStripeModeState();
+        } else {
+            stripeModeToggle.checked = saved === 'true';
+        }
     }
     function saveStripeModeState(){
       localStorage.setItem(stripeModeLocalStorageKey, stripeModeToggle.checked ? 'true' : 'false');
