@@ -188,25 +188,26 @@
     .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
     .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
 
-    /* Small screens: enforce two-line layout to keep X on the first line */
-    @media (max-width: 420px) {
-      .color-input-group {
+    /* Extra-small screens: only then enforce two-line layout
+    to keep the X on the first line */
+    @media (max-width: 360px) {
+    .color-input-group {
         flex-wrap: wrap;
         row-gap: .35rem;
-      }
-      /* First line: number, picker, X (right-aligned) */
-      .color-number { width: 1.25rem; order: 0; }
-      .color-picker-input { order: 1; }
-      .remove-btn { order: 2; margin-left: auto; }
+    }
+    /* First line: number, picker, X (right-aligned) */
+    .color-number { width: 1.25rem; order: 0; }
+    .color-picker-input { order: 1; }
+    .remove-btn { order: 2; margin-left: auto; }
 
-      /* Second line: stretch inputs */
-      .inputs-wrap {
+    /* Second line: stretch inputs */
+    .inputs-wrap {
         order: 3;
         flex: 1 1 100%;
         min-width: 0;
-      }
-      .name-input { flex: 1 1 auto; max-width: 100%; }
-      .hex-input  { flex: 0 0 10ch; width: 10ch; max-width: 12ch; }
+    }
+    .name-input { flex: 1 1 auto; max-width: 100%; }
+    .hex-input  { flex: 0 0 10ch; width: 10ch; max-width: 12ch; }
     }
   </style>
 </head>
