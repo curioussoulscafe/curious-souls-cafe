@@ -239,7 +239,25 @@
       </label>
     </div>
 
-    <div id="custom-dice-config-section" class="my-4 text-center mt-2">
+    <!-- Roll primary action moved above configuration -->
+    <div id="roll-first-section" class="my-4 text-center">
+      <p id="dice-result-text" class="text-lg font-medium text-gray-800 mt-2">Configure your dice and roll!</p>
+      <button id="roll-custom-dice-button" class="roll-button mt-4">Roll the Dice</button>
+    </div>
+
+    <div id="virtual-dice" class="relative w-24 h-24 mx-auto perspective-1000 mt-6">
+      <div class="dice-cube">
+        <div class="dice-face face-front"></div>
+        <div class="dice-face face-back"></div>
+        <div class="dice-face face-right"></div>
+        <div class="dice-face face-left"></div>
+        <div class="dice-face face-top"></div>
+        <div class="dice-face face-bottom"></div>
+      </div>
+    </div>
+
+    <!-- Configuration moved below -->
+    <div id="custom-dice-config-section" class="my-6 text-center">
       <button id="add-color-button">Add Color / Side</button>
       <br><br>
 
@@ -257,23 +275,9 @@
         </div>
         <p id="sides-count-message" class="text-gray-700 text-sm mb-2 text-center"></p>
       </div>
-
-      <p id="dice-result-text" class="text-lg font-medium text-gray-800 mt-4">Configure your dice and roll!</p>
-      <button id="roll-custom-dice-button" class="roll-button mt-4">Roll the Dice</button>
     </div>
 
-    <div id="virtual-dice" class="relative w-24 h-24 mx-auto perspective-1000 mt-8">
-      <div class="dice-cube">
-        <div class="dice-face face-front"></div>
-        <div class="dice-face face-back"></div>
-        <div class="dice-face face-right"></div>
-        <div class="dice-face face-left"></div>
-        <div class="dice-face face-top"></div>
-        <div class="dice-face face-bottom"></div>
-      </div>
-    </div>
-
-    <div id="dice-colors-list" class="mt-8 pt-4 border-t border-gray-300">
+    <div id="dice-colors-list" class="mt-2 pt-4 border-t border-gray-300">
       <h3 class="text-lg font-semibold text-gray-700 mb-2 text-center">Configured Dice Colors:</h3>
       <ul id="configured-colors-ul" class="list-none p-0 flex flex-wrap justify-center gap-2 mb-4"></ul>
     </div>
