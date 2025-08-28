@@ -340,6 +340,48 @@
         #topics-list.has-starred-actions-above {
             margin-top: 1rem;
         }
+
+        /* Floating Dice Button */
+        #floating-dice {
+            position: fixed;
+            bottom: 80px; /* sits above Add to Home Screen button */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #10b981, #06b6d4); /* teal to cyan */
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 3500; /* above install button */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+        }
+        #floating-dice:hover, #floating-dice:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-dice:active {
+            transform: translateY(0) scale(0.98);
+        }
+        #floating-dice .fa-dice {
+            font-size: 1.4rem;
+        }
+        @media (max-width: 480px) {
+            #floating-dice {
+                width: 52px;
+                height: 52px;
+                bottom: 76px;
+                right: 16px;
+            }
+            #floating-dice .fa-dice {
+                font-size: 1.25rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -466,6 +508,11 @@
              <div class="line-break"></div>
         </div>
     </div>
+
+    <!-- Floating Dice Button (links to pages\dice-roll.html) -->
+    <a id="floating-dice" href="pages\dice-roll.html" aria-label="Open Dice Roller" title="Open Dice Roller">
+        <i class="fas fa-dice"></i>
+    </a>
 
     <!-- Add to Homescreen button -->
     <button id="add-to-homescreen-btn">
