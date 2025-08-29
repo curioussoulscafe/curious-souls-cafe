@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curious-souls-cafe-v11';
+const CACHE_NAME = 'curious-souls-cafe-v12';
 
 const FILES_TO_CACHE = [
   // Root and main pages
@@ -12,23 +12,23 @@ const FILES_TO_CACHE = [
   '/data/quotes.txt',
 
   // Questions
-  '/questions/authenticity.txt',
-  '/questions/friendship.txt',
-  '/questions/happiness.txt',
-  '/questions/icebreaker.txt',
-  '/questions/inner-child.txt',
-  '/questions/interdependence.txt',
-  '/questions/the-heart-talks.txt',
-  '/questions/parenting.txt',
-  '/questions/purpose.txt',
-  '/questions/reflection.txt',
-  '/questions/reimagine.txt',
-  '/questions/work-that-resonates.txt',
-  '/questions/the-mind-speaks.txt',
-  '/questions/transitions.txt',
-  '/questions/adulthood.txt',
-  '/questions/entrepreneurship.txt',
-  '/questions/all-in-one.txt',
+  '/questions/deep-authenticity.txt',
+  '/questions/light-friendship.txt',
+  '/questions/mid-happiness.txt',
+  '/questions/light-icebreaker.txt',
+  '/questions/deep-inner-child.txt',
+  '/questions/mid-interdependence.txt',
+  '/questions/mid-the-heart-talks.txt',
+  '/questions/light-parenting.txt',
+  '/questions/deep-purpose.txt',
+  '/questions/mid-reflection.txt',
+  '/questions/deep-reimagine.txt',
+  '/questions/light-work-that-resonates.txt',
+  '/questions/deep-the-mind-speaks.txt',
+  '/questions/deep-transitions.txt',
+  '/questions/mid-adulthood.txt',
+  '/questions/light-entrepreneurship.txt',
+  '/questions/mid-all-in-one.txt',
 
   // Pages
   '/pages/action-prompts.html',
