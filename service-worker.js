@@ -28,7 +28,7 @@ const FILES_TO_CACHE = [
   '/questions/transitions.txt',
   '/questions/adulthood.txt',
   '/questions/entrepreneurship.txt',
-  '/questions/all-questions.txt',
+  '/questions/all-in-one.txt',
 
   // Pages
   '/pages/action-prompts.html',
@@ -53,7 +53,7 @@ const FILES_TO_CACHE = [
   '/pages/welcome.html',
   '/pages/adulthood.html',
   '/pages/entrepreneurship.html',
-  '/pages/all questions.html',
+  '/pages/all-in-one.html',
 
   // Pages (descriptions)
   '/pages/descriptions/authenticity.html',
@@ -72,7 +72,7 @@ const FILES_TO_CACHE = [
   '/pages/descriptions/transitions.html',
   '/pages/descriptions/adulthood.html',
   '/pages/descriptions/entrepreneurship.html',
-  '/pages/descriptions/all-questions.html',
+  '/pages/descriptions/all-in-one.html',
 
   // Images
   '/images/csc_logo.jpg',
@@ -98,7 +98,7 @@ const FILES_TO_CACHE = [
   '/images/qr/qr-code-topic-the-mind-speaks.png',
   '/images/qr/qr-code-topic-transitions.png',
   '/images/qr/qr-code-topic-work-that-resonates.png',
-  '/images/qr/qr-code-topic-all-questions.png',
+  '/images/qr/qr-code-topic-all-in-one.png',
   '/images/qr/qr-code-welcome.png',
 
   // Icons

@@ -576,7 +576,7 @@
             { name: "Adulthood", htmlFileName: "pages/adulthood.html", txtUrl: "questions/adulthood.txt", cache: true },
             { name: "Interdependence", htmlFileName: "pages/interdependence.html", txtUrl: "questions/interdependence.txt", cache: true },
             { name: "Inner Child", htmlFileName: "pages/inner-child.html", txtUrl: "questions/inner-child.txt", cache: true },
-            { name: "All Questions", htmlFileName: "pages/all-questions.html", txtUrl: "questions/all-questions.txt", cache: true },
+            { name: "All in One", htmlFileName: "pages/all-in-one.html", txtUrl: "questions/all-in-one.txt", cache: true },
             { name: "Entrepreneurship", htmlFileName: "pages/entrepreneurship.html", txtUrl: "questions/entrepreneurship.txt", cache: true }
         ];
 
@@ -665,13 +665,13 @@
 
         /**
          * Order topics so that:
-         * - If "All Questions" is starred, it is first.
-         * - Else, starred topics (except "All Questions") first (alphabetical),
-         *   then "All Questions",
+         * - If "All in One" is starred, it is first.
+         * - Else, starred topics (except "All in One") first (alphabetical),
+         *   then "All in One",
          *   then other unstarred topics (alphabetical).
          */
         function orderTopicsWithAllQuestionsPriority(successfulTopics, starredTopics) {
-            const ALL = "All Questions";
+            const ALL = "All in One";
 
             // Split topics
             const isStarred = t => starredTopics.includes(t.name);
@@ -686,17 +686,17 @@
             const allIsStarred = allTopic ? starredTopics.includes(ALL) : false;
 
             if (!allTopic) {
-                // Fallback: no "All Questions" present; starred first (alpha), then unstarred (alpha)
+                // Fallback: no "All in One" present; starred first (alpha), then unstarred (alpha)
                 const starred = others.filter(isStarred).sort((a, b) => a.name.localeCompare(b.name));
                 const unstarred = others.filter(t => !isStarred(t)).sort((a, b) => a.name.localeCompare(b.name));
                 return [...starred, ...unstarred];
             }
 
             if (allIsStarred) {
-                // "All Questions" on top regardless of others
+                // "All in One" on top regardless of others
                 return [allTopic, ...starredOthers, ...unstarredOthers];
             } else {
-                // Starred others first, then "All Questions", then unstarred others
+                // Starred others first, then "All in One", then unstarred others
                 return [...starredOthers, allTopic, ...unstarredOthers];
             }
         }
@@ -772,7 +772,7 @@
             } else {
                 const starredTopics = getStarredTopics();
 
-                // Apply custom ordering with "All Questions" rules
+                // Apply custom ordering with "All in One" rules
                 const sortedTopics = orderTopicsWithAllQuestionsPriority(successfulTopics, starredTopics);
 
                 sortedTopics.forEach(topic => {
@@ -891,7 +891,7 @@
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map(a => createActionButton(a, true));
 
-            // Inject starred action buttons above ALL topics and even above All Questions
+            // Inject starred action buttons above ALL topics and even above All in One
             // Place them just before the topics-list element.
             const parentContainer = document.querySelector('.bg-white.rounded-lg.shadow-xl.p-8.w-full.max-w-md.transition-transform');
             const topicsAnchor = document.getElementById('topics-list');
@@ -983,7 +983,7 @@
 
             // After all buttons are rendered, collect them into allButtons for filtering
             allButtons = []
-                // Starred action buttons injected above topics (always on top, even above All Questions)
+                // Starred action buttons injected above topics (always on top, even above All in One)
                 .concat(Array.from(document.querySelectorAll('[data-injected-starred-action="1"]')))
                 // Topic buttons
                 .concat(Array.from(topicsListDiv.querySelectorAll('.topic-button')))
