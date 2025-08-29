@@ -121,34 +121,34 @@
             font-size: 1.4rem;
         }
 
-        /* Floating Look Up / Translate Button */
+        /* Floating Look Up / Translate Button — icon-only, same size as dice, slightly above it */
         #floating-lookup {
             position: fixed;
-            bottom: 146px; /* sits above the dice button */
+            bottom: 146px; /* previously; will be overridden just above for better spacing */
             right: 20px;
+            width: 56px;
             height: 56px;
             border-radius: 9999px;
             background: linear-gradient(135deg, #3b82f6, #10b981); /* blue to green */
             color: #ffffff;
             display: none; /* Hidden by default; shown when a question is selected */
             align-items: center;
-            gap: 10px;
             justify-content: center;
-            padding: 0 16px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.15);
             text-decoration: none;
             z-index: 1150; /* above dice */
             transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
             cursor: pointer;
-            font-weight: 700;
-            font-size: 0.95rem;
-            white-space: nowrap;
+        }
+        /* precise placement so it's not tightly packed with dice */
+        #floating-lookup {
+            bottom: 148px; /* dice bottom (80) + dice height (56) + 12px gap = 148 */
         }
         #floating-lookup i {
-            font-size: 1.1rem;
+            font-size: 1.25rem; /* match visual weight with dice icon */
         }
         #floating-lookup:hover, #floating-lookup:focus {
-            transform: translateY(-2px) scale(1.02);
+            transform: translateY(-2px) scale(1.03);
             box-shadow: 0 10px 18px rgba(0,0,0,0.2);
             outline: none;
             filter: brightness(1.05);
@@ -172,11 +172,13 @@
                 right: 16px;
             }
             #floating-lookup {
-                bottom: 136px; /* stacked above dice on small screens */
-                right: 16px;
+                width: 52px;
                 height: 52px;
-                padding: 0 14px;
-                font-size: 0.9rem;
+                right: 16px;
+                bottom: 140px; /* dice bottom (76) + dice height (52) + 12px gap = 140 */
+            }
+            #floating-lookup i {
+                font-size: 1.15rem;
             }
         }
 
@@ -769,10 +771,9 @@
         <i class="fas fa-dice"></i>
     </a>
 
-    <!-- New Floating Look Up / Translate Button (above the floating dice) -->
+    <!-- Floating Look Up / Translate Button — icon only -->
     <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
         <i class="fas fa-search"></i>
-        <span>Look Up / Translate</span>
     </button>
 
     <button id="back-to-top" title="Back to Top">
