@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         :root {
@@ -346,6 +345,28 @@
             background-color: #cbd5e0; /* Gray-300 */
         }
         
+        /* NEW: Styles for filter buttons */
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db; /* Tailwind gray-300 */
+            background-color: #ffffff;
+            color: #4b5563; /* Tailwind gray-600 */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.9rem;
+        }
+        .filter-btn:hover {
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .filter-btn.active {
+            background-color: #8b5cf6; /* A purple that fits the theme */
+            color: #ffffff;
+            border-color: #8b5cf6;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
         /* Loading spinner styles for modals */
         .loading-spinner-modal {
             border: 4px solid #f3f3f3; /* Light grey */
@@ -723,8 +744,7 @@
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
         <div class="flex justify-center mb-6">
-            <a href="../index.html"> <!-- Updated path to index.html -->
-                <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            <a href="../index.html"> <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
             </a>
         </div>
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
@@ -736,20 +756,27 @@
             Spark meaningful conversations about the joys, challenges, and growth in raising children.
         </p>
 
-        <!-- Hyperlink to the full description and getting started page -->
         <div class="description-link-container">
-            <!-- Getting Started button now with info icon -->
             <button id="getting-started-link" class="description-link">
                 <i class="fas fa-info-circle"></i> Get started
             </button>
             <span class="separator">|</span>
-            <!-- About the topic without icon -->
             <a href="descriptions\parenting.html" class="description-link">
                 About the topic
             </a>
         </div>
 
         <hr class="border-gray-300 my-4 w-full mx-auto">
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by type:</label>
+            <div id="difficulty-filter" class="flex flex-wrap justify-center gap-2">
+                <button data-filter="all" class="filter-btn active" title="Show all questions">All</button>
+                <button data-filter="lighter" class="filter-btn" title="Show lighter questions">🌱 Lighter</button>
+                <button data-filter="normal" class="filter-btn" title="Show questions of normal difficulty">Normal</button>
+                <button data-filter="deeper" class="filter-btn" title="Show deeper questions">🌀 Deeper</button>
+            </div>
+        </div>
 
         <div class="mb-4">
             <label for="item-count" class="block text-gray-700 text-sm font-bold mb-2">No. of questions to pick: <span id="total-questions" class="text-gray-500 text-sm"></span></label>
@@ -764,7 +791,6 @@
             <p id="random-result" class="text-gray-800 text-center font-medium">Loading questions...</p>
         </div>
 
-        <!-- Consolidated Look Up Online Button -->
         <div class="mt-4 pt-4 border-t border-gray-300 flex flex-col items-center">
             <button id="look-up-online-btn" class="bg-gradient-to-r from-blue-400 to-green-400 hover:from-blue-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded-full shadow-md
                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
@@ -773,8 +799,7 @@
             </button>
         </div>
 
-        <div class="mb-8"> <!-- Added mb-8 for more separation -->
-            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search questions:</label>
+        <div class="mb-8"> <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search questions:</label>
             <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
                 Search
@@ -797,24 +822,20 @@
             <i class="fas fa-arrow-left"></i> Leave Page
         </button>
 
-        <!-- Link to show QR Code -->
         <br>
         <a href="#" id="show-qr-code-link" class="qr-code-link">
             <i class="fas fa-qrcode"></i> Get page link/QR code
         </a>
     </div>
 
-    <!-- Floating Dice Button (links to dice.html in the same folder) -->
     <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
         <i class="fas fa-dice"></i>
     </a>
 
-    <!-- Floating Look Up / Translate Button -- icon only -->
     <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
         <i class="fas fa-search"></i>
     </button>
 
-    <!-- NEW Floating Share Button -->
     <button id="floating-share" title="Share selected question" aria-label="Share selected question">
         <i class="fas fa-share-nodes"></i>
     </button>
@@ -823,7 +844,6 @@
         &#9650; Top
     </button>
 
-    <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
@@ -834,7 +854,6 @@
         </div>
     </div>
 
-    <!-- New Confirmation Modal for empty search -->
     <div id="empty-search-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
@@ -848,7 +867,6 @@
         </div>
     </div>    
 
-    <!-- Getting Started Modal -->
     <div id="getting-started-modal" class="modal-overlay">
         <div class="modal-content max-w-sm">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
@@ -861,24 +879,23 @@
         </div>
     </div>
 
-    <!-- Search/Translate Choice Modal -->
     <div id="search-engine-modal" class="modal-overlay">
         <div class="modal-content">
-            <p class="text-lg font-semibold text-gray-800 mb-4">Look it up:</p>
+            <p class="text-lg font-semibold text-gray-800 mb-4">Look it up online:</p>
             
             <h4 class="modal-subheading">Web Search</h4>
             <div class="flex flex-col items-center">
                 <button id="search-google-choice-btn">
-                    <i class="fab fa-google"></i> Look up on Google
+                    <i class="fab fa-google"></i> Search Google
                 </button>
                 <button id="search-bing-choice-btn">
-                    <i class="fab fa-microsoft"></i> Look up on Bing
+                    <i class="fab fa-microsoft"></i> Search Bing
                 </button>
                 <button id="search-duckduckgo-choice-btn">
-                    <i class="fas fa-search"></i> Look up on DuckDuckGo
+                    <i class="fas fa-search"></i> Search DuckDuckGo
                 </button>
                 <button id="search-brave-choice-btn">
-                    <i class="fas fa-magnifying-glass"></i> Look up on Brave Search
+                    <i class="fas fa-magnifying-glass"></i> Search Brave
                 </button>
             </div>
 
@@ -903,7 +920,6 @@
         </div>
     </div>
 
-    <!-- QR Code Modal -->
     <div id="qr-code-modal" class="modal-overlay">
         <div id="qr-modal-content" class="modal-content">
             <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
@@ -930,7 +946,9 @@
         const githubRawUrl = "../questions/parenting.txt"; // Relative path to parenting.txt
         // End Hardcoded Configuration
 
-        let itemList = []; 
+        let fullItemList = []; // Master list of all questions
+        let itemList = []; // The currently filtered list of questions
+        let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'normal', 'deeper'
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
@@ -1031,6 +1049,40 @@
             localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
         }
 
+        /**
+         * Filters the master list of questions based on the current selection.
+         */
+        function applyFilter() {
+            switch (currentFilter) {
+                case 'lighter':
+                    itemList = fullItemList.filter(item => item.startsWith('🌱'));
+                    break;
+                case 'deeper':
+                    itemList = fullItemList.filter(item => item.startsWith('🌀'));
+                    break;
+                case 'normal':
+                    itemList = fullItemList.filter(item => !item.startsWith('🌱') && !item.startsWith('🌀'));
+                    break;
+                default: // 'all'
+                    itemList = [...fullItemList];
+                    break;
+            }
+            
+            // Reset the pool of available items for the randomizer
+            availableRandomItems = [...itemList];
+            
+            // Update the total questions count displayed to the user
+            totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
+            
+            // Refresh the randomly displayed questions with the new filtered list
+            displayRandomItems();
+            
+            // Clear any previous search results as the source list has changed
+            searchResultsDisplay.innerHTML = '';
+            searchButton.textContent = "Search";
+            lastSearchTerm = "";
+        }
+
         // Function to fetch questions from localStorage or GitHub
         async function fetchQuestions() {
             const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
@@ -1041,10 +1093,8 @@
 
             if (cachedContent) {
                 console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
-                itemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                availableRandomItems = [...itemList];
-                totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
-                displayRandomItems();
+                fullItemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                applyFilter(); // Apply the default 'all' filter
                 loadSavedQuestions(); 
             } else {
                 console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
@@ -1054,13 +1104,11 @@
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const text = await response.text();
-                    itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-                    availableRandomItems = [...itemList];
+                    fullItemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 
                     localStorage.setItem(localStorageKey, text); 
 
-                    totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
-                    displayRandomItems(); 
+                    applyFilter(); // Apply the default 'all' filter
                     loadSavedQuestions(); 
                 } catch (error) {
                     console.error("Could not load questions:", error);
@@ -1694,6 +1742,21 @@
                 event.preventDefault();
                 displayFilteredItems();
             }
+        });
+
+        // NEW: Event Listeners for Difficulty Filter Buttons
+        const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to the clicked button
+                button.classList.add('active');
+
+                // Update the current filter and apply it
+                currentFilter = button.dataset.filter;
+                applyFilter();
+            });
         });
 
         updateClearButtonText();
