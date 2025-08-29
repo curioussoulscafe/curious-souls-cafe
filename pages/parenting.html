@@ -772,9 +772,9 @@
             <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by type:</label>
             <div id="difficulty-filter" class="flex flex-wrap justify-center gap-2">
                 <button data-filter="all" class="filter-btn active" title="Show all questions">All</button>
-                <button data-filter="lighter" class="filter-btn" title="Show lighter questions">🌱 Lighter</button>
-                <button data-filter="normal" class="filter-btn" title="Show questions of normal difficulty">Normal</button>
-                <button data-filter="deeper" class="filter-btn" title="Show deeper questions">🌀 Deeper</button>
+                <button data-filter="lighter" class="filter-btn" title="Show lighter questions">🌱 Light</button>
+                <button data-filter="middle" class="filter-btn" title="Show questions of middle depth">Mid</button>
+                <button data-filter="deeper" class="filter-btn" title="Show deeper questions">🌀 Deep</button>
             </div>
         </div>
 
@@ -948,7 +948,7 @@
 
         let fullItemList = []; // Master list of all questions
         let itemList = []; // The currently filtered list of questions
-        let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'normal', 'deeper'
+        let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'middle', 'deeper'
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
@@ -1060,7 +1060,7 @@
                 case 'deeper':
                     itemList = fullItemList.filter(item => item.startsWith('🌀'));
                     break;
-                case 'normal':
+                case 'middle':
                     itemList = fullItemList.filter(item => !item.startsWith('🌱') && !item.startsWith('🌀'));
                     break;
                 default: // 'all'
