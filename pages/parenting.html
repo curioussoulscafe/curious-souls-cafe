@@ -120,6 +120,43 @@
         #floating-dice .fa-dice {
             font-size: 1.4rem;
         }
+
+        /* Floating Look Up / Translate Button */
+        #floating-lookup {
+            position: fixed;
+            bottom: 146px; /* sits above the dice button */
+            right: 20px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #3b82f6, #10b981); /* blue to green */
+            color: #ffffff;
+            display: none; /* Hidden by default; shown when a question is selected */
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            padding: 0 16px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1150; /* above dice */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+        #floating-lookup i {
+            font-size: 1.1rem;
+        }
+        #floating-lookup:hover, #floating-lookup:focus {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-lookup:active {
+            transform: translateY(0) scale(0.98);
+        }
+
         @media (max-width: 480px) {
             #floating-dice {
                 width: 52px;
@@ -133,6 +170,13 @@
             #back-to-top {
                 bottom: 16px;
                 right: 16px;
+            }
+            #floating-lookup {
+                bottom: 136px; /* stacked above dice on small screens */
+                right: 16px;
+                height: 52px;
+                padding: 0 14px;
+                font-size: 0.9rem;
             }
         }
 
@@ -196,6 +240,18 @@
             z-index: 2000; /* Above all other content */
             opacity: 0;
             visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out
+        }
+
+        /* Fix for commas mistakenly used in the block above (ensure valid CSS) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; /* Above all other content */
+            opacity: 0; visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
         }
 
@@ -713,6 +769,12 @@
         <i class="fas fa-dice"></i>
     </a>
 
+    <!-- New Floating Look Up / Translate Button (above the floating dice) -->
+    <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
+        <i class="fas fa-search"></i>
+        <span>Look Up / Translate</span>
+    </button>
+
     <button id="back-to-top" title="Back to Top">
         &#9650; Top
     </button>
@@ -858,8 +920,11 @@
         const gettingStartedModal = document.getElementById('getting-started-modal');
         const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
 
-        // Look Up Online button
+        // Look Up Online button (original inline button)
         const lookUpOnlineBtn = document.getElementById('look-up-online-btn'); 
+
+        // New Floating Look Up / Translate button
+        const floatingLookupBtn = document.getElementById('floating-lookup');
 
         // Search Engine/Translate Choice Modal elements
         const searchEngineModal = document.getElementById('search-engine-modal');
@@ -995,6 +1060,22 @@
         }
 
         /**
+         * Show or hide the floating lookup button based on whether any question is selected anywhere.
+         */
+        function refreshFloatingLookupVisibility() {
+            const hasSelectedFromRandomOrSearch = document.querySelector('.item.selected-item') !== null;
+            const hasSelectedFromSaved = document.querySelector('.chosen-item.selected-chosen-item') !== null;
+            const shouldShow = !!selectedRandomQuestionText && (hasSelectedFromRandomOrSearch || hasSelectedFromSaved);
+
+            floatingLookupBtn.style.display = shouldShow ? 'flex' : 'none';
+
+            // Keep original inline button hidden to avoid duplicate entry points
+            if (lookUpOnlineBtn) {
+                lookUpOnlineBtn.classList.add('hidden');
+            }
+        }
+
+        /**
          * Adds highlighting logic and click handler for selecting questions.
          * Controls visibility of the LLM features button based on selection.
          * @param {HTMLElement} targetElement The container element holding the items (e.g., resultDisplay, searchResultsDisplay).
@@ -1006,22 +1087,24 @@
                     const questionText = this.textContent;
 
                     // Remove selected-item from previously selected item in resultDisplay or searchResultsDisplay
-                    const previouslySelected = document.querySelector('.item.selected-item');
-                    if (previouslySelected && previouslySelected !== this) {
-                        previouslySelected.classList.remove('selected-item');
-                    }
+                    const previouslySelected = document.querySelectorAll('.item.selected-item');
+                    previouslySelected.forEach(el => {
+                        if (el !== this) el.classList.remove('selected-item');
+                    });
+
+                    // Also clear any selected saved items to keep a single active source
+                    document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
 
                     this.classList.toggle('selected-item');
 
                     if (this.classList.contains('selected-item')) {
                         selectedRandomQuestionText = questionText;
                         addChosenQuestion(questionText); // Also add to saved questions if selected
-                        lookUpOnlineBtn.classList.remove('hidden'); // Show consolidated look up online button
                     } else {
                         selectedRandomQuestionText = null;
-                        removeChosenQuestion(questionText); // Remove from saved questions if deselected
-                        lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
+                        // Keep saved list unchanged; user controls removals there
                     }
+                    refreshFloatingLookupVisibility();
                 });
             });
         }
@@ -1051,8 +1134,24 @@
             chosenQuestionsDisplay.appendChild(chosenItemDiv);
 
             chosenItemDiv.addEventListener('click', function() {
-                this.classList.toggle('selected-chosen-item');
+                // When selecting in Saved, clear selections in random/search for clarity
+                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+
+                // Toggle selection in saved
+                const willSelect = !this.classList.contains('selected-chosen-item');
+
+                // Only allow one active selected in saved at a time
+                document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+
+                if (willSelect) {
+                    this.classList.add('selected-chosen-item');
+                    selectedRandomQuestionText = this.textContent;
+                } else {
+                    this.classList.remove('selected-chosen-item');
+                    selectedRandomQuestionText = null;
+                }
                 updateClearButtonText();
+                refreshFloatingLookupVisibility();
             });
 
             const placeholder = chosenQuestionsDisplay.querySelector('p.text-gray-500');
@@ -1070,6 +1169,10 @@
             let removedFromDOM = false;
             chosenItems.forEach(item => {
                 if (item.textContent === questionText) {
+                    // If this item was the currently-selected source for floating lookup, reset selection
+                    if (item.classList.contains('selected-chosen-item')) {
+                        selectedRandomQuestionText = null;
+                    }
                     chosenQuestionsDisplay.removeChild(item);
                     removedFromDOM = true;
                 }
@@ -1084,12 +1187,14 @@
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
             } 
             updateClearButtonText();
+            refreshFloatingLookupVisibility();
         }
 
         function displayRandomItems() {
             if (itemList.length === 0) {
                 resultDisplay.textContent = "No questions available to pick. Please load questions first.";
-                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
                 return;
             }
             const numItemsToPick = parseInt(itemCountInput.value);
@@ -1097,23 +1202,24 @@
 
             if (typeof result === "string") {
                 resultDisplay.textContent = result;
-                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
             } else {
                 let itemDivs = result.map(item => `<div class="item">${item}</div>`);
                 let resultHTML = itemDivs.join('');
                 resultDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(resultDisplay);
             }
-            selectedRandomQuestionText = null; // Reset selection on new generation
-            const previouslySelected = document.querySelector('.item.selected-item');
-            if (previouslySelected) previouslySelected.classList.remove('selected-item');
-            lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button on new generation until selection
+            // Reset selections across all sections when generating new random set
+            selectedRandomQuestionText = null;
+            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            refreshFloatingLookupVisibility();
         }
 
         function displayFilteredItems() {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
                 return;
             }
             const currentSearchTerm = searchInput.value.trim().toLowerCase();
@@ -1122,8 +1228,9 @@
                 searchResultsDisplay.innerHTML = '';
                 searchButton.textContent = "Search";
                 lastSearchTerm = "";
-                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
-                selectedRandomQuestionText = null; // Clear selection
+                selectedRandomQuestionText = null;
+                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+                refreshFloatingLookupVisibility();
                 return;
             }
 
@@ -1138,8 +1245,8 @@
         function executeSearch(searchTerm) {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
-                selectedRandomQuestionText = null; // Clear selection
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
                 return;
             }
             
@@ -1147,8 +1254,7 @@
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
-                lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button
-                selectedRandomQuestionText = null; // Clear selection
+                selectedRandomQuestionText = null;
             } else {
                 let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
                 let resultHTML = itemDivs.join('');
@@ -1157,10 +1263,11 @@
             }
             lastSearchTerm = searchTerm;
             searchButton.textContent = "Search / Clear Search";
-            selectedRandomQuestionText = null; // Reset selection on new search
-            const previouslySelected = document.querySelector('.item.selected-item');
-            if (previouslySelected) previouslySelected.classList.remove('selected-item');
-            lookUpOnlineBtn.classList.add('hidden'); // Hide consolidated look up online button on new search until selection
+            // Clear all selections when new search runs
+            selectedRandomQuestionText = null;
+            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            refreshFloatingLookupVisibility();
         }
 
         /**
@@ -1184,8 +1291,7 @@
                 const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(googleSearchUrl, '_blank');
             } else {
-                // This scenario should be prevented by the 'lookUpOnlineBtn' click handler
-                // but included for robustness.
+                // This scenario should be prevented by the floating button
                 alert("Please select a question first to look up on Google.");
             }
         }
@@ -1271,8 +1377,8 @@
                 tempTextArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempTextArea);
-                // Provide visual feedback (could be a temporary message in the modal or a toast notification)
-                alert("Question copied to clipboard!"); // Using alert for simplicity, consider custom modal/toast
+                // Provide visual feedback
+                alert("Question copied to clipboard!");
             } else {
                 alert("No question selected to copy.");
             }
@@ -1291,8 +1397,14 @@
                 highlightedItems.forEach(item => {
                     chosenQuestionsDisplay.removeChild(item);
                 });
+                // If selected question was among cleared, reset selection
+                const stillSelectedSaved = document.querySelector('.chosen-item.selected-chosen-item');
+                if (!stillSelectedSaved) {
+                    selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                }
             } else { 
                 chosenQuestionsDisplay.innerHTML = ''; 
+                selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
             }
             saveCurrentChosenQuestions();
             
@@ -1301,6 +1413,7 @@
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
             }
             updateClearButtonText();
+            refreshFloatingLookupVisibility();
             confirmationModal.classList.remove('show');
         });
 
@@ -1345,8 +1458,17 @@
             gettingStartedModal.classList.remove('show');
         });
         
-        // Consolidated Look Up Online Button Listener
+        // Consolidated Look Up Online Button Listener (keep original but route to modal)
         lookUpOnlineBtn.addEventListener('click', function() {
+            if (selectedRandomQuestionText) {
+                searchEngineModal.classList.add('show'); // Show the choice modal
+            } else {
+                alert("Please select a question first to look up online / translate.");
+            }
+        });
+
+        // Floating Look Up / Translate Button Listener
+        floatingLookupBtn.addEventListener('click', function() {
             if (selectedRandomQuestionText) {
                 searchEngineModal.classList.add('show'); // Show the choice modal
             } else {
