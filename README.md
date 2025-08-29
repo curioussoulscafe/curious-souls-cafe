@@ -41,7 +41,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Entrepreneurship](https://curioussoulscafe.github.io/curious-souls-cafe/pages/entrepreneurship.html)**: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.
 - **[Friendship](https://curioussoulscafe.github.io/curious-souls-cafe/pages/friendship.html)**: Deepen connection, celebrate shared moments, and explore the many facets of meaningful friendships.
 - **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
-- **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and inclusive conversations.
+- **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and heart-warming conversations.
 - **[Inner Child](https://curioussoulscafe.github.io/curious-souls-cafe/pages/inner-child.html)**: Reconnect with your playful younger self, nurture creativity, and explore the transformative power of curiosity, wonder, and self-compassion.
 - **[Interdependence](https://curioussoulscafe.github.io/curious-souls-cafe/pages/interdependence.html)**: Explore interdependent connection, and the invisible threads that sustain our relationships and communities.
 - **[Parenting](https://curioussoulscafe.github.io/curious-souls-cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
