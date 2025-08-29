@@ -346,7 +346,7 @@
         /* Floating Dice Button */
         #floating-dice {
             position: fixed;
-            bottom: 80px; /* sits above Add to Home Screen button */
+            bottom: 80px; /* sits above Add to Home button */
             right: 20px;
             width: 56px;
             height: 56px;
@@ -519,17 +519,17 @@
     <!-- Add to Homescreen button -->
     <button id="add-to-homescreen-btn">
         <i class="fa-solid fa-house-medical-circle-check mr-2"></i>
-        Add to Home Screen
+        Add to Home
     </button>
 
     <!-- iOS Instructions Modal -->
     <div id="ios-modal-overlay">
         <div id="ios-modal-content">
             <img src="images/icons/icon-48.png" alt="CSCafe Icon">
-            <h3 class="text-lg font-semibold mb-2 text-purple-600">Add to Home Screen</h3>
+            <h3 class="text-lg font-semibold mb-2 text-purple-600">Add to Home</h3>
             <p class="text-gray-700 mb-2">
                 1. Tap the <span style="font-weight:600;">Share</span> <span style="font-size:1.5em;">&#x1f5d2;&#xfe0f;</span> button in the browser.<br>
-                2. Scroll and tap <span style="font-weight:600;">"Add to Home Screen"</span>.<br>
+                2. Scroll and tap <span style="font-weight:600;">"Add to Home"</span>.<br>
                 3. Tap <span style="font-weight:600;">Add</span> in the top right.
             </p>
             <button class="close-modal">Close</button>
@@ -1059,7 +1059,7 @@
                 btn.classList.remove('show');
             } else {
                 // Fallback: instructions
-                alert('To add this app to your homescreen, use your browser menu and select "Add to Home screen".');
+                alert('To add this app to your homescreen, use your browser menu and select "Add to Home".');
             }
         });
 
@@ -1096,9 +1096,9 @@
         function updateInstallButtonText() {
             const btn = document.getElementById('add-to-homescreen-btn');
             if (isIOS() && isSafari() && !isInStandaloneMode()) {
-                btn.innerHTML = '<i class="fa-solid fa-house-medical-circle-check mr-2"></i>Add to Home Screen';
+                btn.innerHTML = '<i class="fa-solid fa-house-medical-circle-check mr-2"></i>Add to Home';
             } else if (isAndroid() && !isInStandaloneMode()) {
-                btn.innerHTML = '<i class="fa-solid fa-house-medical-circle-check mr-2"></i>Add to Home Screen';
+                btn.innerHTML = '<i class="fa-solid fa-house-medical-circle-check mr-2"></i>Add to Home';
             } else {
                 // Default to desktop wording
                 btn.innerHTML = '<i class="fa-solid fa-download mr-2"></i>Install App';
