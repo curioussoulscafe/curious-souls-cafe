@@ -121,10 +121,10 @@
             font-size: 1.4rem;
         }
 
-        /* Floating Look Up / Translate Button — icon-only, same size as dice, slightly above it */
+        /* Floating Look Up / Translate Button -- icon-only, same size as dice, slightly above it */
         #floating-lookup {
             position: fixed;
-            bottom: 146px; /* previously; will be overridden just above for better spacing */
+            bottom: 148px; /* dice bottom (80) + dice height (56) + 12px gap = 148 */
             right: 20px;
             width: 56px;
             height: 56px;
@@ -140,10 +140,6 @@
             transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
             cursor: pointer;
         }
-        /* precise placement so it's not tightly packed with dice */
-        #floating-lookup {
-            bottom: 148px; /* dice bottom (80) + dice height (56) + 12px gap = 148 */
-        }
         #floating-lookup i {
             font-size: 1.25rem; /* match visual weight with dice icon */
         }
@@ -154,6 +150,38 @@
             filter: brightness(1.05);
         }
         #floating-lookup:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* NEW: Floating Share Button */
+        #floating-share {
+            position: fixed;
+            bottom: 214px; /* lookup bottom (148) + button height (56) + ~10px gap */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #a855f7, #ec4899); /* purple to pink */
+            color: #ffffff;
+            display: none; /* Hidden by default; shown when a question is selected */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1130; /* between lookup (1150) and dice (1100) */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+            cursor: pointer;
+        }
+        #floating-share i {
+            font-size: 1.15rem;
+        }
+        #floating-share:hover, #floating-share:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-share:active {
             transform: translateY(0) scale(0.98);
         }
 
@@ -179,6 +207,16 @@
             }
             #floating-lookup i {
                 font-size: 1.15rem;
+            }
+            /* mobile share placement */
+            #floating-share {
+                width: 52px;
+                height: 52px;
+                right: 16px;
+                bottom: 204px; /* lookup bottom (140) + 52 + 12 gap */
+            }
+            #floating-share i {
+                font-size: 1.05rem;
             }
         }
 
@@ -210,8 +248,8 @@
             background-color: #fc8181; /* Lighter red for "Clear Saved Questions" */
             color: white;
             font-weight: bold;
-            padding: 0.5rem 1rem; /* Matched padding */
-            font-size: 1rem; /* Matched font size */
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
             border-radius: 9999px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             cursor: pointer;
@@ -712,6 +750,7 @@
         </div>
 
         <hr class="border-gray-300 my-4 w-full mx-auto">
+
         <div class="mb-4">
             <label for="item-count" class="block text-gray-700 text-sm font-bold mb-2">No. of questions to pick: <span id="total-questions" class="text-gray-500 text-sm"></span></label>
             <input type="number" id="item-count" value="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -770,9 +809,14 @@
         <i class="fas fa-dice"></i>
     </a>
 
-    <!-- Floating Look Up / Translate Button — icon only -->
+    <!-- Floating Look Up / Translate Button -- icon only -->
     <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
         <i class="fas fa-search"></i>
+    </button>
+
+    <!-- NEW Floating Share Button -->
+    <button id="floating-share" title="Share selected question" aria-label="Share selected question">
+        <i class="fas fa-share-nodes"></i>
     </button>
 
     <button id="back-to-top" title="Back to Top">
@@ -926,6 +970,9 @@
         // New Floating Look Up / Translate button
         const floatingLookupBtn = document.getElementById('floating-lookup');
 
+        // NEW Floating Share Button (native only)
+        const floatingShareBtn = document.getElementById('floating-share');
+
         // Search Engine/Translate Choice Modal elements
         const searchEngineModal = document.getElementById('search-engine-modal');
         const searchGoogleChoiceBtn = document.getElementById('search-google-choice-btn');
@@ -1067,7 +1114,9 @@
             const hasSelectedFromSaved = document.querySelector('.chosen-item.selected-chosen-item') !== null;
             const shouldShow = !!selectedRandomQuestionText && (hasSelectedFromRandomOrSearch || hasSelectedFromSaved);
 
-            floatingLookupBtn.style.display = shouldShow ? 'flex' : 'none';
+            const displayStyle = shouldShow ? 'flex' : 'none';
+            floatingLookupBtn.style.display = displayStyle;
+            floatingShareBtn.style.display = displayStyle;
 
             // Keep original inline button hidden to avoid duplicate entry points
             if (lookUpOnlineBtn) {
@@ -1235,6 +1284,7 @@
             }
 
             if (currentSearchTerm === "") {
+                // Show confirmation that empty search will display all
                 emptySearchModal.classList.add('show');
                 return;
             }
@@ -1278,7 +1328,7 @@
         function removeEmojiPrefix(text) {
             // This regex matches one or more non-word characters (including emojis)
             // at the beginning of the string, followed by optional whitespace.
-            return text.replace(/^[\W_]+\s*/, '').trim();
+            return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim();
         }
 
         // --- Search Engine Functions ---
@@ -1384,6 +1434,48 @@
             }
         }
 
+        /**
+         * Build payload for native share. Avoid URL duplication by putting
+         * question in text and page URL in url.
+         */
+        function buildSharePayload() {
+            if (!selectedRandomQuestionText) return null;
+            const pageUrl = window.location.href;
+            const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+            return {
+                title: `Curious Souls Café - ${displayTopicName}`,
+                text: cleanedQuestion, // question only
+                url: pageUrl           // URL separate; many share sheets append it
+            };
+        }
+
+        /**
+         * Attempt to share via Web Share API only; no platform-specific fallback.
+         */
+        async function handleShareSelectedQuestion() {
+            const payload = buildSharePayload();
+            if (!payload) {
+                alert("Please select a question first to share.");
+                return;
+            }
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: payload.title,
+                        text: payload.text,
+                        url: payload.url
+                    });
+                    return;
+                } catch (err) {
+                    // If user cancels or share fails, we intentionally do nothing else
+                    console.warn("Web Share API failed or was canceled:", err);
+                }
+            } else {
+                // No fallback — intentionally do nothing (or optionally:
+                // alert("Sharing is not supported in this browser. Use the QR/link option instead.");
+            }
+        }
 
         // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
@@ -1475,6 +1567,9 @@
                 alert("Please select a question first to look up online / translate.");
             }
         });
+
+        // NEW: Floating Share Button Listener (native share only)
+        floatingShareBtn.addEventListener('click', handleShareSelectedQuestion);
 
         // Search Engine/Translate Choice Modal Listeners
         searchGoogleChoiceBtn.addEventListener('click', function() {
