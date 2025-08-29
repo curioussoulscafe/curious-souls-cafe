@@ -619,8 +619,8 @@
           `You rolled: <span class="pill" style="background-color:${finalOutcome.value}; color:${textColor};">`+
           `<span style="display:inline-block; width:.75rem; height:.75rem; border-radius:9999px; background:${textColor==='black'?'rgba(0,0,0,.35)':'rgba(255,255,255,.7)'}"></span>`+
           `${finalOutcome.label}</span>` +
-          (hasStripe ? ` <br><br><span class="text-red-600 font-bold">(With a Stripe!)</span>`
-                    : (isStripeModeEnabled ? ` <br><br><span class="text-green-600 font-bold">(No Stripe. Safe!)</span>` : ''));
+          (hasStripe ? ` <p><span class="text-red-600 font-bold">(With a Stripe!)</span></p>`
+                    : (isStripeModeEnabled ? ` <p><span class="text-green-600 font-bold">(No Stripe. Safe!)</p>` : ''));
 
         if(hasStripe){
           const btn=document.createElement('button');
