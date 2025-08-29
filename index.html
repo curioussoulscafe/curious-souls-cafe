@@ -250,16 +250,16 @@
         /* AddToHomescreen Button and Modal styles */
         #add-to-homescreen-btn {
             position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
+            bottom: 1.1rem; /* unchanged position relative to dice */
+            right: 1.1rem;
             z-index: 3000;
             background: #fff;
             color: #9333ea;
-            font-size: 1.1rem;
+            font-size: 0.95rem; /* slightly smaller text */
             font-weight: 600;
             border: 2px solid #a855f7;
-            border-radius: 2rem;
-            padding: 0.85rem 1.5rem;
+            border-radius: 1.5rem; /* a bit less round to reduce footprint */
+            padding: 0.6rem 1rem; /* tighter padding */
             box-shadow: 0 6px 24px rgba(80, 30, 120, 0.08);
             cursor: pointer;
             display: none;
@@ -316,11 +316,13 @@
         #ios-modal-content .close-modal:hover {
             background: #c7d2fe;
         }
+
         /* Use media queries to shrink the 'add to homescreen button' so it covers less space on small screens. */
         @media (max-width: 600px) {
             #add-to-homescreen-btn {
-                padding: 0.65rem 1rem;
-                font-size: 1rem;
+                padding: 0.5rem 0.85rem; /* smaller on narrow screens */
+                font-size: 0.9rem;
+                border-radius: 1.25rem;
             }
         }
 
