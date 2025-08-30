@@ -793,20 +793,19 @@
       updateCustomDiceColors();
       diceResultText.textContent = "Settings restored to defaults!";
 
-      // Reset info prompt, enable Punishments, disable Configure
+      // Reset info prompt, disable Punishments by default, disable Configure
       localStorage.removeItem(configureInfoLocalStorageKey);
-      stripeModeToggle.checked = true;
+      stripeModeToggle.checked = false;           // OFF by default
       saveStripeModeState();
       configureToggle.checked = false;
       updateConfigVisibility();
     }
 
-    // Load saved state only if it exists; otherwise keep the default true
+    // Load saved state; if none, default to OFF (unchecked)
     function loadStripeModeState(){
         const saved = localStorage.getItem(stripeModeLocalStorageKey);
         if (saved === null) {
-            // No prior preference; keep default ON and persist it
-            stripeModeToggle.checked = true;
+            stripeModeToggle.checked = false;    // default OFF
             saveStripeModeState();
         } else {
             stripeModeToggle.checked = saved === 'true';
