@@ -8,6 +8,8 @@
   <link rel="icon" type="image/x-icon" href="../images/favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -176,9 +178,44 @@
     .qr-code-link { font-size:.875rem; color:#6b46c1; text-decoration:none; transition: color .2s, text-decoration .2s; display:flex; align-items:center; gap:.25rem; margin-top:.5rem; justify-content:center; }
     .qr-code-link:hover { color:#805ad5; text-decoration:underline; }
 
-    .description-link { display:block; text-align:center; margin-top:-.5rem; margin-bottom:1rem; color:#6b46c1; font-weight:500; font-size:.9rem; text-decoration:none; transition: color .2s, text-decoration .2s; }
-    .description-link:hover { color:#805ad5; text-decoration:underline; }
-    .description-link i { margin-right:.35rem; }
+    /* New style for the description link */
+    .description-link-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: #6b46c1;
+    }
+    .description-link {
+        display: inline-flex;
+        align-items: center;
+        text-align: center;
+        color: #6b46c1;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease-in-out;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0;
+    }
+    .description-link:hover {
+        color: #805ad5;
+        text-decoration: underline;
+    }
+    .description-link i {
+        margin-right: 0.35rem;
+    }
+    .separator {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 0.35rem;
+        color: #6b46c1;
+        font-size: 1em;
+        height: 1em;
+    }
 
     .pill { display:inline-flex; align-items:center; gap:.5rem; padding:.25rem .5rem; border-radius:9999px; border:1px solid rgba(0,0,0,.1); font-weight:600; }
 
@@ -248,22 +285,43 @@
     </div>
     <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
 
+    <hr class="border-purple-300 mb-4 w-1/2 mx-auto">        
+    <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-4">Dice Roller</h2> 
+
     <p class="text-gray-700 text-center mb-4 leading-relaxed">
-      Use this dice to spark fun discussions and <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/action-prompts.html" class="text-purple-600 hover:underline font-bold">actions</a>, or meaningful punishment 😊
+      Roll the dice 🎲 to spark fun discussions and <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/action-prompts.html" class="text-purple-600 hover:underline font-bold">actions</a> or meaningful punishment 😊
     </p>
+
+    <!-- Hyperlink to the full description and getting started page -->
+    <div class="description-link-container">
+        <!-- Getting Started button now with info icon -->
+        <!-- <button id="getting-started-link" class="description-link">
+             Quick start
+        </button> -->
+        <i class="fas fa-info-circle"></i>
+        <!-- About the dice without icon -->
+        &nbsp;&nbsp;
+        <a href="https://curioussoulscafe.substack.com/i/172336901/how-to-use-the-virtual-dice-roller" target="_blank" class="description-link">
+            How-to
+        </a>
+        <span class="separator">|</span>
+        <a href="https://curioussoulscafe.substack.com/p/roll-the-colored-dice" target="_blank" class="description-link">
+            About the dice
+        </a>
+    </div>
 
     <hr class="border-gray-300 my-4 w-full mx-auto">
 
     <div class="flex items-center justify-center mb-2 gap-x-6">
       <div class="flex items-center">
-        <label for="stripe-mode-toggle" class="mr-3 text-gray-700 font-semibold">Punish:</label>
+        <label for="stripe-mode-toggle" class="mr-3 text-gray-700 font-semibold">Punish</label>
         <label class="toggle-switch">
           <input type="checkbox" id="stripe-mode-toggle">
           <span class="slider"></span>
         </label>
       </div>
       <div class="flex items-center">
-        <label for="configure-toggle" class="mr-3 text-gray-700 font-semibold">Customize:</label>
+        <label for="configure-toggle" class="mr-3 text-gray-700 font-semibold">Adjust</label>
         <label class="toggle-switch">
           <input type="checkbox" id="configure-toggle">
           <span class="slider"></span>
@@ -299,7 +357,7 @@
 
         <div id="colors-input-container">
           </div>
-        <p id="sides-count-message" class="text-gray-700 text-sm mb-2 text-center" style="margin-top: 1.1rem;"></p>
+        <p id="sides-count-message" class="text-gray-700 text-sm mb-2 text-center" style="margin-top: 1.3rem;"></p>
       </div>
     </div>
 
@@ -311,7 +369,7 @@
       <ul id="configured-colors-ul" class="list-none p-0 flex flex-wrap justify-center gap-2 mb-4"></ul>
     </div>
 
-    <p id="saved-colors-message" class="text-gray-700 text-sm mb-2 text-center mt-4">
+    <p id="saved-colors-message" class="text-gray-700 text-sm mb-2 text-center mt-4" style="margin-top: 1.3rem;">
       Your colors are saved for next time.
     </p>
 
@@ -331,9 +389,9 @@
 
   <div id="configure-info-modal" class="modal-overlay">
     <div class="modal-content">
-      <p class="text-lg font-semibold text-gray-800 mb-4">This is advanced❗</p>
+      <p class="text-lg font-semibold text-gray-800 mb-4">This area is advanced❗</p>
       <p class="text-left text-gray-700 mb-4">
-        The virtual question cards are pre-defined in three fixed colors:
+        <strong>Friendly Reminder:</strong> The virtual question cards are pre-defined in three fixed colors:
       </p>
       <ol class="list-disc list-inside text-left mb-4 text-gray-700 pl-4">
           <li><strong>Blue</strong></li>
@@ -341,13 +399,25 @@
           <li><strong>Red</strong></li>
       </ol>
       <p class="text-left text-gray-700">
-        Any configuration changes will only affect the dice. These changes will not add or remove colors or alter the number of question card colors available.<br><br>⚠️ This will be shown once only.</p>
+        Any changes here will only affect the dice. These changes will not alter the number of question card colors available.<br><br>⚠️ This will be shown once only.</p>
       <div class="modal-buttons mt-6">
           <button id="confirm-info-ok" class="modal-button info-ok w-full">Got it!</button>
       </div>
     </div>
   </div>
 
+    <!-- Getting Started Modal -->
+    <div id="getting-started-modal" class="modal-overlay">
+        <div class="modal-content max-w-sm">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
+            <ol class="getting-started-list">
+                <li><b>Invite Others:</b> Share the <button id="inline-share-trigger" type="button"><i>QR code or link</i></button> to get everyone onboard.</li>
+                <li><b>Pick a Question:</b> Each person selects a question that resonates with them. Tap to save it.</li>
+                <li><b>Start the Conversation:</b> Invite a person to share their question and answer, then everyone goes around (e.g., clockwise) answering the same question. Once done, the next person shares their chosen question, and so on.<br><br><strong>Optional:</strong> Roll the <span style="font-style: italic"><a href="dice.html">dice</a></span> and match its color to the question’s color to decide who starts.
+            </ol>
+            <button id="close-getting-started-modal" class="modal-button cancel mt-4">Got it!</button>
+        </div>
+    </div>
 
   <script>
     const virtualDice = document.getElementById('virtual-dice').querySelector('.dice-cube');
@@ -375,10 +445,15 @@
     const stripeModeLocalStorageKey = 'stripeModeEnabled';
     const configureInfoLocalStorageKey = 'configureInfoPromptSeen';
 
+    // Getting Started Modal elements
+    // const gettingStartedIcon = document.getElementById('getting-started-link');
+    // const gettingStartedModal = document.getElementById('getting-started-modal');
+    // const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
+
     const defaultDiceColors = [
-      { value: "#57fcff", label: "Sky Blue" },
-      { value: "#ffffad", label: "Sunshine Yellow" },
-      { value: "#ffc6c6", label: "Soft Red" }
+      { value: "#57fcff", label: "Blue" },
+      { value: "#ffffad", label: "Yellow" },
+      { value: "#ffc6c6", label: "Red" }
     ];
 
     let customDiceColors = [];
@@ -822,6 +897,16 @@
     confirmRestoreNo.addEventListener('click', () => restoreConfirmModal.classList.remove('show'));
 
     floatingBackButton.addEventListener('click', goBackFallback);
+
+    // Getting Started Modal Event Listeners
+    // gettingStartedIcon.addEventListener('click', () => {
+    //     gettingStartedModal.classList.add('show');
+    // });
+
+    // closeGettingStartedModalBtn.addEventListener('click', () => {
+    //     gettingStartedModal.classList.remove('show');
+    // });
+    
   </script>
 </body>
 </html>
