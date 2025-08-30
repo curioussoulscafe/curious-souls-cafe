@@ -818,9 +818,9 @@
             </button>
         </div>
 
-        <button id="back-to-topics" title="Leave Page">
+        <!-- <button id="back-to-topics" title="Leave Page">
             <i class="fas fa-arrow-left"></i> Leave Page
-        </button>
+        </button> -->
 
         <br>
         <a href="#" id="show-qr-code-link" class="qr-code-link">
@@ -964,7 +964,7 @@
         const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
         const clearChosenButton = document.getElementById('clear-chosen-button');
         const backToTopButton = document.getElementById('back-to-top');
-        const backToTopicsButton = document.getElementById('back-to-topics'); 
+        // const backToTopicsButton = document.getElementById('back-to-topics'); 
         const appTitleElement = document.getElementById('app-title');
         const topicTitleElement = document.getElementById('topic-title');
 
@@ -1562,9 +1562,9 @@
             confirmationModal.classList.remove('show');
         });
 
-        backToTopicsButton.addEventListener('click', () => {
-            window.location.href = '../index.html'; // Path back to index.html
-        });
+        // backToTopicsButton.addEventListener('click', () => {
+        //     window.location.href = '../index.html'; // Path back to index.html
+        // });
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 1) {
