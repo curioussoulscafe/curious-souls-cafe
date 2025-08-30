@@ -414,6 +414,7 @@
                 <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/action-prompts.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io/curious-souls-cafe/pages/action-prompts.html</a>
                 <br>
                 <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link</button>
+                &nbsp;<span class="text-gray-400 text-sm select-none">|</span>&nbsp;&nbsp;<button id="share-link-button" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-share-from-square"></i> Share...</button>
             </p>
             <p class="text-gray-500 text-sm mt-4" >Let's help fellow curious souls launch this page and start the conversation! 😊</p>
 
@@ -835,6 +836,25 @@
             document.execCommand('copy');
             document.body.removeChild(tempInput);
             alert("Link copied to clipboard!");
+        });
+
+        // Share Link Button Logic (Web Share API only; no fallback)
+        const shareLinkButton = document.getElementById('share-link-button');
+        shareLinkButton.addEventListener('click', async (event) => {
+            event.preventDefault();
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: document.title,
+                        text: `Join me for a conversation on "${displayTopicName}" at Curious Souls Café!`,
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    // Swallow errors silently as requested (no fallback)
+                    console.warn('Share canceled or failed:', err);
+                }
+            }
+            // If navigator.share is not available, do nothing (no fallback)
         });
         
         randomizeButton.addEventListener('click', function(event) {

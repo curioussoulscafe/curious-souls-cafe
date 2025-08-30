@@ -939,7 +939,7 @@
     <div id="qr-code-modal" class="modal-overlay">
         <div id="qr-modal-content" class="modal-content">
             <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Share this Topic</h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Join This Topic</h3>
             <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
             <img id="qr-modal-image" src="images/qr/qr-code-topic-interdependence.png" alt="QR Code for this page"
                  onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Loading';">
@@ -949,6 +949,7 @@
                 <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/interdependence.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io/curious-souls-cafe/pages/interdependence.html</a>
                 <br>
                 <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link</button>
+                &nbsp;<span class="text-gray-400 text-sm select-none">|</span>&nbsp;&nbsp;<button id="share-link-button" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-share-from-square"></i> Share...</button>
             </p>
             <p class="text-gray-500 text-sm mt-4" >Let's help fellow curious souls launch this page and start the conversation! 😊</p>
 
@@ -1741,6 +1742,25 @@
             document.execCommand('copy');
             document.body.removeChild(tempInput);
             alert("Link copied to clipboard!");
+        });
+
+        // Share Link Button Logic (Web Share API only; no fallback)
+        const shareLinkButton = document.getElementById('share-link-button');
+        shareLinkButton.addEventListener('click', async (event) => {
+            event.preventDefault();
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: document.title,
+                        text: `Join me for a conversation on "${displayTopicName}" at Curious Souls Café!`,
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    // Swallow errors silently as requested (no fallback)
+                    console.warn('Share canceled or failed:', err);
+                }
+            }
+            // If navigator.share is not available, do nothing (no fallback)
         });
         
         randomizeButton.addEventListener('click', function(event) {
