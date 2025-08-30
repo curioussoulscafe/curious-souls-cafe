@@ -81,7 +81,7 @@ Note: Questions with a spiral emoiji 🌀 are deeper, thought-provoking ones, wh
 
 ## 🎲 A Fun Little Secret!
 
-Did you know there's a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren't just random! They're designed to subtly match the fun [dice](https://curioussoulscafe.substack.com/p/roll-the-colored-dice) colors used by our event facilitators to make those in-person discussions even more engaging. It's a small nod to bring a bit of that real-world fun into your digital experience!
+Did you know there's a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren't just random! They're designed to subtly match the fun [dice](./pages/roll-the-colored-dice.html) colors used by our event facilitators to make those in-person discussions even more engaging. It's a small nod to bring a bit of that real-world fun into your digital experience!
 
 ## 💡 Tips for Using the App
 
@@ -95,13 +95,13 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
 4. **Direct Topic Page Links**: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Icebreaker" topic, you would use: `<URL>/pages/icebreaker.html` like [this](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html).
 
-5. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](https://curioussoulscafe.substack.com/p/roll-the-colored-dice) colors used by our facilitators) which requires them to randomly choose a question and answer it:
+5. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](./pages/roll-the-colored-dice.html) colors used by our facilitators) which requires them to randomly choose a question and answer it:
 
    * Set the **"No. of questions to pick"** field to `1` (instead of the default value, e.g., `3`).
 
    * Then, have the participant tap **"Next Questions!"** so that only one random question is displayed.
 
-6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](https://curioussoulscafe.substack.com/p/roll-the-colored-dice) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
+6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](./pages/roll-the-colored-dice.html) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
 
 7. **Advanced Search & Clear:**
 
