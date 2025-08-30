@@ -360,15 +360,15 @@
             </button>
         </div>
 
-        <button id="back-to-topics" title="Leave Page">
+        <!-- <button id="back-to-topics" title="Leave Page">
             <i class="fas fa-arrow-left"></i> Leave Page
-        </button>
+        </button> -->
 
         <!-- Link to show QR Code -->
-        <br>
-        <a href="#" id="show-qr-code-link" class="qr-code-link">
+        <!-- <br> -->
+        <!-- <a href="#" id="show-qr-code-link" class="qr-code-link">
             <i class="fas fa-qrcode"></i> Get page link/QR code
-        </a>
+        </a> -->
     </div>
 
     <button id="back-to-top" title="Back to Top">
@@ -475,7 +475,7 @@
         const chosenActionsDisplay = document.getElementById('chosen-actions-display');
         const clearChosenButton = document.getElementById('clear-chosen-button');
         const backToTopButton = document.getElementById('back-to-top');
-        const backToTopicsButton = document.getElementById('back-to-topics'); 
+        // const backToTopicsButton = document.getElementById('back-to-topics'); 
         const appTitleElement = document.getElementById('app-title');
         const topicTitleElement = document.getElementById('topic-title');
 
@@ -490,7 +490,7 @@
         const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
 
         // New QR Code Modal elements
-        const showQrCodeLink = document.getElementById('show-qr-code-link');
+        // const showQrCodeLink = document.getElementById('show-qr-code-link');
         const qrCodeModal = document.getElementById('qr-code-modal');
         const qrModalImage = document.getElementById('qr-modal-image');
         const qrModalCloseButton = document.getElementById('qr-modal-close-button');
@@ -771,9 +771,9 @@
             confirmationModal.classList.remove('show');
         });
 
-        backToTopicsButton.addEventListener('click', () => {
-            window.location.href = '../index.html'; // Path back to index.html
-        });
+        // backToTopicsButton.addEventListener('click', () => {
+        //     window.location.href = '../index.html'; // Path back to index.html
+        // });
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 1) {
@@ -800,24 +800,24 @@
         });
 
         // --- QR Code Modal Logic ---
-        showQrCodeLink.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default link behavior
-            const pageUrl = window.location.href;
-            const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-            qrModalImage.src = qrCodeApiUrl; // Set the QR code image source
-            qrCodeModal.classList.add('show'); // Show the modal
-        });
+        // showQrCodeLink.addEventListener('click', function(event) {
+        //     event.preventDefault(); // Prevent default link behavior
+        //     const pageUrl = window.location.href;
+        //     const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+        //     qrModalImage.src = qrCodeApiUrl; // Set the QR code image source
+        //     qrCodeModal.classList.add('show'); // Show the modal
+        // });
 
-        qrModalCloseButton.addEventListener('click', function() {
-            qrCodeModal.classList.remove('show'); // Hide the modal
-        });
+        // qrModalCloseButton.addEventListener('click', function() {
+        //     qrCodeModal.classList.remove('show'); // Hide the modal
+        // });
 
-        // Close modal if clicked outside content
-        qrCodeModal.addEventListener('click', function(event) {
-            if (event.target === qrCodeModal) { // Check if the click was on the overlay itself
-                qrCodeModal.classList.remove('show');
-            }
-        });
+        // // Close modal if clicked outside content
+        // qrCodeModal.addEventListener('click', function(event) {
+        //     if (event.target === qrCodeModal) { // Check if the click was on the overlay itself
+        //         qrCodeModal.classList.remove('show');
+        //     }
+        // });
 
 
         // Initial calls on page load

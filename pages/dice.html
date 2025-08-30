@@ -20,7 +20,7 @@
 
     .roll-button {
       background-image: linear-gradient(to right, #a855f7, #ec4899);
-      color: white; padding: 1rem 1.5rem; border-radius: .5rem; font-size: 1.125rem; font-weight: 600;
+      color: white; padding: 1rem 1.5rem; border-radius: .5rem; font-size: 1.125rem; font-weight: 600; margin-bottom: 1.75rem;
       transition: all .2s ease-in-out; box-shadow: 0 4px 6px rgba(0,0,0,.1); cursor: pointer; width: 100%; text-align: center; display: block;
     }
     .roll-button:hover { background-image: linear-gradient(to right, #9333ea, #db2777); transform: translateY(-2px); box-shadow: 0 6px 8px rgba(0,0,0,.15); }
@@ -132,7 +132,7 @@
 
     #add-color-button {
       background-color:#6b7280; color:white; padding:.75rem 1rem; border-radius:9999px; font-weight:bold; transition:all .3s ease-in-out;
-      box-shadow:0 4px 6px rgba(0,0,0,.1); cursor:pointer; width:100%; margin-top:1rem; font-size:1rem;
+      box-shadow:0 4px 6px rgba(0,0,0,.1); cursor:pointer; width:100%; margin-bottom: 1rem; font-size:1rem;
     }
     #add-color-button:hover { background-color:#4b5563; transform:translateY(-2px); box-shadow:0 6px 8px rgba(0,0,0,.15); }
     #add-color-button:active { transform:translateY(0); box-shadow:0 2px 4px rgba(0,0,0,.1); }
@@ -154,6 +154,9 @@
     .modal-button.confirm:hover { background-color:#9b2c2c; }
     .modal-button.cancel { background-color:#e2e8f0; color:#4a5568; }
     .modal-button.cancel:hover { background-color:#cbd5e0; }
+    .modal-button.info-ok { background-color:#a855f7; color:white; }
+    .modal-button.info-ok:hover { background-color:#9333ea; }
+
 
     .punishment-button {
       background-color:#ef4444; color:white; padding:.75rem 1.5rem; border-radius:.5rem; font-size:1rem; font-weight:600; margin-top:1rem; width:100%; display:block; text-align:center;
@@ -251,17 +254,25 @@
 
     <hr class="border-gray-300 my-4 w-full mx-auto">
 
-    <div class="flex items-center justify-center mb-2">
-      <label for="stripe-mode-toggle" class="mr-3 text-gray-700 font-semibold">Punishment Mode:</label>
-      <label class="toggle-switch">
-        <input type="checkbox" id="stripe-mode-toggle">
-        <span class="slider"></span>
-      </label>
+    <div class="flex items-center justify-center mb-2 gap-x-6">
+      <div class="flex items-center">
+        <label for="stripe-mode-toggle" class="mr-3 text-gray-700 font-semibold">Punish:</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="stripe-mode-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-center">
+        <label for="configure-toggle" class="mr-3 text-gray-700 font-semibold">Customize:</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="configure-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
 
-    <!-- Roll primary action moved above configuration -->
     <div id="roll-first-section" class="my-4 text-center">
-      <p id="dice-result-text" class="text-lg font-medium text-gray-800 mt-2">Configure your dice and roll!</p>
+      <p id="dice-result-text" class="text-lg font-medium text-gray-800 mt-2">Press to get the dice rolling!</p>
       <button id="roll-custom-dice-button" class="roll-button mt-4">Roll the Dice</button>
     </div>
 
@@ -276,7 +287,6 @@
       </div>
     </div>
 
-    <!-- Configuration moved below -->
     <div id="custom-dice-config-section" class="my-6 text-center">
       <div class="mb-4">
         <div class="flex items-center justify-between mb-2">
@@ -288,38 +298,56 @@
         </div>
 
         <div id="colors-input-container">
-          <!-- Rows inserted by JS -->
-        </div>
-        <p id="sides-count-message" class="text-gray-700 text-sm mb-2 text-center"></p>
+          </div>
+        <p id="sides-count-message" class="text-gray-700 text-sm mb-2 text-center" style="margin-top: 1.1rem;"></p>
       </div>
     </div>
 
-    <!-- Button moved here, just above the "Configured Dice Colors:" section -->
     <button id="add-color-button">Add Color / Side</button>
-    <br><br>
+    <br>
 
     <div id="dice-colors-list" class="mt-2 pt-4 border-t border-gray-300">
-      <h3 class="text-lg font-semibold text-gray-700 mb-2 text-center">Configured Dice Colors:</h3>
+      <h3 class="text-lg font-semibold text-gray-700 mb-2 text-center">Current Dice Colors:</h3>
       <ul id="configured-colors-ul" class="list-none p-0 flex flex-wrap justify-center gap-2 mb-4"></ul>
     </div>
 
-    <p class="text-gray-700 text-sm mb-2 text-center mt-4">
+    <p id="saved-colors-message" class="text-gray-700 text-sm mb-2 text-center mt-4">
       Your colors are saved for next time.
     </p>
 
-    <button id="restore-defaults-button" class="restore-button">Restore Defaults</button>
-    <button onclick="location.href='../index.html'" class="leave-page-button"><i class="fas fa-arrow-left"></i> Leave Page</button>
+    <button id="restore-defaults-button" class="restore-button" style="margin-top: 1.5rem">Restore Defaults</button>
+    <!--<button onclick="location.href='../index.html'" class="leave-page-button"><i class="fas fa-arrow-left"></i> Leave Page</button>-->
   </div>
 
   <div id="restore-confirm-modal" class="modal-overlay">
     <div class="modal-content">
-      <p class="text-lg font-semibold text-gray-800 mb-4">Restore all custom color settings to defaults?</p>
+      <p class="text-lg font-semibold text-gray-800 mb-4">Restore all dice and custom color settings to defaults?</p>
       <div class="modal-buttons">
         <button id="confirm-restore-yes" class="modal-button confirm">Yes</button>
         <button id="confirm-restore-no" class="modal-button cancel">No</button>
       </div>
     </div>
   </div>
+
+  <div id="configure-info-modal" class="modal-overlay">
+    <div class="modal-content">
+      <p class="text-lg font-semibold text-gray-800 mb-4">This is advanced❗</p>
+      <p class="text-left text-gray-700 mb-4">
+        The virtual question cards are pre-defined in three fixed colors:
+      </p>
+      <ol class="list-disc list-inside text-left mb-4 text-gray-700 pl-4">
+          <li><strong>Blue</strong></li>
+          <li><strong>Yellow</strong></li>
+          <li><strong>Red</strong></li>
+      </ol>
+      <p class="text-left text-gray-700">
+        Any configuration changes will only affect the dice. These changes will not add or remove colors or alter the number of question card colors available.<br><br>⚠️ This will be shown once only.</p>
+      <div class="modal-buttons mt-6">
+          <button id="confirm-info-ok" class="modal-button info-ok w-full">Got it!</button>
+      </div>
+    </div>
+  </div>
+
 
   <script>
     const virtualDice = document.getElementById('virtual-dice').querySelector('.dice-cube');
@@ -335,9 +363,17 @@
     const stripeModeToggle = document.getElementById('stripe-mode-toggle');
     const advancedToggle = document.getElementById('advanced-toggle');
     const floatingBackButton = document.getElementById('floating-back-button');
+    const configureToggle = document.getElementById('configure-toggle');
+
+    const configElementsToToggle = [
+      document.getElementById('custom-dice-config-section'),
+      document.getElementById('add-color-button'),
+      document.getElementById('saved-colors-message'),
+    ];
 
     const localStorageKey = 'customDiceColors';
     const stripeModeLocalStorageKey = 'stripeModeEnabled';
+    const configureInfoLocalStorageKey = 'configureInfoPromptSeen';
 
     const defaultDiceColors = [
       { value: "#57fcff", label: "Sky Blue" },
@@ -496,7 +532,7 @@
 
       hexInput.addEventListener('input', () => {
         const val = hexInput.value.trim();
-        if(/^#([A-Fa-f0-9]{6})$/.test(val)){
+        if(/^#([A-Fa-f09]{6})$/.test(val)){
           const up = val.toUpperCase();
           picker.value = up;
           if(!nameInput.dataset.userTyped || nameInput.value.trim()===''){
@@ -680,7 +716,14 @@
       colorsInputContainer.innerHTML='';
       defaultDiceColors.forEach(c => makeRow(c.value, c.label));
       updateCustomDiceColors();
-      diceResultText.textContent = "Colors restored to defaults. Roll the dice!";
+      diceResultText.textContent = "Settings restored to defaults!";
+
+      // Reset info prompt, enable Punishments, disable Configure
+      localStorage.removeItem(configureInfoLocalStorageKey);
+      stripeModeToggle.checked = true;
+      saveStripeModeState();
+      configureToggle.checked = false;
+      updateConfigVisibility();
     }
 
     // Load saved state only if it exists; otherwise keep the default true
@@ -726,6 +769,16 @@
       }
     }
 
+    function updateConfigVisibility() {
+      // Show the configuration elements when the toggle is checked (on).
+      const showConfig = configureToggle.checked;
+      configElementsToToggle.forEach(el => {
+        if (el) {
+          el.style.display = showConfig ? '' : 'none';
+        }
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', runBackButtonAttention);
 
     advancedToggle.addEventListener('change', () => {
@@ -735,6 +788,7 @@
 
     loadColorsFromLocalStorage();
     loadStripeModeState();
+    updateConfigVisibility(); // Set initial visibility based on the toggle's default state
 
     rollCustomDiceButton.addEventListener('click', rollCustomDice);
     addColorButton.addEventListener('click', () => makeRow());
@@ -743,6 +797,25 @@
     const restoreConfirmModal = document.getElementById('restore-confirm-modal');
     const confirmRestoreYes = document.getElementById('confirm-restore-yes');
     const confirmRestoreNo = document.getElementById('confirm-restore-no');
+    
+    const configureInfoModal = document.getElementById('configure-info-modal');
+    const confirmInfoOk = document.getElementById('confirm-info-ok');
+
+    configureToggle.addEventListener('change', () => {
+      const hasSeenPrompt = localStorage.getItem(configureInfoLocalStorageKey) === 'true';
+      const isEnabling = configureToggle.checked;
+
+      if (isEnabling && !hasSeenPrompt) {
+        configureInfoModal.classList.add('show');
+      }
+      
+      updateConfigVisibility();
+    });
+
+    confirmInfoOk.addEventListener('click', () => {
+        configureInfoModal.classList.remove('show');
+        localStorage.setItem(configureInfoLocalStorageKey, 'true');
+    });
 
     restoreDefaultsButton.addEventListener('click', () => restoreConfirmModal.classList.add('show'));
     confirmRestoreYes.addEventListener('click', () => { restoreDefaultColors(); restoreConfirmModal.classList.remove('show'); });
