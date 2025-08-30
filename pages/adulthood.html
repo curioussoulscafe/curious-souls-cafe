@@ -740,6 +740,25 @@
             color: #551A8B;
             outline: none;
         }
+
+        /* Tip pill at the bottom */
+        .bottom-tip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #4b5563; /* gray-600 */
+            background: #f3f4f6; /* gray-100 */
+            border: 1px dashed #d1d5db; /* gray-300 */
+            border-radius: 9999px;
+            padding: 0.5rem 0.875rem;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            user-select: none;
+        }
+        .bottom-tip i {
+            color: #f59e0b; /* amber-500 */
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -755,7 +774,7 @@
         <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-4">Topic: Adulthood</h2> 
 
         <p class="text-gray-700 text-center mb-4 leading-relaxed">
-            A holistic journey of adulting—personal growth, authenticity, and connection to the world.
+            A holistic journey of adulting--personal growth, authenticity, and connection to the world.
         </p>
 
         <!-- Hyperlink to the full description and getting started page -->
@@ -829,11 +848,18 @@
             <i class="fas fa-arrow-left"></i> Leave Page
         </button> -->
 
+        <!-- Bottom tip -->
+        <div class="bottom-tip" aria-live="polite">
+            <span>💡</span>
+            <span>Tap the top logo for home</span>
+        </div>
+        
         <!-- Link to show QR Code -->
         <br>
         <a href="#" id="show-qr-code-link" class="qr-code-link">
             <i class="fas fa-qrcode"></i> Share page/QR code
         </a>
+
     </div>
 
     <!-- Floating Dice Button (links to dice.html in the same folder) -->
@@ -1180,10 +1206,13 @@
             const shouldShow = !!selectedRandomQuestionText && (hasSelectedFromRandomOrSearch || hasSelectedFromSaved);
 
             const displayStyle = shouldShow ? 'flex' : 'none';
+            const floatingLookupBtn = document.getElementById('floating-lookup');
+            const floatingShareBtn = document.getElementById('floating-share');
             floatingLookupBtn.style.display = displayStyle;
             floatingShareBtn.style.display = displayStyle;
 
             // Keep original inline button hidden to avoid duplicate entry points
+            const lookUpOnlineBtn = document.getElementById('look-up-online-btn');
             if (lookUpOnlineBtn) {
                 lookUpOnlineBtn.classList.add('hidden');
             }
@@ -1537,7 +1566,7 @@
                     console.warn("Web Share API failed or was canceled:", err);
                 }
             } else {
-                // No fallback — intentionally do nothing (or optionally:
+                // No fallback -- intentionally do nothing (or optionally:
                 // alert("Sharing is not supported in this browser. Use the QR/link option instead.");
             }
         }
@@ -1791,6 +1820,7 @@
 
                 if (isCurrentlyActive) {
                     // If it was active, we are toggling it off. No button should be active.
+                    document.body; // no-op to keep structure similar
                     currentFilter = 'all'; // Default filter when none are selected
                 } else {
                     // If it was not active, we are toggling it on.
