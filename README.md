@@ -119,7 +119,7 @@ The Curious Souls Café web app keeps its files organized in a clear and maintai
 
 * All individual topic pages (like `icebreaker.html`, `love-relationships.html`, etc.) are located in the **`pages/` folder**.
 
-* All the questions for each topic are stored in simple text files (`.txt`) inside the **`questions/` folder**. For example, all "Icebreaker" questions are in `questions/light-icebreaker.txt`.
+* All the questions for each topic are stored in simple text files (`.txt`) inside the **`questions/` folder**. For example, all "Icebreaker" questions are in `questions/icebreaker.txt`.
 
 * Other data files, such as `quotes.txt`, are located in the **`data/` folder**.
 
