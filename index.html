@@ -584,6 +584,38 @@
 
         // Added: unified starred actions storage (for Action Prompts, Roll the Dice, Import Questions)
         const STARRED_ACTIONS_KEY = 'csc_starred_actions';
+        
+        /************************************************************************
+         * ONE-TIME CACHE CLEARING CODE - START
+         * This block clears the old question and quote caches for all users once.
+         * You can remove this code in a future update after it has been deployed
+         * for a while. The 'cache_cleared_v2' key can be changed if you need
+         * to force another refresh in the future (e.g., 'cache_cleared_v3').
+         ************************************************************************/
+        if (!localStorage.getItem('cache_cleared_v2')) {
+            console.log("Performing one-time cache invalidation...");
+
+            // 1. Clear all cached topic question files
+            TOPIC_CONFIGS.forEach(topicConfig => {
+                if (topicConfig.cache) { // Only attempt to clear items that were cached
+                    const oldKey = `csc_topic_${topicConfig.name.replace(/ /g, '_').toLowerCase()}`;
+                    localStorage.removeItem(oldKey);
+                    console.log(`Removed old cache key: ${oldKey}`);
+                }
+            });
+
+            // 2. Clear the cached quotes file
+            const quotesLocalStorageKey = 'csc_quotes_data';
+            localStorage.removeItem(quotesLocalStorageKey);
+            console.log(`Removed old cache key: ${quotesLocalStorageKey}`);
+
+            // 3. Set a flag so this script doesn't run again for this user
+            localStorage.setItem('cache_cleared_v2', 'true');
+            console.log("One-time cache invalidation complete.");
+        }
+        /************************************************************************
+         * ONE-TIME CACHE CLEARING CODE - END
+         ************************************************************************/
 
         function getStarredTopics() {
             const starredTopicsJson = localStorage.getItem(STARRED_TOPICS_KEY);
