@@ -1784,13 +1784,21 @@
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to the clicked button
-                button.classList.add('active');
+                const isCurrentlyActive = button.classList.contains('active');
 
-                // Update the current filter and apply it
-                currentFilter = button.dataset.filter;
+                // First, clear active state from all buttons to ensure mutual exclusivity
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+
+                if (isCurrentlyActive) {
+                    // If it was active, we are toggling it off. No button should be active.
+                    currentFilter = 'all'; // Default filter when none are selected
+                } else {
+                    // If it was not active, we are toggling it on.
+                    button.classList.add('active'); // Make the clicked button active
+                    currentFilter = button.dataset.filter; // Set the filter
+                }
+
+                // Apply the filter based on the new state
                 applyFilter();
             });
         });
