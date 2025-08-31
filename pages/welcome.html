@@ -301,7 +301,44 @@
         document.execCommand('copy');
         document.body.removeChild(tempInput);
         alert("Link copied to clipboard!");
+   });
+
+    // Share Link Button Logic (Web Share API only; no fallback)
+    const shareLinkButton = document.getElementById('share-link-button');
+    shareLinkButton.addEventListener('click', async (event) => {
+        event.preventDefault();
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: document.title,
+                    text: `Join me for a conversation on "${displayTopicName}" at Curious Souls Café!`,
+                    url: window.location.href
+                });
+            } catch (err) {
+                // Swallow errors silently as requested (no fallback)
+                console.warn('Share canceled or failed:', err);
+            }
+        }
+        // If navigator.share is not available, do nothing (no fallback)
     });
+    
+    randomizeButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        displayRandomItems();
+    });
+
+    searchButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        displayFilteredItems();
+    });
+
+    searchInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            displayFilteredItems();
+        }
+    });
+
   </script>
 </body>
 </html>
