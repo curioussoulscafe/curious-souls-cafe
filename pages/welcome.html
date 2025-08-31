@@ -13,27 +13,26 @@
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-      line-height: 1.6; /* Reverted line-height */
+      line-height: 1.6;
       color: #24292e;
       background-color: #f6f8fa;
     }
 
     /* Center content and set maximum width */
     .container {
-      max-width: 800px; /* Set a reasonable maximum width */
-      margin: 0 auto; /* Center the container */
-      padding: 2rem; /* Reverted padding */
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
     }
 
     h2 {
-      font-size: 1.5rem; /* Reverted font-size */
-      margin-top: 2rem; /* Reverted margin-top */
+      font-size: 1.5rem;
+      margin-top: 2rem;
       border-bottom: 1px solid #eaecef;
-      padding-bottom: 0.3rem; /* Reverted padding-bottom */
+      padding-bottom: 0.3rem;
       color: #0366d6;
     }
     h3 {
-      /* Added h3 style from previous version for consistency */
       font-size: 1.25rem;
       margin-top: 1.5rem;
       margin-bottom: 1rem;
@@ -41,20 +40,20 @@
       font-weight: 600;
     }
     p {
-      margin: 1rem 0; /* Reverted margin */
+      margin: 1rem 0;
     }
     ul, ol {
-      padding-left: 2rem; /* Reverted padding-left */
-      margin: 1rem 0; /* Reverted margin */
+      padding-left: 2rem;
+      margin: 1rem 0;
     }
     ul li, ol li {
-      margin-bottom: 0.5rem; /* Reverted margin-bottom */
+      margin-bottom: 0.5rem;
     }
     blockquote {
-      margin: 1rem 0; /* Reverted margin */
-      padding: 0.5rem 1rem; /* Reverted padding */
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
       color: #6a737d;
-      border-left: 4px solid #dfe2e5; /* Reverted border-left thickness */
+      border-left: 4px solid #dfe2e5;
       background-color: #f6f8fa;
     }
     a {
@@ -68,18 +67,18 @@
       border: 0;
       height: 1px;
       background: #eaecef;
-      margin: 2rem 0; /* Reverted margin */
+      margin: 2rem 0;
     }
     code, pre {
       font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
-      font-size: 0.9rem; /* Reverted font-size */
+      font-size: 0.9rem;
       background-color: #f6f8fa;
       border: 1px solid #eaecef;
       border-radius: 3px;
-      padding: 0.2rem 0.4rem; /* Reverted padding */
+      padding: 0.2rem 0.4rem;
     }
     pre {
-      padding: 1rem; /* Reverted padding */
+      padding: 1rem;
       overflow: auto;
     }
     img {
@@ -97,7 +96,7 @@
       color: #6a737d;
     }
 
-    /* General Modal styles for the overlay and content box (retained from previous version) */
+    /* General Modal styles for the overlay and content box */
     .modal-overlay {
         position: fixed;
         top: 0;
@@ -112,6 +111,8 @@
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s, visibility 0.3s;
+        padding: 1rem; /* Better on very small screens */
+        box-sizing: border-box;
     }
     .modal-overlay.show {
         opacity: 1;
@@ -123,8 +124,8 @@
         border-radius: 0.75rem;
         box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
         text-align: center;
-        max-width: 300px;
-        width: 90%;
+        max-width: 360px;
+        width: 100%;
         transform: translateY(-20px);
         transition: transform 0.3s;
     }
@@ -132,9 +133,9 @@
         transform: translateY(0);
     }
 
-    /* QR Code Modal specific styles to match GitHub aesthetic (retained from previous version) */
+    /* QR Code Modal specific styles */
     #qr-modal-content {
-        max-width: 350px;
+        max-width: 380px;
         padding: 1.5rem;
         position: relative;
     }
@@ -173,12 +174,32 @@
         display: flex;
         align-items: center;
         gap: 0.25rem;
-        margin-top: 1.5rem; /* Spacing for the link */
+        margin-top: 1.5rem;
         justify-content: center;
     }
     .qr-code-link:hover {
         color: #0056b3;
         text-decoration: underline;
+    }
+
+    /* Small helper classes used in modal text */
+    .text-sm { font-size: 0.875rem; }
+    .text-gray-700 { color: #374151; }
+    .text-gray-600 { color: #4b5563; }
+    .text-gray-500 { color: #6b7280; }
+    .text-blue-600 { color: #2563eb; }
+    .hover\:underline:hover { text-decoration: underline; }
+    .mr-1 { margin-right: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .break-all { word-break: break-all; }
+    .select-none { user-select: none; }
+
+    /* Disabled share button style */
+    .btn-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      text-decoration: none !important;
     }
   </style>
 </head>
@@ -188,7 +209,7 @@
     <p>This is the welcome leaflet participants may come across if they come to our events for the first time. If you went to one but didn’t come across it, here it is for you. 😊</p>
     <hr>
     <h2 id="dear-curious-souls">Dear Curious Souls</h2>
-    <p>💖 <strong>Welcome to Curious Souls Café</strong>—a fresh concept designed to spark engaging conversations and build a vibrant community. We believe our city thrives on diverse interactions, and we’re excited to create a space where shared curiosity flourishes.</p>
+    <p>💖 <strong>Welcome to Curious Souls Café</strong>--a fresh concept designed to spark engaging conversations and build a vibrant community. We believe our city thrives on diverse interactions, and we’re excited to create a space where shared curiosity flourishes.</p>
     <p>In today’s world, where personalized feeds often isolate us, our events aim to enhance cross-cultural awareness and mutual understanding. We recognize that our increasingly autonomous lifestyles can limit opportunities for meaningful, face-to-face conversations. By coming together, we can break these barriers and forge meaningful connections.</p>
     <hr>
     <h2 id="-what-to-expect">📅 What to Expect</h2>
@@ -203,7 +224,7 @@
     <h2 id="-inspired-by-global-communities">🌍 Inspired by Global Communities</h2>
     <p>We draw inspiration from various global groups that host similar events. These models encourage curiosity and dialogue, and we believe the world needs more of such events.</p>
     <p>We welcome your suggestions and ideas as we grow together. If this initiative inspires you to start your own group, whether similar or different, we consider that the ultimate success.</p>
-    <p>Let’s embark on this journey of knowledge, wisdom, and philosophy—broadly defined—in a supportive environment. Together, we can cultivate a community that thrives on curiosity and connection.</p>
+    <p>Let’s embark on this journey of knowledge, wisdom, and philosophy--broadly defined--in a supportive environment. Together, we can cultivate a community that thrives on curiosity and connection.</p>
     <p>Looking forward to meeting each of you! 😊</p><br>
 
     <a href="https://unsplash.com/s/visual/c4c07c2d-d20d-42a3-ba43-e23d6028a471" target="_blank" rel="noopener noreferrer">
@@ -219,126 +240,162 @@
     <h2 id="disclaimer">Disclaimer</h2>
     <p>Curious Souls Café fosters open discussions for idea exploration, not professional advice; participants are responsible for their well-being and encouraged to consult qualified professionals when needed.</p>
     <p>⬅️ <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Leave this page</a> (go to Curious Souls Café web app)</p>
-    <!-- Link to show QR Code (retained and styled to fit original design) -->
+    <!-- Link to show QR Code -->
     <a href="#" id="show-qr-code-link" class="qr-code-link">
       <i class="fas fa-qrcode"></i> Show a QR Code/Link for this Page
     </a>
   </div>
 
-  <!-- QR Code Modal (retained from previous version) -->
-  <div id="qr-code-modal" class="modal-overlay">
+  <!-- QR Code Modal -->
+  <div id="qr-code-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="qr-modal-title" aria-modal="true">
       <div id="qr-modal-content" class="modal-content">
-          <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
-          <h3 class="text-lg font-semibold text-gray-800 mb-4">Share this Page</h3>
+          <button class="qr-modal-close-button" id="qr-modal-close-button" aria-label="Close">&times;</button>
+          <h3 id="qr-modal-title" class="text-lg font-semibold text-gray-800 mb-4">Share this Page</h3>
           <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
-          <!-- The src attribute is dynamically set by JavaScript. The onerror provides a fallback placeholder. -->
           <img id="qr-modal-image" src="images/qr/qr-code-welcome.png" alt="QR Code for this page"
                onerror="this.onerror=null;this.src='https://placehold.co/250x250/E0E0E0/6B46C1?text=QR+Code+Loading';">
 
-            <p class="text-sm text-gray-700 mt-2">
-                <i class="fa-solid fa-link mr-1"></i> 
-                <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/welcome.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io/curious-souls-cafe/pages/welcome.html</a>
-                <br>
-                <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link</button>
-                &nbsp;<span class="text-gray-400 text-sm select-none">|</span>&nbsp;&nbsp;<button id="share-link-button" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-share-from-square"></i> Share...</button>
-            </p>
-            <p class="text-gray-500 text-sm mt-4" >Let's help fellow curious souls launch this page and start the conversation! 😊</p>
-
+          <p class="text-sm text-gray-700 mt-2">
+              <i class="fa-solid fa-link mr-1"></i> 
+              <a id="page-direct-link" href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/welcome.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io/curious-souls-cafe/pages/welcome.html</a>
+              <br>
+              <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline" type="button"><i class="fas fa-copy"></i>&nbsp;&nbsp;Copy page link</button>
+              &nbsp;<span class="text-gray-400 text-sm select-none">|</span>&nbsp;&nbsp;
+              <button id="share-link-button" class="text-blue-600 text-sm mt-4 hover:underline" type="button"><i class="fas fa-share-from-square"></i> Share...</button>
+          </p>
+          <p class="text-gray-500 text-sm mt-4">Let's help fellow curious souls launch this page and start the conversation! 😊</p>
       </div>
   </div>
 
   <script>
-    // Get references to the QR Code Modal elements
+    // Elements
     const showQrCodeLink = document.getElementById('show-qr-code-link');
     const qrCodeModal = document.getElementById('qr-code-modal');
     const qrModalImage = document.getElementById('qr-modal-image');
     const qrModalCloseButton = document.getElementById('qr-modal-close-button');
-
-    // --- QR Code Modal Logic ---
-    /**
-     * Handles the click event for the "Share this Page" link.
-     * Generates a QR code for the current page URL and displays it in a modal.
-     * @param {Event} event The click event object.
-     */
-    showQrCodeLink.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the default link navigation
-        const pageUrl = window.location.href; // Get the current page's URL
-        // Construct the API URL to generate a QR code image
-        const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-        qrModalImage.src = qrCodeApiUrl; // Set the source of the QR code image
-        qrCodeModal.classList.add('show'); // Add the 'show' class to display the modal
-    });
-
-    /**
-     * Handles the click event for the modal close button.
-     * Hides the QR code modal.
-     */
-    qrModalCloseButton.addEventListener('click', function() {
-        qrCodeModal.classList.remove('show'); // Remove the 'show' class to hide the modal
-    });
-
-    /**
-     * Handles clicks on the modal overlay.
-     * If the click is on the overlay itself (not the content), hides the modal.
-     * @param {Event} event The click event object.
-     */
-    qrCodeModal.addEventListener('click', function(event) {
-        if (event.target === qrCodeModal) { // Check if the click was directly on the overlay
-            qrCodeModal.classList.remove('show'); // Hide the modal
-        }
-    });
-
-    // Copy Link Button Logic (now a text link)
-    const copyLinkTextLink = document.getElementById('copy-link-text-link'); // Changed ID
-    copyLinkTextLink.addEventListener('click', function(event) { // Changed to button
-        event.preventDefault(); // Prevent default link behavior
-        const pageUrl = window.location.href;
-        // Use a temporary textarea to copy the URL to clipboard
-        const tempInput = document.createElement('textarea');
-        tempInput.value = pageUrl;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand('copy');
-        document.body.removeChild(tempInput);
-        alert("Link copied to clipboard!");
-   });
-
-    // Share Link Button Logic (Web Share API only; no fallback)
+    const copyLinkTextLink = document.getElementById('copy-link-text-link');
     const shareLinkButton = document.getElementById('share-link-button');
-    shareLinkButton.addEventListener('click', async (event) => {
-        event.preventDefault();
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: document.title,
-                    text: `Join me for a conversation on "${displayTopicName}" at Curious Souls Café!`,
-                    url: window.location.href
-                });
-            } catch (err) {
-                // Swallow errors silently as requested (no fallback)
-                console.warn('Share canceled or failed:', err);
-            }
+    const pageDirectLink = document.getElementById('page-direct-link');
+
+    // Helper: open/close modal with basic focus management
+    function openModal() {
+      const pageUrl = window.location.href;
+      const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+      qrModalImage.src = qrCodeApiUrl;
+      qrCodeModal.classList.add('show');
+      qrCodeModal.setAttribute('aria-hidden', 'false');
+      // Move focus to close button for accessibility
+      qrModalCloseButton.focus();
+      // Update the direct link to the actual current URL
+      pageDirectLink.href = pageUrl;
+      pageDirectLink.textContent = pageUrl;
+    }
+    function closeModal() {
+      qrCodeModal.classList.remove('show');
+      qrCodeModal.setAttribute('aria-hidden', 'true');
+      showQrCodeLink.focus();
+    }
+
+    // Show modal
+    showQrCodeLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+
+    // Close modal via button
+    qrModalCloseButton.addEventListener('click', closeModal);
+
+    // Close modal by clicking overlay
+    qrCodeModal.addEventListener('click', (e) => {
+      if (e.target === qrCodeModal) {
+        closeModal();
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && qrCodeModal.classList.contains('show')) {
+        closeModal();
+      }
+    });
+
+    // Copy link
+    copyLinkTextLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const pageUrl = window.location.href;
+
+      // Try modern clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(pageUrl);
+          alert('Link copied to clipboard!');
+          return;
+        } catch (err) {
+          console.warn('navigator.clipboard failed, falling back:', err);
         }
-        // If navigator.share is not available, do nothing (no fallback)
-    });
-    
-    randomizeButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        displayRandomItems();
+      }
+
+      // Fallback using a temporary textarea
+      const tempInput = document.createElement('textarea');
+      tempInput.value = pageUrl;
+      tempInput.setAttribute('readonly', '');
+      tempInput.style.position = 'absolute';
+      tempInput.style.left = '-9999px';
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        alert('Link copied to clipboard!');
+      } catch (err) {
+        alert('Unable to copy. Please copy the link manually.');
+      } finally {
+        document.body.removeChild(tempInput);
+      }
     });
 
-    searchButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        displayFilteredItems();
-    });
+    // Share link (Web Share API with graceful handling)
+    function updateShareButtonAvailability() {
+      const supported = !!navigator.share;
+      if (!supported) {
+        // Visually indicate unavailability but keep visible
+        shareLinkButton.classList.add('btn-disabled');
+        shareLinkButton.setAttribute('aria-disabled', 'true');
+        shareLinkButton.title = 'Sharing not supported by this browser';
+      }
+    }
 
-    searchInput.addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            displayFilteredItems();
+    shareLinkButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!navigator.share) {
+        // Optional: provide a quick fallback to copy the URL
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(window.location.href);
+            alert('Sharing not supported here. Link copied to clipboard instead.');
+          } else {
+            // fallback to the copy logic
+            copyLinkTextLink.click();
+          }
+        } catch {
+          // As a last resort, do nothing silently
         }
+        return;
+      }
+
+      try {
+        await navigator.share({
+          title: document.title,
+          text: 'Join me at Curious Souls Café!',
+          url: window.location.href
+        });
+      } catch (err) {
+        // User canceled or share failed; no noisy error
+        console.warn('Share canceled or failed:', err);
+      }
     });
 
+    // Initialize UI states
+    updateShareButtonAvailability();
   </script>
 </body>
 </html>
