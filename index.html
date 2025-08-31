@@ -720,40 +720,46 @@
 
         /**
          * Filters displayed buttons based on the active category and search input.
+         * - Topic buttons respect category + search.
+         * - Non-topic buttons are hidden when a category filter is active.
          */
         function filterButtons() {
             const searchTerm = searchBar.value.toLowerCase();
+
             allButtons.forEach(button => {
-                // Determine visibility based on category
+                const isTopic = button.classList.contains('topic-button');
+                const isLiveDiscussion = button.classList.contains('live-discussion-style');
+
+                // Category match
                 let categoryMatch = false;
-                if (button.classList.contains('topic-button')) {
+                if (isTopic) {
                     if (!activeCategoryFilter) {
-                        // If no filter is active, all topics are considered a "match"
                         categoryMatch = true;
                     } else {
                         const buttonCategories = button.dataset.category ? button.dataset.category.split(',') : [];
-                        // A match occurs if the button's categories include the single active filter
                         categoryMatch = buttonCategories.includes(activeCategoryFilter);
                     }
                 } else {
-                    // Non-topic buttons (actions, etc.) always pass the category filter
-                    categoryMatch = true;
+                    // Non-topic buttons should NOT show when a category filter is active
+                    categoryMatch = !activeCategoryFilter;
                 }
 
-                // Determine visibility based on search term
+                // Search match
                 let searchTermMatch = false;
                 const buttonTextSpan = button.querySelector('span');
                 if (buttonTextSpan) {
                     searchTermMatch = buttonTextSpan.textContent.toLowerCase().includes(searchTerm);
-                } else if (button.id === 'live-discussion-button') {
+                } else if (isLiveDiscussion) {
+                    searchTermMatch = button.textContent.toLowerCase().includes(searchTerm);
+                } else {
+                    // Fallback for any other button without a span
                     searchTermMatch = button.textContent.toLowerCase().includes(searchTerm);
                 }
 
-                // Final visibility is based on both checks
                 const isVisible = categoryMatch && searchTermMatch;
 
                 if (isVisible) {
-                    button.style.display = button.classList.contains('live-discussion-style') ? 'block' : 'flex';
+                    button.style.display = isLiveDiscussion ? 'block' : 'flex';
                 } else {
                     button.style.display = 'none';
                 }
