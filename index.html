@@ -384,6 +384,28 @@
                 font-size: 1.25rem;
             }
         }
+        
+        /* NEW: Styles for category filter buttons */
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db; /* Tailwind gray-300 */
+            background-color: #ffffff;
+            color: #4b5563; /* Tailwind gray-600 */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.9rem;
+        }
+        .filter-btn:hover {
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .filter-btn.active {
+            background-color: #8b5cf6; /* A purple that fits the theme */
+            color: #ffffff;
+            border-color: #8b5cf6;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -414,7 +436,17 @@
             </button>
         </div>
 
-        <!-- Search Bar -->
+        <div class="mb-4">
+            <div id="category-filter" class="flex flex-wrap justify-center gap-2">
+                <button data-filter="New" class="filter-btn" title="Filter for the latest topics">What's New</button>
+                <!-- <button data-filter="Bonding" class="filter-btn" title="Filter for Bonding topics">Bonding</button>
+                <button data-filter="Self" class="filter-btn" title="Filter for Self topics">Self</button>
+                <button data-filter="Wellbeing" class="filter-btn" title="Filter for Wellbeing topics">Wellness</button>
+                <button data-filter="Other" class="filter-btn" title="Filter for other topics">Other</button>
+                <button data-filter="Work" class="filter-btn" title="Filter for Work topics">Work</button> -->
+            </div>
+        </div>
+
         <div class="mb-4">
             <input type="text" id="search-bar" placeholder="Filter topics..."
                    class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
@@ -555,6 +587,7 @@
         const liveDiscussionButton = document.getElementById('live-discussion-button');
 
         let allButtons = [];
+        let activeCategoryFilter = null; // State for single category filter
 
         const TOPIC_CONFIGS = [
             {
@@ -563,24 +596,38 @@
                txtUrl: "questions/live-discussion.txt",
                cache: false
             },
-            { name: "Authenticity", htmlFileName: "pages/authenticity.html", txtUrl: "questions/authenticity.txt", cache: true },
-            { name: "Icebreaker", htmlFileName: "pages/icebreaker.html", txtUrl: "questions/icebreaker.txt", cache: true },
-            { name: "Transitions", htmlFileName: "pages/transitions.html", txtUrl: "questions/transitions.txt", cache: true },
-            { name: "Reimagine", htmlFileName: "pages/reimagine.html", txtUrl: "questions/reimagine.txt", cache: true },
-            { name: "Reflection", htmlFileName: "pages/reflection.html", txtUrl: "questions/reflection.txt", cache: true },
-            { name: "Work that Resonates", htmlFileName: "pages/work-that-resonates.html", txtUrl: "questions/work-that-resonates.txt", cache: true },
-            { name: "Love Relationships", htmlFileName: "pages/love-relationships.html", txtUrl: "questions/love-relationships.txt", cache: true },
-            { name: "Happiness", htmlFileName: "pages/happiness.html", txtUrl: "questions/happiness.txt", cache: true },
-            { name: "The Mind Speaks", htmlFileName: "pages/the-mind-speaks.html", txtUrl: "questions/the-mind-speaks.txt", cache: true },
-            { name: "Parenting", htmlFileName: "pages/parenting.html", txtUrl: "questions/parenting.txt", cache: true },
-            { name: "Purpose", htmlFileName: "pages/purpose.html", txtUrl: "questions/purpose.txt", cache: true },
-            { name: "Friendship", htmlFileName: "pages/friendship.html", txtUrl: "questions/friendship.txt", cache: true },
-            { name: "Adulthood", htmlFileName: "pages/adulthood.html", txtUrl: "questions/adulthood.txt", cache: true },
-            { name: "Interdependence", htmlFileName: "pages/interdependence.html", txtUrl: "questions/interdependence.txt", cache: true },
-            { name: "Inner Child", htmlFileName: "pages/inner-child.html", txtUrl: "questions/inner-child.txt", cache: true },
-            { name: "All in One", htmlFileName: "pages/all-in-one.html", txtUrl: "questions/all-in-one.txt", cache: true },
-            { name: "Entrepreneurship", htmlFileName: "pages/entrepreneurship.html", txtUrl: "questions/entrepreneurship.txt", cache: true }
+            // Self
+            { name: "Authenticity", htmlFileName: "pages/authenticity.html", txtUrl: "questions/authenticity.txt", cache: true, category: ["Self"] },
+            { name: "Inner Child", htmlFileName: "pages/inner-child.html", txtUrl: "questions/inner-child.txt", cache: true, category: ["Self","Wellbeing","Editor"] },
+            { name: "Purpose", htmlFileName: "pages/purpose.html", txtUrl: "questions/purpose.txt", cache: true, category: ["Self", "Work","New"] },
+            { name: "Reflection", htmlFileName: "pages/reflection.html", txtUrl: "questions/reflection.txt", cache: true, category: ["Self"] },
+            { name: "Reimagine", htmlFileName: "pages/reimagine.html", txtUrl: "questions/reimagine.txt", cache: true, category: ["Self"] },
+            { name: "Adulthood", htmlFileName: "pages/adulthood.html", txtUrl: "questions/adulthood.txt", cache: true, category: ["Self"] },
+            { name: "Transitions", htmlFileName: "pages/transitions.html", txtUrl: "questions/transitions.txt", cache: true, category: ["Self"] },
+            
+            // Wellbeing
+            { name: "Happiness", htmlFileName: "pages/happiness.html", txtUrl: "questions/happiness.txt", cache: true, category: ["Wellbeing","Editor"] },
+            { name: "The Mind Speaks", htmlFileName: "pages/the-mind-speaks.html", txtUrl: "questions/the-mind-speaks.txt", cache: true, category: ["Wellbeing","Editor"] },
+
+            // Bonding
+            { name: "Friendship", htmlFileName: "pages/friendship.html", txtUrl: "questions/friendship.txt", cache: true, category: ["Bonding","Editor"] },
+            { name: "Icebreaker", htmlFileName: "pages/icebreaker.html", txtUrl: "questions/icebreaker.txt", cache: true, category: ["Bonding","Editor","Other"] },
+            { name: "Interdependence", htmlFileName: "pages/interdependence.html", txtUrl: "questions/interdependence.txt", cache: true, category: ["Bonding"] },
+            { name: "Love Relationships", htmlFileName: "pages/love-relationships.html", txtUrl: "questions/love-relationships.txt", cache: true, category: ["Bonding","Editor"] },
+            { name: "Parenting", htmlFileName: "pages/parenting.html", txtUrl: "questions/parenting.txt", cache: true, category: ["Bonding"] },
+
+            // Work
+            { name: "Work that Resonates", htmlFileName: "pages/work-that-resonates.html", txtUrl: "questions/work-that-resonates.txt", cache: true, category: ["Work"] },
+            { name: "Entrepreneurship", htmlFileName: "pages/entrepreneurship.html", txtUrl: "questions/entrepreneurship.txt", cache: true, category: ["Work"] },
+
+            // Other
+            { name: "All in One", htmlFileName: "pages/all-in-one.html", txtUrl: "questions/all-in-one.txt", cache: true, category: ["Other"] }
+            
+            // No Category
+            // { name: "Icebreaker", htmlFileName: "pages/icebreaker.html", txtUrl: "questions/icebreaker.txt", cache: true },
+            // { name: "All in One", htmlFileName: "pages/all-in-one.html", txtUrl: "questions/all-in-one.txt", cache: true }
         ];
+
 
         // Added: unified starred actions storage (for Action Prompts, Roll the Dice, Import Questions)
         const STARRED_ACTIONS_KEY = 'csc_starred_actions';
@@ -672,37 +719,54 @@
         }
 
         /**
-         * Filters the displayed topic and action buttons based on the search input.
+         * Filters displayed buttons based on the active category and search input.
          */
         function filterButtons() {
             const searchTerm = searchBar.value.toLowerCase();
             allButtons.forEach(button => {
-                // Get the text content of the span (which holds the topic/action name)
+                // Determine visibility based on category
+                let categoryMatch = false;
+                if (button.classList.contains('topic-button')) {
+                    if (!activeCategoryFilter) {
+                        // If no filter is active, all topics are considered a "match"
+                        categoryMatch = true;
+                    } else {
+                        const buttonCategories = button.dataset.category ? button.dataset.category.split(',') : [];
+                        // A match occurs if the button's categories include the single active filter
+                        categoryMatch = buttonCategories.includes(activeCategoryFilter);
+                    }
+                } else {
+                    // Non-topic buttons (actions, etc.) always pass the category filter
+                    categoryMatch = true;
+                }
+
+                // Determine visibility based on search term
+                let searchTermMatch = false;
                 const buttonTextSpan = button.querySelector('span');
-                if (buttonTextSpan) { // Check if span exists for topic/action buttons
-                    const buttonText = buttonTextSpan.textContent.toLowerCase();
-                    if (buttonText.includes(searchTerm)) {
-                        button.style.display = button.classList.contains('live-discussion-style') ? 'block' : 'flex'; // Show the button (using flex display)
-                    } else {
-                        button.style.display = 'none'; // Hide the button
-                    }
-                } else if (button.id === 'live-discussion-button') { // Handle live discussion button separately
-                    const buttonText = button.textContent.toLowerCase();
-                    if (buttonText.includes(searchTerm)) {
-                        button.style.display = 'block'; // Live discussion button is block
-                    } else {
-                        button.style.display = 'none';
-                    }
+                if (buttonTextSpan) {
+                    searchTermMatch = buttonTextSpan.textContent.toLowerCase().includes(searchTerm);
+                } else if (button.id === 'live-discussion-button') {
+                    searchTermMatch = button.textContent.toLowerCase().includes(searchTerm);
+                }
+
+                // Final visibility is based on both checks
+                const isVisible = categoryMatch && searchTermMatch;
+
+                if (isVisible) {
+                    button.style.display = button.classList.contains('live-discussion-style') ? 'block' : 'flex';
+                } else {
+                    button.style.display = 'none';
                 }
             });
         }
+
 
         /**
          * Order topics so that:
          * - If "All in One" is starred, it is first.
          * - Else, starred topics (except "All in One") first (alphabetical),
-         *   then "All in One",
-         *   then other unstarred topics (alphabetical).
+         * then "All in One",
+         * then other unstarred topics (alphabetical).
          */
         function orderTopicsWithAllQuestionsPriority(successfulTopics, starredTopics) {
             const ALL = "All in One";
@@ -810,8 +874,15 @@
                 const sortedTopics = orderTopicsWithAllQuestionsPriority(successfulTopics, starredTopics);
 
                 sortedTopics.forEach(topic => {
+                    // Skip the Live Discussion topic here as its button is handled separately
+                    if (topic.name === "Live Discussion") return;
+
                     const button = document.createElement('button');
                     button.classList.add('topic-button');
+                    // Add data-category attribute if it exists, joining the array
+                    if (topic.category && topic.category.length > 0) {
+                        button.dataset.category = topic.category.join(',');
+                    }
                     
                     const topicNameSpan = document.createElement('span');
                     topicNameSpan.textContent = topic.name;
@@ -1068,6 +1139,30 @@
 
         // Add event listener for the search bar
         searchBar.addEventListener('input', filterButtons);
+
+        // Add event listeners for category filter buttons (single selection logic)
+        const categoryButtons = document.querySelectorAll('#category-filter .filter-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.dataset.filter;
+                const isAlreadyActive = button.classList.contains('active');
+
+                // First, remove active class from all buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+
+                if (isAlreadyActive) {
+                    // If it was already active, we are turning it off (clearing the filter).
+                    activeCategoryFilter = null;
+                } else {
+                    // If it was not active, turn it on and set the filter.
+                    activeCategoryFilter = filter;
+                    button.classList.add('active');
+                }
+                
+                // Re-run the main filtering logic
+                filterButtons();
+            });
+        });
 
         // Utility: Detect iOS and in Safari
         function isIOS() {
