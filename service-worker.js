@@ -1,10 +1,11 @@
-const CACHE_NAME = 'curious-souls-cafe-v12';
+const CACHE_NAME = 'curious-souls-cafe-v13';
 
 const FILES_TO_CACHE = [
   // Root and main pages
   '/',
   '/index.html',
   '/readme.html',
+  '/README.md',
   '/manifest.json',
 
   // Data files
@@ -73,15 +74,15 @@ const FILES_TO_CACHE = [
   '/pages/descriptions/adulthood.html',
   '/pages/descriptions/entrepreneurship.html',
   '/pages/descriptions/all-in-one.html',
+  '/pages/descriptions/dice.html',
 
   // Images
   '/images/csc_logo.jpg',
   '/images/favicon.ico',
   '/images/qr/qr-code.png',
   '/images/qr/qr-code-function-action-prompts.png',
-  '/images/qr/qr-code-function-custom-questions-display.png',
   '/images/qr/qr-code-function-custom-questions-input.png',
-  '/images/qr/qr-code-function-dice-roll.png',
+  '/images/qr/qr-code-function-dice.png',
   '/images/qr/qr-code-readme.png',
   '/images/qr/qr-code-topic-adulthood.png',
   '/images/qr/qr-code-topic-authenticity.png',
