@@ -1133,7 +1133,8 @@
 
         // Function to fetch questions from localStorage or by loading all files
         async function fetchQuestions() {
-            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
+            const CACHE_VERSION = '20250831';
+            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}_${CACHE_VERSION}`;
             const cachedContent = localStorage.getItem(localStorageKey);
 
             appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
@@ -1148,7 +1149,9 @@
                 console.log(`Loading questions for topic "${displayTopicName}" from multiple files (not found in localStorage).`);
                 try {
                     // Fetch all files in parallel and concatenate contents
-                    const responses = await Promise.all(questionFiles.map(url => fetch(url)));
+                    const responses = await Promise.all(
+                        questionFiles.map(url => fetch(`${url}?v=${CACHE_VERSION}`))
+                    );
                     const bad = responses.find(r => !r.ok);
                     if (bad) {
                         throw new Error(`HTTP error! status: ${bad.status} while fetching ${questionFiles[responses.indexOf(bad)]}`);

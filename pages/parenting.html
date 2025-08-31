@@ -1112,7 +1112,11 @@
 
         // Function to fetch questions from localStorage or GitHub
         async function fetchQuestions() {
-            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
+            // -- 1. ADD A VERSION IDENTIFIER --
+            const CACHE_VERSION = '20250831'; // Use today's date or any unique string
+
+            // -- 2. MODIFY THE LOCALSTORAGE KEY TO INCLUDE THE VERSION --
+            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}_${CACHE_VERSION}`;
             const cachedContent = localStorage.getItem(localStorageKey);
 
             appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
@@ -1126,7 +1130,8 @@
             } else {
                 console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
                 try {
-                    const response = await fetch(githubRawUrl); // Use relative path
+                    // -- 3. MODIFY THE FETCH URL TO INCLUDE THE VERSION --
+                    const response = await fetch(`${githubRawUrl}?v=${CACHE_VERSION}`); // Use relative path with cache buster
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
