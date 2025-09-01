@@ -1134,7 +1134,7 @@
 
         // Function to fetch questions from localStorage or by loading all files
         async function fetchQuestions() {
-            const CACHE_VERSION = '20250902';
+            const CACHE_VERSION = '20250902-01';
             const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}_${CACHE_VERSION}`;
             const cachedContent = localStorage.getItem(localStorageKey);
 
