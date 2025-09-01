@@ -1,4 +1,4 @@
-const CACHE_NAME = 'curious-souls-cafe-v14';
+const CACHE_NAME = 'curious-souls-cafe-v15';
 
 const FILES_TO_CACHE = [
   // Root and main pages
@@ -30,6 +30,7 @@ const FILES_TO_CACHE = [
   '/questions/adulthood.txt',
   '/questions/entrepreneurship.txt',
   '/questions/all-in-one.txt',
+  '/questions/global-curiosities.txt',
 
   // Pages
   '/pages/action-prompts.html',
@@ -55,6 +56,7 @@ const FILES_TO_CACHE = [
   '/pages/adulthood.html',
   '/pages/entrepreneurship.html',
   '/pages/all-in-one.html',
+  '/pages/global-curiosities.html',
 
   // Pages (descriptions)
   '/pages/descriptions/authenticity.html',
@@ -75,6 +77,7 @@ const FILES_TO_CACHE = [
   '/pages/descriptions/entrepreneurship.html',
   '/pages/descriptions/all-in-one.html',
   '/pages/descriptions/dice.html',
+  '/pages/descriptions/global-curiosities.html',
 
   // Images
   '/images/csc_logo.jpg',
