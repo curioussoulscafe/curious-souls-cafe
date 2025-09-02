@@ -1,4 +1,4 @@
-const CACHE_NAME = '20250902-02';
+const CACHE_NAME = '20250902-03';
 
 const FILES_TO_CACHE = [
   // Root and main pages
@@ -31,6 +31,7 @@ const FILES_TO_CACHE = [
   '/questions/entrepreneurship.txt',
   '/questions/all-in-one.txt',
   '/questions/global-curiosities.txt',
+  '/questions/true-wealth.txt',
 
   // Pages
   '/pages/action-prompts.html',
@@ -57,6 +58,7 @@ const FILES_TO_CACHE = [
   '/pages/entrepreneurship.html',
   '/pages/all-in-one.html',
   '/pages/global-curiosities.html',
+  '/pages/true-wealth.html',
 
   // Pages (descriptions)
   '/pages/descriptions/authenticity.html',
@@ -78,6 +80,7 @@ const FILES_TO_CACHE = [
   '/pages/descriptions/all-in-one.html',
   '/pages/descriptions/dice.html',
   '/pages/descriptions/global-curiosities.html',
+  '/pages/descriptions/true-wealth.html',
 
   // Images
   '/images/csc_logo.jpg',
@@ -101,6 +104,7 @@ const FILES_TO_CACHE = [
   '/images/qr/qr-code-topic-reimagine.png',
   '/images/qr/qr-code-topic-the-mind-speaks.png',
   '/images/qr/qr-code-topic-transitions.png',
+  '/images/qr/qr-code-topic-true-wealth.png',
   '/images/qr/qr-code-topic-work-that-resonates.png',
   '/images/qr/qr-code-topic-all-in-one.png',
   '/images/qr/qr-code-welcome.png',
