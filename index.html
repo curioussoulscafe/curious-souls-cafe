@@ -613,6 +613,53 @@
         </div>
     </div>
 
+    <!-- NEW: Guide modal (links to Code A headers via anchors) -->
+    <div id="guide-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="guide-modal-title" aria-describedby="guide-modal-desc">
+        <div class="modal-content">
+            <h3 id="guide-modal-title" class="text-lg font-semibold mb-2 text-purple-600">Guide contents</h3>
+            <p id="guide-modal-desc" class="text-gray-700 mb-3">Jump to a section:</p>
+            <div class="space-y-2">
+                <!-- For each header in readme.html (Code A), link via anchor -->
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#curious-souls-caf-" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-house mr-1"></i> Overview
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-getting-started" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-rocket mr-1"></i> Getting Started
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-introducing-the-question-decks" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-book mr-1"></i> Introducing the Question Decks
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-what-you-can-do-with-the-web-app" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> What You Can Do with the Web App
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-a-fun-little-secret-" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-dice mr-1"></i> A Fun Little Secret!
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-tips-for-using-the-app" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-lightbulb mr-1"></i> Tips for Using the App
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-how-files-are-organized" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-folder-tree mr-1"></i> How Files Are Organized
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-for-event-facilitators" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-people-group mr-1"></i> For Event Facilitators
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-how-to-add-new-question-sets" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-square-plus mr-1"></i> How to Add New Question Sets
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#lightning-update-service-worker" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-bolt mr-1"></i> Update Service Worker
+                </a>
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-managing-live-discussion-questions" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-solid fa-comments mr-1"></i> Managing Live Discussion Questions
+                </a>
+                <button type="button" class="modal-button cancel block w-full text-center" id="close-guide-modal">
+                    <i class="fa-solid fa-xmark mr-1"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const STARRED_TOPICS_KEY = 'csc_starred_topics';
         const STARRED_ACTION_PROMPTS_KEY = 'csc_starred_action_prompts';
@@ -1380,6 +1427,30 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && blogModalOverlay.classList.contains('show')) {
                 closeBlogModal();
+            }
+        });
+
+        // NEW: Modal wiring for Guide
+        // We keep the original "Guide" anchor visible, but also allow opening the modal via long-press or future use.
+        // If you prefer replacing the link with a modal button, swap the anchor for a button and wire it here.
+        // For now, we auto-bind if an element with id 'open-guide-modal' exists.
+        const openGuideModalBtn = document.getElementById('open-guide-modal');
+        const guideModalOverlay = document.getElementById('guide-modal-overlay');
+        const closeGuideModalBtn = document.getElementById('close-guide-modal');
+
+        function openGuideModal() { guideModalOverlay.classList.add('show'); }
+        function closeGuideModal() { guideModalOverlay.classList.remove('show'); }
+
+        if (openGuideModalBtn) {
+            openGuideModalBtn.addEventListener('click', openGuideModal);
+        }
+        closeGuideModalBtn.addEventListener('click', closeGuideModal);
+        guideModalOverlay.addEventListener('click', (e) => {
+            if (e.target === guideModalOverlay) closeGuideModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && guideModalOverlay.classList.contains('show')) {
+                closeGuideModal();
             }
         });
 
