@@ -230,6 +230,97 @@
             outline-offset: 2px;
           }
         }
+
+        /* Floating Dice Button (kept out for this page) */
+
+        /* Floating Look Up / Translate Button -- icon-only, same size as dice, slightly above it */
+        #floating-lookup {
+            position: fixed;
+            bottom: 148px; /* dice bottom (80) + dice height (56) + 12px gap = 148 */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #3b82f6, #10b981); /* blue to green */
+            color: #ffffff;
+            display: none; /* Hidden by default; shown when a question is selected */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1150; /* above share/back/top */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+            cursor: pointer;
+        }
+        #floating-lookup i {
+            font-size: 1.25rem; /* match visual weight */
+        }
+        #floating-lookup:hover, #floating-lookup:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-lookup:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Floating Share Button */
+        #floating-share {
+            position: fixed;
+            bottom: 214px; /* lookup bottom (148) + button height (56) + ~10px gap */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #a855f7, #ec4899); /* purple to pink */
+            color: #ffffff;
+            display: none; /* Hidden by default; shown when a question is selected */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1130; /* below lookup */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+            cursor: pointer;
+        }
+        #floating-share i {
+            font-size: 1.15rem;
+        }
+        #floating-share:hover, #floating-share:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-share:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        @media (max-width: 480px) {
+            #back-to-top {
+                bottom: 16px;
+                right: 16px;
+            }
+            #floating-lookup {
+                width: 52px;
+                height: 52px;
+                right: 16px;
+                bottom: 140px; /* keep spacing consistent */
+            }
+            #floating-lookup i {
+                font-size: 1.15rem;
+            }
+            #floating-share {
+                width: 52px;
+                height: 52px;
+                right: 16px;
+                bottom: 204px;
+            }
+            #floating-share i {
+                font-size: 1.05rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -294,6 +385,16 @@
         </button> -->
     </div>
 
+    <!-- Floating Look Up / Translate Button -- icon only -->
+    <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
+        <i class="fas fa-search"></i>
+    </button>
+
+    <!-- Floating Share Button -->
+    <button id="floating-share" title="Share selected question" aria-label="Share selected question">
+        <i class="fas fa-share-nodes"></i>
+    </button>
+
     <button id="back-to-top" title="Back to Top">
         &#9650; Top
     </button>
@@ -320,6 +421,48 @@
                 <button id="confirm-empty-search-yes" class="modal-button confirm">Proceed</button>
                 <button id="confirm-empty-search-no" class="modal-button cancel">No</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Search/Translate Choice Modal (from code A) -->
+    <div id="search-engine-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
+            
+            <h4 class="modal-subheading">Web Search</h4>
+            <div class="flex flex-col items-center">
+                <button id="search-google-choice-btn">
+                    <i class="fab fa-google"></i> Search Google
+                </button>
+                <button id="search-bing-choice-btn">
+                    <i class="fab fa-microsoft"></i> Search Bing
+                </button>
+                <button id="search-duckduckgo-choice-btn">
+                    <i class="fas fa-search"></i> Search DuckDuckGo
+                </button>
+                <button id="search-brave-choice-btn">
+                    <i class="fas fa-magnifying-glass"></i> Search Brave
+                </button>
+            </div>
+
+            <h4 class="modal-subheading">Translation Services</h4>
+            <div class="flex flex-col items-center">
+                <button id="translate-google-choice-btn">
+                    <i class="fas fa-language"></i> Translate with Google
+                </button>
+                <button id="translate-bing-choice-btn">
+                    <i class="fas fa-language"></i> Translate with Bing
+                </button>
+            </div>
+
+            <h4 class="modal-subheading">Other Actions</h4>
+            <div class="flex flex-col items-center">
+                <button id="copy-question-btn">
+                    <i class="fas fa-copy"></i> Copy Question
+                </button>
+            </div>
+
+            <button id="close-search-engine-modal" class="modal-button cancel mt-4">Cancel</button>
         </div>
     </div>
 
@@ -361,6 +504,7 @@
         let itemList = []; 
         let lastSearchTerm = "";
         let availableRandomItems = [];
+        let selectedRandomQuestionText = null; // Stores the text of the currently selected question
 
         const randomizeButton = document.getElementById('randomize-button');
         const resultDisplay = document.getElementById('random-result');
@@ -385,6 +529,21 @@
         const emptySearchModal = document.getElementById('empty-search-modal');
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
         const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
+        // Floating Look Up / Translate and Share buttons (from code A)
+        const floatingLookupBtn = document.getElementById('floating-lookup');
+        const floatingShareBtn = document.getElementById('floating-share');
+
+        // Search Engine/Translate Choice Modal elements (from code A)
+        const searchEngineModal = document.getElementById('search-engine-modal');
+        const searchGoogleChoiceBtn = document.getElementById('search-google-choice-btn');
+        const searchBingChoiceBtn = document.getElementById('search-bing-choice-btn');
+        const searchDuckDuckGoChoiceBtn = document.getElementById('search-duckduckgo-choice-btn'); 
+        const searchBraveChoiceBtn = document.getElementById('search-brave-choice-btn'); 
+        const translateGoogleChoiceBtn = document.getElementById('translate-google-choice-btn'); 
+        const translateBingChoiceBtn = document.getElementById('translate-bing-choice-btn'); 
+        const closeSearchEngineModalBtn = document.getElementById('close-search-engine-modal');
+        const copyQuestionBtn = document.getElementById('copy-question-btn');
 
         // Define the list of highlight colors
         const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
@@ -483,19 +642,41 @@
             return selectedItems;
         }
 
+        function refreshFloatingLookupVisibility() {
+            // Show floating buttons if a question is selected, from either list
+            const hasSelectedFromRandomOrSearch = document.querySelector('.item.selected-item') !== null;
+            const hasSelectedFromSaved = document.querySelector('.chosen-item.selected-chosen-item') !== null;
+            const shouldShow = !!selectedRandomQuestionText && (hasSelectedFromRandomOrSearch || hasSelectedFromSaved);
+
+            const displayStyle = shouldShow ? 'flex' : 'none';
+            floatingLookupBtn.style.display = displayStyle;
+            floatingShareBtn.style.display = displayStyle;
+        }
+
         function addHighlightingAndChooseLogic(targetElement) {
             const items = targetElement.querySelectorAll('.item');
             items.forEach(item => {
                 item.addEventListener('click', function() {
                     const questionText = this.textContent;
 
+                    // Deselect other selected .item entries to keep a single active source
+                    const previouslySelected = document.querySelectorAll('.item.selected-item');
+                    previouslySelected.forEach(el => {
+                        if (el !== this) el.classList.remove('selected-item');
+                    });
+
+                    // Also clear any selected saved items to keep a single active source
+                    document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+
                     this.classList.toggle('selected-item');
 
                     if (this.classList.contains('selected-item')) {
-                        addChosenQuestion(questionText);
+                        selectedRandomQuestionText = questionText;
+                        addChosenQuestion(questionText); // add to saved if newly selected
                     } else {
-                        removeChosenQuestion(questionText);
+                        selectedRandomQuestionText = null;
                     }
+                    refreshFloatingLookupVisibility();
                 });
             });
         }
@@ -525,8 +706,22 @@
             chosenQuestionsDisplay.appendChild(chosenItemDiv);
 
             chosenItemDiv.addEventListener('click', function() {
-                this.classList.toggle('selected-chosen-item');
+                // When selecting in Saved, clear selections in random/search for clarity
+                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+
+                // Toggle and make only one saved item selected at a time
+                const willSelect = !this.classList.contains('selected-chosen-item');
+                document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+
+                if (willSelect) {
+                    this.classList.add('selected-chosen-item');
+                    selectedRandomQuestionText = this.textContent;
+                } else {
+                    this.classList.remove('selected-chosen-item');
+                    selectedRandomQuestionText = null;
+                }
                 updateClearButtonText();
+                refreshFloatingLookupVisibility();
             });
 
             const placeholder = chosenQuestionsDisplay.querySelector('p.text-gray-500');
@@ -544,6 +739,9 @@
             let removedFromDOM = false;
             chosenItems.forEach(item => {
                 if (item.textContent === questionText) {
+                    if (item.classList.contains('selected-chosen-item')) {
+                        selectedRandomQuestionText = null;
+                    }
                     chosenQuestionsDisplay.removeChild(item);
                     removedFromDOM = true;
                 }
@@ -558,11 +756,14 @@
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
             } 
             updateClearButtonText();
+            refreshFloatingLookupVisibility();
         }
 
         function displayRandomItems() {
             if (itemList.length === 0) {
                 resultDisplay.textContent = "No questions available to pick. Please add questions first.";
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
                 return;
             }
             const numItemsToPick = parseInt(itemCountInput.value);
@@ -576,11 +777,18 @@
                 resultDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(resultDisplay);
             }
+            // Reset current selection when generating new set
+            selectedRandomQuestionText = null;
+            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            refreshFloatingLookupVisibility();
         }
 
         function displayFilteredItems() {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
                 return;
             }
             const currentSearchTerm = searchInput.value.trim().toLowerCase();
@@ -589,6 +797,9 @@
                 searchResultsDisplay.innerHTML = '';
                 searchButton.textContent = "Search";
                 lastSearchTerm = "";
+                selectedRandomQuestionText = null;
+                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+                refreshFloatingLookupVisibility();
                 return;
             }
 
@@ -603,6 +814,8 @@
         function executeSearch(searchTerm) {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
                 return;
             }
             
@@ -610,6 +823,7 @@
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
+                selectedRandomQuestionText = null;
             } else {
                 let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
                 let resultHTML = itemDivs.join('');
@@ -618,6 +832,121 @@
             }
             lastSearchTerm = searchTerm;
             searchButton.textContent = "Search / Clear Search";
+            // Clear selections when new search runs
+            selectedRandomQuestionText = null;
+            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            refreshFloatingLookupVisibility();
+        }
+
+        /**
+         * Removes any leading emoji or symbol from a string. (from code A)
+         * @param {string} text The input string.
+         * @returns {string} The string with leading emojis/symbols removed.
+         */
+        function removeEmojiPrefix(text) {
+            return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim();
+        }
+
+        // --- Search/Translate helpers (from code A) ---
+        function searchQuestionOnGoogle() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(googleSearchUrl, '_blank');
+            } else {
+                alert("Please select a question first to look up on Google.");
+            }
+        }
+        function searchQuestionOnBing() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const url = `https://www.bing.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(url, '_blank');
+            } else {
+                alert("Please select a question first to look up on Bing.");
+            }
+        }
+        function searchQuestionOnDuckDuckGo() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const url = `https://duckduckgo.com/?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(url, '_blank');
+            } else {
+                alert("Please select a question first to look up on DuckDuckGo.");
+            }
+        }
+        function searchQuestionOnBrave() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const url = `https://search.brave.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(url, '_blank');
+            } else {
+                alert("Please select a question first to look up on Brave Search.");
+            }
+        }
+        function translateQuestionWithGoogle() { 
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const url = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(url, '_blank');
+            } else {
+                alert("Please select a question first to translate with Google.");
+            }
+        }
+        function translateQuestionWithBing() { 
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const url = `https://www.bing.com/translator/?from=auto&to=en&text=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(url, '_blank');
+            } else {
+                alert("Please select a question first to translate with Bing.");
+            }
+        }
+        function copyQuestionToClipboard() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = cleanedQuestion;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                alert("Question copied to clipboard!");
+            } else {
+                alert("No question selected to copy.");
+            }
+        }
+
+        function buildSharePayload() {
+            if (!selectedRandomQuestionText) return null;
+            const pageUrl = window.location.href;
+            const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+            return {
+                title: `Curious Souls Café - Custom Questions`,
+                text: cleanedQuestion,
+                url: pageUrl
+            };
+        }
+
+        async function handleShareSelectedQuestion() {
+            const payload = buildSharePayload();
+            if (!payload) {
+                alert("Please select a question first to share.");
+                return;
+            }
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: payload.title,
+                        text: payload.text,
+                        url: payload.url
+                    });
+                } catch (err) {
+                    console.warn("Web Share API failed or was canceled:", err);
+                }
+            }
+            // No fallback per code A
         }
 
         clearChosenButton.addEventListener('click', function() {
@@ -631,8 +960,14 @@
                 highlightedItems.forEach(item => {
                     chosenQuestionsDisplay.removeChild(item);
                 });
+                // If selected was among cleared, reset selection
+                const stillSelectedSaved = document.querySelector('.chosen-item.selected-chosen-item');
+                if (!stillSelectedSaved) {
+                    selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                }
             } else { 
                 chosenQuestionsDisplay.innerHTML = ''; 
+                selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
             }
             saveCurrentChosenQuestions();
             
@@ -641,6 +976,7 @@
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
             }
             updateClearButtonText();
+            refreshFloatingLookupVisibility();
             confirmationModal.classList.remove('show');
         });
 
@@ -674,6 +1010,51 @@
 
         confirmEmptySearchNo.addEventListener('click', function() {
             emptySearchModal.classList.remove('show');
+        });
+
+        // Floating Look Up / Translate Button Listener (from code A)
+        floatingLookupBtn.addEventListener('click', function() {
+            if (selectedRandomQuestionText) {
+                searchEngineModal.classList.add('show'); // Show the choice modal
+            } else {
+                alert("Please select a question first to look up online / translate.");
+            }
+        });
+
+        // Floating Share Button Listener (native share only)
+        floatingShareBtn.addEventListener('click', handleShareSelectedQuestion);
+
+        // Search Engine/Translate Choice Modal Listeners
+        searchGoogleChoiceBtn.addEventListener('click', function() {
+            searchQuestionOnGoogle();
+            searchEngineModal.classList.remove('show');
+        });
+        searchBingChoiceBtn.addEventListener('click', function() {
+            searchQuestionOnBing();
+            searchEngineModal.classList.remove('show');
+        });
+        searchDuckDuckGoChoiceBtn.addEventListener('click', function() { 
+            searchQuestionOnDuckDuckGo();
+            searchEngineModal.classList.remove('show');
+        });
+        searchBraveChoiceBtn.addEventListener('click', function() { 
+            searchQuestionOnBrave();
+            searchEngineModal.classList.remove('show');
+        });
+        translateGoogleChoiceBtn.addEventListener('click', function() { 
+            translateQuestionWithGoogle();
+            searchEngineModal.classList.remove('show');
+        });
+        translateBingChoiceBtn.addEventListener('click', function() { 
+            translateQuestionWithBing();
+            searchEngineModal.classList.remove('show');
+        });
+        copyQuestionBtn.addEventListener('click', function() {
+            copyQuestionToClipboard();
+            searchEngineModal.classList.remove('show');
+        });
+        closeSearchEngineModalBtn.addEventListener('click', function() {
+            searchEngineModal.classList.remove('show');
         });
 
         fetchQuestions();
