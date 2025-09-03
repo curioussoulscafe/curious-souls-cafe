@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Curious Souls Café is a simple, beautiful way to spark meaningful conversations—browse curated topics, use virtual dice roller with action prompts, and enjoy deep in-person or virtual discussions with friends or groups.">
+    <meta name="description" content="Curious Souls Café is a simple, beautiful way to spark meaningful conversations--browse curated topics, use virtual dice roller with action prompts, and enjoy deep in-person or virtual discussions with friends or groups.">
     <title>Curious Souls Café</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
@@ -407,6 +407,69 @@
             border-color: #8b5cf6;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        /* ADD: Getting Started modal list styles (ported from Code A) */
+        .getting-started-list {
+            list-style-type: none;
+            padding-left: 0;
+            text-align: left;
+            counter-reset: step-counter;
+        }
+        .getting-started-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .getting-started-list li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: #9f7aea; /* Purple for step number */
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        /* Inline share trigger button style (looks like italic text) */
+        #inline-share-trigger {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            color: #0000EE;
+            font-style: italic;
+            cursor: pointer;
+        }
+        #inline-share-trigger:hover, #inline-share-trigger:focus {
+            text-decoration: underline;
+            color: #551A8B;
+            outline: none;
+        }
+        /* Standard hyperlink color in modal body */
+        #getting-started-modal .getting-started-list a {
+            color: #0000EE !important;
+            font-weight: normal !important;
+            background: none !important;
+            border: none !important;
+            text-decoration: none !important;
+            cursor: pointer;
+        }
+        #getting-started-modal .getting-started-list a:hover,
+        #getting-started-modal .getting-started-list a:focus {
+            color: #551A8B !important;
+            text-decoration: underline !important;
+            outline: none;
+        }
+        #getting-started-modal .getting-started-list a:active {
+            color: #551A8B !important;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -529,12 +592,9 @@
             </div>
 
             <div class="flex justify-center items-center space-x-3 mt-4">
-                <!-- <a href="readme.html" target="_blank" rel="noopener noreferrer" class="info-link inline-flex items-center">
+                <a href="readme.html" target="_blank" rel="noopener noreferrer" class="info-link inline-flex items-center">
                     <i class="fas fa-info-circle mr-1"></i>Guide
-                </a> -->
-                <button id="open-guide-modal" class="info-link inline-flex items-center" type="button" aria-haspopup="dialog" aria-controls="guide-modal-overlay">
-                    <i class="fas fa-info-circle mr-1"></i>Guide
-                </button>
+                </a>
                 <span class="text-gray-400 text-lg select-none">|</span>
                 <!-- Feedback: replaced anchor link with modal trigger button (kept comment context) -->
                 <button id="open-feedback-modal" class="info-link inline-flex items-center" type="button" aria-haspopup="dialog" aria-controls="feedback-modal-overlay">
@@ -544,6 +604,11 @@
                 <!-- Blog: replaced anchor link with modal trigger button (similar to Feedback modal) -->
                 <button id="open-blog-modal" class="info-link inline-flex items-center" type="button" aria-haspopup="dialog" aria-controls="blog-modal-overlay">
                     <i class="fas fa-rss mr-1"></i>Blog
+                </button>
+                <span class="text-gray-400 text-lg select-none">|</span>
+                <!-- NEW: Get started trigger -->
+                <button id="open-getting-started" class="info-link inline-flex items-center" type="button" aria-haspopup="dialog" aria-controls="getting-started-modal">
+                    <i class="fas fa-rocket mr-1"></i>Get started
                 </button>
             </div>
              <div class="line-break"></div>
@@ -660,6 +725,39 @@
                     <i class="fa-solid fa-xmark mr-1"></i> Cancel
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- NEW: Getting Started Modal (ported & adapted from Code A) -->
+    <div id="getting-started-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="getting-started-title">
+        <div class="modal-content max-w-sm">
+            <h3 id="getting-started-title" class="text-xl font-semibold text-gray-800 mb-4">🚀 Get started</h3>
+            <ol class="getting-started-list">
+                <li><b>Invite others:</b> Share the <button id="inline-share-trigger" type="button"><i>QR code or link</i></button> so everyone can open this main page.</li>
+                <li><b>Pick a topic:</b> Choose one together below (you can favorite topics for quick access later).</li>
+                <li><b>Open the topic page:</b> Use “Next Questions!” to draw prompts, tap to save, and take turns answering together.<br><br><strong>Optional:</strong> Roll the <span style="font-style: italic"><a href="pages/dice.html">dice</a></span> to choose who starts or to add playful actions.</li>
+            </ol>
+            <button id="close-getting-started-modal" class="modal-button cancel mt-4">Got it!</button>
+        </div>
+    </div>
+
+    <!-- NEW: QR Code Modal (adapted for main page sharing) -->
+    <div id="qr-code-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
+        <div id="qr-modal-content" class="modal-content" style="max-width:350px; position:relative;">
+            <button class="qr-modal-close-button" id="qr-modal-close-button" style="position:absolute; top:0.75rem; right:0.75rem; background:none; border:none; font-size:1.5rem; cursor:pointer; color:#4a5568; line-height:1; padding:0.25rem; border-radius:50%;">&times;</button>
+            <h3 id="qr-modal-title" class="text-lg font-semibold text-gray-800 mb-2">Share This App</h3>
+            <p class="text-gray-600 text-sm mb-4">Scan to open the main page:</p>
+            <img id="qr-modal-image" src="images/qr/qr-code.png" alt="QR Code for this page"
+                 onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Loading';"
+                 style="width:100%; height:auto; max-width:250px; margin:0 auto 1rem auto; display:block; border-radius:0.5rem; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+            <p class="text-sm text-gray-700 mt-2">
+                <i class="fa-solid fa-link mr-1"></i> 
+                <a id="qr-link-anchor" href="https://curioussoulscafe.github.io" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io</a>
+                <br>
+                <button id="copy-link-text-link-qr" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link</button>
+                &nbsp;<span class="text-gray-400 text-sm select-none">|</span>&nbsp;&nbsp;<button id="share-link-button-qr" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-share-from-square"></i> Share...</button>
+            </p>
+            <p class="text-gray-500 text-sm mt-4">Help fellow curious souls launch this page and start the conversation! 😊</p>
         </div>
     </div>
 
@@ -1455,6 +1553,105 @@
             if (e.key === 'Escape' && guideModalOverlay.classList.contains('show')) {
                 closeGuideModal();
             }
+        });
+
+        // NEW: Getting Started modal wiring (ported from Code A, adapted)
+        const openGettingStartedBtn = document.getElementById('open-getting-started');
+        const gettingStartedModal = document.getElementById('getting-started-modal');
+        const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
+
+        openGettingStartedBtn.addEventListener('click', () => {
+            gettingStartedModal.classList.add('show');
+        });
+        closeGettingStartedModalBtn.addEventListener('click', () => {
+            gettingStartedModal.classList.remove('show');
+        });
+        gettingStartedModal.addEventListener('click', (e) => {
+            if (e.target === gettingStartedModal) gettingStartedModal.classList.remove('show');
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && gettingStartedModal.classList.contains('show')) {
+                gettingStartedModal.classList.remove('show');
+            }
+        });
+
+        // NEW: QR Code modal logic (adapted for main page)
+        const qrCodeModal = document.getElementById('qr-code-modal');
+        const qrModalCloseButton = document.getElementById('qr-modal-close-button');
+        const inlineShareTrigger = document.getElementById('inline-share-trigger');
+        const qrModalImage = document.getElementById('qr-modal-image');
+        const qrLinkAnchor = document.getElementById('qr-link-anchor');
+
+        // Track whether Share was opened from Getting Started modal to restore it on close
+        let shouldReturnToGettingStarted = false;
+
+        function openShareModal(openedFromGettingStarted = false) {
+            shouldReturnToGettingStarted = openedFromGettingStarted;
+            const pageUrl = 'https://curioussoulscafe.github.io';
+            const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+            qrModalImage.src = qrCodeApiUrl;
+            qrLinkAnchor.href = pageUrl;
+            qrLinkAnchor.textContent = pageUrl;
+            qrCodeModal.classList.add('show');
+        }
+
+        function closeShareModal() {
+            qrCodeModal.classList.remove('show');
+            if (shouldReturnToGettingStarted) {
+                gettingStartedModal.classList.add('show');
+            }
+            shouldReturnToGettingStarted = false;
+        }
+
+        // Open from inline link in Getting Started modal
+        inlineShareTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            gettingStartedModal.classList.remove('show');
+            openShareModal(true);
+        });
+
+        // Close handlers
+        qrModalCloseButton.addEventListener('click', closeShareModal);
+        qrCodeModal.addEventListener('click', (e) => {
+            if (e.target === qrCodeModal) closeShareModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && qrCodeModal.classList.contains('show')) {
+                closeShareModal();
+            }
+        });
+
+        // Copy/Share inside QR modal (Web Share API only; no fallback)
+        const copyLinkTextLinkQr = document.getElementById('copy-link-text-link-qr');
+        const shareLinkButtonQr = document.getElementById('share-link-button-qr');
+
+        copyLinkTextLinkQr.addEventListener('click', (event) => {
+            event.preventDefault();
+            const pageUrl = 'https://curioussoulscafe.github.io';
+            const tempInput = document.createElement('textarea');
+            tempInput.value = pageUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert("Link copied to clipboard!");
+        });
+
+        shareLinkButtonQr.addEventListener('click', async (event) => {
+            event.preventDefault();
+            const pageUrl = 'https://curioussoulscafe.github.io';
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Curious Souls Café',
+                        text: 'Join me at Curious Souls Café!',
+                        url: pageUrl
+                    });
+                } catch (err) {
+                    console.warn('Share canceled or failed:', err);
+                }
+            }
+            // If navigator.share is not available, do nothing
         });
 
     </script>    
