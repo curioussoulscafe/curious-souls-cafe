@@ -50,10 +50,10 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Purpose](https://curioussoulscafe.github.io/curious-souls-cafe/pages/purpose.html)**: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.
 - **[Reflection](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
 - **[Reimagine](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
-- **[Work that Resonates](https://curioussoulscafe.github.io/curious-souls-cafe/pages/work-that-resonates.html)**: Explore your evolving relationship with work, purpose, and fulfillment.
 - **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, mindfulness, and personal well-being.
 - **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.
 - **[True Wealth](https://curioussoulscafe.github.io/curious-souls-cafe/pages/true-wealth.html)**: Explore what it means to live a truly rich life—beyond material wealth—through questions that spark reflection on abundance, sufficiency, connection, and purpose.
+- **[Work that Resonates](https://curioussoulscafe.github.io/curious-souls-cafe/pages/work-that-resonates.html)**: Explore your evolving relationship with work, purpose, and fulfillment.
 
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html), [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/global-curiosities.html) from our global events.
 
