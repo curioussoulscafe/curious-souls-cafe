@@ -89,6 +89,97 @@
             background-color: #805ad5; /* Purple-600 */
         }
 
+        /* Floating Look Up / Translate Button -- icon-only (imported from code a) */
+        #floating-lookup {
+            position: fixed;
+            bottom: 148px; /* sits above the Top button baseline; positioned similar to code a */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #3b82f6, #10b981); /* blue to green */
+            color: #ffffff;
+            display: none; /* Hidden by default; shown when an action is selected */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1150; /* above Share for emphasis */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+            cursor: pointer;
+        }
+        #floating-lookup i {
+            font-size: 1.25rem; /* match visual weight with share icon */
+        }
+        #floating-lookup:hover, #floating-lookup:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-lookup:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Floating Share Button (imported from code a) */
+        #floating-share {
+            position: fixed;
+            bottom: 214px; /* above lookup (148 + 56 + ~10 gap) */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #a855f7, #ec4899); /* purple to pink */
+            color: #ffffff;
+            display: none; /* Hidden by default; shown when an action is selected */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1130; /* below lookup but above Top */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+            cursor: pointer;
+        }
+        #floating-share i {
+            font-size: 1.15rem;
+        }
+        #floating-share:hover, #floating-share:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-share:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        @media (max-width: 480px) {
+            #back-to-top {
+                bottom: 16px;
+                right: 16px;
+            }
+            /* mobile lookup placement */
+            #floating-lookup {
+                width: 52px;
+                height: 52px;
+                right: 16px;
+                bottom: 140px; /* Top baseline adjusted for mobile */
+            }
+            #floating-lookup i {
+                font-size: 1.15rem;
+            }
+            /* mobile share placement */
+            #floating-share {
+                width: 52px;
+                height: 52px;
+                right: 16px;
+                bottom: 204px; /* lookup bottom (140) + 52 + ~12 gap */
+            }
+            #floating-share i {
+                font-size: 1.05rem;
+            }
+        }
+
         /* Styles for the embedded leave page button */
         #back-to-topics {
             background-color: #c53030; /* Deeper red for "Leave Page" */
@@ -372,6 +463,16 @@
         </a> -->
     </div>
 
+    <!-- Floating Look Up / Translate Button -- icon only -->
+    <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
+        <i class="fas fa-search"></i>
+    </button>
+
+    <!-- Floating Share Button -->
+    <button id="floating-share" title="Share selected action" aria-label="Share selected action">
+        <i class="fas fa-share-nodes"></i>
+    </button>
+
     <button id="back-to-top" title="Back to Top">
         &#9650; Top
     </button>
@@ -398,6 +499,48 @@
                 <button id="confirm-empty-search-yes" class="modal-button confirm">Proceed</button>
                 <button id="confirm-empty-search-no" class="modal-button cancel">No</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Search/Translate Choice Modal (imported from code a, adapted to "action") -->
+    <div id="search-engine-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
+            
+            <h4 class="modal-subheading" style="font-size: 1.125rem; font-weight: 600; color: #4a5568; margin-top: 1rem; margin-bottom: 0.75rem; text-align: left; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">Web Search</h4>
+            <div class="flex flex-col items-center">
+                <button id="search-google-choice-btn" style="background-color: #4285F4; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fab fa-google" style="margin-right: 0.5rem;"></i> Search Google
+                </button>
+                <button id="search-bing-choice-btn" style="background-color: #008AD6; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fab fa-microsoft" style="margin-right: 0.5rem;"></i> Search Bing
+                </button>
+                <button id="search-duckduckgo-choice-btn" style="background-color: #e3722a; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fas fa-search" style="margin-right: 0.5rem;"></i> Search DuckDuckGo
+                </button>
+                <button id="search-brave-choice-btn" style="background-color: #FB542B; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fas fa-magnifying-glass" style="margin-right: 0.5rem;"></i> Search Brave
+                </button>
+            </div>
+
+            <h4 class="modal-subheading" style="font-size: 1.125rem; font-weight: 600; color: #4a5568; margin-top: 1rem; margin-bottom: 0.75rem; text-align: left; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">Translation Services</h4>
+            <div class="flex flex-col items-center">
+                <button id="translate-google-choice-btn" style="background-color: #60a5fa; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fas fa-language" style="margin-right: 0.5rem;"></i> Translate with Google
+                </button>
+                <button id="translate-bing-choice-btn" style="background-color: #008AD6; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fas fa-language" style="margin-right: 0.5rem;"></i> Translate with Bing
+                </button>
+            </div>
+
+            <h4 class="modal-subheading" style="font-size: 1.125rem; font-weight: 600; color: #4a5568; margin-top: 1rem; margin-bottom: 0.75rem; text-align: left; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">Other Actions</h4>
+            <div class="flex flex-col items-center">
+                <button id="copy-action-btn" style="background-color: #48bb78; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                    <i class="fas fa-copy" style="margin-right: 0.5rem;"></i> Copy Action
+                </button>
+            </div>
+
+            <button id="close-search-engine-modal" class="modal-button cancel mt-4">Cancel</button>
         </div>
     </div>
 
@@ -465,6 +608,7 @@
         let itemList = []; 
         let lastSearchTerm = "";
         let availableRandomItems = [];
+        let selectedActionText = null; // Stores the text of the currently selected random/search action
 
         const randomizeButton = document.getElementById('randomize-button');
         const resultDisplay = document.getElementById('random-result');
@@ -480,6 +624,10 @@
         const appTitleElement = document.getElementById('app-title');
         const topicTitleElement = document.getElementById('topic-title');
 
+        // Floating buttons (imported features)
+        const floatingLookupBtn = document.getElementById('floating-lookup'); // New Floating Look Up / Translate button
+        const floatingShareBtn = document.getElementById('floating-share');   // NEW Floating Share Button (native only)
+
         // Modal elements
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
@@ -489,6 +637,18 @@
         const emptySearchModal = document.getElementById('empty-search-modal');
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
         const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
+        // Search Engine/Translate Choice Modal elements
+        const searchEngineModal = document.getElementById('search-engine-modal');
+        const searchGoogleChoiceBtn = document.getElementById('search-google-choice-btn');
+        const searchBingChoiceBtn = document.getElementById('search-bing-choice-btn');
+        const searchDuckDuckGoChoiceBtn = document.getElementById('search-duckduckgo-choice-btn'); 
+        const searchBraveChoiceBtn = document.getElementById('search-brave-choice-btn'); 
+        const translateGoogleChoiceBtn = document.getElementById('translate-google-choice-btn'); 
+        const translateBingChoiceBtn = document.getElementById('translate-bing-choice-btn'); 
+        const closeSearchEngineModalBtn = document.getElementById('close-search-engine-modal');
+        // Copy Action button
+        const copyActionBtn = document.getElementById('copy-action-btn');
 
         // New QR Code Modal elements
         // const showQrCodeLink = document.getElementById('show-qr-code-link');
@@ -612,25 +772,63 @@
             return selectedItems;
         }
 
+        /**
+         * Show or hide the floating lookup/share buttons based on whether any action is selected anywhere.
+         */
+        function refreshFloatingButtonsVisibility() {
+            const hasSelectedFromRandomOrSearch = document.querySelector('.item.selected-item') !== null;
+            const hasSelectedFromSaved = document.querySelector('.chosen-item.selected-chosen-item') !== null;
+            const shouldShow = !!selectedActionText && (hasSelectedFromRandomOrSearch || hasSelectedFromSaved);
+
+            const displayStyle = shouldShow ? 'flex' : 'none';
+            floatingLookupBtn.style.display = displayStyle;
+            floatingShareBtn.style.display = displayStyle;
+        }
+
+        /**
+         * Removes any leading emoji or symbol from a string.
+         * (regex from code a)
+         */
+        function removeEmojiPrefix(text) {
+            return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim();
+        }
+
+        /**
+         * Adds highlighting logic and click handler for selecting actions.
+         * Controls visibility of the floating features buttons based on selection.
+         * @param {HTMLElement} targetElement The container element holding the items (e.g., resultDisplay, searchResultsDisplay).
+         */
         function addHighlightingAndChooseLogic(targetElement) {
             const items = targetElement.querySelectorAll('.item');
             items.forEach(item => {
                 item.addEventListener('click', function() {
                     const actionText = this.textContent;
 
+                    // Remove selected-item from previously selected item in resultDisplay or searchResultsDisplay
+                    const previouslySelected = document.querySelectorAll('.item.selected-item');
+                    previouslySelected.forEach(el => {
+                        if (el !== this) el.classList.remove('selected-item');
+                    });
+
+                    // Also clear any selected saved items to keep a single active source
+                    document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+
                     this.classList.toggle('selected-item');
 
                     if (this.classList.contains('selected-item')) {
-                        addChosenAction(actionText);
+                        selectedActionText = actionText;
+                        addChosenAction(actionText); // Also add to saved actions if selected
                     } else {
-                        removeChosenAction(actionText);
+                        selectedActionText = null;
+                        // Keep saved list unchanged; user controls removals there
                     }
+                    refreshFloatingButtonsVisibility();
                 });
             });
         }
 
         /**
-         * Adds a action to the DOM display and saves it to localStorage.
+         * Adds an action to the DOM display and saves it to localStorage.
          * @param {string} actionText - The text of the action to add.
          */
         function addChosenAction(actionText) {
@@ -643,7 +841,7 @@
         }
 
         /**
-         * Helper function to add a action div to the DOM without affecting localStorage.
+         * Helper function to add an action div to the DOM without affecting localStorage.
          * Used for both initial loading and user interaction.
          * @param {string} actionText - The text of the action to add.
          */
@@ -654,8 +852,24 @@
             chosenActionsDisplay.appendChild(chosenItemDiv);
 
             chosenItemDiv.addEventListener('click', function() {
-                this.classList.toggle('selected-chosen-item');
+                // When selecting in Saved, clear selections in random/search for clarity
+                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+
+                // Toggle selection in saved
+                const willSelect = !this.classList.contains('selected-chosen-item');
+
+                // Only allow one active selected in saved at a time
+                document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+
+                if (willSelect) {
+                    this.classList.add('selected-chosen-item');
+                    selectedActionText = this.textContent;
+                } else {
+                    this.classList.remove('selected-chosen-item');
+                    selectedActionText = null;
+                }
                 updateClearButtonText();
+                refreshFloatingButtonsVisibility();
             });
 
             const placeholder = chosenActionsDisplay.querySelector('p.text-gray-500');
@@ -665,7 +879,7 @@
         }
 
         /**
-         * Removes a action from the DOM display and from localStorage.
+         * Removes an action from the DOM display and from localStorage.
          * @param {string} actionText - The text of the action to remove.
          */
         function removeChosenAction(actionText) {
@@ -673,6 +887,10 @@
             let removedFromDOM = false;
             chosenItems.forEach(item => {
                 if (item.textContent === actionText) {
+                    // If this item was the currently-selected source for floating buttons, reset selection
+                    if (item.classList.contains('selected-chosen-item')) {
+                        selectedActionText = null;
+                    }
                     chosenActionsDisplay.removeChild(item);
                     removedFromDOM = true;
                 }
@@ -687,11 +905,14 @@
                 chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a action above to add it here, or tap/click again to remove it.</p>`;
             } 
             updateClearButtonText();
+            refreshFloatingButtonsVisibility();
         }
 
         function displayRandomItems() {
             if (itemList.length === 0) {
                 resultDisplay.textContent = "No actions available to pick. Please load actions first.";
+                selectedActionText = null;
+                refreshFloatingButtonsVisibility();
                 return;
             }
             const numItemsToPick = parseInt(itemCountInput.value);
@@ -705,11 +926,18 @@
                 resultDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(resultDisplay);
             }
+            // Reset selections across all sections when generating new random set
+            selectedActionText = null;
+            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            refreshFloatingButtonsVisibility();
         }
 
         function displayFilteredItems() {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No actions available to search.</p>`;
+                selectedActionText = null;
+                refreshFloatingButtonsVisibility();
                 return;
             }
             const currentSearchTerm = searchInput.value.trim().toLowerCase();
@@ -718,10 +946,14 @@
                 searchResultsDisplay.innerHTML = '';
                 searchButton.textContent = "Search";
                 lastSearchTerm = "";
+                selectedActionText = null;
+                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+                refreshFloatingButtonsVisibility();
                 return;
             }
 
             if (currentSearchTerm === "") {
+                // Show confirmation that empty search will display all
                 emptySearchModal.classList.add('show');
                 return;
             }
@@ -732,6 +964,8 @@
         function executeSearch(searchTerm) {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No actions available to search.</p>`;
+                selectedActionText = null;
+                refreshFloatingButtonsVisibility();
                 return;
             }
             
@@ -739,6 +973,7 @@
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No actions found matching your search.</p>`;
+                selectedActionText = null;
             } else {
                 let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
                 let resultHTML = itemDivs.join('');
@@ -747,8 +982,109 @@
             }
             lastSearchTerm = searchTerm;
             searchButton.textContent = "Search / Clear Search";
+            // Clear all selections when new search runs
+            selectedActionText = null;
+            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            refreshFloatingButtonsVisibility();
         }
 
+        // --- Search Engine Functions (imported from code a, adapted to actions) ---
+        /**
+         * Opens a new tab to search/translate the selected action using the provided base URL.
+         */
+        function openSearch(urlBase) {
+            if (!selectedActionText) {
+                alert("Please select an action first.");
+                return;
+            }
+            const cleaned = removeEmojiPrefix(selectedActionText);
+            const url = urlBase + encodeURIComponent(cleaned);
+            window.open(url, '_blank');
+        }
+
+        /** Opens a new tab to search the selected action on Google. */
+        function searchOnGoogle() { openSearch('https://www.google.com/search?q='); }
+
+        /** Opens a new tab to search the selected action on Bing. */
+        function searchOnBing() { openSearch('https://www.bing.com/search?q='); }
+
+        /** Opens a new tab to search the selected action on DuckDuckGo. */
+        function searchOnDuckDuckGo() { openSearch('https://duckduckgo.com/?q='); }
+
+        /** Opens a new tab to search the selected action on Brave Search. */
+        function searchOnBrave() { openSearch('https://search.brave.com/search?q='); }
+
+        /** Opens a new tab to translate the selected action using Google Translate. */
+        function translateWithGoogle() { openSearch('https://translate.google.com/?sl=auto&tl=en&text='); }
+
+        /** Opens a new tab to translate the selected action using Bing Translate. */
+        function translateWithBing() { openSearch('https://www.bing.com/translator/?from=auto&to=en&text='); }
+
+        /**
+         * Copies the selected action text to the clipboard.
+         */
+        function copyActionToClipboard() {
+            if (!selectedActionText) {
+                alert("No action selected to copy.");
+                return;
+            }
+            const cleaned = removeEmojiPrefix(selectedActionText);
+            // Create a temporary textarea element to copy the text
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = cleaned;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            // Provide visual feedback
+            alert("Action copied to clipboard!");
+        }
+
+        /**
+         * Build payload for native share. Avoid URL duplication by putting
+         * action in text and page URL in url.
+         */
+        function buildSharePayload() {
+            if (!selectedActionText) return null;
+            const pageUrl = window.location.href;
+            const cleaned = removeEmojiPrefix(selectedActionText);
+            return {
+                title: `Curious Souls Café - ${displayTopicName}`,
+                text: cleaned, // action only
+                url: pageUrl    // URL separate; many share sheets append it
+            };
+        }
+
+        /**
+         * Attempt to share via Web Share API only; no platform-specific fallback.
+         */
+        async function handleShareSelectedAction() {
+            const payload = buildSharePayload();
+            if (!payload) {
+                alert("Please select an action first to share.");
+                return;
+            }
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: payload.title,
+                        text: payload.text,
+                        url: payload.url
+                    });
+                    return;
+                } catch (err) {
+                    // If user cancels or share fails, we intentionally do nothing else
+                    console.warn("Web Share API failed or was canceled:", err);
+                }
+            } else {
+                // No fallback -- intentionally do nothing (or optionally:
+                // alert("Sharing is not supported in this browser. Use the QR/link option instead.");
+            }
+        }
+
+        // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
             confirmationModal.classList.add('show');
         });
@@ -770,6 +1106,15 @@
                 chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a action above to add it here, or tap/click again to remove it.</p>`;
             }
             updateClearButtonText();
+            // If the selected action was among cleared, reset selection
+            if (selectedActionText) {
+                const stillSelectedSaved = Array.from(chosenActionsDisplay.querySelectorAll('.chosen-item'))
+                    .some(el => el.textContent === selectedActionText);
+                if (!stillSelectedSaved) {
+                    selectedActionText = document.querySelector('.item.selected-item')?.textContent || null;
+                }
+            }
+            refreshFloatingButtonsVisibility();
             confirmationModal.classList.remove('show');
         });
 
@@ -803,6 +1148,59 @@
 
         confirmEmptySearchNo.addEventListener('click', function() {
             emptySearchModal.classList.remove('show');
+        });
+
+        // Floating Look Up / Translate Button Listener
+        floatingLookupBtn.addEventListener('click', function() {
+            if (selectedActionText) {
+                searchEngineModal.classList.add('show'); // Show the choice modal
+            } else {
+                alert("Please select an action first to look up online / translate.");
+            }
+        });
+
+        // NEW: Floating Share Button Listener (native share only)
+        floatingShareBtn.addEventListener('click', handleShareSelectedAction);
+
+        // Search Engine/Translate Choice Modal Listeners
+        searchGoogleChoiceBtn.addEventListener('click', function() {
+            searchOnGoogle();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchBingChoiceBtn.addEventListener('click', function() {
+            searchOnBing();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchDuckDuckGoChoiceBtn.addEventListener('click', function() { 
+            searchOnDuckDuckGo();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchBraveChoiceBtn.addEventListener('click', function() { 
+            searchOnBrave();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        translateGoogleChoiceBtn.addEventListener('click', function() { 
+            translateWithGoogle();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        translateBingChoiceBtn.addEventListener('click', function() { 
+            translateWithBing();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        // Copy Action Listener
+        copyActionBtn.addEventListener('click', function() {
+            copyActionToClipboard();
+            searchEngineModal.classList.remove('show'); // Hide modal after copying
+        });
+
+        closeSearchEngineModalBtn.addEventListener('click', function() {
+            searchEngineModal.classList.remove('show'); // Hide modal on cancel
         });
 
         // --- QR Code Modal Logic ---
