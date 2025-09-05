@@ -113,7 +113,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * In case the screen becomes too crowded after a search, simply tap the sticky **"Top" button** and then click the **"Search" button** again (or "Clear Search") to clear the search results and tidy up the display.
 
-## 📂 How Files Are Organized
+## 📂 Advanced: How Files Are Organized
 
 The Curious Souls Café web app keeps its files organized in a clear and maintainable way:
 
@@ -127,7 +127,7 @@ The Curious Souls Café web app keeps its files organized in a clear and maintai
 
 * Image files, including `qr-code.png` and `csc_logo.jpg`, are stored in the **`images/` folder**.
 
-## 💪 For Event Facilitators
+## 💪 Advanced: For Event Facilitators
 
 ### ➡️ How to Add New Question Sets
 
