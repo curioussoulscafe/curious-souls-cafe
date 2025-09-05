@@ -251,6 +251,85 @@
     /* Small helpers */
     .nowrap { white-space: nowrap; }
     .wrap-anywhere { overflow-wrap: anywhere; }
+
+    /* ===========================================
+       Imported styles from code B for modal options
+       =========================================== */
+
+    .modal-subheading {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-top: 1rem;
+      margin-bottom: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Search/translate/copy choice buttons */
+    #search-google-choice-btn {
+      background-color: #4285F4; color: white; font-weight: bold;
+      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
+    }
+    #search-google-choice-btn:hover { background-color: #357ae8; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+    #search-google-choice-btn i { margin-right: 0.5rem; }
+
+    #search-bing-choice-btn {
+      background-color: #008AD6; color: white; font-weight: bold;
+      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
+    }
+    #search-bing-choice-btn:hover { background-color: #006FB7; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+    #search-bing-choice-btn i { margin-right: 0.5rem; }
+
+    #search-duckduckgo-choice-btn {
+      background-color: #e3722a; color: white; font-weight: bold;
+      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
+    }
+    #search-duckduckgo-choice-btn:hover { background-color: #c96024; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+    #search-duckduckgo-choice-btn i { margin-right: 0.5rem; }
+
+    #search-brave-choice-btn {
+      background-color: #FB542B; color: white; font-weight: bold;
+      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
+    }
+    #search-brave-choice-btn:hover { background-color: #d14424; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+    #search-brave-choice-btn i { margin-right: 0.5rem; }
+
+    #translate-google-choice-btn {
+      background-color: #60a5fa; color: white; font-weight: bold;
+      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
+    }
+    #translate-google-choice-btn:hover { background-color: #3b82f6; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+    #translate-google-choice-btn i { margin-right: 0.5rem; }
+
+    #translate-bing-choice-btn {
+      background-color: #008AD6; color: white; font-weight: bold;
+      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
+    }
+    #translate-bing-choice-btn:hover { background-color: #006FB7; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+    #translate-bing-choice-btn i { margin-right: 0.5rem; }
+
+    #copy-question-btn {
+      background-color: #48bb78; color: white; font-weight: bold;
+      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
+    }
+    #copy-question-btn:hover { background-color: #38a169; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+    #copy-question-btn i { margin-right: 0.5rem; }
   </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-start min-h-screen p-4">
@@ -326,23 +405,23 @@
     <div class="modal-content">
       <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
 
-      <h4 class="text-left text-gray-700 font-semibold border-b border-gray-200 pb-2 mb-3">Web Search</h4>
+      <h4 class="modal-subheading">Web Search</h4>
       <div class="flex flex-col items-center">
-        <button id="search-google-choice-btn" class="choice-btn" type="button"><i class="fab fa-google"></i> Search Google</button>
-        <button id="search-bing-choice-btn" class="choice-btn" type="button"><i class="fab fa-microsoft"></i> Search Bing</button>
-        <button id="search-duckduckgo-choice-btn" class="choice-btn" type="button"><i class="fas fa-search"></i> Search DuckDuckGo</button>
-        <button id="search-brave-choice-btn" class="choice-btn" type="button"><i class="fas fa-magnifying-glass"></i> Search Brave</button>
+        <button id="search-google-choice-btn" type="button"><i class="fab fa-google"></i> Search Google</button>
+        <button id="search-bing-choice-btn" type="button"><i class="fab fa-microsoft"></i> Search Bing</button>
+        <button id="search-duckduckgo-choice-btn" type="button"><i class="fas fa-search"></i> Search DuckDuckGo</button>
+        <button id="search-brave-choice-btn" type="button"><i class="fas fa-magnifying-glass"></i> Search Brave</button>
       </div>
 
-      <h4 class="text-left text-gray-700 font-semibold border-b border-gray-200 pb-2 mt-4 mb-3">Translation Services</h4>
+      <h4 class="modal-subheading">Translation Services</h4>
       <div class="flex flex-col items-center">
-        <button id="translate-google-choice-btn" class="choice-btn" type="button"><i class="fas fa-language"></i> Translate with Google</button>
-        <button id="translate-bing-choice-btn" class="choice-btn" type="button"><i class="fas fa-language"></i> Translate with Bing</button>
+        <button id="translate-google-choice-btn" type="button"><i class="fas fa-language"></i> Translate with Google</button>
+        <button id="translate-bing-choice-btn" type="button"><i class="fas fa-language"></i> Translate with Bing</button>
       </div>
 
-      <h4 class="text-left text-gray-700 font-semibold border-b border-gray-200 pb-2 mt-4 mb-3">Other Actions</h4>
+      <h4 class="modal-subheading">Other Actions</h4>
       <div class="flex flex-col items-center">
-        <button id="copy-question-btn" class="choice-btn" type="button"><i class="fas fa-copy"></i> Copy Text</button>
+        <button id="copy-question-btn" type="button"><i class="fas fa-copy"></i> Copy Text</button>
       </div>
 
       <button id="close-search-engine-modal" class="modal-button cancel mt-4" type="button">Cancel</button>
