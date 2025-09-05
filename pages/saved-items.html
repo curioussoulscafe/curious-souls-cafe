@@ -304,6 +304,7 @@
       </div>
       <div class="flex flex-wrap gap-2">
         <button id="clear-all-btn" class="pill danger"><i class="fa-solid fa-trash-can mr-1"></i>Clear All Saved</button>
+        <button id="export-all-btn" class="pill primary"><i class="fa-solid fa-file-arrow-down mr-1"></i>Export All</button>
         <button id="expand-all-btn" class="pill muted"><i class="fa-solid fa-angles-down mr-1"></i>Expand All</button>
         <button id="collapse-all-btn" class="pill muted"><i class="fa-solid fa-angles-up mr-1"></i>Collapse All</button>
         <a href="../index.html" class="pill"><i class="fa-solid fa-house mr-1"></i>Home</a>
@@ -426,6 +427,7 @@
     const emptyStateEl = document.getElementById('empty-state');
     const summaryEl = document.getElementById('summary');
     const clearAllBtn = document.getElementById('clear-all-btn');
+    const exportAllBtn = document.getElementById('export-all-btn');
     const expandAllBtn = document.getElementById('expand-all-btn');
     const collapseAllBtn = document.getElementById('collapse-all-btn');
     const actionsMount = document.getElementById('actions-mount');
@@ -623,7 +625,7 @@
         const list = document.createElement('div');
         list.className = 'space-y-2';
 
-        filtered.forEach(q => {
+        (filtered).forEach(q => {
           const chip = document.createElement('div');
           chip.className = 'question-chip';
 
@@ -846,6 +848,68 @@
 
       render();
       clearAllSelected();
+    });
+
+    // Export all saved items to a text file
+    function buildExportText() {
+      const topics = readAllSavedQuestions();
+      const actions = readSavedActions();
+
+      const topicsWithSaved = topics.filter(t => t.questions.length > 0);
+      const totalQuestions = topicsWithSaved.reduce((sum, t) => sum + t.questions.length, 0);
+      const totalActions = actions.length;
+
+      const lines = [];
+      const now = new Date();
+      lines.push('Curious Souls Café — Saved Items Export');
+      lines.push(`Generated: ${now.toLocaleString()}`);
+      lines.push(`Topics with saved questions: ${topicsWithSaved.length}`);
+      lines.push(`Total saved questions: ${totalQuestions}`);
+      lines.push(`Saved actions: ${totalActions}`);
+      lines.push('');
+
+      if (topicsWithSaved.length === 0 && totalActions === 0) {
+        lines.push('(No saved items found)');
+      } else {
+        // Topics
+        topicsWithSaved.forEach(topic => {
+          lines.push(`## ${topic.topicName} (${topic.questions.length})`);
+          topic.questions.forEach((q, idx) => {
+            const clean = (q || '').toString();
+            lines.push(`- ${clean}`);
+          });
+          lines.push(''); // blank line after each topic
+        });
+
+        // Actions
+        if (totalActions > 0) {
+          lines.push(`## Saved Actions (${totalActions})`);
+          actions.forEach(a => {
+            const clean = (a || '').toString();
+            lines.push(`- ${clean}`);
+          });
+          lines.push('');
+        }
+      }
+
+      return lines.join('\n');
+    }
+
+    function downloadTextFile(filename, text) {
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    exportAllBtn.addEventListener('click', () => {
+      const text = buildExportText();
+      downloadTextFile('curious-souls-saved.txt', text);
     });
 
     expandAllBtn.addEventListener('click', () => {
