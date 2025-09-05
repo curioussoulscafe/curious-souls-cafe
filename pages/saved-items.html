@@ -10,10 +10,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <style>
     :root { --highlight-color: #57FCFF; }
+
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(to right, #f3f4f6 0%, #ede9fe 20%, #ede9fe 80%, #f3f4f6 100%);
     }
+
     .topic-card {
       background-color: #ffffff;
       border: 1px solid #e5e7eb;
@@ -21,6 +23,7 @@
       padding: 1rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.06);
     }
+
     .question-chip, .action-chip {
       display: flex;
       align-items: center;
@@ -29,13 +32,20 @@
       background-color: #f8fafc;
       border: 1px solid #e5e7eb;
       border-radius: 0.75rem;
-      padding: 0.75rem 0.75rem;
+      padding: 0.9rem 0.9rem;
       transition: background 0.15s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.15s;
+      cursor: pointer;
     }
     .question-chip:hover, .action-chip:hover {
       background-color: #eef2ff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
+    .selected-chip {
+      background-color: var(--highlight-color);
+      transform: scale(1.02);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
     .question-text, .action-text {
       font-size: 1rem;
       color: #111827;
@@ -50,6 +60,7 @@
     .question-actions button:active, .action-actions button:active {
       transform: scale(0.98);
     }
+
     .pill {
       border: 1px solid #d1d5db;
       background-color: #ffffff;
@@ -60,39 +71,17 @@
       font-size: 0.9rem;
       transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
     }
-    .pill:hover {
-      background-color: #f3f4f6;
-    }
-    .danger {
-      background-color: #fee2e2;
-      color: #991b1b;
-      border-color: #fecaca;
-    }
-    .danger:hover {
-      background-color: #fecaca;
-    }
-    .primary {
-      background-color: #8b5cf6;
-      color: #ffffff;
-      border-color: #8b5cf6;
-    }
-    .primary:hover {
-      background-color: #7c3aed;
-    }
-    .muted {
-      background-color: #f3f4f6;
-      color: #374151;
-      border-color: #e5e7eb;
-    }
-    .muted:hover {
-      background-color: #e5e7eb;
-    }
-    .section-title {
-      color: #6b46c1;
-    }
-    .subtle {
-      color: #6b7280;
-    }
+    .pill:hover { background-color: #f3f4f6; }
+    .danger { background-color: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    .danger:hover { background-color: #fecaca; }
+    .primary { background-color: #8b5cf6; color: #ffffff; border-color: #8b5cf6; }
+    .primary:hover { background-color: #7c3aed; }
+    .muted { background-color: #f3f4f6; color: #374151; border-color: #e5e7eb; }
+    .muted:hover { background-color: #e5e7eb; }
+
+    .section-title { color: #6b46c1; }
+    .subtle { color: #6b7280; }
+
     .empty-state {
       background: #f8fafc;
       border: 1px dashed #d1d5db;
@@ -101,6 +90,7 @@
       color: #6b7280;
       text-align: center;
     }
+
     .search-input {
       border: 1px solid #d1d5db;
       border-radius: 0.5rem;
@@ -113,6 +103,7 @@
       border-color: #8b5cf6;
       box-shadow: 0 0 0 3px rgba(139,92,246,0.25);
     }
+
     .badge {
       background: #ede9fe;
       color: #6b46c1;
@@ -121,6 +112,7 @@
       font-size: 0.75rem;
       font-weight: 700;
     }
+
     .toolbar {
       position: sticky;
       top: 0;
@@ -129,6 +121,155 @@
       backdrop-filter: blur(6px);
       border-bottom: 1px solid #e5e7eb;
     }
+
+    /* Floating buttons */
+    #back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #6b46c1;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      display: none;
+      transition: opacity 0.3s ease-in-out, transform 0.15s ease-in-out;
+      z-index: 1000;
+    }
+    #back-to-top:hover { background-color: #805ad5; transform: translateY(-2px); }
+
+    #floating-dice, #floating-lookup, #floating-share {
+      position: fixed;
+      right: 20px;
+      width: 56px; height: 56px;
+      border-radius: 9999px;
+      color: #ffffff;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      text-decoration: none;
+      transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+    }
+    #floating-dice {
+      bottom: 80px;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      z-index: 1100;
+    }
+    #floating-dice:hover, #floating-dice:focus { transform: translateY(-2px) scale(1.03); box-shadow: 0 10px 18px rgba(0,0,0,0.2); outline: none; filter: brightness(1.05); }
+    #floating-dice .fa-dice { font-size: 1.4rem; }
+
+    #floating-lookup {
+      bottom: 148px;
+      background: linear-gradient(135deg, #3b82f6, #10b981);
+      display: none;
+      z-index: 1150;
+      cursor: pointer;
+    }
+    #floating-lookup i { font-size: 1.25rem; }
+    #floating-lookup:hover, #floating-lookup:focus { transform: translateY(-2px) scale(1.03); box-shadow: 0 10px 18px rgba(0,0,0,0.2); outline: none; filter: brightness(1.05); }
+
+    #floating-share {
+      bottom: 214px;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      display: none;
+      z-index: 1130;
+      cursor: pointer;
+    }
+    #floating-share i { font-size: 1.15rem; }
+    #floating-share:hover, #floating-share:focus { transform: translateY(-2px) scale(1.03); box-shadow: 0 10px 18px rgba(0,0,0,0.2); outline: none; filter: brightness(1.05); }
+
+    @media (max-width: 480px) {
+      #floating-dice { width: 52px; height: 52px; bottom: 76px; right: 16px; }
+      #floating-dice .fa-dice { font-size: 1.25rem; }
+      #back-to-top { bottom: 16px; right: 16px; }
+      #floating-lookup { width: 52px; height: 52px; right: 16px; bottom: 140px; }
+      #floating-lookup i { font-size: 1.15rem; }
+      #floating-share { width: 52px; height: 52px; right: 16px; bottom: 204px; }
+      #floating-share i { font-size: 1.05rem; }
+    }
+
+    /* Modal system */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 2000;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+    .modal-content {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 360px; width: 90%;
+      transform: translateY(-20px);
+      transition: transform 0.3s ease-in-out;
+    }
+    .modal-overlay.show .modal-content { transform: translateY(0); }
+    .modal-buttons { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1.25rem; }
+    .modal-button { padding: 0.6rem 1.2rem; border-radius: 9999px; font-weight: 700; cursor: pointer; transition: all 0.2s ease-in-out; }
+    .modal-button.cancel { background: #e2e8f0; color: #4a5568; }
+    .modal-button.cancel:hover { background: #cbd5e0; }
+
+    /* Getting Started modal specifics */
+    .getting-started-list { list-style: none; padding-left: 0; text-align: left; counter-reset: step-counter; }
+    .getting-started-list li { margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
+    .getting-started-list li::before {
+      content: counter(step-counter); counter-increment: step-counter;
+      position: absolute; left: 0; top: 0;
+      background-color: #9f7aea; color: white; border-radius: 50%;
+      width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: bold;
+    }
+    #inline-share-trigger {
+      background: none; border: none; padding: 0; margin: 0; color: #0000EE; font-style: italic; cursor: pointer;
+    }
+    #inline-share-trigger:hover, #inline-share-trigger:focus { text-decoration: underline; color: #551A8B; outline: none; }
+
+    /* Choice buttons in lookup modal */
+    .choice-btn {
+      background-color: #8b5cf6; color: white; font-weight: bold;
+      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer; transition: all 0.25s ease-in-out;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
+    }
+    .choice-btn i { margin-right: 0.5rem; }
+    .choice-btn:hover { filter: brightness(0.95); transform: translateY(-1px); }
+
+    /* Description link row */
+    .description-link-container {
+      display: flex; justify-content: center; align-items: center;
+      margin-top: -0.25rem; margin-bottom: 0.75rem; font-size: 0.95rem; color: #6b46c1; gap: 0.5rem;
+    }
+    .description-link {
+      display: inline-flex; align-items: center; color: #6b46c1; font-weight: 500; text-decoration: none;
+      background: none; border: none; cursor: pointer; padding: 0;
+    }
+    .description-link:hover { color: #805ad5; text-decoration: underline; }
+    .description-link i { margin-right: 0.35rem; }
+    .separator { color: #6b46c1; opacity: 0.7; }
+
+    /* Bottom tip and QR link */
+    .bottom-tip {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      color: #4b5563; background: #f3f4f6; border: 1px dashed #d1d5db;
+      border-radius: 9999px; padding: 0.5rem 0.875rem; font-size: 0.9rem; margin-top: 0.75rem; user-select: none;
+    }
+    .bottom-tip i { color: #f59e0b; }
+    .qr-code-link {
+      font-size: 0.875rem; color: #6b46c1; text-decoration: none;
+      transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+      display: inline-flex; align-items: center; gap: 0.35rem; justify-content: center;
+    }
+    .qr-code-link:hover { color: #805ad5; text-decoration: underline; }
+
     /* Small helpers */
     .nowrap { white-space: nowrap; }
     .wrap-anywhere { overflow-wrap: anywhere; }
@@ -144,13 +285,22 @@
     <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
     <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
 
-    <h2 class="text-xl font-semibold text-purple-600 text-center mb-2">Saved Items</h2>
-    <p class="text-center subtle mb-4">Questions and Actions • Manage, copy, or clear</p>
+    <h2 class="text-xl font-semibold text-purple-600 text-center mb-1">Saved Items</h2>
+    <p class="text-center subtle mb-2">Items saved across the app • Manage, copy, or clear</p>
+
+    <!-- Description/get started row -->
+    <div class="description-link-container">
+      <button id="getting-started-link" class="description-link">
+        <i class="fas fa-info-circle"></i> Get started
+      </button>
+      <!-- <span class="separator">|</span>
+      <a href="../index.html" class="description-link" title="About this page">About this page</a> -->
+    </div>
 
     <!-- Top toolbar -->
     <div class="toolbar -mx-8 px-8 py-3 flex flex-col gap-2">
       <div class="flex gap-2">
-        <input id="search-input" type="text" class="search-input" placeholder="Search across saved questions and actions...">
+        <input id="search-input" type="text" class="search-input" placeholder="Search across saved items...">
       </div>
       <div class="flex flex-wrap gap-2">
         <button id="clear-all-btn" class="pill danger"><i class="fa-solid fa-trash-can mr-1"></i>Clear All Saved</button>
@@ -166,23 +316,109 @@
     <!-- Results Container -->
     <div id="results" class="space-y-4 mt-2"></div>
 
+    <!-- Saved Actions mount -->
+    <div id="actions-mount"></div>
+
     <!-- Empty state -->
     <div id="empty-state" class="empty-state mt-6 hidden">
       <p class="mb-2">No saved items found.</p>
-      <p class="text-sm">Open any topic to save questions, or select actions on the Action Prompts page, then check back here.</p>
+      <p class="text-sm">Open any topic to save items, or select actions on the Action Prompts page, then check back here.</p>
     </div>
 
-    <div id="actions-mount"></div>
+    <!-- Bottom tip and QR -->
+    <div class="bottom-tip mt-6" aria-live="polite">
+      <i class="fa-solid fa-lightbulb"></i>
+      <span>Tap the top logo for home</span>
+    </div>
+    <div class="mt-3 text-center">
+      <a href="#" id="show-qr-code-link" class="qr-code-link">
+        <i class="fas fa-qrcode"></i> Share page/QR code
+      </a>
+    </div>
+  </div>
 
-    <div class="text-center text-sm subtle mt-4">
-      Tip: You can clear a single topic, remove individual questions or actions, or use “Clear All Saved”.
+  <!-- Floating buttons -->
+  <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
+    <i class="fas fa-dice"></i>
+  </a>
+  <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
+    <i class="fas fa-search"></i>
+  </button>
+  <button id="floating-share" title="Share selected text" aria-label="Share selected text">
+    <i class="fas fa-share-nodes"></i>
+  </button>
+  <button id="back-to-top" title="Back to Top">&#9650; Top</button>
+
+  <!-- Search/Translate Choice Modal -->
+  <div id="search-engine-modal" class="modal-overlay">
+    <div class="modal-content">
+      <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
+
+      <h4 class="text-left text-gray-700 font-semibold border-b border-gray-200 pb-2 mb-3">Web Search</h4>
+      <div class="flex flex-col items-center">
+        <button id="search-google-choice-btn" class="choice-btn" type="button"><i class="fab fa-google"></i> Search Google</button>
+        <button id="search-bing-choice-btn" class="choice-btn" type="button"><i class="fab fa-microsoft"></i> Search Bing</button>
+        <button id="search-duckduckgo-choice-btn" class="choice-btn" type="button"><i class="fas fa-search"></i> Search DuckDuckGo</button>
+        <button id="search-brave-choice-btn" class="choice-btn" type="button"><i class="fas fa-magnifying-glass"></i> Search Brave</button>
+      </div>
+
+      <h4 class="text-left text-gray-700 font-semibold border-b border-gray-200 pb-2 mt-4 mb-3">Translation Services</h4>
+      <div class="flex flex-col items-center">
+        <button id="translate-google-choice-btn" class="choice-btn" type="button"><i class="fas fa-language"></i> Translate with Google</button>
+        <button id="translate-bing-choice-btn" class="choice-btn" type="button"><i class="fas fa-language"></i> Translate with Bing</button>
+      </div>
+
+      <h4 class="text-left text-gray-700 font-semibold border-b border-gray-200 pb-2 mt-4 mb-3">Other Actions</h4>
+      <div class="flex flex-col items-center">
+        <button id="copy-question-btn" class="choice-btn" type="button"><i class="fas fa-copy"></i> Copy Text</button>
+      </div>
+
+      <button id="close-search-engine-modal" class="modal-button cancel mt-4" type="button">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Getting Started Modal -->
+  <div id="getting-started-modal" class="modal-overlay">
+    <div class="modal-content max-w-sm">
+      <h3 class="text-xl font-semibold text-gray-800 mb-3">🚀 Meaningful Talk</h3>
+      <ol class="getting-started-list">
+        <li><b>Invite Others:</b> Share the <button id="inline-share-trigger" type="button"><i>QR code or link</i></button> to get everyone onboard.</li>
+        <li><b>Pick Questions:</b> On any topic page, tap questions to save them. They’ll appear here as “Saved Items”.</li>
+        <li><b>Discuss:</b> Pick a saved question, then everyone answers it in turn. Repeat with the next person’s question.</li>
+      </ol>
+      <div class="modal-buttons mt-4">
+        <button id="close-getting-started-modal" class="modal-button cancel" type="button">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Code Modal -->
+  <div id="qr-code-modal" class="modal-overlay">
+    <div id="qr-modal-content" class="modal-content relative">
+      <button class="absolute top-2 right-3 text-2xl text-gray-600 hover:text-gray-800" id="qr-modal-close-button" aria-label="Close">&times;</button>
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">Share This Page</h3>
+      <p class="text-gray-600 text-sm mb-3">Scan the QR code or share the link below:</p>
+      <img id="qr-modal-image" alt="QR Code" class="w-full h-auto max-w-xs mx-auto mb-3 rounded shadow" />
+      <p class="text-sm text-gray-700 mt-2 break-all">
+        <i class="fa-solid fa-link mr-1"></i>
+        <a id="qr-page-link" href="#" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline"></a>
+      </p>
+      <div class="flex gap-2 justify-center mt-3">
+        <button id="copy-link-text-link" class="pill"><i class="fas fa-copy mr-1"></i>Copy link</button>
+        <button id="share-link-button" class="pill primary"><i class="fas fa-share-from-square mr-1"></i>Share…</button>
+      </div>
+      <p class="text-gray-500 text-sm mt-4">Let’s help fellow curious souls launch this page and start the conversation! 😊</p>
     </div>
   </div>
 
   <script>
-    // Keys used by topic pages for questions
+    // Random highlight color
+    const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
+    const randomHighlightColor = highlightColors[Math.floor(Math.random() * highlightColors.length)];
+    document.documentElement.style.setProperty('--highlight-color', randomHighlightColor);
+
+    // Keys
     const SAVED_PREFIX = 'csc_saved_questions_';
-    // Key used by Action Prompts page for actions (from action-prompts.html logic)
     const ACTIONS_KEY = 'csc_saved_actions_action_prompts';
 
     const searchInput = document.getElementById('search-input');
@@ -194,7 +430,42 @@
     const collapseAllBtn = document.getElementById('collapse-all-btn');
     const actionsMount = document.getElementById('actions-mount');
 
-    // Read all saved questions grouped by topic
+    // Floating + modals
+    const backToTopButton = document.getElementById('back-to-top');
+    const floatingLookupBtn = document.getElementById('floating-lookup');
+    const floatingShareBtn = document.getElementById('floating-share');
+
+    const searchEngineModal = document.getElementById('search-engine-modal');
+    const closeSearchEngineModalBtn = document.getElementById('close-search-engine-modal');
+    const searchGoogleChoiceBtn = document.getElementById('search-google-choice-btn');
+    const searchBingChoiceBtn = document.getElementById('search-bing-choice-btn');
+    const searchDuckDuckGoChoiceBtn = document.getElementById('search-duckduckgo-choice-btn');
+    const searchBraveChoiceBtn = document.getElementById('search-brave-choice-btn');
+    const translateGoogleChoiceBtn = document.getElementById('translate-google-choice-btn');
+    const translateBingChoiceBtn = document.getElementById('translate-bing-choice-btn');
+    const copyQuestionBtn = document.getElementById('copy-question-btn');
+
+    // QR + Getting started
+    const qrModal = document.getElementById('qr-code-modal');
+    const qrImg = document.getElementById('qr-modal-image');
+    const qrCloseBtn = document.getElementById('qr-modal-close-button');
+    const qrLink = document.getElementById('qr-page-link');
+    const qrTrigger = document.getElementById('show-qr-code-link');
+    const copyLinkBtn = document.getElementById('copy-link-text-link');
+    const shareLinkBtn = document.getElementById('share-link-button');
+
+    const gettingStartedLink = document.getElementById('getting-started-link');
+    const gettingStartedModal = document.getElementById('getting-started-modal');
+    const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
+    const inlineShareTrigger = document.getElementById('inline-share-trigger');
+
+    // Track if QR was opened from Getting Started
+    let shouldReturnToGettingStarted = false;
+
+    // Selection
+    let selectedText = null;
+
+    // Data loaders
     function readAllSavedQuestions() {
       const topics = [];
       for (let i = 0; i < localStorage.length; i++) {
@@ -206,12 +477,7 @@
             const list = raw ? JSON.parse(raw) : [];
             const topicId = key.substring(SAVED_PREFIX.length);
             const topicName = topicId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-            topics.push({
-              key,
-              topicId,
-              topicName,
-              questions: Array.isArray(list) ? list : []
-            });
+            topics.push({ key, topicId, topicName, questions: Array.isArray(list) ? list : [] });
           } catch {}
         }
       }
@@ -219,7 +485,6 @@
       return topics;
     }
 
-    // Read saved actions list
     function readSavedActions() {
       try {
         const raw = localStorage.getItem(ACTIONS_KEY);
@@ -232,11 +497,8 @@
 
     // Helpers
     function stripPrefix(text) {
-      try {
-        return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim();
-      } catch {
-        return text.replace(/^[^A-Za-z0-9]+/, '').trim();
-      }
+      try { return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim(); }
+      catch { return text.replace(/^[^A-Za-z0-9]+/, '').trim(); }
     }
 
     function copyToClipboard(text) {
@@ -253,25 +515,44 @@
       localStorage.setItem(key, JSON.stringify(list));
     }
 
+    function clearAllSelected() {
+      document.querySelectorAll('.selected-chip').forEach(el => el.classList.remove('selected-chip'));
+      selectedText = null;
+      refreshFloatingVisibility();
+    }
+
+    function toggleChipSelection(chipEl, text) {
+      const willSelect = !chipEl.classList.contains('selected-chip');
+      clearAllSelected();
+      if (willSelect) {
+        chipEl.classList.add('selected-chip');
+        selectedText = text;
+      }
+      refreshFloatingVisibility();
+    }
+
+    function refreshFloatingVisibility() {
+      const shouldShow = !!selectedText;
+      const displayStyle = shouldShow ? 'flex' : 'none';
+      floatingLookupBtn.style.display = displayStyle;
+      floatingShareBtn.style.display = displayStyle;
+    }
+
     function render() {
       const query = searchInput.value.trim().toLowerCase();
 
-      // Questions
       const topics = readAllSavedQuestions();
       const totalTopicsWithSaved = topics.filter(t => t.questions.length > 0).length;
       const totalQuestions = topics.reduce((sum, t) => sum + t.questions.length, 0);
 
-      // Actions
       const allActions = readSavedActions();
       const totalActions = allActions.length;
       const filteredActions = query
         ? allActions.filter(a => stripPrefix(a).toLowerCase().includes(query))
         : allActions.slice();
-      const shownActions = filteredActions.length;
 
       summaryEl.textContent = `Topics with saved questions: ${totalTopicsWithSaved} • Total saved questions: ${totalQuestions} • Saved actions: ${totalActions}`;
 
-      // Render questions
       resultsEl.innerHTML = '';
       let anyQuestionShown = false;
 
@@ -357,7 +638,8 @@
           copyBtn.className = 'pill';
           copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
           copyBtn.title = 'Copy';
-          copyBtn.addEventListener('click', () => {
+          copyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             copyToClipboard(stripPrefix(q));
           });
 
@@ -365,7 +647,8 @@
           removeBtn.className = 'pill danger';
           removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
           removeBtn.title = 'Remove from saved';
-          removeBtn.addEventListener('click', () => {
+          removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             const current = readAllSavedQuestions().find(t => t.key === topic.key);
             if (!current) return;
             const idx = current.questions.indexOf(q);
@@ -381,6 +664,8 @@
 
           chip.appendChild(txt);
           chip.appendChild(qa);
+
+          chip.addEventListener('click', () => toggleChipSelection(chip, q));
 
           list.appendChild(chip);
         });
@@ -401,23 +686,17 @@
         resultsEl.appendChild(card);
       });
 
-      // Render Saved Actions section only if there are actions saved
       renderActionsSection(filteredActions, totalActions);
 
-      // Empty state
-      const anyShown = anyQuestionShown || (totalActions > 0 && shownActions > 0);
+      const anyShown = anyQuestionShown || (totalActions > 0 && filteredActions.length > 0);
       emptyStateEl.classList.toggle('hidden', anyShown);
+      if (!anyShown) clearAllSelected();
     }
 
     function renderActionsSection(filteredActions, totalActions) {
-      actionsMount.innerHTML = ''; // clear previous
+      actionsMount.innerHTML = '';
+      if (totalActions === 0) return;
 
-      if (totalActions === 0) {
-        // Nothing to show; keep actions section hidden
-        return;
-      }
-
-      // Build actions card
       const section = document.createElement('div');
       section.className = 'mt-2';
 
@@ -481,7 +760,6 @@
       const list = document.createElement('div');
       list.className = 'space-y-2';
 
-      // If search filter yields zero, show a small inline message
       if (filteredActions.length === 0) {
         const msg = document.createElement('div');
         msg.className = 'subtle text-sm';
@@ -503,7 +781,8 @@
           copyBtn.className = 'pill';
           copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
           copyBtn.title = 'Copy';
-          copyBtn.addEventListener('click', () => {
+          copyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             copyToClipboard(stripPrefix(actionText));
           });
 
@@ -511,7 +790,8 @@
           removeBtn.className = 'pill danger';
           removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
           removeBtn.title = 'Remove action';
-          removeBtn.addEventListener('click', () => {
+          removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             const all = readSavedActions();
             const idx = all.indexOf(actionText);
             if (idx >= 0) {
@@ -527,11 +807,12 @@
           chip.appendChild(txt);
           chip.appendChild(aa);
 
+          chip.addEventListener('click', () => toggleChipSelection(chip, actionText));
+
           list.appendChild(chip);
         });
       }
 
-      // Collapse/expand
       collapseBtn.addEventListener('click', () => {
         list.classList.add('hidden');
         collapseBtn.classList.add('hidden');
@@ -549,36 +830,25 @@
       actionsMount.appendChild(section);
     }
 
-    // Global actions
-    searchInput.addEventListener('input', render);
+    // Interactions
+    searchInput.addEventListener('input', () => { render(); });
 
     clearAllBtn.addEventListener('click', () => {
-      if (!confirm('Clear ALL saved questions and ALL saved actions? This cannot be undone.')) return;
+      if (!confirm('Clear ALL saved items? This cannot be undone.')) return;
 
-      // Remove all question keys
       const keys = [];
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key && key.startsWith(SAVED_PREFIX)) keys.push(key);
       }
       keys.forEach(k => localStorage.removeItem(k));
-
-      // Remove saved actions
       localStorage.removeItem(ACTIONS_KEY);
 
       render();
+      clearAllSelected();
     });
 
     expandAllBtn.addEventListener('click', () => {
-      // Expand all question topic lists
-      document.querySelectorAll('.topic-card .pill.muted.hidden').forEach(btn => {
-        const expandBtn = btn;
-        const list = expandBtn.closest('.topic-card').querySelector('.space-y-2');
-        if (list) list.classList.remove('hidden');
-        expandBtn.classList.add('hidden');
-        const collapseBtn = expandBtn.parentElement.querySelector('.pill.muted:not(.hidden)');
-        if (collapseBtn) collapseBtn.classList.remove('hidden');
-      });
       document.querySelectorAll('.topic-card .space-y-2').forEach(list => list.classList.remove('hidden'));
       document.querySelectorAll('.topic-card .pill.muted').forEach(btn => {
         const txt = btn.innerText.trim().toLowerCase();
@@ -586,17 +856,16 @@
         if (txt.startsWith('collapse')) btn.classList.remove('hidden');
       });
 
-      // Expand actions (if mounted)
       const actionsList = actionsMount.querySelector('.space-y-2');
-      const actionsCollapse = actionsMount.querySelector('.pill.muted:not(.hidden)');
-      const actionsExpand = actionsMount.querySelector('.pill.muted.hidden');
       if (actionsList) actionsList.classList.remove('hidden');
-      if (actionsExpand) actionsExpand.classList.add('hidden');
-      if (actionsCollapse) actionsCollapse.classList.remove('hidden');
+      const allMuted = actionsMount.querySelectorAll('.pill.muted');
+      if (allMuted.length >= 2) {
+        allMuted[0].classList.remove('hidden');
+        allMuted[1].classList.add('hidden');
+      }
     });
 
     collapseAllBtn.addEventListener('click', () => {
-      // Collapse all question topic lists
       document.querySelectorAll('.topic-card .space-y-2').forEach(list => list.classList.add('hidden'));
       document.querySelectorAll('.topic-card .pill.muted').forEach(btn => {
         const txt = btn.innerText.trim().toLowerCase();
@@ -604,13 +873,139 @@
         if (txt.startsWith('collapse')) btn.classList.add('hidden');
       });
 
-      // Collapse actions (if mounted)
       const actionsList = actionsMount.querySelector('.space-y-2');
-      const collapseBtn = actionsMount.querySelector('.pill.muted');
-      const expandBtn = actionsMount.querySelectorAll('.pill.muted')[1]; // second muted is expand if exists
       if (actionsList) actionsList.classList.add('hidden');
-      if (collapseBtn) collapseBtn.classList.add('hidden');
-      if (expandBtn) expandBtn.classList.remove('hidden');
+      const allMuted = actionsMount.querySelectorAll('.pill.muted');
+      if (allMuted.length >= 2) {
+        allMuted[0].classList.add('hidden');
+        allMuted[1].classList.remove('hidden');
+      }
+    });
+
+    // Back-to-top
+    window.addEventListener('scroll', () => {
+      backToTopButton.style.display = window.scrollY > 1 ? 'block' : 'none';
+    });
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Lookup modal
+    function removeEmojiPrefix(text) {
+      try { return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim(); }
+      catch { return text.replace(/^[^A-Za-z0-9]+/, '').trim(); }
+    }
+    function openChoiceModalIfSelected() {
+      if (selectedText) searchEngineModal.classList.add('show');
+      else alert('Please select a saved chip first.');
+    }
+    function closeChoiceModal() { searchEngineModal.classList.remove('show'); }
+
+    floatingLookupBtn.addEventListener('click', openChoiceModalIfSelected);
+    closeSearchEngineModalBtn.addEventListener('click', closeChoiceModal);
+
+    function openURL(url) { window.open(url, '_blank'); }
+    function doSearch(base) {
+      if (!selectedText) return;
+      const q = encodeURIComponent(removeEmojiPrefix(selectedText));
+      openURL(base + q);
+      closeChoiceModal();
+    }
+    function doTranslate(base) {
+      if (!selectedText) return;
+      const q = encodeURIComponent(removeEmojiPrefix(selectedText));
+      openURL(base + q);
+      closeChoiceModal();
+    }
+
+    document.getElementById('search-google-choice-btn').addEventListener('click', () => doSearch('https://www.google.com/search?q='));
+    document.getElementById('search-bing-choice-btn').addEventListener('click', () => doSearch('https://www.bing.com/search?q='));
+    document.getElementById('search-duckduckgo-choice-btn').addEventListener('click', () => doSearch('https://duckduckgo.com/?q='));
+    document.getElementById('search-brave-choice-btn').addEventListener('click', () => doSearch('https://search.brave.com/search?q='));
+    document.getElementById('translate-google-choice-btn').addEventListener('click', () => doTranslate('https://translate.google.com/?sl=auto&tl=en&text='));
+    document.getElementById('translate-bing-choice-btn').addEventListener('click', () => doTranslate('https://www.bing.com/translator/?from=auto&to=en&text='));
+    document.getElementById('copy-question-btn').addEventListener('click', () => {
+      if (!selectedText) return;
+      const ta = document.createElement('textarea');
+      ta.value = removeEmojiPrefix(selectedText);
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Text copied!');
+      closeChoiceModal();
+    });
+
+    // Share selected
+    function buildSharePayload() {
+      if (!selectedText) return null;
+      return { title: 'Curious Souls Café - Saved Items', text: removeEmojiPrefix(selectedText), url: window.location.href };
+    }
+    async function shareSelected() {
+      const payload = buildSharePayload();
+      if (!payload) { alert('Please select a saved chip first.'); return; }
+      if (navigator.share) {
+        try { await navigator.share(payload); } catch (e) { console.warn('Share canceled/failed:', e); }
+      }
+    }
+    floatingShareBtn.addEventListener('click', shareSelected);
+
+    // Getting Started
+    gettingStartedLink.addEventListener('click', () => {
+      gettingStartedModal.classList.add('show');
+    });
+    closeGettingStartedModalBtn.addEventListener('click', () => {
+      gettingStartedModal.classList.remove('show');
+    });
+
+    // QR Modal + interplay with Getting Started
+    function openQRModal(openedFromGettingStarted = false) {
+      shouldReturnToGettingStarted = openedFromGettingStarted;
+      const pageUrl = window.location.href;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+      qrImg.src = qrUrl;
+      qrLink.textContent = pageUrl;
+      qrLink.href = pageUrl;
+      qrModal.classList.add('show');
+    }
+    function closeQRModal() {
+      qrModal.classList.remove('show');
+      if (shouldReturnToGettingStarted) {
+        gettingStartedModal.classList.add('show');
+      }
+      shouldReturnToGettingStarted = false;
+    }
+
+    qrTrigger.addEventListener('click', (e) => { e.preventDefault(); openQRModal(false); });
+    qrCloseBtn.addEventListener('click', closeQRModal);
+    qrModal.addEventListener('click', (e) => { if (e.target === qrModal) closeQRModal(); });
+
+    inlineShareTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      gettingStartedModal.classList.remove('show');
+      openQRModal(true);
+    });
+
+    copyLinkBtn.addEventListener('click', () => {
+      const ta = document.createElement('textarea');
+      ta.value = window.location.href;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Link copied to clipboard!');
+    });
+
+    shareLinkBtn.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: document.title,
+            text: 'Join me on Curious Souls Café!',
+            url: window.location.href
+          });
+        } catch (e) { console.warn('Share canceled/failed:', e); }
+      }
     });
 
     // Initial render
