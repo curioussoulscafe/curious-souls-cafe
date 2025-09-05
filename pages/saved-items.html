@@ -35,6 +35,8 @@
       padding: 0.9rem 0.9rem;
       transition: background 0.15s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.15s;
       cursor: pointer;
+      /* Extra vertical spacing between chips to avoid crowded look */
+      margin-bottom: 0.5rem;
     }
     .question-chip:hover, .action-chip:hover {
       background-color: #eef2ff;
@@ -231,7 +233,9 @@
     /* Description link row */
     .description-link-container {
       display: flex; justify-content: center; align-items: center;
-      margin-top: -0.25rem; margin-bottom: 0.75rem; font-size: 0.95rem; color: #6b46c1; gap: 0.5rem;
+      margin-top: 0rem;        /* was -0.25rem */
+      margin-bottom: 1rem;     /* was 0.75rem; increase like Code B */
+      font-size: 0.95rem; color: #6b46c1; gap: 0.5rem;
     }
     .description-link {
       display: inline-flex; align-items: center; color: #6b46c1; font-weight: 500; text-decoration: none;
@@ -239,6 +243,12 @@
     }
     .description-link:hover { color: #805ad5; text-decoration: underline; }
     .description-link i { margin-right: 0.35rem; }
+
+    /* Optional subtle rule to separate header stack like Code B */
+    .header-separator {
+      border-top: 1px solid #e5e7eb;
+      margin: 0.5rem 0 1rem 0;
+    }
 
     /* Bottom tip */
     .bottom-tip {
@@ -252,10 +262,7 @@
     .nowrap { white-space: nowrap; }
     .wrap-anywhere { overflow-wrap: anywhere; }
 
-    /* ===========================================
-       Imported styles from code B for modal options
-       =========================================== */
-
+    /* Modal subheading from Code B */
     .modal-subheading {
       font-size: 1.125rem;
       font-weight: 600;
@@ -267,69 +274,29 @@
       padding-bottom: 0.5rem;
     }
 
-    /* Search/translate/copy choice buttons */
-    #search-google-choice-btn {
-      background-color: #4285F4; color: white; font-weight: bold;
-      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
-    }
+    /* Choice buttons (kept) */
+    #search-google-choice-btn { background-color: #4285F4; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
     #search-google-choice-btn:hover { background-color: #357ae8; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
     #search-google-choice-btn i { margin-right: 0.5rem; }
 
-    #search-bing-choice-btn {
-      background-color: #008AD6; color: white; font-weight: bold;
-      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
-    }
+    #search-bing-choice-btn { background-color: #008AD6; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
     #search-bing-choice-btn:hover { background-color: #006FB7; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
     #search-bing-choice-btn i { margin-right: 0.5rem; }
 
-    #search-duckduckgo-choice-btn {
-      background-color: #e3722a; color: white; font-weight: bold;
-      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
-    }
+    #search-duckduckgo-choice-btn { background-color: #e3722a; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
     #search-duckduckgo-choice-btn:hover { background-color: #c96024; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
     #search-duckduckgo-choice-btn i { margin-right: 0.5rem; }
 
-    #search-brave-choice-btn {
-      background-color: #FB542B; color: white; font-weight: bold;
-      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
-    }
+    #search-brave-choice-btn { background-color: #FB542B; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
     #search-brave-choice-btn:hover { background-color: #d14424; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
     #search-brave-choice-btn i { margin-right: 0.5rem; }
 
-    #translate-google-choice-btn {
-      background-color: #60a5fa; color: white; font-weight: bold;
-      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
-    }
+    #translate-google-choice-btn { background-color: #60a5fa; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
     #translate-google-choice-btn:hover { background-color: #3b82f6; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #translate-google-choice-btn i { margin-right: 0.5rem; }
-
-    #translate-bing-choice-btn {
-      background-color: #008AD6; color: white; font-weight: bold;
-      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
-    }
+    #translate-bing-choice-btn { background-color: #008AD6; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
     #translate-bing-choice-btn:hover { background-color: #006FB7; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #translate-bing-choice-btn i { margin-right: 0.5rem; }
-
-    #copy-question-btn {
-      background-color: #48bb78; color: white; font-weight: bold;
-      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
-    }
+    #copy-question-btn { background-color: #48bb78; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
     #copy-question-btn:hover { background-color: #38a169; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #copy-question-btn i { margin-right: 0.5rem; }
   </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-start min-h-screen p-4">
@@ -339,21 +306,26 @@
         <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
       </a>
     </div>
-    <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
-    <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
 
-    <h2 class="text-xl font-semibold text-purple-600 text-center mb-1">Saved Items</h2>
-    <p class="text-center subtle mb-2">View and manage items saved across the app</p>
+    <!-- Increased spacing like Code B -->
+    <h1 class="text-2xl font-semibold text-purple-600 text-center mb-3">Curious Souls Café</h1>
+    <hr class="border-purple-300 mb-5 w-1/2 mx-auto">
 
-    <!-- Description/get started row -->
+    <h2 class="text-xl font-semibold text-purple-600 text-center mb-3">Saved Items</h2>
+    <p class="text-center subtle mb-3">Manage items saved across the app</p>
+
+    <!-- Description/get started row with more space -->
     <div class="description-link-container">
       <button id="getting-started-link" class="description-link">
         <i class="fas fa-info-circle"></i> Get started
       </button>
     </div>
 
+    <!-- subtle separator like Code B -->
+    <div class="header-separator"></div>
+
     <!-- Top toolbar -->
-    <div class="toolbar -mx-8 px-8 py-3 flex flex-col gap-2">
+    <div class="toolbar -mx-8 px-8 py-4 flex flex-col gap-3">
       <div class="flex gap-2">
         <input id="search-input" type="text" class="search-input" placeholder="Search across saved items...">
       </div>
@@ -367,22 +339,22 @@
     </div>
 
     <!-- Summary -->
-    <div id="summary" class="mt-4 mb-2 text-sm subtle"></div>
+    <div id="summary" class="mt-5 mb-3 text-sm subtle"></div>
 
     <!-- Results Container -->
-    <div id="results" class="space-y-4 mt-2"></div>
+    <div id="results" class="space-y-5 mt-2"></div>
 
     <!-- Saved Actions mount -->
     <div id="actions-mount"></div>
 
     <!-- Empty state -->
-    <div id="empty-state" class="empty-state mt-6 hidden">
+    <div id="empty-state" class="empty-state mt-8 hidden">
       <p class="mb-2">No saved items found.</p>
       <p class="text-sm">Open any topic to save items, or select actions on the Action Prompts page, then check back here.</p>
     </div>
 
     <!-- Bottom tip -->
-    <div class="bottom-tip mt-6" aria-live="polite">
+    <div class="bottom-tip mt-8" aria-live="polite">
       <i class="fa-solid fa-lightbulb"></i>
       <span>Tap the top logo for home</span>
     </div>
@@ -715,7 +687,7 @@
       if (totalActions === 0) return;
 
       const section = document.createElement('div');
-      section.className = 'mt-2';
+      section.className = 'mt-5';
 
       const card = document.createElement('div');
       card.className = 'topic-card';
