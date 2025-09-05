@@ -450,7 +450,7 @@
     // QR + Getting started
     const qrModal = document.getElementById('qr-code-modal');
     const qrImg = document.getElementById('qr-modal-image');
-    const qrCloseBtn = document.getElementById('qr-modal-close-button');
+    theQrCloseBtn = document.getElementById('qr-modal-close-button');
     const qrLink = document.getElementById('qr-page-link');
     const qrTrigger = document.getElementById('show-qr-code-link');
     const copyLinkBtn = document.getElementById('copy-link-text-link');
@@ -469,43 +469,30 @@
 
     // Data loaders
     function readAllSavedQuestions() {
-        const topics = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (!key) continue;
-          if (key.startsWith(SAVED_PREFIX)) {
-            try {
-              const raw = localStorage.getItem(key);
-              const list = raw ? JSON.parse(raw) : [];
-              const topicId = key.substring(SAVED_PREFIX.length);
-              const topicName = topicId
-                .replace(/_/g, ' ')
-                .replace(/\b\w/g, c => c.toUpperCase());
-              topics.push({
-                key,
-                topicId,
-                topicName,
-                questions: Array.isArray(list) ? list : []
-              });
-            } catch {}
-          }
+      const topics = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key) continue;
+        if (key.startsWith(SAVED_PREFIX)) {
+          try {
+            const raw = localStorage.getItem(key);
+            const list = raw ? JSON.parse(raw) : [];
+            const topicId = key.substring(SAVED_PREFIX.length);
+            const topicName = topicId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            topics.push({ key, topicId, topicName, questions: Array.isArray(list) ? list : [] });
+          } catch {}
         }
-
-        // Default alphabetical by topicName
-        topics.sort((a, b) => a.topicName.localeCompare(b.topicName));
-
-        // Promote "All In One" (case-insensitive) to the top if it has any saved questions
-        const idx = topics.findIndex(
-          t => t.topicName.trim().toLowerCase() === 'all in one' && t.questions.length > 0
-        );
-        if (idx > 0) {
-          const [allInOne] = topics.splice(idx, 1);
-          topics.unshift(allInOne);
-        }
-
-        return topics;
       }
-
+      // Default alphabetical
+      topics.sort((a,b) => a.topicName.localeCompare(b.topicName));
+      // Promote "All In One" to top when it has any saved items
+      const idx = topics.findIndex(t => t.topicName.trim().toLowerCase() === 'all in one' && t.questions.length > 0);
+      if (idx > 0) {
+        const [aio] = topics.splice(idx, 1);
+        topics.unshift(aio);
+      }
+      return topics;
+    }
 
     function readSavedActions() {
       try {
@@ -645,7 +632,7 @@
         const list = document.createElement('div');
         list.className = 'space-y-2';
 
-        (filtered).forEach(q => {
+        filtered.forEach(q => {
           const chip = document.createElement('div');
           chip.className = 'question-chip';
 
@@ -870,8 +857,17 @@
       clearAllSelected();
     });
 
-    // Export all saved items to a text file
-    function buildExportText() {
+    // Export All -> Minimal HTML file
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function buildExportHTML() {
       const topics = readAllSavedQuestions();
       const actions = readSavedActions();
 
@@ -879,44 +875,152 @@
       const totalQuestions = topicsWithSaved.reduce((sum, t) => sum + t.questions.length, 0);
       const totalActions = actions.length;
 
-      const lines = [];
       const now = new Date();
-      lines.push('Curious Souls Café — Saved Items Export');
-      lines.push(`Generated: ${now.toLocaleString()}`);
-      lines.push(`Topics with saved questions: ${topicsWithSaved.length}`);
-      lines.push(`Total saved questions: ${totalQuestions}`);
-      lines.push(`Saved actions: ${totalActions}`);
-      lines.push('');
+      const generated = escapeHTML(now.toLocaleString());
 
-      if (topicsWithSaved.length === 0 && totalActions === 0) {
-        lines.push('(No saved items found)');
-      } else {
-        // Topics
-        topicsWithSaved.forEach(topic => {
-          lines.push(`## ${topic.topicName} (${topic.questions.length})`);
-          topic.questions.forEach((q, idx) => {
-            const clean = (q || '').toString();
-            lines.push(`- ${clean}`);
-          });
-          lines.push(''); // blank line after each topic
-        });
+      const topicsHTML = topicsWithSaved.length === 0
+        ? '<p class="muted">No saved questions.</p>'
+        : topicsWithSaved.map(t => {
+            const items = t.questions.map(q => `<li>${escapeHTML(q)}</li>`).join('');
+            return `
+              <section class="block">
+                <h2>${escapeHTML(t.topicName)} <span class="count">(${t.questions.length})</span></h2>
+                <ul>${items}</ul>
+              </section>`;
+          }).join('');
 
-        // Actions
-        if (totalActions > 0) {
-          lines.push(`## Saved Actions (${totalActions})`);
-          actions.forEach(a => {
-            const clean = (a || '').toString();
-            lines.push(`- ${clean}`);
-          });
-          lines.push('');
+      const actionsHTML = totalActions === 0
+        ? ''
+        : `
+          <section class="block">
+            <h2>Saved Actions <span class="count">(${totalActions})</span></h2>
+            <ul>
+              ${actions.map(a => `<li>${escapeHTML(a)}</li>`).join('')}
+            </ul>
+          </section>`;
+
+      const css = `
+        :root {
+          --bg: #ffffff;
+          --fg: #0f172a;
+          --muted: #6b7280;
+          --rule: #e5e7eb;
+          --accent: #6b46c1;
         }
-      }
+        @media (prefers-color-scheme: dark) {
+          :root {
+            --bg: #0b1020;
+            --fg: #e5e7eb;
+            --muted: #9ca3af;
+            --rule: #1f2937;
+            --accent: #a78bfa;
+          }
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; }
+        body {
+          background: var(--bg);
+          color: var(--fg);
+          font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+          padding: 24px;
+          max-width: 900px;
+          margin: 0 auto;
+        }
+        header {
+          border-bottom: 1px solid var(--rule);
+          padding-bottom: 12px;
+          margin-bottom: 20px;
+        }
+        h1 {
+          font-size: 1.35rem;
+          margin: 0 0 6px 0;
+          color: var(--accent);
+        }
+        .meta {
+          font-size: 0.9rem;
+          color: var(--muted);
+          margin: 0;
+        }
+        .summary {
+          margin-top: 8px;
+          font-size: 0.95rem;
+          color: var(--muted);
+        }
+        section.block {
+          margin: 20px 0;
+          padding-top: 6px;
+        }
+        h2 {
+          font-size: 1.05rem;
+          margin: 0 0 8px 0;
+          color: var(--accent);
+        }
+        .count {
+          color: var(--muted);
+          font-weight: 600;
+          font-size: 0.95rem;
+        }
+        ul {
+          padding-left: 1.1rem;
+          margin: 0;
+        }
+        li {
+          margin: 6px 0;
+        }
+        .muted {
+          color: var(--muted);
+        }
+        footer {
+          margin-top: 28px;
+          padding-top: 12px;
+          border-top: 1px solid var(--rule);
+          font-size: 0.85rem;
+          color: var(--muted);
+        }
+        a {
+          color: var(--accent);
+          text-decoration: none;
+        }
+        a:hover { text-decoration: underline; }
+        @media print {
+          body { padding: 0; }
+          a { text-decoration: none; color: inherit; }
+        }
+      `;
 
-      return lines.join('\n');
+      const summaryText = `Topics with saved questions: ${topicsWithSaved.length} • Total saved questions: ${totalQuestions} • Saved actions: ${totalActions}`;
+      const summaryHTML = `<p class="summary">${escapeHTML(summaryText)}</p>`;
+
+      const doc = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Curious Souls Café — Saved Export</title>
+  <meta name="color-scheme" content="light dark">
+  <style>${css}</style>
+</head>
+<body>
+  <header>
+    <h1>Curious Souls Café — Saved Items</h1>
+    <p class="meta">Generated: ${generated}</p>
+    ${summaryHTML}
+  </header>
+
+  ${topicsHTML}
+  ${actionsHTML}
+
+  <footer>
+    Exported from Curious Souls Café. Keep the conversation going!
+  </footer>
+</body>
+</html>`;
+
+      return doc;
     }
 
-    function downloadTextFile(filename, text) {
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    function downloadHTMLFile(filename, html) {
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -928,8 +1032,8 @@
     }
 
     exportAllBtn.addEventListener('click', () => {
-      const text = buildExportText();
-      downloadTextFile('curious-souls-saved.txt', text);
+      const html = buildExportHTML();
+      downloadHTMLFile('curious-souls-saved.html', html);
     });
 
     expandAllBtn.addEventListener('click', () => {
@@ -1061,7 +1165,7 @@
     }
 
     qrTrigger.addEventListener('click', (e) => { e.preventDefault(); openQRModal(false); });
-    qrCloseBtn.addEventListener('click', closeQRModal);
+    theQrCloseBtn.addEventListener('click', closeQRModal);
     qrModal.addEventListener('click', (e) => { if (e.target === qrModal) closeQRModal(); });
 
     inlineShareTrigger.addEventListener('click', (e) => {
