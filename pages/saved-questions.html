@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Curious Souls Café - Saved Questions (All Topics)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    :root { --highlight-color: #57FCFF; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #f3f4f6 0%, #ede9fe 20%, #ede9fe 80%, #f3f4f6 100%);
+    }
+    .topic-card {
+      background-color: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    }
+    .question-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      background-color: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.75rem;
+      padding: 0.75rem 0.75rem;
+      transition: background 0.15s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.15s;
+    }
+    .question-chip:hover {
+      background-color: #eef2ff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .question-text {
+      font-size: 1rem;
+      color: #111827;
+    }
+    .question-actions button {
+      border-radius: 9999px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: transform 0.1s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .question-actions button:active {
+      transform: scale(0.98);
+    }
+    .pill {
+      border: 1px solid #d1d5db;
+      background-color: #ffffff;
+      color: #4b5563;
+      font-weight: 600;
+      border-radius: 9999px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.9rem;
+      transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .pill:hover {
+      background-color: #f3f4f6;
+    }
+    .danger {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border-color: #fecaca;
+    }
+    .danger:hover {
+      background-color: #fecaca;
+    }
+    .primary {
+      background-color: #8b5cf6;
+      color: #ffffff;
+      border-color: #8b5cf6;
+    }
+    .primary:hover {
+      background-color: #7c3aed;
+    }
+    .muted {
+      background-color: #f3f4f6;
+      color: #374151;
+      border-color: #e5e7eb;
+    }
+    .muted:hover {
+      background-color: #e5e7eb;
+    }
+    .section-title {
+      color: #6b46c1;
+    }
+    .subtle {
+      color: #6b7280;
+    }
+    .empty-state {
+      background: #f8fafc;
+      border: 1px dashed #d1d5db;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      color: #6b7280;
+      text-align: center;
+    }
+    .search-input {
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      padding: 0.6rem 0.8rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-input:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.25);
+    }
+    .badge {
+      background: #ede9fe;
+      color: #6b46c1;
+      border-radius: 9999px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid #e5e7eb;
+    }
+    /* Small helpers */
+    .nowrap { white-space: nowrap; }
+    .wrap-anywhere { overflow-wrap: anywhere; }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-start min-h-screen p-4">
+  <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
+    <div class="flex justify-center mb-6">
+      <a href="../index.html" aria-label="Back to Home">
+        <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+      </a>
+    </div>
+    <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
+    <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
+
+    <h2 class="text-xl font-semibold text-purple-600 text-center mb-2">Saved Questions</h2>
+    <p class="text-center subtle mb-4">All topics • Manage, copy, or clear</p>
+
+    <!-- Top toolbar -->
+    <div class="toolbar -mx-8 px-8 py-3 flex flex-col gap-2">
+      <div class="flex gap-2">
+        <input id="search-input" type="text" class="search-input" placeholder="Search across all saved questions...">
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button id="clear-all-btn" class="pill danger"><i class="fa-solid fa-trash-can mr-1"></i>Clear All Saved</button>
+        <button id="expand-all-btn" class="pill muted"><i class="fa-solid fa-angles-down mr-1"></i>Expand All</button>
+        <button id="collapse-all-btn" class="pill muted"><i class="fa-solid fa-angles-up mr-1"></i>Collapse All</button>
+        <a href="../index.html" class="pill"><i class="fa-solid fa-house mr-1"></i>Home</a>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div id="summary" class="mt-4 mb-2 text-sm subtle"></div>
+
+    <!-- Results Container -->
+    <div id="results" class="space-y-4 mt-2">
+      <!-- Topic groups injected here -->
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class="empty-state mt-6 hidden">
+      <p class="mb-2">No saved questions found.</p>
+      <p class="text-sm">Open any topic, tap a question to add it to “Saved Questions”, then check back here.</p>
+    </div>
+
+    <hr class="border-gray-300 mt-6 mb-4 w-full mx-auto">
+    <div class="text-center text-sm subtle">
+      Tip: You can clear a single topic, remove individual questions, or use “Clear All Saved”.
+    </div>
+  </div>
+
+  <script>
+    // Matches keys used by topic pages: csc_saved_questions_<topic>
+    const SAVED_PREFIX = 'csc_saved_questions_';
+
+    const searchInput = document.getElementById('search-input');
+    const resultsEl = document.getElementById('results');
+    const emptyStateEl = document.getElementById('empty-state');
+    const summaryEl = document.getElementById('summary');
+    const clearAllBtn = document.getElementById('clear-all-btn');
+    const expandAllBtn = document.getElementById('expand-all-btn');
+    const collapseAllBtn = document.getElementById('collapse-all-btn');
+
+    // Read all saved questions grouped by topic
+    function readAllSaved() {
+      const topics = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key) continue;
+        if (key.startsWith(SAVED_PREFIX)) {
+          try {
+            const raw = localStorage.getItem(key);
+            const list = raw ? JSON.parse(raw) : [];
+            const topicId = key.substring(SAVED_PREFIX.length); // e.g., adulthood, happiness
+            const topicName = topicId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            topics.push({
+              key,
+              topicId,
+              topicName,
+              questions: Array.isArray(list) ? list : []
+            });
+          } catch (e) {
+            // ignore parse errors
+          }
+        }
+      }
+      // Sort topics alphabetically by display name
+      topics.sort((a,b) => a.topicName.localeCompare(b.topicName));
+      return topics;
+    }
+
+    // Remove leading emojis/symbols for nicer copy/search (matches topic pages)
+    function stripPrefix(text) {
+      try {
+        return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim();
+      } catch {
+        // If regex unicode classes not supported, fallback minimal
+        return text.replace(/^[^A-Za-z0-9]+/, '').trim();
+      }
+    }
+
+    function copyToClipboard(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Copied to clipboard');
+    }
+
+    function saveTopicList(key, list) {
+      localStorage.setItem(key, JSON.stringify(list));
+    }
+
+    function render() {
+      const query = searchInput.value.trim().toLowerCase();
+      const data = readAllSaved();
+
+      // Compute totals
+      const totalTopicsWithSaved = data.filter(t => t.questions.length > 0).length;
+      const totalQuestions = data.reduce((sum, t) => sum + t.questions.length, 0);
+
+      summaryEl.textContent = `Topics with saved questions: ${totalTopicsWithSaved} • Total saved: ${totalQuestions}`;
+
+      resultsEl.innerHTML = '';
+      let anyShown = false;
+
+      data.forEach(topic => {
+        // If topic has no saved, skip unless searching (still skip to reduce noise)
+        if (topic.questions.length === 0) return;
+
+        // Filter by search query (question-level)
+        const filtered = query
+          ? topic.questions.filter(q => stripPrefix(q).toLowerCase().includes(query))
+          : topic.questions.slice();
+
+        if (filtered.length === 0) return;
+
+        anyShown = true;
+
+        const card = document.createElement('div');
+        card.className = 'topic-card';
+
+        const header = document.createElement('div');
+        header.className = 'flex items-center justify-between flex-wrap gap-2 mb-3';
+
+        const left = document.createElement('div');
+        left.className = 'flex items-center gap-2';
+        const title = document.createElement('h3');
+        title.className = 'text-lg font-semibold section-title';
+        title.textContent = topic.topicName;
+
+        const count = document.createElement('span');
+        count.className = 'badge';
+        count.textContent = `${filtered.length} / ${topic.questions.length}`;
+
+        left.appendChild(title);
+        left.appendChild(count);
+
+        const actions = document.createElement('div');
+        actions.className = 'flex items-center gap-2';
+
+        const openTopicBtn = document.createElement('a');
+        openTopicBtn.className = 'pill';
+        openTopicBtn.innerHTML = '<i class="fa-solid fa-up-right-from-square mr-1"></i>Open Topic';
+        // Topic page URL convention: ../pages/<topicId>.html (topicId is lowercase with underscores)
+        // Your pages use kebab-case filenames (e.g., adulthood.html, happiness.html).
+        // Convert underscores to hyphens as your keys are underscored.
+        const kebab = topic.topicId.replace(/_/g, '-');
+        openTopicBtn.href = `./${kebab}.html`;
+        openTopicBtn.target = '_blank';
+        openTopicBtn.rel = 'noopener noreferrer';
+        openTopicBtn.title = 'Open topic page';
+
+        const clearTopicBtn = document.createElement('button');
+        clearTopicBtn.className = 'pill danger';
+        clearTopicBtn.innerHTML = '<i class="fa-solid fa-trash-can mr-1"></i>Clear Topic';
+        clearTopicBtn.addEventListener('click', () => {
+          if (!confirm(`Clear all saved questions for “${topic.topicName}”?`)) return;
+          saveTopicList(topic.key, []);
+          render();
+        });
+
+        const collapseBtn = document.createElement('button');
+        collapseBtn.className = 'pill muted';
+        collapseBtn.innerHTML = '<i class="fa-solid fa-angle-up mr-1"></i>Collapse';
+        const expandBtn = document.createElement('button');
+        expandBtn.className = 'pill muted hidden';
+        expandBtn.innerHTML = '<i class="fa-solid fa-angle-down mr-1"></i>Expand';
+
+        actions.appendChild(openTopicBtn);
+        actions.appendChild(clearTopicBtn);
+        actions.appendChild(collapseBtn);
+        actions.appendChild(expandBtn);
+
+        header.appendChild(left);
+        header.appendChild(actions);
+
+        const list = document.createElement('div');
+        list.className = 'space-y-2';
+
+        filtered.forEach(q => {
+          const chip = document.createElement('div');
+          chip.className = 'question-chip';
+
+          const txt = document.createElement('div');
+          txt.className = 'question-text wrap-anywhere';
+          txt.textContent = q;
+
+          const qa = document.createElement('div');
+          qa.className = 'question-actions flex items-center gap-2 shrink-0';
+
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'pill';
+          copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
+          copyBtn.title = 'Copy';
+          copyBtn.addEventListener('click', () => {
+            copyToClipboard(stripPrefix(q));
+          });
+
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'pill danger';
+          removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+          removeBtn.title = 'Remove from saved';
+          removeBtn.addEventListener('click', () => {
+            const current = readAllSaved().find(t => t.key === topic.key);
+            if (!current) return;
+            const idx = current.questions.indexOf(q);
+            if (idx >= 0) {
+              current.questions.splice(idx, 1);
+              saveTopicList(topic.key, current.questions);
+              render();
+            }
+          });
+
+          qa.appendChild(copyBtn);
+          qa.appendChild(removeBtn);
+
+          chip.appendChild(txt);
+          chip.appendChild(qa);
+
+          list.appendChild(chip);
+        });
+
+        // Collapse/expand handlers for this topic
+        collapseBtn.addEventListener('click', () => {
+          list.classList.add('hidden');
+          collapseBtn.classList.add('hidden');
+          expandBtn.classList.remove('hidden');
+        });
+        expandBtn.addEventListener('click', () => {
+          list.classList.remove('hidden');
+          expandBtn.classList.add('hidden');
+          collapseBtn.classList.remove('hidden');
+        });
+
+        card.appendChild(header);
+        card.appendChild(list);
+        resultsEl.appendChild(card);
+      });
+
+      emptyStateEl.classList.toggle('hidden', anyShown);
+    }
+
+    // Global actions
+    searchInput.addEventListener('input', render);
+
+    clearAllBtn.addEventListener('click', () => {
+      if (!confirm('Clear ALL saved questions across ALL topics? This cannot be undone.')) return;
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(SAVED_PREFIX)) keys.push(key);
+      }
+      keys.forEach(k => localStorage.removeItem(k));
+      render();
+    });
+
+    expandAllBtn.addEventListener('click', () => {
+      document.querySelectorAll('.topic-card .pill.muted.hidden').forEach(btn => {
+        // hidden expand buttons — show lists, so trigger "Expand"
+        const expandBtn = btn;
+        const header = expandBtn.closest('.topic-card').querySelector('.space-y-2');
+        if (header) header.classList.remove('hidden');
+        expandBtn.classList.add('hidden');
+        const collapseBtn = expandBtn.parentElement.querySelector('.pill.muted:not(.hidden)');
+        if (collapseBtn) collapseBtn.classList.remove('hidden');
+      });
+      // In case none were hidden: ensure all lists are visible
+      document.querySelectorAll('.topic-card .space-y-2').forEach(list => list.classList.remove('hidden'));
+      // And ensure collapse buttons visible, expand hidden
+      document.querySelectorAll('.topic-card .pill.muted').forEach(btn => {
+        if (btn.innerText.trim().toLowerCase().startsWith('expand')) btn.classList.add('hidden');
+        if (btn.innerText.trim().toLowerCase().startsWith('collapse')) btn.classList.remove('hidden');
+      });
+    });
+
+    collapseAllBtn.addEventListener('click', () => {
+      document.querySelectorAll('.topic-card .space-y-2').forEach(list => list.classList.add('hidden'));
+      // Toggle buttons
+      document.querySelectorAll('.topic-card .pill.muted').forEach(btn => {
+        if (btn.innerText.trim().toLowerCase().startsWith('expand')) btn.classList.remove('hidden');
+        if (btn.innerText.trim().toLowerCase().startsWith('collapse')) btn.classList.add('hidden');
+      });
+    });
+
+    // Initial render
+    render();
+  </script>
+</body>
+</html>
