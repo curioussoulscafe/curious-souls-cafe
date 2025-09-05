@@ -469,23 +469,43 @@
 
     // Data loaders
     function readAllSavedQuestions() {
-      const topics = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (!key) continue;
-        if (key.startsWith(SAVED_PREFIX)) {
-          try {
-            const raw = localStorage.getItem(key);
-            const list = raw ? JSON.parse(raw) : [];
-            const topicId = key.substring(SAVED_PREFIX.length);
-            const topicName = topicId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-            topics.push({ key, topicId, topicName, questions: Array.isArray(list) ? list : [] });
-          } catch {}
+        const topics = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (!key) continue;
+          if (key.startsWith(SAVED_PREFIX)) {
+            try {
+              const raw = localStorage.getItem(key);
+              const list = raw ? JSON.parse(raw) : [];
+              const topicId = key.substring(SAVED_PREFIX.length);
+              const topicName = topicId
+                .replace(/_/g, ' ')
+                .replace(/\b\w/g, c => c.toUpperCase());
+              topics.push({
+                key,
+                topicId,
+                topicName,
+                questions: Array.isArray(list) ? list : []
+              });
+            } catch {}
+          }
         }
+
+        // Default alphabetical by topicName
+        topics.sort((a, b) => a.topicName.localeCompare(b.topicName));
+
+        // Promote "All In One" (case-insensitive) to the top if it has any saved questions
+        const idx = topics.findIndex(
+          t => t.topicName.trim().toLowerCase() === 'all in one' && t.questions.length > 0
+        );
+        if (idx > 0) {
+          const [allInOne] = topics.splice(idx, 1);
+          topics.unshift(allInOne);
+        }
+
+        return topics;
       }
-      topics.sort((a,b) => a.topicName.localeCompare(b.topicName));
-      return topics;
-    }
+
 
     function readSavedActions() {
       try {
