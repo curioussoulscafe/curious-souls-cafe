@@ -598,7 +598,7 @@
 
         const openTopicBtn = document.createElement('a');
         openTopicBtn.className = 'pill';
-        openTopicBtn.innerHTML = '<i class="fa-solid fa-up-right-from-square mr-1"></i>Open Topic';
+        openTopicBtn.innerHTML = '<i class="fa-solid fa-up-right-from-square mr-1"></i>Open';
         const kebab = topic.topicId.replace(/_/g, '-');
         openTopicBtn.href = `./${kebab}.html`;
         openTopicBtn.target = '_blank';
@@ -607,7 +607,7 @@
 
         const clearTopicBtn = document.createElement('button');
         clearTopicBtn.className = 'pill danger';
-        clearTopicBtn.innerHTML = '<i class="fa-solid fa-trash-can mr-1"></i>Clear Topic';
+        clearTopicBtn.innerHTML = '<i class="fa-solid fa-trash-can mr-1"></i>Clear';
         clearTopicBtn.addEventListener('click', () => {
           if (!confirm(`Clear all saved questions for “${topic.topicName}”?`)) return;
           saveTopicList(topic.key, []);
