@@ -227,21 +227,6 @@
       width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
       font-size: 0.8rem; font-weight: bold;
     }
-    #inline-share-trigger {
-      background: none; border: none; padding: 0; margin: 0; color: #0000EE; font-style: italic; cursor: pointer;
-    }
-    #inline-share-trigger:hover, #inline-share-trigger:focus { text-decoration: underline; color: #551A8B; outline: none; }
-
-    /* Choice buttons in lookup modal */
-    .choice-btn {
-      background-color: #8b5cf6; color: white; font-weight: bold;
-      padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      cursor: pointer; transition: all 0.25s ease-in-out;
-      display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;
-    }
-    .choice-btn i { margin-right: 0.5rem; }
-    .choice-btn:hover { filter: brightness(0.95); transform: translateY(-1px); }
 
     /* Description link row */
     .description-link-container {
@@ -254,21 +239,14 @@
     }
     .description-link:hover { color: #805ad5; text-decoration: underline; }
     .description-link i { margin-right: 0.35rem; }
-    .separator { color: #6b46c1; opacity: 0.7; }
 
-    /* Bottom tip and QR link */
+    /* Bottom tip */
     .bottom-tip {
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       color: #4b5563; background: #f3f4f6; border: 1px dashed #d1d5db;
       border-radius: 9999px; padding: 0.5rem 0.875rem; font-size: 0.9rem; margin-top: 0.75rem; user-select: none;
     }
     .bottom-tip i { color: #f59e0b; }
-    .qr-code-link {
-      font-size: 0.875rem; color: #6b46c1; text-decoration: none;
-      transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
-      display: inline-flex; align-items: center; gap: 0.35rem; justify-content: center;
-    }
-    .qr-code-link:hover { color: #805ad5; text-decoration: underline; }
 
     /* Small helpers */
     .nowrap { white-space: nowrap; }
@@ -293,8 +271,6 @@
       <button id="getting-started-link" class="description-link">
         <i class="fas fa-info-circle"></i> Get started
       </button>
-      <!-- <span class="separator">|</span>
-      <a href="../index.html" class="description-link" title="About this page">About this page</a> -->
     </div>
 
     <!-- Top toolbar -->
@@ -302,12 +278,12 @@
       <div class="flex gap-2">
         <input id="search-input" type="text" class="search-input" placeholder="Search across saved items...">
       </div>
-      <div class="flex flex-wrap gap-2">
+      <!-- Center the four buttons -->
+      <div class="flex flex-wrap gap-2 justify-center">
         <button id="clear-all-btn" class="pill danger"><i class="fa-solid fa-trash-can mr-1"></i>Clear All Saved</button>
         <button id="export-all-btn" class="pill primary"><i class="fa-solid fa-file-arrow-down mr-1"></i>Export All</button>
         <button id="expand-all-btn" class="pill muted"><i class="fa-solid fa-angles-down mr-1"></i>Expand All</button>
         <button id="collapse-all-btn" class="pill muted"><i class="fa-solid fa-angles-up mr-1"></i>Collapse All</button>
-        <!-- <a href="../index.html" class="pill"><i class="fa-solid fa-house mr-1"></i>Home</a> -->
       </div>
     </div>
 
@@ -326,15 +302,10 @@
       <p class="text-sm">Open any topic to save items, or select actions on the Action Prompts page, then check back here.</p>
     </div>
 
-    <!-- Bottom tip and QR -->
+    <!-- Bottom tip -->
     <div class="bottom-tip mt-6" aria-live="polite">
       <i class="fa-solid fa-lightbulb"></i>
       <span>Tap the top logo for home</span>
-    </div>
-    <div class="mt-3 text-center">
-      <a href="#" id="show-qr-code-link" class="qr-code-link">
-        <i class="fas fa-qrcode"></i> Share page/QR code
-      </a>
     </div>
   </div>
 
@@ -383,32 +354,13 @@
     <div class="modal-content max-w-sm">
       <h3 class="text-xl font-semibold text-gray-800 mb-3">🚀 Meaningful Talk</h3>
       <ol class="getting-started-list">
-        <li><b>Invite Others:</b> Share the <button id="inline-share-trigger" type="button"><i>QR code or link</i></button> to get everyone onboard.</li>
+        <li><b>Invite Others:</b> Ask folks to scan the QR code on the bottom of the main page. <a class="text-blue-600 hover:underline" href="../index.html">Open main page</a></li>
         <li><b>Pick Questions:</b> On any topic page, tap questions to save them. They’ll appear here as “Saved Items”.</li>
         <li><b>Discuss:</b> Pick a saved question, then everyone answers it in turn. Repeat with the next person’s question.</li>
       </ol>
       <div class="modal-buttons mt-4">
         <button id="close-getting-started-modal" class="modal-button cancel" type="button">Got it!</button>
       </div>
-    </div>
-  </div>
-
-  <!-- QR Code Modal -->
-  <div id="qr-code-modal" class="modal-overlay">
-    <div id="qr-modal-content" class="modal-content relative">
-      <button class="absolute top-2 right-3 text-2xl text-gray-600 hover:text-gray-800" id="qr-modal-close-button" aria-label="Close">&times;</button>
-      <h3 class="text-lg font-semibold text-gray-800 mb-2">Share This Page</h3>
-      <p class="text-gray-600 text-sm mb-3">Scan the QR code or share the link below:</p>
-      <img id="qr-modal-image" alt="QR Code" class="w-full h-auto max-w-xs mx-auto mb-3 rounded shadow" />
-      <p class="text-sm text-gray-700 mt-2 break-all">
-        <i class="fa-solid fa-link mr-1"></i>
-        <a id="qr-page-link" href="#" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline"></a>
-      </p>
-      <div class="flex gap-2 justify-center mt-3">
-        <button id="copy-link-text-link" class="pill"><i class="fas fa-copy mr-1"></i>Copy link</button>
-        <button id="share-link-button" class="pill primary"><i class="fas fa-share-from-square mr-1"></i>Share…</button>
-      </div>
-      <p class="text-gray-500 text-sm mt-4">Let’s help fellow curious souls launch this page and start the conversation! 😊</p>
     </div>
   </div>
 
@@ -427,7 +379,8 @@
     const emptyStateEl = document.getElementById('empty-state');
     const summaryEl = document.getElementById('summary');
     const clearAllBtn = document.getElementById('clear-all-btn');
-    const exportAllBtn = document.getElementById('export-all-btn');
+    theExportBtn = document.getElementById('export-all-btn');
+    const exportAllBtn = theExportBtn;
     const expandAllBtn = document.getElementById('expand-all-btn');
     const collapseAllBtn = document.getElementById('collapse-all-btn');
     const actionsMount = document.getElementById('actions-mount');
@@ -447,22 +400,10 @@
     const translateBingChoiceBtn = document.getElementById('translate-bing-choice-btn');
     const copyQuestionBtn = document.getElementById('copy-question-btn');
 
-    // QR + Getting started
-    const qrModal = document.getElementById('qr-code-modal');
-    const qrImg = document.getElementById('qr-modal-image');
-    theQrCloseBtn = document.getElementById('qr-modal-close-button');
-    const qrLink = document.getElementById('qr-page-link');
-    const qrTrigger = document.getElementById('show-qr-code-link');
-    const copyLinkBtn = document.getElementById('copy-link-text-link');
-    const shareLinkBtn = document.getElementById('share-link-button');
-
+    // Getting started
     const gettingStartedLink = document.getElementById('getting-started-link');
     const gettingStartedModal = document.getElementById('getting-started-modal');
     const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
-    const inlineShareTrigger = document.getElementById('inline-share-trigger');
-
-    // Track if QR was opened from Getting Started
-    let shouldReturnToGettingStarted = false;
 
     // Selection
     let selectedText = null;
@@ -483,9 +424,7 @@
           } catch {}
         }
       }
-      // Default alphabetical
       topics.sort((a,b) => a.topicName.localeCompare(b.topicName));
-      // Promote "All In One" to top when it has any saved items
       const idx = topics.findIndex(t => t.topicName.trim().toLowerCase() === 'all in one' && t.questions.length > 0);
       if (idx > 0) {
         const [aio] = topics.splice(idx, 1);
@@ -643,15 +582,6 @@
           const qa = document.createElement('div');
           qa.className = 'question-actions flex items-center gap-2 shrink-0';
 
-          const copyBtn = document.createElement('button');
-          copyBtn.className = 'pill';
-          copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
-          copyBtn.title = 'Copy';
-          copyBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            copyToClipboard(stripPrefix(q));
-          });
-
           const removeBtn = document.createElement('button');
           removeBtn.className = 'pill danger';
           removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -668,7 +598,6 @@
             }
           });
 
-          qa.appendChild(copyBtn);
           qa.appendChild(removeBtn);
 
           chip.appendChild(txt);
@@ -786,15 +715,6 @@
           const aa = document.createElement('div');
           aa.className = 'action-actions flex items-center gap-2 shrink-0';
 
-          const copyBtn = document.createElement('button');
-          copyBtn.className = 'pill';
-          copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i>';
-          copyBtn.title = 'Copy';
-          copyBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            copyToClipboard(stripPrefix(actionText));
-          });
-
           const removeBtn = document.createElement('button');
           removeBtn.className = 'pill danger';
           removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -810,7 +730,6 @@
             }
           });
 
-          aa.appendChild(copyBtn);
           aa.appendChild(removeBtn);
 
           chip.appendChild(txt);
@@ -996,13 +915,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Curious Souls Café — Saved Export</title>
+  <title>Curious Souls Café -- Saved Export</title>
   <meta name="color-scheme" content="light dark">
   <style>${css}</style>
 </head>
 <body>
   <header>
-    <h1>Curious Souls Café — Saved Items</h1>
+    <h1>Curious Souls Café -- Saved Items</h1>
     <p class="meta">Generated: ${generated}</p>
     ${summaryHTML}
   </header>
@@ -1144,56 +1063,6 @@
     });
     closeGettingStartedModalBtn.addEventListener('click', () => {
       gettingStartedModal.classList.remove('show');
-    });
-
-    // QR Modal + interplay with Getting Started
-    function openQRModal(openedFromGettingStarted = false) {
-      shouldReturnToGettingStarted = openedFromGettingStarted;
-      const pageUrl = window.location.href;
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-      qrImg.src = qrUrl;
-      qrLink.textContent = pageUrl;
-      qrLink.href = pageUrl;
-      qrModal.classList.add('show');
-    }
-    function closeQRModal() {
-      qrModal.classList.remove('show');
-      if (shouldReturnToGettingStarted) {
-        gettingStartedModal.classList.add('show');
-      }
-      shouldReturnToGettingStarted = false;
-    }
-
-    qrTrigger.addEventListener('click', (e) => { e.preventDefault(); openQRModal(false); });
-    theQrCloseBtn.addEventListener('click', closeQRModal);
-    qrModal.addEventListener('click', (e) => { if (e.target === qrModal) closeQRModal(); });
-
-    inlineShareTrigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      gettingStartedModal.classList.remove('show');
-      openQRModal(true);
-    });
-
-    copyLinkBtn.addEventListener('click', () => {
-      const ta = document.createElement('textarea');
-      ta.value = window.location.href;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      alert('Link copied to clipboard!');
-    });
-
-    shareLinkBtn.addEventListener('click', async () => {
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: document.title,
-            text: 'Join me on Curious Souls Café!',
-            url: window.location.href
-          });
-        } catch (e) { console.warn('Share canceled/failed:', e); }
-      }
     });
 
     // Initial render
