@@ -658,15 +658,17 @@
                 Choose an option to continue:
             </p>
             <div class="space-y-2">
-                <a
+                <!-- Modified: button to open events selector modal -->
+                <button
+                    id="open-events-selector"
+                    type="button"
                     class="modal-button block w-full text-center"
                     style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff;"
-                    href="https://curioussoulscafe.github.io/links/share-feedback"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    aria-haspopup="dialog"
+                    aria-controls="events-selector-modal"
                 >
-                    <i class="fa-solid fa-message mr-1"></i> Give feedback
-                </a>
+                    <i class="fab fa-meetup mr-1"></i> Meet us at our events!
+                </button>
                 <a
                     class="modal-button block w-full text-center"
                     style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
@@ -679,22 +681,20 @@
                 <a
                     class="modal-button block w-full text-center"
                     style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;"
+                    href="https://curioussoulscafe.github.io/links/share-feedback"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-solid fa-message mr-1"></i> Give feedback
+                </a>
+                <a
+                    class="modal-button block w-full text-center"
+                    style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;"
                     href="mailto:curious.souls.cafe@gmail.com"
                 >
                     <i class="fa-solid fa-envelope mr-1"></i> Email us
                     (curious.souls.cafe [at] gmail.com)
                 </a>
-                <!-- Modified: button to open events selector modal -->
-                <button
-                    id="open-events-selector"
-                    type="button"
-                    class="modal-button block w-full text-center"
-                    style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;"
-                    aria-haspopup="dialog"
-                    aria-controls="events-selector-modal"
-                >
-                    <i class="fab fa-meetup mr-1"></i> Meet us at our events!
-                </button>
                 <button
                     type="button"
                     class="modal-button cancel block w-full text-center"
