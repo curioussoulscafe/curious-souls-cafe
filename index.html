@@ -680,7 +680,7 @@
                 </a>
                 <a
                     class="modal-button block w-full text-center"
-                    style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
                     href="https://curioussoulscafe.github.io/links/share-feedback"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -695,6 +695,15 @@
                     <i class="fa-solid fa-envelope mr-1"></i> Email us
                     (curious.souls.cafe [at] gmail.com)
                 </a>
+                <!-- NEW: Share this app option (Web Share API same as other share button) -->
+                <button
+                    id="share-app-from-feedback"
+                    type="button"
+                    class="modal-button block w-full text-center"
+                    style="background:#ecfeff; color:#0e7490; border:1px solid #a5f3fc;"
+                >
+                    <i class="fa-solid fa-share-from-square mr-1"></i> Share this app to connect with others
+                </button>
                 <button
                     type="button"
                     class="modal-button cancel block w-full text-center"
@@ -734,7 +743,7 @@
                     rel="noopener noreferrer"
                 >
                     <i class="fa-solid fa-location-dot mr-2"></i>
-                    Hong Kong (and Beyond)
+                    Hong Kong (and beyond)
                 </a>
                 <a
                     class="modal-button block w-full text-left"
@@ -1672,6 +1681,26 @@
         closeFeedbackModalBtn.addEventListener('click', closeFeedbackModal);
         feedbackModalOverlay.addEventListener('click', (e) => { if (e.target === feedbackModalOverlay) closeFeedbackModal(); });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && feedbackModalOverlay.classList.contains('show')) closeFeedbackModal(); });
+
+        // NEW: Wire up "Share this app with others" inside feedback modal (same behavior as other share button)
+        const shareAppFromFeedbackBtn = document.getElementById('share-app-from-feedback');
+        if (shareAppFromFeedbackBtn) {
+            shareAppFromFeedbackBtn.addEventListener('click', async () => {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'Curious Souls Café',
+                            text: 'Join me at Curious Souls Café!',
+                            url: 'https://curioussoulscafe.github.io'
+                        });
+                    } catch (err) {
+                        console.warn('Share canceled or failed:', err);
+                    }
+                }
+                // Close the modal regardless (keeps UX tidy and mirrors silent behavior)
+                closeFeedbackModal();
+            });
+        }
 
         // NEW: Events selector modal wiring
         const openEventsSelectorBtn = document.getElementById('open-events-selector');
