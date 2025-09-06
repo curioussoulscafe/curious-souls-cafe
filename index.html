@@ -638,28 +638,161 @@
         </div>
     </div>
 
-    <!-- NEW: Feedback/Question selection modal -->
-    <div id="feedback-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" aria-describedby="feedback-modal-desc">
+    <!-- Feedback modal -->
+    <div
+        id="feedback-modal-overlay"
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="feedback-modal-title"
+        aria-describedby="feedback-modal-desc"
+    >
         <div class="modal-content">
-            <h3 id="feedback-modal-title" class="text-lg font-semibold mb-2 text-purple-600">What would you like to share?</h3>
-            <p id="feedback-modal-desc" class="text-gray-700 mb-3">Choose an option to continue:</p>
+            <h3
+                id="feedback-modal-title"
+                class="text-lg font-semibold mb-2 text-purple-600"
+            >
+                What would you like to share?
+            </h3>
+            <p id="feedback-modal-desc" class="text-gray-700 mb-3">
+                Choose an option to continue:
+            </p>
             <div class="space-y-2">
-                <a class="modal-button block w-full text-center" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff;" href="https://curioussoulscafe.github.io/links/share-feedback" target="_blank" rel="noopener noreferrer">
+                <a
+                    class="modal-button block w-full text-center"
+                    style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff;"
+                    href="https://curioussoulscafe.github.io/links/share-feedback"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <i class="fa-solid fa-message mr-1"></i> Give Feedback
                 </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="https://curioussoulscafe.github.io/links/share-questions" target="_blank" rel="noopener noreferrer">
-                    <i class="fa-solid fa-circle-question mr-1"></i> Submit a Question
+                <a
+                    class="modal-button block w-full text-center"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
+                    href="https://curioussoulscafe.github.io/links/share-questions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-solid fa-circle-question mr-1"></i> Submit a
+                    Question
                 </a>
-                <!-- NEW: Email option added per request -->
-                <a class="modal-button block w-full text-center" style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;" href="mailto:curious.souls.cafe@gmail.com">
-                    <i class="fa-solid fa-envelope mr-1"></i> Email us (curious.souls.cafe [at] gmail.com)
+                <a
+                    class="modal-button block w-full text-center"
+                    style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;"
+                    href="mailto:curious.souls.cafe@gmail.com"
+                >
+                    <i class="fa-solid fa-envelope mr-1"></i> Email us
+                    (curious.souls.cafe [at] gmail.com)
                 </a>
-                <!-- NEW: Meetup option -->
-                <a class="modal-button block w-full text-center" style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;" href="https://www.meetup.com/curious-souls-cafe/" target="_blank">
+                <!-- Modified: button to open events selector modal -->
+                <button
+                    id="open-events-selector"
+                    type="button"
+                    class="modal-button block w-full text-center"
+                    style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;"
+                    aria-haspopup="dialog"
+                    aria-controls="events-selector-modal"
+                >
                     <i class="fab fa-meetup mr-1"></i> Meet us at our events!
-                </a>
-                <button type="button" class="modal-button cancel block w-full text-center" id="close-feedback-modal">
+                </button>
+                <button
+                    type="button"
+                    class="modal-button cancel block w-full text-center"
+                    id="close-feedback-modal"
+                >
                     <i class="fa-solid fa-xmark mr-1"></i> Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Events selector modal (opened from 'Meet us at our events!') -->
+    <div
+        id="events-selector-modal"
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="events-selector-title"
+        aria-describedby="events-selector-desc"
+    >
+        <div class="modal-content" style="max-width: 380px;">
+            <h3
+                id="events-selector-title"
+                class="text-lg font-semibold mb-2 text-purple-600"
+            >
+                Choose your city
+            </h3>
+            <p id="events-selector-desc" class="text-gray-700 mb-3">
+                Find our events on Meetup:
+            </p>
+            <div class="space-y-2 text-left">
+                <a
+                    class="modal-button block w-full text-left"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
+                    href="https://www.meetup.com/curious-souls-cafe/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-solid fa-location-dot mr-2"></i>
+                    Curious Souls Café Hong Kong (and Beyond)
+                </a>
+                <a
+                    class="modal-button block w-full text-left"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
+                    href="https://www.meetup.com/curious-souls-cafe-singapore/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-solid fa-location-dot mr-2"></i>
+                    Curious Souls Café Singapore
+                </a>
+                <a
+                    class="modal-button block w-full text-left"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
+                    href="https://www.meetup.com/curious-souls-cafe-seoul/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-solid fa-location-dot mr-2"></i>
+                    Curious Souls Café Seoul
+                </a>
+                <a
+                    class="modal-button block w-full text-left"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
+                    href="https://www.meetup.com/curious-souls-cafe-taipei/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-solid fa-location-dot mr-2"></i>
+                    Curious Souls Café Taipei
+                </a>
+                <a
+                    class="modal-button block w-full text-left"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
+                    href="https://www.meetup.com/curious-souls-cafe-kuala-lumpur/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-solid fa-location-dot mr-2"></i>
+                    Curious Souls Café Kuala Lumpur
+                </a>
+                <a
+                    class="modal-button block w-full text-left"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
+                    href="https://www.meetup.com/curious-souls-cafe-osaka/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i class="fa-solid fa-location-dot mr-2"></i>
+                    Curious Souls Café Osaka
+                </a>
+                <button
+                    type="button"
+                    class="modal-button cancel block w-full text-center"
+                    id="close-events-selector"
+                >
+                    <i class="fa-solid fa-xmark mr-1"></i> Close
                 </button>
             </div>
         </div>
@@ -1530,24 +1663,31 @@
             .catch(err => console.warn('Service Worker registration failed:', err));
         }
 
-        // Modal: feedback/question selector
+        // Feedback modal wiring
         const openFeedbackModalBtn = document.getElementById('open-feedback-modal');
         const feedbackModalOverlay = document.getElementById('feedback-modal-overlay');
         const closeFeedbackModalBtn = document.getElementById('close-feedback-modal');
-
         function openFeedbackModal() { feedbackModalOverlay.classList.add('show'); }
         function closeFeedbackModal() { feedbackModalOverlay.classList.remove('show'); }
-
         openFeedbackModalBtn.addEventListener('click', openFeedbackModal);
         closeFeedbackModalBtn.addEventListener('click', closeFeedbackModal);
-        feedbackModalOverlay.addEventListener('click', (e) => {
-            if (e.target === feedbackModalOverlay) closeFeedbackModal();
+        feedbackModalOverlay.addEventListener('click', (e) => { if (e.target === feedbackModalOverlay) closeFeedbackModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && feedbackModalOverlay.classList.contains('show')) closeFeedbackModal(); });
+
+        // NEW: Events selector modal wiring
+        const openEventsSelectorBtn = document.getElementById('open-events-selector');
+        const eventsSelectorModal = document.getElementById('events-selector-modal');
+        const closeEventsSelectorBtn = document.getElementById('close-events-selector');
+        function openEventsSelector() { eventsSelectorModal.classList.add('show'); }
+        function closeEventsSelector() { eventsSelectorModal.classList.remove('show'); }
+        openEventsSelectorBtn.addEventListener('click', () => {
+            // Close the feedback modal first for a clean stacked modal experience
+            closeFeedbackModal();
+            openEventsSelector();
         });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && feedbackModalOverlay.classList.contains('show')) {
-                closeFeedbackModal();
-            }
-        });
+        closeEventsSelectorBtn.addEventListener('click', closeEventsSelector);
+        eventsSelectorModal.addEventListener('click', (e) => { if (e.target === eventsSelectorModal) closeEventsSelector(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && eventsSelectorModal.classList.contains('show')) closeEventsSelector(); });
 
         // Modal: blog selector (Home, Events, About)
         const openBlogModalBtn = document.getElementById('open-blog-modal');
