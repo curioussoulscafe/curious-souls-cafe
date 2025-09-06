@@ -386,7 +386,7 @@
     }
 
     /* Floating Back button (imported from Code B) */
-    .floating-back-btn {
+    /* .floating-back-btn {
       position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
       background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
       box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
@@ -396,30 +396,30 @@
       --glow-color: rgba(99,102,241,0.55);
     }
     .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
-    .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
-    @keyframes backBtnPulse {
+    .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); } */
+    /* @keyframes backBtnPulse {
       0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
       50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
       100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
     }
     .floating-back-btn.attention {
       animation: backBtnPulse 900ms ease-in-out 0s 3;
-    }
-    @media (prefers-reduced-motion: reduce) {
+    } */
+    /* @media (prefers-reduced-motion: reduce) {
       .floating-back-btn.attention {
         animation: none;
         outline: 2px solid #a855f7;
         outline-offset: 2px;
       }
-    }
+    } */
   </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-start min-h-screen p-4">
   <!-- Floating back button -->
-  <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
+  <!-- <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
     <i class="fas fa-arrow-left"></i>
     Back
-  </button>
+  </button> -->
 
   <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
     <div class="flex justify-center mb-6">
@@ -614,7 +614,7 @@
     const shareLinkButton = document.getElementById('share-link-button');
 
     // Floating Back button (from Code B)
-    const floatingBackButton = document.getElementById('floating-back-button');
+    // const floatingBackButton = document.getElementById('floating-back-button');
 
     // Selection state
     let selectedText = null;
@@ -1379,33 +1379,33 @@
     });
 
     // Floating Back button behavior (from Code B)
-    function goBackFallback() {
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = '../index.html';
-      }
-    }
-    function runBackButtonAttention() {
-      if (!floatingBackButton) return;
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!prefersReduced) {
-        floatingBackButton.classList.add('attention');
-        setTimeout(() => floatingBackButton.classList.remove('attention'), 3000);
-      } else {
-        floatingBackButton.style.outline = '2px solid #a855f7';
-        floatingBackButton.style.outlineOffset = '2px';
-        setTimeout(() => {
-          floatingBackButton.style.outline = '';
-          floatingBackButton.style.outlineOffset = '';
-        }, 2000);
-      }
-    }
-    if (floatingBackButton) {
-      floatingBackButton.addEventListener('click', goBackFallback);
-      // Defer attention pulse to next tick to avoid layout thrash
-      setTimeout(runBackButtonAttention, 0);
-    }
+    // function goBackFallback() {
+    //   if (window.history.length > 1) {
+    //     window.history.back();
+    //   } else {
+    //     window.location.href = '../index.html';
+    //   }
+    // }
+    // function runBackButtonAttention() {
+    //   if (!floatingBackButton) return;
+    //   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    //   if (!prefersReduced) {
+    //     floatingBackButton.classList.add('attention');
+    //     setTimeout(() => floatingBackButton.classList.remove('attention'), 3000);
+    //   } else {
+    //     floatingBackButton.style.outline = '2px solid #a855f7';
+    //     floatingBackButton.style.outlineOffset = '2px';
+    //     setTimeout(() => {
+    //       floatingBackButton.style.outline = '';
+    //       floatingBackButton.style.outlineOffset = '';
+    //     }, 2000);
+    //   }
+    // }
+    // if (floatingBackButton) {
+    //   floatingBackButton.addEventListener('click', goBackFallback);
+    //   // Defer attention pulse to next tick to avoid layout thrash
+    //   setTimeout(runBackButtonAttention, 0);
+    // }
 
     // Initial render
     render();
