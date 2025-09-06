@@ -759,9 +759,45 @@
         .bottom-tip i {
             color: #f59e0b; /* amber-500 */
         }
+
+        /* Floating Back button (same style + attention animation as dice page) */
+        .floating-back-btn {
+          position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
+          background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+          box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+          transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
+          /* Adjustable attention effect variables */
+          --pulse-from: #43c6a6;
+          --pulse-to: #6b7280;
+          --glow-color: rgba(99,102,241,0.55); /* indigo-ish glow */
+        }
+        .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
+        .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
+        @keyframes backBtnPulse {
+          0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+          50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
+          100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+        }
+        .floating-back-btn.attention {
+          animation: backBtnPulse 900ms ease-in-out 0s 3; /* ~2.7s total */
+        }
+        /* Respect user reduced-motion preference */
+        @media (prefers-reduced-motion: reduce) {
+          .floating-back-btn.attention {
+            animation: none;
+            outline: 2px solid #a855f7; /* subtle static highlight */
+            outline-offset: 2px;
+          }
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+    <!-- Floating back button -->
+    <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
+      <i class="fas fa-arrow-left"></i>
+      Back
+    </button>
+
     <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
         <div class="flex justify-center mb-6">
             <a href="../index.html"> <!-- Updated path to index.html -->
@@ -982,6 +1018,38 @@
     </div>
 
     <script>
+        // --- Floating Back button (same behavior as dice page) ---
+        function goBackFallback() {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = '../index.html';
+          }
+        }
+        function runBackButtonAttention() {
+          const floatingBackButton = document.getElementById('floating-back-button');
+          if (!floatingBackButton) return;
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!prefersReduced) {
+            floatingBackButton.classList.add('attention');
+            setTimeout(() => floatingBackButton.classList.remove('attention'), 3000);
+          } else {
+            floatingBackButton.style.outline = '2px solid #a855f7';
+            floatingBackButton.style.outlineOffset = '2px';
+            setTimeout(() => {
+              floatingBackButton.style.outline = '';
+              floatingBackButton.style.outlineOffset = '';
+            }, 2000);
+          }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+          const floatingBackButton = document.getElementById('floating-back-button');
+          if (floatingBackButton) {
+            floatingBackButton.addEventListener('click', goBackFallback);
+            runBackButtonAttention();
+          }
+        });
+
         // --- Hardcoded Topic Configuration for Authenticity ---
         const displayTopicName = "Authenticity"; // Display name
         // The URL for the question file, now a relative path.
@@ -1570,7 +1638,7 @@
                     console.warn("Web Share API failed or was canceled:", err);
                 }
             } else {
-                // No fallback — intentionally do nothing (or optionally:
+                // No fallback -- intentionally do nothing (or optionally:
                 // alert("Sharing is not supported in this browser. Use the QR/link option instead.");
             }
         }
