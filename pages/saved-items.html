@@ -762,7 +762,7 @@
         openTopicBtn.innerHTML = '<i class="fa-solid fa-up-right-from-square mr-1"></i>Open';
         const kebab = kebabizeTopicId(topic.topicId);
         openTopicBtn.href = `./${kebab}.html`;
-        openTopicBtn.target = '_blank';
+        // openTopicBtn.target = '_blank';
         openTopicBtn.rel = 'noopener noreferrer';
         openTopicBtn.title = 'Open topic page';
 
@@ -889,7 +889,7 @@
 
       const openLink = document.createElement('a');
       openLink.href = './action-prompts.html';
-      openLink.target = '_blank';
+      // openLink.target = '_blank';
       openLink.rel = 'noopener noreferrer';
       openLink.className = 'pill';
       openLink.title = 'Open Action Prompts';
