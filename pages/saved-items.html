@@ -35,7 +35,6 @@
       padding: 0.9rem 0.9rem;
       transition: background 0.15s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.15s;
       cursor: pointer;
-      /* Extra vertical spacing between chips to avoid crowded look */
       margin-bottom: 0.5rem;
     }
     .question-chip:hover, .action-chip:hover {
@@ -219,7 +218,6 @@
     .modal-button.cancel { background: #e2e8f0; color: #4a5568; }
     .modal-button.cancel:hover { background: #cbd5e0; }
 
-    /* Getting Started modal specifics */
     .getting-started-list { list-style: none; padding-left: 0; text-align: left; counter-reset: step-counter; }
     .getting-started-list li { margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
     .getting-started-list li::before {
@@ -230,11 +228,10 @@
       font-size: 0.8rem; font-weight: bold;
     }
 
-    /* Description link row */
     .description-link-container {
       display: flex; justify-content: center; align-items: center;
-      margin-top: 0rem;        /* was -0.25rem */
-      margin-bottom: 1rem;     /* was 0.75rem; increase like Code B */
+      margin-top: 0rem;
+      margin-bottom: 1rem;
       font-size: 0.95rem; color: #6b46c1; gap: 0.5rem;
     }
     .description-link {
@@ -244,13 +241,11 @@
     .description-link:hover { color: #805ad5; text-decoration: underline; }
     .description-link i { margin-right: 0.35rem; }
 
-    /* Optional subtle rule to separate header stack like Code B */
     .header-separator {
       border-top: 1px solid #e5e7eb;
       margin: 0.5rem 0 1rem 0;
     }
 
-    /* Bottom tip */
     .bottom-tip {
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       color: #4b5563; background: #f3f4f6; border: 1px dashed #d1d5db;
@@ -258,11 +253,9 @@
     }
     .bottom-tip i { color: #f59e0b; }
 
-    /* Small helpers */
     .nowrap { white-space: nowrap; }
     .wrap-anywhere { overflow-wrap: anywhere; }
 
-    /* Modal subheading from Code B */
     .modal-subheading {
       font-size: 1.125rem;
       font-weight: 600;
@@ -274,29 +267,14 @@
       padding-bottom: 0.5rem;
     }
 
-    /* Choice buttons (kept) */
-    #search-google-choice-btn { background-color: #4285F4; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
-    #search-google-choice-btn:hover { background-color: #357ae8; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #search-google-choice-btn i { margin-right: 0.5rem; }
-
-    #search-bing-choice-btn { background-color: #008AD6; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
-    #search-bing-choice-btn:hover { background-color: #006FB7; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #search-bing-choice-btn i { margin-right: 0.5rem; }
-
-    #search-duckduckgo-choice-btn { background-color: #e3722a; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
-    #search-duckduckgo-choice-btn:hover { background-color: #c96024; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #search-duckduckgo-choice-btn i { margin-right: 0.5rem; }
-
-    #search-brave-choice-btn { background-color: #FB542B; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
-    #search-brave-choice-btn:hover { background-color: #d14424; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #search-brave-choice-btn i { margin-right: 0.5rem; }
-
-    #translate-google-choice-btn { background-color: #60a5fa; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
-    #translate-google-choice-btn:hover { background-color: #3b82f6; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #translate-bing-choice-btn { background-color: #008AD6; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
-    #translate-bing-choice-btn:hover { background-color: #006FB7; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
-    #copy-question-btn { background-color: #48bb78; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; }
-    #copy-question-btn:hover { background-color: #38a169; box-shadow: 0 6px 8px rgba(0,0,0,0.15); }
+    /* Optional: secondary non-sticky actions row styles */
+    .utility-row {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
   </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-start min-h-screen p-4">
@@ -307,53 +285,48 @@
       </a>
     </div>
 
-    <!-- Increased spacing like Code B -->
     <h1 class="text-2xl font-semibold text-purple-600 text-center mb-3">Curious Souls Café</h1>
     <hr class="border-purple-300 mb-5 w-1/2 mx-auto">
 
     <h2 class="text-xl font-semibold text-purple-600 text-center mb-3">Saved Items</h2>
     <p class="text-center subtle mb-3">Manage items saved across the app</p>
 
-    <!-- Description/get started row with more space -->
     <div class="description-link-container">
       <button id="getting-started-link" class="description-link">
         <i class="fas fa-info-circle"></i> Get started
       </button>
     </div>
 
-    <!-- subtle separator like Code B -->
     <div class="header-separator"></div>
 
-    <!-- Top toolbar -->
+    <!-- Sticky toolbar: only Search, Expand All, Collapse All -->
     <div class="toolbar -mx-8 px-8 py-4 flex flex-col gap-3">
       <div class="flex gap-2">
         <input id="search-input" type="text" class="search-input" placeholder="Search across saved items...">
       </div>
-      <!-- Center the four buttons -->
       <div class="flex flex-wrap gap-2 justify-center">
-        <button id="clear-all-btn" class="pill danger"><i class="fa-solid fa-trash-can mr-1"></i>Clear All Saved</button>
-        <button id="export-all-btn" class="pill primary"><i class="fa-solid fa-file-arrow-down mr-1"></i>Export All</button>
         <button id="expand-all-btn" class="pill muted"><i class="fa-solid fa-angles-down mr-1"></i>Expand All</button>
         <button id="collapse-all-btn" class="pill muted"><i class="fa-solid fa-angles-up mr-1"></i>Collapse All</button>
       </div>
     </div>
 
-    <!-- Summary -->
+    <!-- Optional non-sticky utility row (kept but out of frozen bar). Remove this block if you want them gone entirely. -->
+    <div class="utility-row">
+      <button id="clear-all-btn" class="pill danger"><i class="fa-solid fa-trash-can mr-1"></i>Clear All Saved</button>
+      <button id="export-all-btn" class="pill primary"><i class="fa-solid fa-file-arrow-down mr-1"></i>Export All</button>
+    </div>
+
     <div id="summary" class="mt-5 mb-3 text-sm subtle"></div>
 
-    <!-- Results Container -->
     <div id="results" class="space-y-5 mt-2"></div>
 
-    <!-- Saved Actions mount -->
     <div id="actions-mount"></div>
 
-    <!-- Empty state -->
     <div id="empty-state" class="empty-state mt-8 hidden">
       <p class="mb-2">No saved items found.</p>
       <p class="text-sm">Open any topic to save items, or select actions on the Action Prompts page, then check back here.</p>
     </div>
 
-    <!-- Bottom tip -->
     <div class="bottom-tip mt-8" aria-live="polite">
       <i class="fa-solid fa-lightbulb"></i>
       <span>Tap the top logo for home</span>
@@ -430,8 +403,7 @@
     const emptyStateEl = document.getElementById('empty-state');
     const summaryEl = document.getElementById('summary');
     const clearAllBtn = document.getElementById('clear-all-btn');
-    theExportBtn = document.getElementById('export-all-btn');
-    const exportAllBtn = theExportBtn;
+    const exportAllBtn = document.getElementById('export-all-btn');
     const expandAllBtn = document.getElementById('expand-all-btn');
     const collapseAllBtn = document.getElementById('collapse-all-btn');
     const actionsMount = document.getElementById('actions-mount');
@@ -456,8 +428,10 @@
     const gettingStartedModal = document.getElementById('getting-started-modal');
     const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
 
-    // Selection
+    // Selection state
     let selectedText = null;
+    let selectedType = null; // 'topic' | 'action'
+    let selectedTopicId = null; // kebab-case topic id when type === 'topic'
 
     // Data loaders
     function readAllSavedQuestions() {
@@ -517,15 +491,19 @@
     function clearAllSelected() {
       document.querySelectorAll('.selected-chip').forEach(el => el.classList.remove('selected-chip'));
       selectedText = null;
+      selectedType = null;
+      selectedTopicId = null;
       refreshFloatingVisibility();
     }
 
-    function toggleChipSelection(chipEl, text) {
+    function toggleChipSelection(chipEl, payload) {
       const willSelect = !chipEl.classList.contains('selected-chip');
       clearAllSelected();
       if (willSelect) {
         chipEl.classList.add('selected-chip');
-        selectedText = text;
+        selectedText = payload.text;
+        selectedType = payload.type; // 'topic' or 'action'
+        selectedTopicId = payload.topicId || null;
       }
       refreshFloatingVisibility();
     }
@@ -535,6 +513,11 @@
       const displayStyle = shouldShow ? 'flex' : 'none';
       floatingLookupBtn.style.display = displayStyle;
       floatingShareBtn.style.display = displayStyle;
+    }
+
+    function kebabizeTopicId(topicId) {
+      // topicId came from localStorage suffix (underscores). Convert to kebab.
+      return String(topicId).replace(/_/g, '-');
     }
 
     function render() {
@@ -589,7 +572,7 @@
         const openTopicBtn = document.createElement('a');
         openTopicBtn.className = 'pill';
         openTopicBtn.innerHTML = '<i class="fa-solid fa-up-right-from-square mr-1"></i>Open';
-        const kebab = topic.topicId.replace(/_/g, '-');
+        const kebab = kebabizeTopicId(topic.topicId);
         openTopicBtn.href = `./${kebab}.html`;
         openTopicBtn.target = '_blank';
         openTopicBtn.rel = 'noopener noreferrer';
@@ -654,7 +637,11 @@
           chip.appendChild(txt);
           chip.appendChild(qa);
 
-          chip.addEventListener('click', () => toggleChipSelection(chip, q));
+          chip.addEventListener('click', () => toggleChipSelection(chip, {
+            type: 'topic',
+            text: q,
+            topicId: kebabizeTopicId(topic.topicId)
+          }));
 
           list.appendChild(chip);
         });
@@ -786,7 +773,10 @@
           chip.appendChild(txt);
           chip.appendChild(aa);
 
-          chip.addEventListener('click', () => toggleChipSelection(chip, actionText));
+          chip.addEventListener('click', () => toggleChipSelection(chip, {
+            type: 'action',
+            text: actionText
+          }));
 
           list.appendChild(chip);
         });
@@ -812,22 +802,25 @@
     // Interactions
     searchInput.addEventListener('input', () => { render(); });
 
-    clearAllBtn.addEventListener('click', () => {
-      if (!confirm('Clear ALL saved items? This cannot be undone.')) return;
+    // Clear All (non-sticky utility)
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', () => {
+        if (!confirm('Clear ALL saved items? This cannot be undone.')) return;
 
-      const keys = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith(SAVED_PREFIX)) keys.push(key);
-      }
-      keys.forEach(k => localStorage.removeItem(k));
-      localStorage.removeItem(ACTIONS_KEY);
+        const keys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith(SAVED_PREFIX)) keys.push(key);
+        }
+        keys.forEach(k => localStorage.removeItem(k));
+        localStorage.removeItem(ACTIONS_KEY);
 
-      render();
-      clearAllSelected();
-    });
+        render();
+        clearAllSelected();
+      });
+    }
 
-    // Export All -> Minimal HTML file
+    // Export All (non-sticky utility)
     function escapeHTML(str) {
       return String(str)
         .replace(/&/g, '&amp;')
@@ -1001,11 +994,14 @@
       URL.revokeObjectURL(url);
     }
 
-    exportAllBtn.addEventListener('click', () => {
-      const html = buildExportHTML();
-      downloadHTMLFile('curious-souls-saved.html', html);
-    });
+    if (exportAllBtn) {
+      exportAllBtn.addEventListener('click', () => {
+        const html = buildExportHTML();
+        downloadHTMLFile('curious-souls-saved.html', html);
+      });
+    }
 
+    // Expand/Collapse All
     expandAllBtn.addEventListener('click', () => {
       document.querySelectorAll('.topic-card .space-y-2').forEach(list => list.classList.remove('hidden'));
       document.querySelectorAll('.topic-card .pill.muted').forEach(btn => {
@@ -1094,16 +1090,40 @@
       closeChoiceModal();
     });
 
-    // Share selected
+    // Share selected with correct URL
+    function buildShareURL() {
+      if (!selectedType || !selectedText) return window.location.href;
+      if (selectedType === 'topic' && selectedTopicId) {
+        return `${location.origin}${location.pathname.replace(/\/[^/]*$/, '/')}${selectedTopicId}.html`;
+      }
+      if (selectedType === 'action') {
+        return `${location.origin}${location.pathname.replace(/\/[^/]*$/, '/') }action-prompts.html`;
+      }
+      return window.location.href;
+    }
+
     function buildSharePayload() {
       if (!selectedText) return null;
-      return { title: 'Curious Souls Café - Saved Items', text: removeEmojiPrefix(selectedText), url: window.location.href };
+      return {
+        title: 'Curious Souls Café - Saved Items',
+        text: removeEmojiPrefix(selectedText),
+        url: buildShareURL()
+      };
     }
+
     async function shareSelected() {
       const payload = buildSharePayload();
       if (!payload) { alert('Please select a saved chip first.'); return; }
       if (navigator.share) {
         try { await navigator.share(payload); } catch (e) { console.warn('Share canceled/failed:', e); }
+      } else {
+        // Fallback: copy to clipboard if Web Share not available
+        try {
+          await navigator.clipboard.writeText(`${payload.text}\n${payload.url}`);
+          alert('Share link copied to clipboard.');
+        } catch {
+          copyToClipboard(`${payload.text}\n${payload.url}`);
+        }
       }
     }
     floatingShareBtn.addEventListener('click', shareSelected);
