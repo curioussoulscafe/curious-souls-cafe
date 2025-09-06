@@ -91,7 +91,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
 1. **Highlight Chosen Questions:** Always **highlight the question that is chosen** by tapping or clicking it. This makes it easier for other participants to focus on the active question, preventing confusion when multiple questions are displayed on the app at the same time.
 
-2. **Return to Main Page:** Clicking the round **Curious Souls Café icon** at the top of any topic page will take you back to the main topic selection page. This has the same effect as clicking the "Leave Page" button at the bottom.
+2. **Return to Main Page:** Clicking the round **Curious Souls Café icon** at the top of any topic page will take you back to the main topic selection page.
 
 3. **Quick Scroll to Top:** The sticky **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
 
@@ -103,7 +103,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * Then, have the participant tap **"Next Questions!"** so that only one random question is displayed.
 
-6. **Roll the Dice:** On the main page, you'll find a "[Roll the Dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html)" button. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](./pages/descriptions/dice.html) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
+6. **Roll the Dice:** On each page, you'll find a flating [dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html) button at the bottom right corner. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](./pages/descriptions/dice.html) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
 
 7. **Advanced Search & Clear:**
 
