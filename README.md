@@ -123,7 +123,7 @@ The Curious Souls Café web app keeps its files organized in a clear and maintai
 
 * All the questions for each topic are stored in simple text files (`.txt`) inside the **`questions/` folder**. For example, all "Icebreaker" questions are in `questions/icebreaker.txt`.
 
-* Other data files, such as `quotes.txt`, are located in the **`data/` folder**.
+* Other data files, such as `famous-quotes.txt`, are located in the **`data/` folder**.
 
 * Image files, including `qr-code.png` and `csc_logo.jpg`, are stored in the **`images/` folder**.
 

@@ -940,7 +940,7 @@
         const searchBar = document.getElementById('search-bar');
         const actionButtonsContainer = document.getElementById('action-buttons-container');
 
-        const quotesTxtUrl = 'data/quotes.txt';
+        const quotesTxtUrl = 'data/famous-quotes.txt';
         const quotesLocalStorageKey = 'csc_quotes_data'; 
 
         const liveDiscussionButtonContainer = document.getElementById('live-discussion-button-container');
@@ -1391,7 +1391,7 @@
         }
 
         /**
-         * Fetches quotes from quotes.txt and displays a random one, utilizing localStorage caching.
+         * Fetches quotes from famous-quotes.txt and displays a random one, utilizing localStorage caching.
          */
         async function fetchAndDisplayQuoteOfDay() {
             let quotesText = localStorage.getItem(quotesLocalStorageKey);

@@ -10,7 +10,7 @@ const FILES_TO_CACHE = [
 
   // Data files
   '/data/action-prompts.txt',
-  '/data/quotes.txt',
+  '/data/famous-quotes.txt',
 
   // Questions
   '/questions/authenticity.txt',
