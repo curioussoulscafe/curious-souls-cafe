@@ -1,4 +1,4 @@
-# Curious Souls Café App, Designed to Spark Meaningful Conversations
+# Curious Souls Café - Web App Designed to Spark Meaningful Conversations
 
 Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [live web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
 
