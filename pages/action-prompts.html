@@ -89,6 +89,37 @@
             background-color: #805ad5; /* Purple-600 */
         }
 
+        /* Floating Dice Button (imported from code B) */
+        #floating-dice {
+            position: fixed;
+            bottom: 80px; /* sits above the Top button */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #10b981, #06b6d4); /* teal to cyan */
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1100; /* above Top button, below lookup/share */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+        }
+        #floating-dice:hover, #floating-dice:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-dice:active {
+            transform: translateY(0) scale(0.98);
+        }
+        #floating-dice .fa-dice {
+            font-size: 1.4rem;
+        }
+
         /* Floating Look Up / Translate Button -- icon-only (imported from code a) */
         #floating-lookup {
             position: fixed;
@@ -157,6 +188,16 @@
             #back-to-top {
                 bottom: 16px;
                 right: 16px;
+            }
+            /* mobile dice placement */
+            #floating-dice {
+                width: 52px;
+                height: 52px;
+                bottom: 76px;
+                right: 16px;
+            }
+            #floating-dice .fa-dice {
+                font-size: 1.25rem;
             }
             /* mobile lookup placement */
             #floating-lookup {
@@ -567,6 +608,11 @@
             <i class="fas fa-qrcode"></i> Share page/QR code
         </a>
     </div>
+
+    <!-- Floating Dice Button (new) -->
+    <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
+        <i class="fas fa-dice"></i>
+    </a>
 
     <!-- Floating Look Up / Translate Button -- icon only -->
     <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
