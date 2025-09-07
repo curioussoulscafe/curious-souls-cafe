@@ -1187,18 +1187,21 @@
         }
 
         function selectUniqueItems(arr, numItems) {
-            if (numItems > availableRandomItems.length || availableRandomItems.length === 0) {
+            // If we have no available pool yet, initialize from itemList
+            if (availableRandomItems.length === 0) {
                 availableRandomItems = [...itemList];
             }
 
-            let selectedItems = [];
-            for (let i = 0; i < numItems; i++) {
-                if (availableRandomItems.length === 0) {
-                    availableRandomItems = [...itemList];
-                    if (availableRandomItems.length === 0) {
-                        return "No items available to pick.";
-                    }
-                }
+            // If requested more than what's available, only return what's left (no repetition)
+            const picksToMake = Math.min(numItems, availableRandomItems.length);
+
+            if (picksToMake === 0) {
+                // Nothing left to show
+                return [];
+            }
+
+            const selectedItems = [];
+            for (let i = 0; i < picksToMake; i++) {
                 const randomIndex = Math.floor(Math.random() * availableRandomItems.length);
                 selectedItems.push(availableRandomItems[randomIndex]);
                 availableRandomItems.splice(randomIndex, 1);
@@ -1350,16 +1353,20 @@
                 return;
             }
             const numItemsToPick = parseInt(itemCountInput.value);
-            const result = selectUniqueItems(itemList, numItemsToPick);
 
-            if (typeof result === "string") {
-                resultDisplay.textContent = result;
+            // Pick without repetition; if fewer available, just show what's left
+            const picked = selectUniqueItems(itemList, isNaN(numItemsToPick) ? 0 : numItemsToPick);
+
+            if (!picked || picked.length === 0) {
+                // If nothing is available, inform user (and do NOT refill)
+                resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
             } else {
-                let itemDivs = result.map(item => `<div class="item">${item}</div>`);
+                let itemDivs = picked.map(item => `<div class="item">${item}</div>`);
                 let resultHTML = itemDivs.join('');
                 resultDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(resultDisplay);
             }
+
             // Reset selections across all sections when generating new random set
             selectedRandomQuestionText = null;
             document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));

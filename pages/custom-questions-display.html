@@ -1055,21 +1055,20 @@
         }
 
         function selectUniqueItems(arr, numItems) {
-            if (numItems > availableRandomItems.length || availableRandomItems.length === 0) {
+            // Initialize pool from current itemList if needed
+            if (availableRandomItems.length === 0) {
                 availableRandomItems = [...itemList];
-                if (availableRandomItems.length === 0) {
-                    return "No items available to pick. Please add questions first.";
-                }
             }
 
-            let selectedItems = [];
-            for (let i = 0; i < numItems; i++) {
-                if (availableRandomItems.length === 0) {
-                    availableRandomItems = [...itemList];
-                    if (availableRandomItems.length === 0) {
-                        return "No items available to pick. Please add questions first.";
-                    }
-                }
+            // Determine how many we can actually pick without repeating
+            const picksToMake = Math.min(numItems, availableRandomItems.length);
+
+            if (picksToMake === 0) {
+                return []; // Nothing left to show; do not refill
+            }
+
+            const selectedItems = [];
+            for (let i = 0; i < picksToMake; i++) {
                 const randomIndex = Math.floor(Math.random() * availableRandomItems.length);
                 selectedItems.push(availableRandomItems[randomIndex]);
                 availableRandomItems.splice(randomIndex, 1);
@@ -1229,12 +1228,12 @@
                 return;
             }
             const numItemsToPick = parseInt(itemCountInput.value);
-            const result = selectUniqueItems(itemList, numItemsToPick);
+            const picked = selectUniqueItems(itemList, isNaN(numItemsToPick) ? 0 : numItemsToPick);
 
-            if (typeof result === "string") {
-                resultDisplay.textContent = result;
+            if (!picked || picked.length === 0) {
+                resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
             } else {
-                let itemDivs = result.map(item => `<div class="item">${item}</div>`);
+                let itemDivs = picked.map(item => `<div class="item">${item}</div>`);
                 let resultHTML = itemDivs.join('');
                 resultDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(resultDisplay);
