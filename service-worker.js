@@ -32,6 +32,7 @@ const FILES_TO_CACHE = [
   '/questions/all-in-one.txt',
   '/questions/global-curiosities.txt',
   '/questions/true-wealth.txt',
+  '/questions/legacy.txt',
 
   // Pages
   '/pages/action-prompts.html',
@@ -60,6 +61,7 @@ const FILES_TO_CACHE = [
   '/pages/global-curiosities.html',
   '/pages/true-wealth.html',
   '/pages/saved-questions.html',
+  '/pages/legacy.html',
 
   // Pages (descriptions)
   '/pages/descriptions/authenticity.html',
@@ -82,6 +84,7 @@ const FILES_TO_CACHE = [
   '/pages/descriptions/dice.html',
   '/pages/descriptions/global-curiosities.html',
   '/pages/descriptions/true-wealth.html',
+  '/pages/descriptions/legacy.html',
 
   // Images
   '/images/csc_logo.jpg',
@@ -108,6 +111,7 @@ const FILES_TO_CACHE = [
   '/images/qr/qr-code-topic-true-wealth.png',
   '/images/qr/qr-code-topic-work-that-resonates.png',
   '/images/qr/qr-code-topic-all-in-one.png',
+  '/images/qr/qr-code-topic-legacy.png',
   '/images/qr/qr-code-welcome.png',
 
   // Icons

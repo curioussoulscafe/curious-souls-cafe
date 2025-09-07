@@ -45,6 +45,7 @@ Explore diverse themes like self-discovery, happiness, love, and authenticity, o
 - **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and heart-warming conversations.
 - **[Inner Child](https://curioussoulscafe.github.io/curious-souls-cafe/pages/inner-child.html)**: Reconnect with your playful younger self, nurture creativity, and explore the transformative power of curiosity, wonder, and self-compassion.
 - **[Interdependence](https://curioussoulscafe.github.io/curious-souls-cafe/pages/interdependence.html)**: Explore interdependent connection, and the invisible threads that sustain our relationships and communities.
+- **[Legacy](https://curioussoulscafe.github.io/curious-souls-cafe/pages/legacy.html)**: Reflect on the impact you make in the world and transform your values into a meaningful legacy.
 - **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html)**: Reflect on the dynamics of love and intimacy.
 - **[Parenting](https://curioussoulscafe.github.io/curious-souls-cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
 - **[Purpose](https://curioussoulscafe.github.io/curious-souls-cafe/pages/purpose.html)**: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.
