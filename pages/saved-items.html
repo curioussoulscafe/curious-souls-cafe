@@ -217,6 +217,13 @@
     .modal-button { padding: 0.6rem 1.2rem; border-radius: 9999px; font-weight: 700; cursor: pointer; transition: all 0.2s ease-in-out; }
     .modal-button.cancel { background: #e2e8f0; color: #4a5568; }
     .modal-button.cancel:hover { background: #cbd5e0; }
+    .modal-button.confirm {
+        background-color: #c53030; /* Red-600 */
+        color: white;
+    }
+    .modal-button.confirm:hover {
+        background-color: #9b2c2c; /* Red-700 */
+    }
 
     .getting-started-list { list-style: none; padding-left: 0; text-align: left; counter-reset: step-counter; }
     .getting-started-list li { margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; }
@@ -415,7 +422,6 @@
   </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-start min-h-screen p-4">
-  <!-- Floating back button -->
   <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
     <i class="fas fa-arrow-left"></i>
     Back
@@ -442,7 +448,6 @@
 
     <div class="header-separator"></div>
 
-    <!-- Sticky toolbar: only Search, Expand All, Collapse All -->
     <div class="toolbar -mx-8 px-8 py-4 flex flex-col gap-3">
       <div class="flex gap-2">
         <input id="search-input" type="text" class="search-input" placeholder="Search across saved items...">
@@ -453,7 +458,6 @@
       </div>
     </div>
 
-    <!-- Optional non-sticky utility row -->
     <div class="utility-row">
       <button id="clear-all-btn" class="pill danger"><i class="fa-solid fa-trash-can mr-1"></i>Clear All Saved</button>
       <button id="export-all-btn" class="pill primary"><i class="fa-solid fa-file-arrow-down mr-1"></i>Export All</button>
@@ -470,19 +474,12 @@
       <p class="text-sm">Open any topic to save items, or select actions on the Action Prompts page, then check back here.</p>
     </div>
 
-    <!-- <div class="bottom-tip mt-8" aria-live="polite">
-      <i class="fa-solid fa-lightbulb"></i>
-      <span>Tap the top logo for home</span>
-    </div> -->
-
-    <!-- Share page/QR code link -->
     <br>
     <a href="#" id="show-qr-code-link" class="qr-code-link">
       <i class="fas fa-qrcode"></i> Share page/QR code
     </a>
   </div>
 
-  <!-- Floating buttons -->
   <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
     <i class="fas fa-dice"></i>
   </a>
@@ -494,7 +491,6 @@
   </button>
   <button id="back-to-top" title="Back to Top">&#9650; Top</button>
 
-  <!-- Search/Translate Choice Modal -->
   <div id="search-engine-modal" class="modal-overlay">
     <div class="modal-content">
       <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
@@ -522,7 +518,6 @@
     </div>
   </div>
 
-  <!-- Getting Started Modal -->
   <div id="getting-started-modal" class="modal-overlay">
     <div class="modal-content max-w-sm">
       <h3 class="text-xl font-semibold text-gray-800 mb-3">🚀 Meaningful Talk</h3>
@@ -538,7 +533,6 @@
     </div>
   </div>
 
-  <!-- QR Code Modal (from Code B, adapted) -->
   <div id="qr-code-modal" class="modal-overlay">
     <div id="qr-modal-content" class="modal-content">
       <button class="qr-modal-close-button" id="qr-modal-close-button" aria-label="Close QR modal">&times;</button>
@@ -564,6 +558,16 @@
       <p class="text-gray-500 text-sm mt-4">Invite fellow curious souls to open this page and join the conversation! 😊</p>
     </div>
   </div>
+
+    <div id="delete-confirm-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p id="delete-confirm-modal-text" class="text-lg font-semibold text-gray-800 mb-4"></p>
+            <div class="modal-buttons">
+                <button id="delete-confirm-yes" class="modal-button confirm" type="button">Yes, Delete</button>
+                <button id="delete-confirm-no" class="modal-button cancel" type="button">No, Cancel</button>
+            </div>
+        </div>
+    </div>
 
   <script>
     // Random highlight color
@@ -617,10 +621,44 @@
     // Floating Back button (from Code B)
     const floatingBackButton = document.getElementById('floating-back-button');
 
+    // NEW: Deletion confirmation modal elements
+    const deleteConfirmModal = document.getElementById('delete-confirm-modal');
+    const deleteConfirmText = document.getElementById('delete-confirm-modal-text');
+    let deleteConfirmYes = document.getElementById('delete-confirm-yes');
+    const deleteConfirmNo = document.getElementById('delete-confirm-no');
+
     // Selection state
     let selectedText = null;
     let selectedType = null; // 'topic' | 'action'
     let selectedTopicId = null; // kebab-case topic id when type === 'topic'
+
+    // NEW: Deletion Confirmation Modal Logic
+    /**
+     * Shows a confirmation modal for destructive actions.
+     * @param {string} message The message to display in the modal.
+     * @param {function} onConfirmCallback The function to execute if the user confirms.
+     */
+    function showDeleteConfirmation(message, onConfirmCallback) {
+        deleteConfirmText.textContent = message;
+
+        // Clone and replace the 'Yes' button to clear any old, lingering event listeners
+        const newYesButton = deleteConfirmYes.cloneNode(true);
+        deleteConfirmYes.parentNode.replaceChild(newYesButton, deleteConfirmYes);
+        deleteConfirmYes = newYesButton; // Update the reference to the new button
+
+        // Add a one-time listener for the confirmation action
+        deleteConfirmYes.addEventListener('click', () => {
+            onConfirmCallback();
+            deleteConfirmModal.classList.remove('show');
+        }, { once: true }); // Use {once: true} as an alternative to cloning
+
+        deleteConfirmModal.classList.add('show');
+    }
+
+    // The 'No' button's behavior is always the same: just close the modal.
+    deleteConfirmNo.addEventListener('click', () => {
+        deleteConfirmModal.classList.remove('show');
+    });
 
     // Data loaders
     function readAllSavedQuestions() {
@@ -770,9 +808,10 @@
         clearTopicBtn.className = 'pill danger';
         clearTopicBtn.innerHTML = '<i class="fa-solid fa-trash-can mr-1"></i>Clear';
         clearTopicBtn.addEventListener('click', () => {
-          if (!confirm(`Clear all saved questions for “${topic.topicName}”?`)) return;
-          saveTopicList(topic.key, []);
-          render();
+          showDeleteConfirmation(`Clear all saved questions for “${topic.topicName}”?`, () => {
+              saveTopicList(topic.key, []);
+              render();
+          });
         });
 
         const collapseBtn = document.createElement('button');
@@ -810,14 +849,18 @@
           removeBtn.title = 'Remove from saved';
           removeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const current = readAllSavedQuestions().find(t => t.key === topic.key);
-            if (!current) return;
-            const idx = current.questions.indexOf(q);
-            if (idx >= 0) {
-              current.questions.splice(idx, 1);
-              saveTopicList(topic.key, current.questions);
-              render();
-            }
+            const questionText = stripPrefix(q);
+            const truncatedText = questionText.length > 50 ? questionText.substring(0, 50) + '...' : questionText;
+            showDeleteConfirmation(`Remove "${truncatedText}"?`, () => {
+                const current = readAllSavedQuestions().find(t => t.key === topic.key);
+                if (!current) return;
+                const idx = current.questions.indexOf(q);
+                if (idx >= 0) {
+                    current.questions.splice(idx, 1);
+                    saveTopicList(topic.key, current.questions);
+                    render();
+                }
+            });
           });
 
           qa.appendChild(removeBtn);
@@ -900,9 +943,10 @@
       clearBtn.title = 'Clear all saved actions';
       clearBtn.innerHTML = '<i class="fa-solid fa-trash-can mr-1"></i>Clear';
       clearBtn.addEventListener('click', () => {
-        if (!confirm('Clear all saved actions?')) return;
-        localStorage.removeItem(ACTIONS_KEY);
-        render();
+          showDeleteConfirmation('Clear all saved actions?', () => {
+              localStorage.removeItem(ACTIONS_KEY);
+              render();
+          });
       });
 
       const collapseBtn = document.createElement('button');
@@ -947,13 +991,16 @@
           removeBtn.title = 'Remove action';
           removeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const all = readSavedActions();
-            const idx = all.indexOf(actionText);
-            if (idx >= 0) {
-              all.splice(idx, 1);
-              localStorage.setItem(ACTIONS_KEY, JSON.stringify(all));
-              render();
-            }
+            const truncatedText = actionText.length > 50 ? actionText.substring(0, 50) + '...' : actionText;
+            showDeleteConfirmation(`Remove action "${truncatedText}"?`, () => {
+                const all = readSavedActions();
+                const idx = all.indexOf(actionText);
+                if (idx >= 0) {
+                    all.splice(idx, 1);
+                    localStorage.setItem(ACTIONS_KEY, JSON.stringify(all));
+                    render();
+                }
+            });
           });
 
           aa.appendChild(removeBtn);
@@ -993,18 +1040,17 @@
     // Clear All (non-sticky utility)
     if (clearAllBtn) {
       clearAllBtn.addEventListener('click', () => {
-        if (!confirm('Clear ALL saved items? This cannot be undone.')) return;
-
-        const keys = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (key && key.startsWith(SAVED_PREFIX)) keys.push(key);
-        }
-        keys.forEach(k => localStorage.removeItem(k));
-        localStorage.removeItem(ACTIONS_KEY);
-
-        render();
-        clearAllSelected();
+        showDeleteConfirmation('Clear ALL saved items? This cannot be undone.', () => {
+            const keys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith(SAVED_PREFIX)) keys.push(key);
+            }
+            keys.forEach(k => localStorage.removeItem(k));
+            localStorage.removeItem(ACTIONS_KEY);
+            render();
+            clearAllSelected();
+        });
       });
     }
 
