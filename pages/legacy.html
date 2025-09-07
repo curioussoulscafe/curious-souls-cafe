@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="app-title">Curious Souls Café - Legacy</title> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <style>
+        :root {
+            --highlight-color: #00f9ff; /* Default or initial color, will be overridden by JS */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(
+                to right,
+                #f3f4f6 0%,
+                #ede9fe 20%,
+                #ede9fe 80%,
+                #f3f4f6 100%
+            );
+        }
+        /* Styling for the original items to add space */
+        .item {
+            margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
+            padding: 1rem; 
+            font-size: 1.25rem; /* Default font size is now larger */
+            background-color: #f8fafc; /* Light background color to make them stand out */
+            border: 1px solid #e2e8f0; /* Subtle border */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+            transition: all 0.2s ease-in-out; /* Smooth transition for selection */
+            cursor: pointer; /* Indicate it's clickable */
+        }
+
+        /* This class is for highlighting the original items when clicked to be chosen */
+        .item.selected-item {
+            background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
+            padding: 1.15rem; /* Slightly larger padding on selection */
+            font-size: 1.35rem; /* Slightly larger font size on selection */
+            margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.03); /* Slightly enlarge when selected */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Even more prominent shadow when selected */
+        }
+        /* Styling for the chosen items */
+        .chosen-item {
+            margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
+            padding: 1rem; 
+            font-size: 1.25rem; /* Default font size is now larger */
+            background-color: #f8fafc; /* Light background color to make them stand out */
+            border: 1px solid #e2e8f0; /* Subtle border */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
+            transition: all 0.2s ease-in-out; /* Smooth transition for selection */
+            cursor: pointer; /* Indicate it's clickable */
+            text-align: center; /* Centered text */
+        }
+
+        /* Highlight for chosen items when clicked */
+        .chosen-item.selected-chosen-item {
+            background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
+            padding: 1.15rem; /* Slightly larger padding on selection */
+            font-size: 1.35rem; /* Slightly larger font size on selection */
+            margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.03); /* Slightly enlarge when selected */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Even more prominent shadow when selected */
+        }
+
+        /* Styles for the back-to-top button */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #6b46c1; /* Purple-500 */
+            color: white;
+            padding: 0.5rem 1rem; /* Matched padding */
+            font-size: 1rem; /* Matched font size */
+            border-radius: 9999px; /* Full rounded */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: none; /* Hidden by default */
+            transition: opacity 0.3s ease-in-out, transform 0.15s ease-in-out;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+        #back-to-top:hover {
+            background-color: #805ad5; /* Purple-600 */
+            transform: translateY(-2px);
+        }
+
+        /* Floating Dice Button */
+        #floating-dice {
+            position: fixed;
+            bottom: 80px; /* sits above the Top button */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #10b981, #06b6d4); /* teal to cyan */
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1100; /* above Top button */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+        }
+        #floating-dice:hover, #floating-dice:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-dice:active {
+            transform: translateY(0) scale(0.98);
+        }
+        #floating-dice .fa-dice {
+            font-size: 1.4rem;
+        }
+
+        /* Floating Look Up / Translate Button -- icon-only, same size as dice, slightly above it */
+        #floating-lookup {
+            position: fixed;
+            bottom: 148px; /* dice bottom (80) + dice height (56) + 12px gap = 148 */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #3b82f6, #10b981); /* blue to green */
+            color: #ffffff;
+            display: none; /* Hidden by default; shown when a question is selected */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1150; /* above dice */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+            cursor: pointer;
+        }
+        #floating-lookup i {
+            font-size: 1.25rem; /* match visual weight with dice icon */
+        }
+        #floating-lookup:hover, #floating-lookup:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-lookup:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* NEW: Floating Share Button */
+        #floating-share {
+            position: fixed;
+            bottom: 214px; /* lookup bottom (148) + button height (56) + ~10px gap */
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #a855f7, #ec4899); /* purple to pink */
+            color: #ffffff;
+            display: none; /* Hidden by default; shown when a question is selected */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            text-decoration: none;
+            z-index: 1130; /* between lookup (1150) and dice (1100) */
+            transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
+            cursor: pointer;
+        }
+        #floating-share i {
+            font-size: 1.15rem;
+        }
+        #floating-share:hover, #floating-share:focus {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            outline: none;
+            filter: brightness(1.05);
+        }
+        #floating-share:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        @media (max-width: 480px) {
+            #floating-dice {
+                width: 52px;
+                height: 52px;
+                bottom: 76px;
+                right: 16px;
+            }
+            #floating-dice .fa-dice {
+                font-size: 1.25rem;
+            }
+            #back-to-top {
+                bottom: 16px;
+                right: 16px;
+            }
+            #floating-lookup {
+                width: 52px;
+                height: 52px;
+                right: 16px;
+                bottom: 140px; /* dice bottom (76) + dice height (52) + 12px gap = 140 */
+            }
+            #floating-lookup i {
+                font-size: 1.15rem;
+            }
+            /* mobile share placement */
+            #floating-share {
+                width: 52px;
+                height: 52px;
+                right: 16px;
+                bottom: 204px; /* lookup bottom (140) + 52 + 12 gap */
+            }
+            #floating-share i {
+                font-size: 1.05rem;
+            }
+        }
+
+        /* Styles for the embedded leave page button */
+        #back-to-topics {
+            background-color: #c53030; /* Deeper red for "Leave Page" */
+            color: white; /* White text */
+            border: none; /* No border */
+            padding: 0.5rem 1rem; /* Matched padding */
+            font-size: 1rem; /* Matched font size */
+            font-weight: bold; /* Added font-weight bold */
+            border-radius: 9999px; /* Full rounded */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out; /* Smooth transition for hover */
+            width: 100%; /* Make it full width */
+            margin-top: 1rem; /* Adjusted top margin to be closer to Clear Saved Questions */
+            margin-bottom: 0; /* No bottom margin as it's the last element in the container */
+            display: block; /* Ensure it takes full width */
+            text-align: center; /* Center the text */
+        }
+        #back-to-topics:hover {
+            background-color: #9b2c2c; /* Slightly darker red on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
+        }
+
+        /* Styles for Clear Saved Questions button */
+        #clear-chosen-button {
+            background-color: #fc8181; /* Lighter red for "Clear Saved Questions" */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem; /* Adjusted margin-top */
+            transition: all 0.3s ease-in-out;
+        }
+        #clear-chosen-button:hover {
+            background-color: #f56565; /* Slightly darker light red on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #random-result {
+            min-height: 60px;
+        }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* Above all other content */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out
+        }
+
+        /* Fix for commas mistakenly used in the block above (ensure valid CSS) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000; /* Above all other content */
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 1.5rem;
+        }
+
+        .modal-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px; /* Full rounded */
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .modal-button.confirm {
+            background-color: #c53030; /* Red-600 */
+            color: white;
+        }
+        .modal-button.confirm:hover {
+            background-color: #9b2c2c; /* Red-700 */
+        }
+
+        .modal-button.cancel {
+            background-color: #e2e8f0; /* Gray-200 */
+            color: #4a5568; /* Gray-700 */
+        }
+        .modal-button.cancel:hover {
+            background-color: #cbd5e0; /* Gray-300 */
+        }
+        
+        /* NEW: Styles for filter buttons */
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db; /* Tailwind gray-300 */
+            background-color: #ffffff;
+            color: #4b5563; /* Tailwind gray-600 */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.9rem;
+        }
+        .filter-btn:hover {
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .filter-btn.active {
+            background-color: #8b5cf6; /* A purple that fits the theme */
+            color: #ffffff;
+            border-color: #8b5cf6;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Loading spinner styles for modals */
+        .loading-spinner-modal {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #a855f7; /* Purple */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+
+        /* New style for the description link */
+        .description-link-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #6b46c1;
+        }
+        .description-link {
+            display: inline-flex;
+            align-items: center;
+            text-align: center;
+            color: #6b46c1;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .description-link:hover {
+            color: #805ad5;
+            text-decoration: underline;
+        }
+        .description-link i {
+            margin-right: 0.35rem;
+        }
+        .separator {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 0.35rem;
+            color: #6b46c1;
+            font-size: 1em;
+            height: 1em;
+        }
+        
+        /* New QR Modal specific styles */
+        #qr-modal-content {
+            max-width: 350px; /* Adjust max width for QR code to be readable */
+            padding: 1.5rem;
+            position: relative; /* For close button positioning */
+        }
+        #qr-modal-content img {
+            width: 100%; /* Make image responsive within modal */
+            height: auto;
+            max-width: 250px; /* Max size for QR code image */
+            margin: 0 auto 1rem auto; /* Center and add margin below */
+            display: block; /* Ensure it takes up its own line */
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .qr-modal-close-button {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568; /* Gray-700 */
+            line-height: 1; /* Ensure icon is vertically centered */
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .qr-modal-close-button:hover {
+            background-color: #e2e8f0; /* Gray-200 */
+            color: #2d3748; /* Gray-800 */
+        }
+        .qr-code-link {
+            font-size: 0.875rem; /* text-sm */
+            color: #6b46c1; /* Purple-600 */
+            text-decoration: none;
+            transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem; /* Space between icon and text */
+            margin-top: 0.5rem; /* Added margin-top to separate it from "Back to Main Page" */
+            justify-content: center; /* Center the link */
+        }
+        .qr-code-link:hover {
+            color: #805ad5; /* Darker purple on hover */
+            text-decoration: underline;
+        }
+
+        /* New style for the description link */
+        .description-link {
+            display: inline-flex;
+            align-items: center;
+            text-align: center;
+            color: #6b46c1;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .description-link:hover {
+            color: #805ad5; /* Darker purple on hover */
+            text-decoration: underline;
+        }
+        .description-link i {
+            margin-right: 0.35rem; /* Small space between icon and text */
+        }
+
+        /* Specific styles for search engine choice buttons within the modal */
+        #search-google-choice-btn {
+            background-color: #4285F4; /* Google Blue */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #search-google-choice-btn:hover {
+            background-color: #357ae8; /* Darker Google Blue on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #search-google-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        #search-bing-choice-btn {
+            background-color: #008AD6; /* Bing Blue */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #search-bing-choice-btn:hover {
+            background-color: #006FB7; /* Darker Bing Blue on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #search-bing-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* DuckDuckGo button style */
+        #search-duckduckgo-choice-btn {
+            background-color: #e3722a; /* DuckDuckGo Orange-Yellow */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #search-duckduckgo-choice-btn:hover {
+            background-color: #c96024; /* Darker DuckDuckGo Orange-Yellow on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #search-duckduckgo-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Brave Search button style */
+        #search-brave-choice-btn {
+            background-color: #FB542B; /* Brave Orange */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #search-brave-choice-btn:hover {
+            background-color: #d14424; /* Darker Brave Orange on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #search-brave-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Translate (Google) button style */
+        #translate-google-choice-btn { 
+            background-color: #60a5fa; /* Blue-400 */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #translate-google-choice-btn:hover {
+            background-color: #3b82f6; /* Blue-500 on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #translate-google-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* New Translate (Bing) button style */
+        #translate-bing-choice-btn {
+            background-color: #008AD6; /* Bing Blue (same as search for consistency) */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #translate-bing-choice-btn:hover {
+            background-color: #006FB7; /* Darker Bing Blue on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #translate-bing-choice-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Copy Question Button Style */
+        #copy-question-btn {
+            background-color: #48bb78; /* Green-500 */
+            color: white;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem; /* Space between choices */
+        }
+        #copy-question-btn:hover {
+            background-color: #38a169; /* Darker Green-500 on hover */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        #copy-question-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Styling for headings inside the modal */
+        .modal-subheading {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            color: #4a5568; /* Gray-700 */
+            margin-top: 1rem;
+            margin-bottom: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0; /* Subtle separator */
+            padding-bottom: 0.5rem;
+        }
+
+        /* Styling for list items in getting started modal */
+        .getting-started-list {
+            list-style-type: none; /* Remove default bullet points */
+            padding-left: 0;
+            text-align: left;
+            counter-reset: step-counter; /* Initialize counter */
+        }
+
+        .getting-started-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem; /* Indent content */
+            position: relative;
+        }
+
+        .getting-started-list li::before {
+            content: counter(step-counter); /* Use a counter for numbering */
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: #9f7aea; /* Purple for the step number */
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Standard hyperlink color for dice link in modal */
+        #getting-started-modal .getting-started-list a {
+            color: #0000EE !important;
+            font-weight: normal !important;
+            background: none !important;
+            border: none !important;
+            text-decoration: none !important;
+            cursor: pointer;
+        }
+
+        #getting-started-modal .getting-started-list a:hover,
+        #getting-started-modal .getting-started-list a:focus {
+            color: #551A8B !important;
+            text-decoration: underline !important; /* underline on hover/focus */
+            outline: none;
+        }
+        #getting-started-modal .getting-started-list a:active {
+            color: #551A8B !important; /* optional visited/active tone */
+        }
+
+        /* Inline share trigger button style (looks like italic text) */
+        #inline-share-trigger {
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            color: #0000EE;
+            font-style: italic;
+            cursor: pointer;
+        }
+        #inline-share-trigger:hover, #inline-share-trigger:focus {
+            text-decoration: underline;
+            color: #551A8B;
+            outline: none;
+        }
+
+        /* Tip pill at the bottom */
+        .bottom-tip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #4b5563; /* gray-600 */
+            background: #f3f4f6; /* gray-100 */
+            border: 1px dashed #d1d5db; /* gray-300 */
+            border-radius: 9999px;
+            padding: 0.5rem 0.875rem;
+            font-size: 0.9rem;
+            margin-top: 0.75rem;
+            user-select: none;
+        }
+        .bottom-tip i {
+            color: #f59e0b; /* amber-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+    <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
+        <div class="flex justify-center mb-6">
+            <a href="../index.html"> <!-- Updated path to index.html -->
+                <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            </a>
+        </div>
+        <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
+        <hr class="border-purple-300 mb-4 w-1/2 mx-auto">
+        
+        <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-4">Topic: Legacy</h2> 
+
+        <p class="text-gray-700 text-center mb-4 leading-relaxed">
+            Reflect on the imprint you leave on the world and the values that shape it.
+        </p>
+
+        <!-- Hyperlink to the full description and getting started page -->
+        <div class="description-link-container">
+            <!-- Getting Started button now with info icon -->
+            <button id="getting-started-link" class="description-link">
+                <i class="fas fa-info-circle"></i> Get started
+            </button>
+            <span class="separator">|</span>
+            <!-- About the topic without icon -->
+            <a href="descriptions\legacy.html" class="description-link">
+                About the topic
+            </a>
+        </div>
+
+        <hr class="border-gray-300 my-4 w-full mx-auto">
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by type:</label>
+            <div id="difficulty-filter" class="flex flex-wrap justify-center gap-2">
+                <button data-filter="lighter" class="filter-btn" title="Show light questions">🌱 Light</button>
+                <button data-filter="middle" class="filter-btn" title="Show medium questions">☕</button>
+                <!--<button data-filter="all" class="filter-btn active" title="Show all questions">All</button>-->
+                <button data-filter="deeper" class="filter-btn" title="Show deep questions">🌀 Deep</button>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="item-count" class="block text-gray-700 text-sm font-bold mb-2">No. of questions to pick: <span id="total-questions" class="text-gray-500 text-sm"></span></label>
+            <input type="number" id="item-count" value="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <button id="randomize-button" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out mb-6">
+            Next Questions!
+        </button>
+
+        <div class="mb-4">
+            <p id="random-result" class="text-gray-800 text-center font-medium">Loading questions...</p>
+        </div>
+
+        <!-- Consolidated Look Up Online Button -->
+        <div class="mt-4 pt-4 border-t border-gray-300 flex flex-col items-center">
+            <button id="look-up-online-btn" class="bg-gradient-to-r from-blue-400 to-green-400 hover:from-blue-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded-full shadow-md
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
+                   w-full transition duration-300 ease-in-out mb-2 hidden">
+                <i class="fas fa-search"></i> Look Up Online / Translate
+            </button>
+        </div>
+
+        <div class="mb-8"> <!-- Added mb-8 for more separation -->
+            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search for questions:</label>
+            <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
+                Search
+            </button>
+        </div>
+
+        <div id="search-results" class="mb-4"></div>
+
+        <div class="mt-8 pt-4 border-t border-gray-300">
+            <h3 class="text-xl font-semibold text-purple-600 mb-4">Saved Questions:</h3>
+            <div id="chosen-questions-display" class="text-gray-800 text-left">
+                <p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>
+            </div>
+            <button id="clear-chosen-button" title="Clear Saved Questions">
+                Clear Saved Questions
+            </button>
+        </div>
+
+        <!-- <button id="back-to-topics" title="Leave Page">
+            <i class="fas fa-arrow-left"></i> Leave Page
+        </button> -->
+
+        <!-- Manage Saved Items button -->
+        <a href="saved-items.html" id="manage-saved-items" class="mt-3 inline-flex items-center justify-center w-full bg-purple-400 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out" title="Manage Saved Items">
+            <i class="fas fa-folder-open mr-2"></i> Manage Saved Items
+        </a>
+
+        <!-- Bottom tip -->
+        <div class="bottom-tip" aria-live="polite">
+            <span>💡</span>
+            <span>Tap the top logo for home</span>
+        </div>
+        
+        <!-- Link to show QR Code -->
+        <br>
+        <a href="#" id="show-qr-code-link" class="qr-code-link">
+            <i class="fas fa-qrcode"></i> Share page/QR code
+        </a>
+    </div>
+
+    <!-- Floating Dice Button (links to dice.html in the same folder) -->
+    <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
+        <i class="fas fa-dice"></i>
+    </a>
+
+    <!-- Floating Look Up / Translate Button -- icon only -->
+    <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
+        <i class="fas fa-search"></i>
+    </button>
+
+    <!-- NEW Floating Share Button -->
+    <button id="floating-share" title="Share selected question" aria-label="Share selected question">
+        <i class="fas fa-share-nodes"></i>
+    </button>
+
+    <button id="back-to-top" title="Back to Top">
+        &#9650; Top
+    </button>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
+            <div class="modal-buttons">
+                <button id="confirm-clear-yes" class="modal-button confirm">Yes</button>
+                <button id="confirm-clear-no" class="modal-button cancel">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Confirmation Modal for empty search -->
+    <div id="empty-search-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">
+                Searching with an empty field will display ALL questions, which could quickly fill the screen.
+                To clear results if the screen gets crowded, tap "Top" and then click "Search" again.
+            </p>
+            <div class="modal-buttons">
+                <button id="confirm-empty-search-yes" class="modal-button confirm">Proceed</button>
+                <button id="confirm-empty-search-no" class="modal-button cancel">No</button>
+            </div>
+        </div>
+    </div>    
+
+    <!-- Getting Started Modal -->
+    <div id="getting-started-modal" class="modal-overlay">
+        <div class="modal-content max-w-sm">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
+            <ol class="getting-started-list">
+                <li><b>Invite Others:</b> Share the <button id="inline-share-trigger" type="button"><i>QR code or link</i></button> to get everyone onboard.</li>
+                <li><b>Pick a Question:</b> Each person selects a question that resonates with them. Tap to save it.</li>
+                <li><b>Start the Conversation:</b> Invite a person to share their question and answer, then everyone goes around (e.g., clockwise) answering the same question. Once done, the next person shares their chosen question, and so on.<br><br><strong>Optional:</strong> Roll the <span style="font-style: italic"><a href="dice.html">dice</a></span> and match its color to the question’s color to decide who starts.
+            </ol>
+            <button id="close-getting-started-modal" class="modal-button cancel mt-4">Got it!</button>
+        </div>
+    </div>
+
+    <!-- Search/Translate Choice Modal -->
+    <div id="search-engine-modal" class="modal-overlay">
+        <div class="modal-content">
+            <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
+            
+            <h4 class="modal-subheading">Web Search</h4>
+            <div class="flex flex-col items-center">
+                <button id="search-google-choice-btn">
+                    <i class="fab fa-google"></i> Search Google
+                </button>
+                <button id="search-bing-choice-btn">
+                    <i class="fab fa-microsoft"></i> Search Bing
+                </button>
+                <button id="search-duckduckgo-choice-btn">
+                    <i class="fas fa-search"></i> Search DuckDuckGo
+                </button>
+                <button id="search-brave-choice-btn">
+                    <i class="fas fa-magnifying-glass"></i> Search Brave
+                </button>
+            </div>
+
+            <h4 class="modal-subheading">Translation Services</h4>
+            <div class="flex flex-col items-center">
+                <button id="translate-google-choice-btn">
+                    <i class="fas fa-language"></i> Translate with Google
+                </button>
+                <button id="translate-bing-choice-btn">
+                    <i class="fas fa-language"></i> Translate with Bing
+                </button>
+            </div>
+
+            <h4 class="modal-subheading">Other Actions</h4>
+            <div class="flex flex-col items-center">
+                <button id="copy-question-btn">
+                    <i class="fas fa-copy"></i> Copy Question
+                </button>
+            </div>
+
+            <button id="close-search-engine-modal" class="modal-button cancel mt-4">Cancel</button>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qr-code-modal" class="modal-overlay">
+        <div id="qr-modal-content" class="modal-content">
+            <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Join This Topic</h3>
+            <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
+            <img id="qr-modal-image" src="images/qr/qr-code-topic-legacy.png" alt="QR Code for this page"
+                 onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Loading';">
+
+            <p class="text-sm text-gray-700 mt-2">
+                <i class="fa-solid fa-link mr-1"></i> 
+                <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/legacy.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io/curious-souls-cafe/pages/legacy.html</a>
+                <br>
+                <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link</button>
+                &nbsp;<span class="text-gray-400 text-sm select-none">|</span>&nbsp;&nbsp;<button id="share-link-button" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-share-from-square"></i> Share...</button>
+            </p>
+            <p class="text-gray-500 text-sm mt-4" >Let's help fellow curious souls launch this page and start the conversation! 😊</p>
+
+        </div>
+    </div>
+
+    <script>
+        // --- Hardcoded Topic Configuration for Legacy ---
+        const displayTopicName = "Legacy"; // Display name
+        // The URL for the question file, now a relative path.
+        const githubRawUrl = "../questions/legacy.txt"; // Relative path to legacy.txt
+        // End Hardcoded Configuration
+
+        let fullItemList = []; // Master list of all questions
+        let itemList = []; // The currently filtered list of questions
+        let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'middle', 'deeper'
+        let lastSearchTerm = "";
+        let availableRandomItems = [];
+        let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
+
+        const randomizeButton = document.getElementById('randomize-button');
+        const resultDisplay = document.getElementById('random-result');
+        const itemCountInput = document.getElementById('item-count');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const searchResultsDisplay = document.getElementById('search-results');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
+        const clearChosenButton = document.getElementById('clear-chosen-button');
+        const backToTopButton = document.getElementById('back-to-top');
+        // const backToTopicsButton = document.getElementById('back-to-topics'); 
+        const appTitleElement = document.getElementById('app-title');
+        const topicTitleElement = document.getElementById('topic-title');
+
+        // Modal elements
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const confirmClearYes = document.getElementById('confirm-clear-yes');
+        const confirmClearNo = document.getElementById('confirm-clear-no');
+
+        // Modal elements for empty search confirmation
+        const emptySearchModal = document.getElementById('empty-search-modal');
+        const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
+        const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
+
+        // Getting Started Modal elements
+        const gettingStartedIcon = document.getElementById('getting-started-link');
+        const gettingStartedModal = document.getElementById('getting-started-modal');
+        const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
+
+        // Look Up Online button (original inline button)
+        const lookUpOnlineBtn = document.getElementById('look-up-online-btn'); 
+
+        // New Floating Look Up / Translate button
+        const floatingLookupBtn = document.getElementById('floating-lookup');
+
+        // NEW Floating Share Button (native only)
+        const floatingShareBtn = document.getElementById('floating-share');
+
+        // Search Engine/Translate Choice Modal elements
+        const searchEngineModal = document.getElementById('search-engine-modal');
+        const searchGoogleChoiceBtn = document.getElementById('search-google-choice-btn');
+        const searchBingChoiceBtn = document.getElementById('search-bing-choice-btn');
+        const searchDuckDuckGoChoiceBtn = document.getElementById('search-duckduckgo-choice-btn'); 
+        const searchBraveChoiceBtn = document.getElementById('search-brave-choice-btn'); 
+        const translateGoogleChoiceBtn = document.getElementById('translate-google-choice-btn'); 
+        const translateBingChoiceBtn = document.getElementById('translate-bing-choice-btn'); 
+        const closeSearchEngineModalBtn = document.getElementById('close-search-engine-modal');
+        
+        // Copy Question button
+        const copyQuestionBtn = document.getElementById('copy-question-btn');
+
+        // New QR Code Modal elements
+        const showQrCodeLink = document.getElementById('show-qr-code-link');
+        const qrCodeModal = document.getElementById('qr-code-modal');
+        const qrModalImage = document.getElementById('qr-modal-image');
+        const qrModalCloseButton = document.getElementById('qr-modal-close-button');
+
+        // Inline trigger inside Getting Started modal
+        const inlineShareTrigger = document.getElementById('inline-share-trigger');
+
+        // Define the list of highlight colors
+        const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
+
+        // Pick a random highlight color on load and apply it to the CSS variable
+        const randomHighlightColor = highlightColors[Math.floor(Math.random() * highlightColors.length)];
+        document.documentElement.style.setProperty('--highlight-color', randomHighlightColor);
+
+        // --- Persistent Saved Questions Logic ---
+        const savedQuestionsLocalStorageKey = `csc_saved_questions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`; 
+
+        /**
+         * Loads saved questions from localStorage and displays them.
+         */
+        function loadSavedQuestions() {
+            const savedQuestionsJson = localStorage.getItem(savedQuestionsLocalStorageKey);
+            const savedQuestions = savedQuestionsJson ? JSON.parse(savedQuestionsJson) : [];
+
+            if (savedQuestions.length > 0) { 
+                chosenQuestionsDisplay.innerHTML = ''; 
+                savedQuestions.forEach(questionText => {
+                    addChosenQuestionToDOM(questionText);
+                });
+            } else {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            }
+            updateClearButtonText();
+        }
+
+        /**
+         * Saves the current list of chosen questions to localStorage.
+         */
+        function saveCurrentChosenQuestions() {
+            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.textContent);
+            localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
+        }
+
+        /**
+         * Filters the master list of questions based on the current selection.
+         */
+        function applyFilter() {
+            switch (currentFilter) {
+                case 'lighter':
+                    itemList = fullItemList.filter(item => item.startsWith('🌱'));
+                    break;
+                case 'deeper':
+                    itemList = fullItemList.filter(item => item.startsWith('🌀'));
+                    break;
+                case 'middle':
+                    itemList = fullItemList.filter(item => !item.startsWith('🌱') && !item.startsWith('🌀'));
+                    break;
+                default: // 'all'
+                    itemList = [...fullItemList];
+                    break;
+            }
+            
+            // Reset the pool of available items for the randomizer
+            availableRandomItems = [...itemList];
+            
+            // Update the total questions count displayed to the user
+            totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
+            
+            // Refresh the randomly displayed questions with the new filtered list
+            displayRandomItems();
+            
+            // Clear any previous search results as the source list has changed
+            searchResultsDisplay.innerHTML = '';
+            searchButton.textContent = "Search";
+            lastSearchTerm = "";
+        }
+
+        // Function to fetch questions from localStorage or GitHub
+        async function fetchQuestions() {
+            // -- 1. ADD A VERSION IDENTIFIER --
+            const CACHE_VERSION = '20250905'; // Use today's date or any unique string
+
+            // -- 2. MODIFY THE LOCALSTORAGE KEY TO INCLUDE THE VERSION --
+            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}_${CACHE_VERSION}`;
+            const cachedContent = localStorage.getItem(localStorageKey);
+
+            appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+            topicTitleElement.textContent = `Topic: ${displayTopicName}`;
+
+            if (cachedContent) {
+                console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
+                fullItemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                applyFilter(); // Apply the default 'all' filter
+                loadSavedQuestions(); 
+            } else {
+                console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
+                try {
+                    // -- 3. MODIFY THE FETCH URL TO INCLUDE THE VERSION --
+                    const response = await fetch(`${githubRawUrl}?v=${CACHE_VERSION}`); // Use relative path with cache buster
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const text = await response.text();
+                    fullItemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+
+                    localStorage.setItem(localStorageKey, text); 
+
+                    applyFilter(); // Apply the default 'all' filter
+                    loadSavedQuestions(); 
+                } catch (error) {
+                    console.error("Could not load questions:", error);
+                    resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
+                    appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
+                    topicTitleElement.textContent = `Topic: Error`;
+                }
+            }
+        }
+
+        // Function to update the "Clear Saved Questions" button text
+        function updateClearButtonText() {
+            const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
+            if (highlightedItems.length > 0) {
+                clearChosenButton.textContent = "Clear Selected";
+            } else {
+                const allChosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+                if (allChosenItems.length > 0) {
+                    clearChosenButton.textContent = "Clear All Saved";
+                } else {
+                    clearChosenButton.textContent = "Clear Saved Questions";
+                }
+            }
+        }
+
+        function selectUniqueItems(arr, numItems) {
+            if (numItems > availableRandomItems.length || availableRandomItems.length === 0) {
+                availableRandomItems = [...itemList];
+            }
+
+            let selectedItems = [];
+            for (let i = 0; i < numItems; i++) {
+                if (availableRandomItems.length === 0) {
+                    availableRandomItems = [...itemList];
+                    if (availableRandomItems.length === 0) {
+                        return "No items available to pick.";
+                    }
+                }
+                const randomIndex = Math.floor(Math.random() * availableRandomItems.length);
+                selectedItems.push(availableRandomItems[randomIndex]);
+                availableRandomItems.splice(randomIndex, 1);
+            }
+            return selectedItems;
+        }
+
+        /**
+         * Show or hide the floating lookup button based on whether any question is selected anywhere.
+         */
+        function refreshFloatingLookupVisibility() {
+            const hasSelectedFromRandomOrSearch = document.querySelector('.item.selected-item') !== null;
+            const hasSelectedFromSaved = document.querySelector('.chosen-item.selected-chosen-item') !== null;
+            const shouldShow = !!selectedRandomQuestionText && (hasSelectedFromRandomOrSearch || hasSelectedFromSaved);
+
+            const displayStyle = shouldShow ? 'flex' : 'none';
+            const floatingLookupBtn = document.getElementById('floating-lookup');
+            const floatingShareBtn = document.getElementById('floating-share');
+            floatingLookupBtn.style.display = displayStyle;
+            floatingShareBtn.style.display = displayStyle;
+
+            // Keep original inline button hidden to avoid duplicate entry points
+            const lookUpOnlineBtn = document.getElementById('look-up-online-btn');
+            if (lookUpOnlineBtn) {
+                lookUpOnlineBtn.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Adds highlighting logic and click handler for selecting questions.
+         * Controls visibility of the LLM features button based on selection.
+         * @param {HTMLElement} targetElement The container element holding the items (e.g., resultDisplay, searchResultsDisplay).
+         */
+        function addHighlightingAndChooseLogic(targetElement) {
+            const items = targetElement.querySelectorAll('.item');
+            items.forEach(item => {
+                item.addEventListener('click', function() {
+                    const questionText = this.textContent;
+
+                    // Remove selected-item from previously selected item in resultDisplay or searchResultsDisplay
+                    const previouslySelected = document.querySelectorAll('.item.selected-item');
+                    previouslySelected.forEach(el => {
+                        if (el !== this) el.classList.remove('selected-item');
+                    });
+
+                    // Also clear any selected saved items to keep a single active source
+                    document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+
+                    this.classList.toggle('selected-item');
+
+                    if (this.classList.contains('selected-item')) {
+                        selectedRandomQuestionText = questionText;
+                        addChosenQuestion(questionText); // Also add to saved questions if selected
+                    } else {
+                        selectedRandomQuestionText = null;
+                        // Keep saved list unchanged; user controls removals there
+                    }
+                    refreshFloatingLookupVisibility();
+                });
+            });
+        }
+
+        /**
+         * Adds a question to the DOM display and saves it to localStorage.
+         * @param {string} questionText - The text of the question to add.
+         */
+        function addChosenQuestion(questionText) {
+            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
+            if (!existingChosenItems.includes(questionText)) {
+                addChosenQuestionToDOM(questionText);
+                saveCurrentChosenQuestions();
+            }
+            updateClearButtonText();
+        }
+
+        /**
+         * Helper function to add a question div to the DOM without affecting localStorage.
+         * Used for both initial loading and user interaction.
+         * @param {string} questionText - The text of the question to add.
+         */
+        function addChosenQuestionToDOM(questionText) {
+            const chosenItemDiv = document.createElement('div');
+            chosenItemDiv.classList.add('chosen-item');
+            chosenItemDiv.textContent = questionText;
+            chosenQuestionsDisplay.appendChild(chosenItemDiv);
+
+            chosenItemDiv.addEventListener('click', function() {
+                // When selecting in Saved, clear selections in random/search for clarity
+                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+
+                // Toggle selection in saved
+                const willSelect = !this.classList.contains('selected-chosen-item');
+
+                // Only allow one active selected in saved at a time
+                document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+
+                if (willSelect) {
+                    this.classList.add('selected-chosen-item');
+                    selectedRandomQuestionText = this.textContent;
+                } else {
+                    this.classList.remove('selected-chosen-item');
+                    selectedRandomQuestionText = null;
+                }
+                updateClearButtonText();
+                refreshFloatingLookupVisibility();
+            });
+
+            const placeholder = chosenQuestionsDisplay.querySelector('p.text-gray-500');
+            if (placeholder) {
+                chosenQuestionsDisplay.removeChild(placeholder);
+            }
+        }
+
+        /**
+         * Removes a question from the DOM display and from localStorage.
+         * @param {string} questionText - The text of the question to remove.
+         */
+        function removeChosenQuestion(questionText) {
+            const chosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            let removedFromDOM = false;
+            chosenItems.forEach(item => {
+                if (item.textContent === questionText) {
+                    // If this item was the currently-selected source for floating lookup, reset selection
+                    if (item.classList.contains('selected-chosen-item')) {
+                        selectedRandomQuestionText = null;
+                    }
+                    chosenQuestionsDisplay.removeChild(item);
+                    removedFromDOM = true;
+                }
+            });
+
+            if (removedFromDOM) {
+                saveCurrentChosenQuestions();
+            }
+
+            const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            if (remainingQuestionDivs.length === 0) {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            } 
+            updateClearButtonText();
+            refreshFloatingLookupVisibility();
+        }
+
+        function displayRandomItems() {
+            if (itemList.length === 0) {
+                resultDisplay.textContent = "No questions available to pick. Please load questions first.";
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
+                return;
+            }
+            const numItemsToPick = parseInt(itemCountInput.value);
+            const result = selectUniqueItems(itemList, numItemsToPick);
+
+            if (typeof result === "string") {
+                resultDisplay.textContent = result;
+            } else {
+                let itemDivs = result.map(item => `<div class="item">${item}</div>`);
+                let resultHTML = itemDivs.join('');
+                resultDisplay.innerHTML = resultHTML;
+                addHighlightingAndChooseLogic(resultDisplay);
+            }
+            // Reset selections across all sections when generating new random set
+            selectedRandomQuestionText = null;
+            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            refreshFloatingLookupVisibility();
+        }
+
+        function displayFilteredItems() {
+            if (itemList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
+                return;
+            }
+            const currentSearchTerm = searchInput.value.trim().toLowerCase();
+
+            if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
+                searchResultsDisplay.innerHTML = '';
+                searchButton.textContent = "Search";
+                lastSearchTerm = "";
+                selectedRandomQuestionText = null;
+                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+                refreshFloatingLookupVisibility();
+                return;
+            }
+
+            if (currentSearchTerm === "") {
+                // Show confirmation that empty search will display all
+                emptySearchModal.classList.add('show');
+                return;
+            }
+            
+            executeSearch(currentSearchTerm);
+        }
+
+        function executeSearch(searchTerm) {
+            if (itemList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
+                selectedRandomQuestionText = null;
+                refreshFloatingLookupVisibility();
+                return;
+            }
+            
+            const filteredResult = itemList.filter(item => item.toLowerCase().includes(searchTerm));
+
+            if (filteredResult.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
+                selectedRandomQuestionText = null;
+            } else {
+                let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
+                let resultHTML = itemDivs.join('');
+                searchResultsDisplay.innerHTML = resultHTML;
+                addHighlightingAndChooseLogic(searchResultsDisplay);
+            }
+            lastSearchTerm = searchTerm;
+            searchButton.textContent = "Search / Clear Search";
+            // Clear all selections when new search runs
+            selectedRandomQuestionText = null;
+            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            refreshFloatingLookupVisibility();
+        }
+
+        /**
+         * Removes any leading emoji or symbol from a string.
+         * @param {string} text The input string.
+         * @returns {string} The string with leading emojis/symbols removed.
+         */
+        function removeEmojiPrefix(text) {
+            // This regex matches one or more non-word characters (including emojis)
+            // at the beginning of the string, followed by optional whitespace.
+            return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim();
+        }
+
+        // --- Search Engine Functions ---
+        /**
+         * Opens a new tab to search the selected question on Google.
+         */
+        function searchQuestionOnGoogle() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(googleSearchUrl, '_blank');
+            } else {
+                // This scenario should be prevented by the floating button
+                alert("Please select a question first to look up on Google.");
+            }
+        }
+
+        /**
+         * Opens a new tab to search the selected question on Bing.
+         */
+        function searchQuestionOnBing() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const bingSearchUrl = `https://www.bing.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(bingSearchUrl, '_blank');
+            } else {
+                alert("Please select a question first to look up on Bing.");
+            }
+        }
+
+        /**
+         * Opens a new tab to search the selected question on DuckDuckGo.
+         */
+        function searchQuestionOnDuckDuckGo() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const duckduckgoSearchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(duckduckgoSearchUrl, '_blank');
+            } else {
+                alert("Please select a question first to look up on DuckDuckGo.");
+            }
+        }
+
+        /**
+         * Opens a new tab to search the selected question on Brave Search.
+         */
+        function searchQuestionOnBrave() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const braveSearchUrl = `https://search.brave.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(braveSearchUrl, '_blank');
+            } else {
+                alert("Please select a question first to look up on Brave Search.");
+            }
+        }
+
+        /**
+         * Opens a new tab to translate the selected question using Google Translate.
+         */
+        function translateQuestionWithGoogle() { 
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                // Use Google Translate with auto-detect source language and target English
+                // User can change target language on Google Translate page
+                const translateUrl = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(translateUrl, '_blank');
+            } else {
+                alert("Please select a question first to translate with Google.");
+            }
+        }
+
+        /**
+         * Opens a new tab to translate the selected question using Bing Translate.
+         */
+        function translateQuestionWithBing() { 
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                // Bing Translate with auto-detect source language and target English
+                const translateUrl = `https://www.bing.com/translator/?from=auto&to=en&text=${encodeURIComponent(cleanedQuestion)}`;
+                window.open(translateUrl, '_blank');
+            } else {
+                alert("Please select a question first to translate with Bing.");
+            }
+        }
+
+        /**
+         * Copies the selected question text to the clipboard.
+         */
+        function copyQuestionToClipboard() {
+            if (selectedRandomQuestionText) {
+                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                // Create a temporary textarea element to copy the text
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = cleanedQuestion;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                // Provide visual feedback
+                alert("Question copied to clipboard!");
+            } else {
+                alert("No question selected to copy.");
+            }
+        }
+
+        /**
+         * Build payload for native share. Avoid URL duplication by putting
+         * question in text and page URL in url.
+         */
+        function buildSharePayload() {
+            if (!selectedRandomQuestionText) return null;
+            const pageUrl = window.location.href;
+            const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+            return {
+                title: `Curious Souls Café - ${displayTopicName}`,
+                text: cleanedQuestion, // question only
+                url: pageUrl           // URL separate; many share sheets append it
+            };
+        }
+
+        /**
+         * Attempt to share via Web Share API only; no platform-specific fallback.
+         */
+        async function handleShareSelectedQuestion() {
+            const payload = buildSharePayload();
+            if (!payload) {
+                alert("Please select a question first to share.");
+                return;
+            }
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: payload.title,
+                        text: payload.text,
+                        url: payload.url
+                    });
+                    return;
+                } catch (err) {
+                    // If user cancels or share fails, we intentionally do nothing else
+                    console.warn("Web Share API failed or was canceled:", err);
+                }
+            } else {
+                // No fallback -- intentionally do nothing (or optionally:
+                // alert("Sharing is not supported in this browser. Use the QR/link option instead.");
+            }
+        }
+
+        // --- Event Listeners ---
+        clearChosenButton.addEventListener('click', function() {
+            confirmationModal.classList.add('show');
+        });
+
+        confirmClearYes.addEventListener('click', function() {
+            const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
+
+            if (highlightedItems.length > 0) { 
+                highlightedItems.forEach(item => {
+                    chosenQuestionsDisplay.removeChild(item);
+                });
+                // If selected question was among cleared, reset selection
+                const stillSelectedSaved = document.querySelector('.chosen-item.selected-chosen-item');
+                if (!stillSelectedSaved) {
+                    selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                }
+            } else { 
+                chosenQuestionsDisplay.innerHTML = ''; 
+                selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+            }
+            saveCurrentChosenQuestions();
+            
+            const remainingQuestionDivs = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
+            if (remainingQuestionDivs.length === 0) {
+                chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a question above to add it here, or tap/click again to remove it.</p>`;
+            }
+            updateClearButtonText();
+            refreshFloatingLookupVisibility();
+            confirmationModal.classList.remove('show');
+        });
+
+        confirmClearNo.addEventListener('click', function() {
+            confirmationModal.classList.remove('show');
+        });
+
+        // backToTopicsButton.addEventListener('click', () => {
+        //     window.location.href = '../index.html'; // Path back to index.html
+        // });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 1) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        confirmEmptySearchYes.addEventListener('click', function() {
+            emptySearchModal.classList.remove('show');
+            executeSearch("");
+        });
+
+        confirmEmptySearchNo.addEventListener('click', function() {
+            emptySearchModal.classList.remove('show');
+        });
+
+        // Getting Started Modal Event Listeners
+        gettingStartedIcon.addEventListener('click', () => {
+            gettingStartedModal.classList.add('show');
+        });
+
+        closeGettingStartedModalBtn.addEventListener('click', () => {
+            gettingStartedModal.classList.remove('show');
+        });
+        
+        // Consolidated Look Up Online Button Listener (keep original but route to modal)
+        lookUpOnlineBtn.addEventListener('click', function() {
+            if (selectedRandomQuestionText) {
+                searchEngineModal.classList.add('show'); // Show the choice modal
+            } else {
+                alert("Please select a question first to look up online / translate.");
+            }
+        });
+
+        // Floating Look Up / Translate Button Listener
+        floatingLookupBtn.addEventListener('click', function() {
+            if (selectedRandomQuestionText) {
+                searchEngineModal.classList.add('show'); // Show the choice modal
+            } else {
+                alert("Please select a question first to look up online / translate.");
+            }
+        });
+
+        // NEW: Floating Share Button Listener (native share only)
+        floatingShareBtn.addEventListener('click', handleShareSelectedQuestion);
+
+        // Search Engine/Translate Choice Modal Listeners
+        searchGoogleChoiceBtn.addEventListener('click', function() {
+            searchQuestionOnGoogle();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchBingChoiceBtn.addEventListener('click', function() {
+            searchQuestionOnBing();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchDuckDuckGoChoiceBtn.addEventListener('click', function() { 
+            searchQuestionOnDuckDuckGo();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        searchBraveChoiceBtn.addEventListener('click', function() { 
+            searchQuestionOnBrave();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        translateGoogleChoiceBtn.addEventListener('click', function() { 
+            translateQuestionWithGoogle();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        translateBingChoiceBtn.addEventListener('click', function() { 
+            translateQuestionWithBing();
+            searchEngineModal.classList.remove('show'); // Hide modal after choice
+        });
+
+        // Copy Question Listener
+        copyQuestionBtn.addEventListener('click', function() {
+            copyQuestionToClipboard();
+            searchEngineModal.classList.remove('show'); // Hide modal after copying
+        });
+
+        closeSearchEngineModalBtn.addEventListener('click', function() {
+            searchEngineModal.classList.remove('show'); // Hide modal on cancel
+        });
+
+        // --- QR Code Modal Logic ---
+        // Track whether Share was opened from the Getting Started ("Meaningful Talk") modal
+        let shouldReturnToGettingStarted = false;
+
+        function openShareModal(openedFromGettingStarted = false) {
+            shouldReturnToGettingStarted = openedFromGettingStarted;
+            const pageUrl = window.location.href;
+            const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+            document.getElementById('qr-modal-image').src = qrCodeApiUrl; // Set the QR code image source
+            document.getElementById('qr-code-modal').classList.add('show'); // Show the modal
+        }
+
+        function closeShareModal() {
+            const qrOverlay = document.getElementById('qr-code-modal');
+            qrOverlay.classList.remove('show');
+
+            // If we came from Getting Started modal, restore it; otherwise, do nothing.
+            if (shouldReturnToGettingStarted) {
+                document.getElementById('getting-started-modal').classList.add('show');
+            }
+            // Reset the flag after handling
+            shouldReturnToGettingStarted = false;
+        }
+
+        document.getElementById('show-qr-code-link').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            openShareModal(false); // Opened from page link at bottom; do not return to Getting Started
+        });
+
+        // Inline share trigger inside Getting Started modal
+        document.getElementById('inline-share-trigger').addEventListener('click', function(event) {
+            event.preventDefault();
+            // Close the Getting Started modal and open Share modal, remembering origin
+            document.getElementById('getting-started-modal').classList.remove('show');
+            openShareModal(true); // Opened from Getting Started; should return there on close
+        });
+
+        document.getElementById('qr-modal-close-button').addEventListener('click', function() {
+            closeShareModal();
+        });
+
+        // Close modal if clicked outside content
+        document.getElementById('qr-code-modal').addEventListener('click', function(event) {
+            if (event.target === document.getElementById('qr-code-modal')) { // Check if the click was on the overlay itself
+                closeShareModal();
+            }
+        });
+
+
+        // Initial calls on page load
+        fetchQuestions();
+
+        // Copy Link Button Logic (now a text link)
+        const copyLinkTextLink = document.getElementById('copy-link-text-link'); // Changed ID
+        copyLinkTextLink.addEventListener('click', function(event) { // Changed to button
+            event.preventDefault(); // Prevent default link behavior
+            const pageUrl = window.location.href;
+            // Use a temporary textarea to copy the URL to clipboard
+            const tempInput = document.createElement('textarea');
+            tempInput.value = pageUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert("Link copied to clipboard!");
+        });
+
+        // Share Link Button Logic (Web Share API only; no fallback)
+        const shareLinkButton = document.getElementById('share-link-button');
+        shareLinkButton.addEventListener('click', async (event) => {
+            event.preventDefault();
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: document.title,
+                        text: `Join me for a conversation on "${displayTopicName}" at Curious Souls Café!`,
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    // Swallow errors silently as requested (no fallback)
+                    console.warn('Share canceled or failed:', err);
+                }
+            }
+            // If navigator.share is not available, do nothing (no fallback)
+        });
+        
+        randomizeButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            displayRandomItems();
+        });
+
+        searchButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            displayFilteredItems();
+        });
+
+        searchInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                displayFilteredItems();
+            }
+        });
+
+        // NEW: Event Listeners for Difficulty Filter Buttons
+        const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const isCurrentlyActive = button.classList.contains('active');
+
+                // First, clear active state from all buttons to ensure mutual exclusivity
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+
+                if (isCurrentlyActive) {
+                    // If it was active, we are toggling it off. No button should be active.
+                    document.body; // no-op to keep structure similar
+                    currentFilter = 'all'; // Default filter when none are selected
+                } else {
+                    // If it was not active, we are toggling it on.
+                    button.classList.add('active'); // Make the clicked button active
+                    currentFilter = button.dataset.filter; // Set the filter
+                }
+
+                // Apply the filter based on the new state
+                applyFilter();
+            });
+        });
+
+        updateClearButtonText();
+    </script>
+</body>
+</html>
