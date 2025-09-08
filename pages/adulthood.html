@@ -812,7 +812,13 @@
         </div>
 
         <div class="mb-4">
-            <label for="item-count" class="block text-gray-700 text-sm font-bold mb-2">No. of questions to pick: <span id="total-questions" class="text-gray-500 text-sm"></span></label>
+            <div class="flex justify-between items-center mb-2">
+                <label for="item-count" class="block text-gray-700 text-sm font-bold">No. of questions to pick: <span id="total-questions" class="text-gray-500 text-sm"></span></label>
+                <div class="flex items-center">
+                    <input type="checkbox" id="save-item-count-toggle" class="h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                    <label for="save-item-count-toggle" class="ml-2 text-sm text-gray-600">Save count</label>
+                </div>
+            </div>
             <input type="number" id="item-count" value="3" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
         </div>
 
@@ -1014,6 +1020,7 @@
         const randomizeButton = document.getElementById('randomize-button');
         const resultDisplay = document.getElementById('random-result');
         const itemCountInput = document.getElementById('item-count');
+        const saveCountToggle = document.getElementById('save-item-count-toggle');
         const searchInput = document.getElementById('search-input');
         const searchButton = document.getElementById('search-button');
         const searchResultsDisplay = document.getElementById('search-results');
@@ -1083,6 +1090,9 @@
         // --- Persistent Saved Questions Logic ---
         const savedQuestionsLocalStorageKey = `csc_saved_questions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`; 
 
+        const savedItemCountKey = `csc_saved_item_count_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
+        const saveItemCountToggleKey = `csc_save_item_count_toggle_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
+
         /**
          * Loads saved questions from localStorage and displays them.
          */
@@ -1099,6 +1109,23 @@
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap a question above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
             }
             updateClearButtonText();
+        }
+
+        /**
+         * Loads saved settings (like item count) from localStorage.
+         */
+        function loadSavedSettings() {
+            const savedCount = localStorage.getItem(savedItemCountKey);
+            const shouldSave = localStorage.getItem(saveItemCountToggleKey) === 'true';
+
+            if (shouldSave) {
+                saveCountToggle.checked = true;
+                if (savedCount) {
+                    itemCountInput.value = savedCount;
+                }
+            } else {
+                saveCountToggle.checked = false;
+            }
         }
 
         /**
@@ -1801,6 +1828,7 @@
 
         // Initial calls on page load
         fetchQuestions();
+        loadSavedSettings();
 
         // Copy Link Button Logic (now a text link)
         const copyLinkTextLink = document.getElementById('copy-link-text-link'); // Changed ID
@@ -1875,6 +1903,27 @@
                 // Apply the filter based on the new state
                 applyFilter();
             });
+        });
+
+        // Event listener for the save count toggle
+        saveCountToggle.addEventListener('change', function() {
+            if (this.checked) {
+                // Save the current value and the toggle state
+                localStorage.setItem(savedItemCountKey, itemCountInput.value);
+                localStorage.setItem(saveItemCountToggleKey, 'true');
+            } else {
+                // Remove the saved value and the toggle state
+                localStorage.removeItem(savedItemCountKey);
+                localStorage.removeItem(saveItemCountToggleKey);
+            }
+        });
+
+        // Event listener for the item count input
+        itemCountInput.addEventListener('input', function() {
+            // If the save toggle is checked, update the stored value in real-time
+            if (saveCountToggle.checked) {
+                localStorage.setItem(savedItemCountKey, this.value);
+            }
         });
 
         updateClearButtonText();
