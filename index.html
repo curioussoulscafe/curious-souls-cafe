@@ -470,6 +470,21 @@
         #getting-started-modal .getting-started-list a:active {
             color: #551A8B !important;
         }
+
+        /* NEW: Sticky search bar container */
+        .sticky-search-container {
+            position: sticky;
+            top: 0; /* stick to top of the scrolling container */
+            z-index: 3200; /* higher than floating controls below it */
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: saturate(1.1) blur(6px);
+            -webkit-backdrop-filter: saturate(1.1) blur(6px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        /* Spacer to avoid jump when the search becomes sticky overlap */
+        .sticky-search-spacer {
+            height: 0.5rem; /* small breathing room under the sticky bar */
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -512,10 +527,14 @@
             </div>
         </div>
 
-        <div class="mb-4">
-            <input type="text" id="search-bar" placeholder="Filter topics..."
-                   class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+        <!-- Sticky container for the filter/search input -->
+        <div class="sticky-search-container">
+            <div class="mb-0">
+                <input type="text" id="search-bar" placeholder="Filter topics..."
+                       class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
         </div>
+        <div class="sticky-search-spacer"></div>
 
         <div id="topics-list" class="space-y-4">
             <div class="loading-spinner"></div>
@@ -689,7 +708,7 @@
                 </a>
                 <a
                     class="modal-button block w-full text-center"
-                    style="background:#f0f9ff; color:#075985; border:1px solid #bae6fd;"
+                    style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
                     href="mailto:curious.souls.cafe@gmail.com"
                 >
                     <i class="fa-solid fa-envelope mr-1"></i> Email us
@@ -1519,7 +1538,8 @@
         renderAllContent(); // Call the new main rendering function
 
         // Add event listener for the search bar
-        searchBar.addEventListener('input', filterButtons);
+        const filterButtonsDebounced = () => filterButtons();
+        searchBar.addEventListener('input', filterButtonsDebounced);
 
         // Add event listeners for category filter buttons (single selection logic)
         const categoryButtons = document.querySelectorAll('#category-filter .filter-btn');
@@ -1558,6 +1578,17 @@
         function isAndroid() {
             return /android/i.test(window.navigator.userAgent);
         }
+
+        /* Keep the sticky search input above floating UI elements when typing on mobile */
+        // Raise the sticky bar z-index temporarily on focus to avoid any overlap by chance.
+        searchBar.addEventListener('focus', () => {
+            const stickyWrap = document.querySelector('.sticky-search-container');
+            if (stickyWrap) stickyWrap.style.zIndex = '4200';
+        });
+        searchBar.addEventListener('blur', () => {
+            const stickyWrap = document.querySelector('.sticky-search-container');
+            if (stickyWrap) stickyWrap.style.zIndex = '3200';
+        });
 
         // Add to Homescreen logic
         let deferredPrompt;
