@@ -591,7 +591,7 @@
         <div class="mt-8 pt-4 border-t border-gray-300">
             <h3 class="text-xl font-semibold text-purple-600 mb-4">Saved Actions:</h3>
             <div id="chosen-actions-display" class="text-gray-800 text-left">
-                <p class="text-gray-500 text-sm">Highlight (tap or click) a action above to add it here, or tap/click again to remove it.</p>
+                <p class="text-gray-500 text-sm">Tap an action above to save it here. To remove it, tap it here and click 'Clear'.</p>
             </div>
             <button id="clear-chosen-button" title="Clear Saved Actions">
                 Clear Saved Actions
@@ -855,7 +855,7 @@
                     addChosenActionToDOM(actionText);
                 });
             } else {
-                chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a action above to add it here, or tap/click again to remove it.</p>`;
+                chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap an action above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
             }
             updateClearButtonText();
         }
@@ -1081,7 +1081,7 @@
 
             const remainingActionDivs = chosenActionsDisplay.querySelectorAll('.chosen-item');
             if (remainingActionDivs.length === 0) {
-                chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a action above to add it here, or tap/click again to remove it.</p>`;
+                chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap an action above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
             } 
             updateClearButtonText();
             refreshFloatingButtonsVisibility();
@@ -1286,7 +1286,7 @@
             
             const remainingActionDivs = chosenActionsDisplay.querySelectorAll('.chosen-item');
             if (remainingActionDivs.length === 0) {
-                chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Highlight (tap or click) a action above to add it here, or tap/click again to remove it.</p>`;
+                chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap an action above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
             }
             updateClearButtonText();
             // If the selected action was among cleared, reset selection
