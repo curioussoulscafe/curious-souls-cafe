@@ -100,7 +100,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
 5. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](./pages/descriptions/dice.html) colors used by our facilitators) which requires them to randomly choose a question and answer it:
 
-   * Set the **"No. of questions to pick"** field to `1` (instead of the default value, e.g., `3`).
+   * Set the **"No. to pick"** field to `1` (instead of the default value, e.g., `3`).
 
    * Then, have the participant tap **"Next Questions!"** so that only one random question is displayed.
 
