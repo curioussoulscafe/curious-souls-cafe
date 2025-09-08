@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         :root {
@@ -763,7 +764,8 @@
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
         <div class="flex justify-center mb-6">
-            <a href="../index.html"> <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            <a href="../index.html"> <!-- Updated path to index.html -->
+                <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
             </a>
         </div>
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
@@ -775,11 +777,14 @@
             Spark meaningful conversations about the joys, challenges, and growth in raising children.
         </p>
 
+        <!-- Hyperlink to the full description and getting started page -->
         <div class="description-link-container">
+            <!-- Getting Started button now with info icon -->
             <button id="getting-started-link" class="description-link">
                 <i class="fas fa-info-circle"></i> Get started
             </button>
             <span class="separator">|</span>
+            <!-- About the topic without icon -->
             <a href="descriptions\parenting.html" class="description-link">
                 About the topic
             </a>
@@ -810,6 +815,7 @@
             <p id="random-result" class="text-gray-800 text-center font-medium">Loading questions...</p>
         </div>
 
+        <!-- Consolidated Look Up Online Button -->
         <div class="mt-4 pt-4 border-t border-gray-300 flex flex-col items-center">
             <button id="look-up-online-btn" class="bg-gradient-to-r from-blue-400 to-green-400 hover:from-blue-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded-full shadow-md
                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
@@ -818,7 +824,8 @@
             </button>
         </div>
 
-        <div class="mb-8"> <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search for questions:</label>
+        <div class="mb-8"> <!-- Added mb-8 for more separation -->
+            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search for questions:</label>
             <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
                 Search
@@ -859,14 +866,17 @@
         </a>
     </div>
 
+    <!-- Floating Dice Button (links to dice.html in the same folder) -->
     <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
         <i class="fas fa-dice"></i>
     </a>
 
+    <!-- Floating Look Up / Translate Button -- icon only -->
     <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
         <i class="fas fa-search"></i>
     </button>
 
+    <!-- NEW Floating Share Button -->
     <button id="floating-share" title="Share selected question" aria-label="Share selected question">
         <i class="fas fa-share-nodes"></i>
     </button>
@@ -875,6 +885,7 @@
         &#9650; Top
     </button>
 
+    <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
@@ -885,6 +896,7 @@
         </div>
     </div>
 
+    <!-- New Confirmation Modal for empty search -->
     <div id="empty-search-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
@@ -898,6 +910,7 @@
         </div>
     </div>    
 
+    <!-- Getting Started Modal -->
     <div id="getting-started-modal" class="modal-overlay">
         <div class="modal-content max-w-sm">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
@@ -910,6 +923,7 @@
         </div>
     </div>
 
+    <!-- Search/Translate Choice Modal -->
     <div id="search-engine-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
@@ -951,6 +965,7 @@
         </div>
     </div>
 
+    <!-- QR Code Modal -->
     <div id="qr-code-modal" class="modal-overlay">
         <div id="qr-modal-content" class="modal-content">
             <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
