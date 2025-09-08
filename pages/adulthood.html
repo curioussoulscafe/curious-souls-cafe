@@ -262,6 +262,15 @@
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
 
+        /* Variant style when button is in "Clear Selected" mode (use same red family, lighter level) */
+        #clear-chosen-button.clear-selected {
+            background-color: #fecaca; /* red-200-ish: lighter than #fc8181, not darker */
+            color: #7f1d1d; /* readable text within the same red hue family */
+        }
+        #clear-chosen-button.clear-selected:hover {
+            background-color: #fca5a5; /* red-300-ish hover, still not darker than base #fc8181 */
+        }
+
         #random-result {
             min-height: 60px;
         }
@@ -889,7 +898,8 @@
     <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
-            <p class="text-lg font-semibold text-gray-800 mb-4">Are you sure you want to clear the saved questions?</p>
+            <p id="confirmation-text" class="text-lg font-semibold text-gray-800 mb-2">Are you sure you want to clear the saved questions?</p>
+            <p id="confirmation-subtext" class="text-sm text-red-600 font-medium mb-4" style="display:none;"></p>
             <div class="modal-buttons">
                 <button id="confirm-clear-yes" class="modal-button confirm">Yes</button>
                 <button id="confirm-clear-no" class="modal-button cancel">No</button>
@@ -1019,6 +1029,8 @@
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
         const confirmClearNo = document.getElementById('confirm-clear-no');
+        const confirmationText = document.getElementById('confirmation-text'); // new
+        const confirmationSubtext = document.getElementById('confirmation-subtext'); // new
 
         // Modal elements for empty search confirmation
         const emptySearchModal = document.getElementById('empty-search-modal');
@@ -1177,6 +1189,7 @@
             const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
             if (highlightedItems.length > 0) {
                 clearChosenButton.textContent = "Clear Selected";
+                clearChosenButton.classList.add('clear-selected'); // use lighter red variant
             } else {
                 const allChosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
                 if (allChosenItems.length > 0) {
@@ -1184,6 +1197,7 @@
                 } else {
                     clearChosenButton.textContent = "Clear Saved Questions";
                 }
+                clearChosenButton.classList.remove('clear-selected'); // revert to default color
             }
         }
 
@@ -1590,6 +1604,19 @@
 
         // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
+            // Decide which confirmation text to show based on current mode
+            const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
+            if (highlightedItems.length > 0) {
+                // Selected-only mode
+                confirmationText.innerHTML = "Clear the selected question?";
+                confirmationSubtext.style.display = "block";
+                confirmationSubtext.textContent = "This will remove only the highlighted question from Saved.";
+            } else {
+                // All-saved mode (or generic)
+                confirmationText.innerHTML = 'Are you sure you want to clear <span style="font-weight:800; text-decoration: underline;">ALL</span> saved questions?';
+                confirmationSubtext.style.display = "block";
+                confirmationSubtext.textContent = "Warning: This action will remove every saved question for this topic.";
+            }
             confirmationModal.classList.add('show');
         });
 
