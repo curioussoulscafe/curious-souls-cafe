@@ -128,11 +128,11 @@ The Curious Souls Café web app keeps its files organized in a clear and maintai
 
 * Image files, including `qr-code.png` and `csc_logo.jpg`, are stored in the **`images/` folder**.
 
-## 💪 Advanced: For Event Facilitators
+## 💪 Advanced: For Contributors
 
 ### ➡️ How to Add New Question Sets
 
-If you're an event facilitator looking to add new question sets to the main page, here's a straightforward process:
+If you're a contributor looking to add new question sets to the main page, here's a straightforward process:
 
 1.  **Add a new `questions.txt` file:** Create a new text file inside the `questions/` folder. Name it clearly, reflecting your new topic (e.g., `questions/MyNewTopic.txt`). Populate this file with your questions, one per line.
 
