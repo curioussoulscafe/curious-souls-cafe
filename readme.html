@@ -134,29 +134,67 @@
         color: #6b46c1; /* Purple on hover */
         transform: scale(1.1);
     }
+
+    /* Floating Back button (ported from code A) */
+    .floating-back-btn {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
+      background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
+
+      /* Attention effect variables */
+      --pulse-from: #43c6a6;
+      --pulse-to: #6b7280;
+      --glow-color: rgba(99,102,241,0.55);
+    }
+    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
+    .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
+
+    @keyframes backBtnPulse {
+      0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+      50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
+      100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+    }
+    .floating-back-btn.attention {
+      animation: backBtnPulse 900ms ease-in-out 0s 3; /* ~2.7s total */
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floating-back-btn.attention {
+        animation: none;
+        outline: 2px solid #a855f7;
+        outline-offset: 2px;
+      }
+    }
   </style>
 </head>
 <body>
-<div class="container">
-  <h1 id="curious-souls-caf-">Curious Souls Café - Web App for Meaningful Conversations</h1>
-  <p>Welcome to the <a href="https://curioussoulscafe.substack.com/about">Curious Souls Café</a>! This <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">live web app</a> is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.</p>
-  <p>Originally created to facilitate meaningful discussions during Curious Souls Café <a href="https://curioussoulscafe.substack.com/p/event-structure">meetup events</a>, this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)</p>
-  
-  <h2 id="-getting-started">🚀 Getting Started</h2>
-  <p>Step into meaningful conversations with ease! Here's how you can join the fun:</p>
-  <ol>
-    <li><p><strong>Launch the Live Web App</strong><br>Open the Curious Souls Café web app in your browser by clicking this link: <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Curious Souls Café Web App</a>.</p></li>
-    <li><p><strong>Invite Others</strong><br>On the main page, you'll find a QR code. Share it with friends or participants—anyone can scan it to instantly join the conversation.</p></li>
-    <li><p><strong>Pick a Topic</strong><br>Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin! <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html">Icebreaker</a> is recommended for first-timers.</p></li>
-    <li><p><strong>Start the Conversation</strong><br>Unsure where to start? Try <a href="https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion">Style One – Open Discussion</a>: With the three questions presented (by default), each person chooses their favorite one, and then determine whose question goes first (e.g., the participant who arrives first, or the one whose virtual question card matches the color of a <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html">virtual dice roll</a>). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.</p><p>Participants take turns answering the chosen question, with the option to pass if they feel uncomfortable. This style fosters a relaxed and organic way to engage with the group while ensuring everyone has the opportunity to participate.</p></p></li>
-  </ol>
-  <p class="pro-tip"><strong>Pro Tip:</strong> For a deeper understanding of how our events are structured, including different conversation styles, check out our <a href="https://curioussoulscafe.substack.com/i/154389021/event-structure">Event Structure Guide</a>.</p>
-  <hr>
-  <h2 id="-introducing-the-question-decks">📚 Introducing the Question Decks</h2>
-<p>Our in-person Curious Souls Café <a href="https://curioussoulscafe.substack.com/p/event-structure">meetup</a> is your space for meaningful conversations and deep self-reflection. Like a cozy neighborhood café, it’s a place to share ideas, explore life’s big questions, and connect with others in an open and welcoming way. At the heart of the Curious Souls Café experience are <strong>questions</strong>, thoughtfully designed by our facilitators or third parties to guide you through soul-searching discussions. Whether you&#39;re reflecting on your personal journey, navigating life changes, or building deeper connections, these decks spark introspection and encourage engaging dialogue.</p>
-<p>Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you&#39;ve been, and where you’re headed:</p>
+  <!-- Floating Back Button -->
+  <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
+    <i class="fas fa-arrow-left"></i>
+    Back
+  </button>
+
+  <div class="container">
+    <h1 id="curious-souls-caf-">Curious Souls Café - Web App for Meaningful Conversations</h1>
+    <p>Welcome to the <a href="https://curioussoulscafe.substack.com/about">Curious Souls Café</a>! This <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">live web app</a> is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.</p>
+    <p>Originally created to facilitate meaningful discussions during Curious Souls Café <a href="https://curioussoulscafe.substack.com/p/event-structure">meetup events</a>, this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)</p>
+    
+    <h2 id="-getting-started">🚀 Getting Started</h2>
+    <p>Step into meaningful conversations with ease! Here's how you can join the fun:</p>
+    <ol>
+      <li><p><strong>Launch the Live Web App</strong><br>Open the Curious Souls Café web app in your browser by clicking this link: <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Curious Souls Café Web App</a>.</p></li>
+      <li><p><strong>Invite Others</strong><br>On the main page, you'll find a QR code. Share it with friends or participants--anyone can scan it to instantly join the conversation.</p></li>
+      <li><p><strong>Pick a Topic</strong><br>Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin! <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html">Icebreaker</a> is recommended for first-timers.</p></li>
+      <li><p><strong>Start the Conversation</strong><br>Unsure where to start? Try <a href="https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion">Style One -- Open Discussion</a>: With the three questions presented (by default), each person chooses their favorite one, and then determine whose question goes first (e.g., the participant who arrives first, or the one whose virtual question card matches the color of a <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html">virtual dice roll</a>). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.</p><p>Participants take turns answering the chosen question, with the option to pass if they feel uncomfortable. This style fosters a relaxed and organic way to engage with the group while ensuring everyone has the opportunity to participate.</p></p></li>
+    </ol>
+    <p class="pro-tip"><strong>Pro Tip:</strong> For a deeper understanding of how our events are structured, including different conversation styles, check out our <a href="https://curioussoulscafe.substack.com/i/154389021/event-structure">Event Structure Guide</a>.</p>
+    <hr>
+    <h2 id="-introducing-the-question-decks">📚 Introducing the Question Decks</h2>
+<p>Our in-person Curious Souls Café <a href="https://curioussoulscafe.substack.com/p/event-structure">meetup</a> is your space for meaningful conversations and deep self-reflection. Like a cozy neighborhood café, it’s a place to share ideas, explore life’s big questions, and connect with others in an open and welcoming way. At the heart of the Curious Souls Café experience are <strong>questions</strong>, thoughtfully designed by our facilitators or third parties to guide you through soul-searching discussions. Whether you're reflecting on your personal journey, navigating life changes, or building deeper connections, these decks spark introspection and encourage engaging dialogue.</p>
+<p>Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:</p>
 <ul>
-<li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/adulthood.html">Adulthood</a></strong>: Explore the holistic journey of adulting—personal growth, authenticity, maturity, and connection to self, others, and the world.</li>
+<li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/adulthood.html">Adulthood</a></strong>: Explore the holistic journey of adulting--personal growth, authenticity, maturity, and connection to self, others, and the world.</li>
 <li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/authenticity.html">Authenticity</a></strong>: Align your actions with your values and embrace your true self.</li>
 <li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/entrepreneurship.html">Entrepreneurship</a></strong>: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.</li>
 <li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/friendship.html">Friendship</a></strong>: Deepen connection, celebrate shared moments, and explore the many facets of meaningful friendships.</li>
@@ -173,7 +211,7 @@
 <li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html">Reimagine</a></strong>: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.</li>
 <li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html">The Mind Speaks</a></strong>: Reflect on thoughts, feelings, mindfulness, and personal well-being.</li>
 <li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html">Transitions</a></strong>: Navigate life’s changes with prompts that foster reflection and personal growth.</li>
-<li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/true-wealth.html">True Wealth</a></strong>: Explore what it means to live a truly rich life—beyond material wealth—through questions that spark reflection on abundance, sufficiency, connection, and purpose</li>
+<li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/true-wealth.html">True Wealth</a></strong>: Explore what it means to live a truly rich life--beyond material wealth--through questions that spark reflection on abundance, sufficiency, connection, and purpose</li>
 <li><strong><a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/work-that-resonates.html">Work that Resonates</a></strong>: Explore your evolving relationship with work, purpose, and fulfillment.</li>
 </ul>
 
@@ -182,29 +220,29 @@
 <p>Note: Questions with a spiral emoiji 🌀 are deeper, thought-provoking ones, whereas those with a seeding emoiji 🌱 are introductory </p>
 <h2 id="-what-you-can-do-with-the-web-app">✨ What You Can Do with the Web App</h2>
 <ul>
-<li><p><strong>Pick a Topic:</strong> On the <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">main page</a>, you&#39;ll see general questions like <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html">Icebreaker</a> and different topics like <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html">Transitions</a> or <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html">Love Relationships</a>. Just click (or tap) on a topic button to dive in!</p>
+<li><p><strong>Pick a Topic:</strong> On the <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">main page</a>, you'll see general questions like <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html">Icebreaker</a> and different topics like <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html">Transitions</a> or <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html">Love Relationships</a>. Just click (or tap) on a topic button to dive in!</p>
 </li>
 
 <li><p><strong>Favorite Topics & Actions:</strong> Easily mark your favorite topics by tapping the star icon next to them. Favorited items will appear at the top of the list for quick access, and your preferences are saved for your next visit.</p>
 
 <li><p><strong>Search and Filter:</strong> Use the search bar on the main page to quickly filter and find specific topics or actions among a growing list of options.</p>
 
-<li><p><strong>Get Random Questions:</strong> Once you&#39;re on a topic page, tell the web app how many questions you&#39;d like, and it will instantly give you new ones to ponder.</p>
+<li><p><strong>Get Random Questions:</strong> Once you're on a topic page, tell the web app how many questions you'd like, and it will instantly give you new ones to ponder.</p>
 </li>
 <li><p><strong>Find Specific Questions:</strong> Looking for something particular? Use the search bar to find questions that match your keywords.</p>
 </li>
-<li><p><strong>Save Questions:</strong> See a question you like? Simply click or tap on it, and it will be added to your &quot;Saved Questions&quot; list at the bottom of the page. You can clear them anytime.</p>
+<li><p><strong>Save Questions:</strong> See a question you like? Simply click or tap on it, and it will be added to your "Saved Questions" list at the bottom of the page. You can clear them anytime.</p>
 </li>
-<li><p><strong>Submit Custom Questions:</strong> Want to use your own questions? Click the &quot;Submit Questions&quot; button on the main page. You can paste a list of questions (one per line) into the input page. These questions will be saved locally in your browser and will be available for use on the &quot;Custom Questions&quot; page, which offers the same randomization, search, and saving features as the pre-defined topics.</p>
+<li><p><strong>Submit Custom Questions:</strong> Want to use your own questions? Click the "Submit Questions" button on the main page. You can paste a list of questions (one per line) into the input page. These questions will be saved locally in your browser and will be available for use on the "Custom Questions" page, which offers the same randomization, search, and saving features as the pre-defined topics.</p>
 </li>
 
 <li><p><strong>Optimized for On-the-Go:</strong> The web app is designed to work seamlessly on smartphones and tablets, making it the ideal companion for dynamic, on-the-go interactions.</p>
 </li>
-<li><p><strong>Join a Live Discussion</strong>: During special events, a prominent &quot;Live Discussion&quot; button will appear on the main page, giving you access to real-time questions curated for that event.</p>
+<li><p><strong>Join a Live Discussion</strong>: During special events, a prominent "Live Discussion" button will appear on the main page, giving you access to real-time questions curated for that event.</p>
 </li>
 </ul>
 <h2 id="-a-fun-little-secret-">🎲 A Fun Little Secret!</h2>
-<p>Did you know there&#39;s a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren&#39;t just random! They&#39;re designed to subtly match the fun <a href="./pages/descriptions/dice.html">dice</a> colors used by our event facilitators to make those in-person discussions even more engaging. It&#39;s a small nod to bring a bit of that real-world fun into your digital experience!</p>
+<p>Did you know there's a little Easter egg in the Curious Souls Café web app? The colors of the virtual question cards (when you highlight a question or a saved one by a click/tap) aren't just random! They're designed to subtly match the fun <a href="./pages/descriptions/dice.html">dice</a> colors used by our event facilitators to make those in-person discussions even more engaging. It's a small nod to bring a bit of that real-world fun into your digital experience!</p>
 <h2 id="-tips-for-using-the-app">💡 Tips for Using the App</h2>
 <p>Here are some helpful tips to enhance your Curious Souls Café experience:</p>
 <ol>
@@ -212,27 +250,27 @@
 </li>
 <li><p><strong>Return to Main Page:</strong> Clicking the round <strong>Curious Souls Café icon</strong> at the top of any topic page will take you back to the main topic selection page.</p>
 </li>
-<li><p><strong>Quick Scroll to Top:</strong> The sticky <strong>&quot;Top&quot; button</strong> located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you&#39;ve scrolled far down and need to quickly access controls or re-read the topic title.</p>
+<li><p><strong>Quick Scroll to Top:</strong> The sticky <strong>"Top" button</strong> located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.</p>
 </li>
-<li><p><strong>Direct Topic Page Links</strong>: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the &quot;Icebreaker&quot; topic, you would use: <code>&lt;URL&gt;/pages/icebreaker.html</code> like <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html">this</a>.</p>
+<li><p><strong>Direct Topic Page Links</strong>: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Icebreaker" topic, you would use: <code>&lt;URL&gt;/pages/icebreaker.html</code> like <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html">this</a>.</p>
 </li>
 <li><p><strong>Single Random Question for Punishments:</strong> For participants who land on a punishment (e.g., via specific <a href="./pages/descriptions/dice.html">dice</a> colors used by our facilitators) which requires them to randomly choose a question and answer it:</p>
 <ul>
-<li><p>Set the <strong>&quot;No. to pick&quot;</strong> field to <code>1</code> (instead of the default value, e.g., <code>3</code>).</p>
+<li><p>Set the <strong>"No. to pick"</strong> field to <code>1</code> (instead of the default value, e.g., <code>3</code>).</p>
 </li>
-<li><p>Then, have the participant tap <strong>&quot;Next Questions!&quot;</strong> so that only one random question is displayed.</p>
+<li><p>Then, have the participant tap <strong>"Next Questions!"</strong> so that only one random question is displayed.</p>
 </li>
 </ul>
 </li>
-<li><p><strong>Roll the Dice:</strong> On each page, you&#39;ll find a floating <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html">dice</a>&quot; button at the bottom right corner. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different <a href="./pages/descriptions/dice.html">category or action</a> in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!</p>
+<li><p><strong>Roll the Dice:</strong> On each page, you'll find a floating <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html">dice</a>" button at the bottom right corner. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different <a href="./pages/descriptions/dice.html">category or action</a> in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!</p>
 </li>
 <li><p><strong>Advanced Search &amp; Clear:</strong></p>
 <ul>
 <li><p>Searching with <strong>nothing inputted in the search field</strong> will display all questions in the current deck. Be mindful that this could quickly fill up the screen.</p>
 </li>
-<li><p>For more advanced searching, you can combine the above with your web browser&#39;s built-in &quot;Find&quot; functionality.</p>
+<li><p>For more advanced searching, you can combine the above with your web browser's built-in "Find" functionality.</p>
 </li>
-<li><p>In case the screen becomes too crowded after a search, simply tap the sticky <strong>&quot;Top&quot; button</strong> and then click the <strong>&quot;Search&quot; button</strong> again (or &quot;Clear Search&quot;) to clear the search results and tidy up the display.</p>
+<li><p>In case the screen becomes too crowded after a search, simply tap the sticky <strong>"Top" button</strong> and then click the <strong>"Search" button</strong> again (or "Clear Search") to clear the search results and tidy up the display.</p>
 </li>
 </ul>
 </li>
@@ -244,7 +282,7 @@
 </li>
 <li><p>All individual topic pages (like <code>icebreaker.html</code>, <code>love-relationships.html</code>, etc.) are located in the <strong><code>pages/</code> folder</strong>.</p>
 </li>
-<li><p>All the questions for each topic are stored in simple text files (<code>.txt</code>) inside the <strong><code>questions/</code> folder</strong>. For example, all &quot;Icebreaker&quot; questions are in <code>questions/icebreaker.txt</code>.</p>
+<li><p>All the questions for each topic are stored in simple text files (<code>.txt</code>) inside the <strong><code>questions/</code> folder</strong>. For example, all "Icebreaker" questions are in <code>questions/icebreaker.txt</code>.</p>
 </li>
 <li><p>Other data files, such as <code>famous-quotes.txt</code>, are located in the <strong><code>data/</code> folder</strong>.</p>
 </li>
@@ -253,14 +291,14 @@
 </ul>
 <h2 id="-for-contributors">💪 Advanced: For Contributors</h2>
 <h3 id="-how-to-add-new-question-sets">➡️ How to Add New Question Sets</h3>
-<p>If you&#39;re a contributor looking to add new question sets to the main page, here&#39;s a straightforward process:</p>
+<p>If you're a contributor looking to add new question sets to the main page, here's a straightforward process:</p>
 <ol>
 <li><p><strong>Add a new <code>questions.txt</code> file:</strong> Create a new text file inside the <code>questions/</code> folder. Name it clearly, reflecting your new topic (e.g., <code>questions/MyNewTopic.txt</code>). Populate this file with your questions, one per line.</p>
 </li>
-<li><p><strong>Duplicate an existing HTML subpage:</strong> Choose an existing topic&#39;s HTML file (e.g., <code>icebreaker.html</code>) and duplicate it. Rename the duplicated file to match your new topic (e.g., <code>mynewtopic.html</code>).</p>
+<li><p><strong>Duplicate an existing HTML subpage:</strong> Choose an existing topic's HTML file (e.g., <code>icebreaker.html</code>) and duplicate it. Rename the duplicated file to match your new topic (e.g., <code>mynewtopic.html</code>).</p>
 </li>
 </ol>
-<p>Open the file in a text editor and modify the page title, <code>questions.txt</code> link, displayed topic name, and main page link to reflect the new topic. (Tip: If <code>icebreaker.html</code> was copied, search for &quot;Icebreaker&quot; and replace each word accordingly.) You will also need to update <code>index.html</code> similarly.</p>
+<p>Open the file in a text editor and modify the page title, <code>questions.txt</code> link, displayed topic name, and main page link to reflect the new topic. (Tip: If <code>icebreaker.html</code> was copied, search for "Icebreaker" and replace each word accordingly.) You will also need to update <code>index.html</code> similarly.</p>
 <ol>
 <li><p><strong>Add to <code>index.html</code> Configuration:</strong></p>
 <ul>
@@ -287,27 +325,27 @@
     <li>Save, commit, and publish the changes.</li>
 </ol>
 <h3 id="-managing-live-discussion-questions">➡️ Managing Live Discussion Questions</h3>
-<p>The &quot;Live Discussion&quot; feature or button is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in <code>index.html</code>.</p>
+<p>The "Live Discussion" feature or button is designed for dynamic, event-specific use. Its visibility is controlled directly by the presence of a specific file in the repository, eliminating the need for code changes in <code>index.html</code>.</p>
 <p>This allows event facilitators to quickly activate and deactivate the live discussion feature as needed for their events.</p>
-<p>To enable and disable the &quot;Live Discussion&quot; button for an event:</p>
+<p>To enable and disable the "Live Discussion" button for an event:</p>
 <ol>
-<li><p><strong>To Enable the &quot;Live Discussion&quot; Button:</strong></p>
+<li><p><strong>To Enable the "Live Discussion" Button:</strong></p>
 <ul>
-<li><p><strong>Place the <code>live-discussion.txt</code> file</strong> (containing the specific event&#39;s questions) inside the <code>questions</code> folder in the GitHub repository.</p>
+<li><p><strong>Place the <code>live-discussion.txt</code> file</strong> (containing the specific event's questions) inside the <code>questions</code> folder in the GitHub repository.</p>
 </li>
-<li><p><strong>Uncomment or unhide</strong> elements related to &quot;Live Discussion&quot; in <code>index.html</code>.</p>
+<li><p><strong>Uncomment or unhide</strong> elements related to "Live Discussion" in <code>index.html</code>.</p>
 </li>
 <li><p><strong>Commit and push</strong> these changes to the GitHub repository. (The changes should then be automatically deployed to GitHub Pages within a minute.)</p>
 </li>
-<li><p>The &quot;Live Discussion&quot; button will now be visible on the main page for participants. (Note: For those who already have the page loaded, they may need to refresh their mobile browser.)</p>
+<li><p>The "Live Discussion" button will now be visible on the main page for participants. (Note: For those who already have the page loaded, they may need to refresh their mobile browser.)</p>
 </li>
 </ul>
 </li>
-<li><p><strong>To Disable the &quot;Live Discussion&quot; Button (after the event):</strong></p>
+<li><p><strong>To Disable the "Live Discussion" Button (after the event):</strong></p>
 <ul>
 <li><p><strong>Remove the <code>live-discussion.txt</code> file</strong> from the <code>questions</code> folder in the GitHub repository.</p>
 </li>
-<li><p><strong>Re-comment or hide</strong> elements related to &quot;Live Discussion&quot; in <code>index.html</code>.</p>
+<li><p><strong>Re-comment or hide</strong> elements related to "Live Discussion" in <code>index.html</code>.</p>
 </li>
 <li><p><strong>Commit and push</strong> these changes to the GitHub repository.</p>
 </li>
@@ -315,12 +353,51 @@
 </li>
 </ol>
 <p>Thank you for visiting the Curious Souls Café! We hope it sparks many interesting conversations</p>
-<h4>⬅️ <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Leave this page</a> (go to Curious Souls Café web app)</h4>
+<!-- <h4>⬅️ <a href="https://curioussoulscafe.github.io/curious-souls-cafe/">Leave this page</a> (go to Curious Souls Café web app)</h4> -->
 </div>
 <div class="github-icon-footer">
     <a href="https://github.com/curioussoulscafe/curious-souls-cafe" target="_blank" rel="noopener noreferrer" aria-label="Check out our GitHub repository">
         <i class="fa-brands fa-github"></i>
     </a>
 </div>
+
+  <script>
+    // Back behavior with fallback + first-visit attention effect
+    function goBackFallback() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Fallback to home of the web app root
+        window.location.href = './index.html';
+      }
+    }
+
+    function runBackButtonAttention() {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (!floatingBackButton) return;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        floatingBackButton.classList.add('attention');
+        setTimeout(() => {
+          floatingBackButton.classList.remove('attention');
+        }, 3000);
+      } else {
+        floatingBackButton.style.outline = '2px solid #a855f7';
+        floatingBackButton.style.outlineOffset = '2px';
+        setTimeout(() => {
+          floatingBackButton.style.outline = '';
+          floatingBackButton.style.outlineOffset = '';
+        }, 2000);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (floatingBackButton) {
+        floatingBackButton.addEventListener('click', goBackFallback);
+      }
+      runBackButtonAttention();
+    });
+  </script>
 </body>
 </html>

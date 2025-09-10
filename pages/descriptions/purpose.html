@@ -98,9 +98,46 @@
     strong {
       font-weight: 600;
     }
+
+    /* Floating back button (ported from code A) */
+    .floating-back-btn {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
+      background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
+
+      --pulse-from: #43c6a6;
+      --pulse-to: #6b7280;
+      --glow-color: rgba(99,102,241,0.55);
+    }
+    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
+    .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
+
+    @keyframes backBtnPulse {
+      0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+      50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
+      100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+    }
+    .floating-back-btn.attention {
+      animation: backBtnPulse 900ms ease-in-out 0s 3;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floating-back-btn.attention {
+        animation: none;
+        outline: 2px solid #a855f7;
+        outline-offset: 2px;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Floating Back Button -->
+  <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
+    <i class="fas fa-arrow-left"></i>
+    Back
+  </button>
+
   <div class="container">
     <h2>Purpose: The Compass of a Meaningful Life</h2>
 
@@ -161,8 +198,84 @@
     <hr>
     <p><strong>Past Event Example</strong>: <a href="https://www.meetup.com/curious-souls-cafe/events/310666992/" target="_blank" rel="noopener noreferrer">Purpose: The Compass of a Meaningful Life</a><i> (Meetup account required)</i></p>
     <p><strong>Book Sources</strong>: <a href="https://www.goodreads.com/review/list/189570926-curious-souls-cafe?shelf=purpose&utf8=%E2%9C%93" target="_blank" rel="noopener noreferrer">Curious Souls Café's 'Purpose' Book List on Goodreads</a></p>
-    <hr>
-    <p>⬅️ <a href="../purpose.html">Leave this page</a> (go to Curious Souls Café web app)</p>
+    <!-- <hr>
+    <p>⬅️ <a href="../purpose.html">Leave this page</a> (go to Curious Souls Café web app)</p> -->
   </div>
+
+  <script>
+    function goBackFallback() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = '../index.html';
+      }
+    }
+
+    function runBackButtonAttention() {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (!floatingBackButton) return;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        floatingBackButton.classList.add('attention');
+        setTimeout(() => {
+          floatingBackButton.classList.remove('attention');
+        }, 3000);
+      } else {
+        floatingBackButton.style.outline = '2px solid #a855f7';
+        floatingBackButton.style.outlineOffset = '2px';
+        setTimeout(() => {
+          floatingBackButton.style.outline = '';
+          floatingBackButton.style.outlineOffset = '';
+        }, 2000);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (floatingBackButton) {
+        floatingBackButton.addEventListener('click', goBackFallback);
+      }
+      runBackButtonAttention();
+    });
+  </script>
+
+  <script>
+    // Back behavior with fallback + first-visit attention effect
+    function goBackFallback() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Fallback to home of the web app root
+        window.location.href = './index.html';
+      }
+    }
+
+    function runBackButtonAttention() {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (!floatingBackButton) return;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        floatingBackButton.classList.add('attention');
+        setTimeout(() => {
+          floatingBackButton.classList.remove('attention');
+        }, 3000);
+      } else {
+        floatingBackButton.style.outline = '2px solid #a855f7';
+        floatingBackButton.style.outlineOffset = '2px';
+        setTimeout(() => {
+          floatingBackButton.style.outline = '';
+          floatingBackButton.style.outlineOffset = '';
+        }, 2000);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (floatingBackButton) {
+        floatingBackButton.addEventListener('click', goBackFallback);
+      }
+      runBackButtonAttention();
+    });
+  </script>
 </body>
 </html>
