@@ -27,6 +27,7 @@
         .item {
             margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
             padding: 1rem; 
+            padding-right: 2.25rem; /* NEW: extra space so the number badge doesn't crowd text */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
@@ -34,12 +35,30 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
+            position: relative; /* For subtle number badge */
+        }
+        /* Subtle question number badge (top-right) */
+        .item::after {
+            content: attr(data-qn); /* Uses data attribute like "#12" */
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: #6b7280; /* gray-500 */
+            background: #eef2ff; /* indigo-50 */
+            border: 1px solid #e5e7eb; /* gray-200 */
+            padding: 2px 6px;
+            border-radius: 9999px;
+            line-height: 1;
+            opacity: 0.85; /* keep it subtle */
+            pointer-events: none;
         }
 
         /* This class is for highlighting the original items when clicked to be chosen */
         .item.selected-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
             padding: 1.15rem; /* Slightly larger padding on selection */
+            padding-right: 2.5rem; /* keep extra right padding when selected */
             font-size: 1.35rem; /* Slightly larger font size on selection */
             margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
             transform: scale(1.03); /* Slightly enlarge when selected */
@@ -49,6 +68,7 @@
         .chosen-item {
             margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
             padding: 1rem; 
+            padding-right: 2.25rem; /* NEW: extra space for number badge in saved list */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
@@ -57,12 +77,30 @@
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
             text-align: center; /* Centered text */
+            position: relative; /* For subtle number badge */
+        }
+        /* Subtle number for chosen items too */
+        .chosen-item::after {
+            content: attr(data-qn);
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 0.72rem;
+            color: #6b7280;
+            background: #eef2ff;
+            border: 1px solid #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            line-height: 1;
+            opacity: 0.85;
+            pointer-events: none;
         }
 
         /* Highlight for chosen items when clicked */
         .chosen-item.selected-chosen-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
             padding: 1.15rem; /* Slightly larger padding on selection */
+            padding-right: 2.5rem; /* keep extra right padding when selected */
             font-size: 1.35rem; /* Slightly larger font size on selection */
             margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
             transform: scale(1.03); /* Slightly enlarge when selected */
@@ -391,7 +429,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
 
         /* New style for the description link */
         .description-link-container {
@@ -1009,12 +1046,17 @@
         const githubRawUrl = "../questions/purpose.txt"; // Relative path to purpose.txt
         // End Hardcoded Configuration
 
-        let fullItemList = []; // Master list of all questions
-        let itemList = []; // The currently filtered list of questions
+        // Each question will be represented as { num: number, text: string, raw: string }
+        // - num: 1-based line number in the source file
+        // - text: the display text (as-is from file)
+        // - raw: same as text (kept for clarity/compat)
+        let fullItemList = []; // Master list of all questions (objects)
+        let itemList = []; // The currently filtered list of questions (objects)
         let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'middle', 'deeper'
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
+        let selectedRandomQuestionNum = null;  // Stores the question number of the currently selected item
 
         const randomizeButton = document.getElementById('randomize-button');
         const resultDisplay = document.getElementById('random-result');
@@ -1092,8 +1134,23 @@
         const savedItemCountKey = `csc_saved_item_count_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
         const saveItemCountToggleKey = `csc_save_item_count_toggle_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
 
+        // Helper: build object list with numbers from text file lines
+        function buildQuestionsWithNumbers(text) {
+            const lines = text.split('\n');
+            const items = [];
+            let num = 0;
+            for (let i = 0; i < lines.length; i++) {
+                const trimmed = lines[i].trim();
+                if (trimmed.length === 0) continue; // skip blank
+                num += 1;
+                items.push({ num, text: trimmed, raw: trimmed });
+            }
+            return items;
+        }
+
         /**
          * Loads saved questions from localStorage and displays them.
+         * We store only text in saved list for backward compatibility, but show number if we can map it.
          */
         function loadSavedQuestions() {
             const savedQuestionsJson = localStorage.getItem(savedQuestionsLocalStorageKey);
@@ -1102,7 +1159,10 @@
             if (savedQuestions.length > 0) { 
                 chosenQuestionsDisplay.innerHTML = ''; 
                 savedQuestions.forEach(questionText => {
-                    addChosenQuestionToDOM(questionText);
+                    // Try to find its number from fullItemList
+                    const match = fullItemList.find(q => q.text === questionText);
+                    const qNum = match ? match.num : null;
+                    addChosenQuestionToDOM(questionText, qNum ? `#${qNum}` : null);
                 });
             } else {
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap a question above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
@@ -1129,9 +1189,10 @@
 
         /**
          * Saves the current list of chosen questions to localStorage.
+         * Only saves their text for compatibility.
          */
         function saveCurrentChosenQuestions() {
-            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.textContent);
+            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.getAttribute('data-text'));
             localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
         }
 
@@ -1141,13 +1202,13 @@
         function applyFilter() {
             switch (currentFilter) {
                 case 'lighter':
-                    itemList = fullItemList.filter(item => item.startsWith('🌱'));
+                    itemList = fullItemList.filter(item => item.text.startsWith('🌱'));
                     break;
                 case 'deeper':
-                    itemList = fullItemList.filter(item => item.startsWith('🌀'));
+                    itemList = fullItemList.filter(item => item.text.startsWith('🌀'));
                     break;
                 case 'middle':
-                    itemList = fullItemList.filter(item => !item.startsWith('🌱') && !item.startsWith('🌀'));
+                    itemList = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
                     break;
                 default: // 'all'
                     itemList = [...fullItemList];
@@ -1183,7 +1244,7 @@
 
             if (cachedContent) {
                 console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
-                fullItemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                fullItemList = buildQuestionsWithNumbers(cachedContent);
                 applyFilter(); // Apply the default 'all' filter
                 loadSavedQuestions(); 
             } else {
@@ -1195,7 +1256,7 @@
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const text = await response.text();
-                    fullItemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                    fullItemList = buildQuestionsWithNumbers(text);
 
                     localStorage.setItem(localStorageKey, text); 
 
@@ -1203,7 +1264,7 @@
                     loadSavedQuestions(); 
                 } catch (error) {
                     console.error("Could not load questions:", error);
-                    resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
+                    document.getElementById('random-result').textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
                     appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
                     topicTitleElement.textContent = `Topic: Error`;
                 }
@@ -1251,7 +1312,7 @@
         }
 
         /**
-         * Show or hide the floating lookup button based on whether any question is selected anywhere.
+         * Show or hide the floating lookup/share button based on whether any question is selected anywhere.
          */
         function refreshFloatingLookupVisibility() {
             const hasSelectedFromRandomOrSearch = document.querySelector('.item.selected-item') !== null;
@@ -1280,7 +1341,8 @@
             const items = targetElement.querySelectorAll('.item');
             items.forEach(item => {
                 item.addEventListener('click', function() {
-                    const questionText = this.textContent;
+                    const questionText = this.getAttribute('data-text'); // use data-text, not inner text
+                    const questionNum = this.getAttribute('data-qn');    // like "#12"
 
                     // Remove selected-item from previously selected item in resultDisplay or searchResultsDisplay
                     const previouslySelected = document.querySelectorAll('.item.selected-item');
@@ -1295,9 +1357,11 @@
 
                     if (this.classList.contains('selected-item')) {
                         selectedRandomQuestionText = questionText;
-                        addChosenQuestion(questionText); // Also add to saved questions if selected
+                        selectedRandomQuestionNum = questionNum;
+                        addChosenQuestion(questionText, questionNum); // Add to saved with number
                     } else {
                         selectedRandomQuestionText = null;
+                        selectedRandomQuestionNum = null;
                         // Keep saved list unchanged; user controls removals there
                     }
                     refreshFloatingLookupVisibility();
@@ -1308,11 +1372,12 @@
         /**
          * Adds a question to the DOM display and saves it to localStorage.
          * @param {string} questionText - The text of the question to add.
+         * @param {string|null} questionNum - The display number (e.g., "#12") or null if unknown.
          */
-        function addChosenQuestion(questionText) {
-            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
+        function addChosenQuestion(questionText, questionNum = null) {
+            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.getAttribute('data-text'));
             if (!existingChosenItems.includes(questionText)) {
-                addChosenQuestionToDOM(questionText);
+                addChosenQuestionToDOM(questionText, questionNum);
                 saveCurrentChosenQuestions();
             }
             updateClearButtonText();
@@ -1322,11 +1387,20 @@
          * Helper function to add a question div to the DOM without affecting localStorage.
          * Used for both initial loading and user interaction.
          * @param {string} questionText - The text of the question to add.
+         * @param {string|null} questionNum - The display number (e.g., "#12") or null.
          */
-        function addChosenQuestionToDOM(questionText) {
+        function addChosenQuestionToDOM(questionText, questionNum = null) {
             const chosenItemDiv = document.createElement('div');
             chosenItemDiv.classList.add('chosen-item');
             chosenItemDiv.textContent = questionText;
+            chosenItemDiv.setAttribute('data-text', questionText);
+            if (questionNum) {
+                chosenItemDiv.setAttribute('data-qn', questionNum);
+            } else {
+                // Try to infer number from master list if not provided
+                const match = fullItemList.find(q => q.text === questionText);
+                if (match) chosenItemDiv.setAttribute('data-qn', `#${match.num}`);
+            }
             chosenQuestionsDisplay.appendChild(chosenItemDiv);
 
             chosenItemDiv.addEventListener('click', function() {
@@ -1341,10 +1415,12 @@
 
                 if (willSelect) {
                     this.classList.add('selected-chosen-item');
-                    selectedRandomQuestionText = this.textContent;
+                    selectedRandomQuestionText = this.getAttribute('data-text');
+                    selectedRandomQuestionNum = this.getAttribute('data-qn');
                 } else {
                     this.classList.remove('selected-chosen-item');
                     selectedRandomQuestionText = null;
+                    selectedRandomQuestionNum = null;
                 }
                 updateClearButtonText();
                 refreshFloatingLookupVisibility();
@@ -1364,10 +1440,11 @@
             const chosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
             let removedFromDOM = false;
             chosenItems.forEach(item => {
-                if (item.textContent === questionText) {
+                if (item.getAttribute('data-text') === questionText) {
                     // If this item was the currently-selected source for floating lookup, reset selection
                     if (item.classList.contains('selected-chosen-item')) {
                         selectedRandomQuestionText = null;
+                        selectedRandomQuestionNum = null;
                     }
                     chosenQuestionsDisplay.removeChild(item);
                     removedFromDOM = true;
@@ -1390,6 +1467,7 @@
             if (itemList.length === 0) {
                 resultDisplay.textContent = "No questions available to pick. Please load questions first.";
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
                 return;
             }
@@ -1402,7 +1480,13 @@
                 // If nothing is available, inform user (and do NOT refill)
                 resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
             } else {
-                let itemDivs = picked.map(item => `<div class="item">${item}</div>`);
+                // Render each with subtle number
+                let itemDivs = picked.map(item => {
+                    // item.num is the 1-based line number; format as "#n"
+                    const qn = `#${item.num}`;
+                    // Each card carries data-text and data-qn so styling and logic can use them
+                    return `<div class="item" data-text="${escapeHtml(item.text)}" data-qn="${qn}">${escapeHtml(item.text)}</div>`;
+                });
                 let resultHTML = itemDivs.join('');
                 resultDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(resultDisplay);
@@ -1410,6 +1494,7 @@
 
             // Reset selections across all sections when generating new random set
             selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
             document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
             document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
             refreshFloatingLookupVisibility();
@@ -1419,6 +1504,7 @@
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
                 return;
             }
@@ -1429,6 +1515,7 @@
                 searchButton.textContent = "Search";
                 lastSearchTerm = "";
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
                 refreshFloatingLookupVisibility();
                 return;
@@ -1447,17 +1534,22 @@
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
                 return;
             }
             
-            const filteredResult = itemList.filter(item => item.toLowerCase().includes(searchTerm));
+            const filteredResult = itemList.filter(item => item.text.toLowerCase().includes(searchTerm));
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
             } else {
-                let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
+                let itemDivs = filteredResult.map(item => {
+                    const qn = `#${item.num}`;
+                    return `<div class="item" data-text="${escapeHtml(item.text)}" data-qn="${qn}">${escapeHtml(item.text)}</div>`;
+                });
                 let resultHTML = itemDivs.join('');
                 searchResultsDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(searchResultsDisplay);
@@ -1466,6 +1558,7 @@
             searchButton.textContent = "Search / Clear Search";
             // Clear all selections when new search runs
             selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
             document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
             document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
             refreshFloatingLookupVisibility();
@@ -1656,11 +1749,13 @@
                 // If selected question was among cleared, reset selection
                 const stillSelectedSaved = document.querySelector('.chosen-item.selected-chosen-item');
                 if (!stillSelectedSaved) {
-                    selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                    selectedRandomQuestionText = document.querySelector('.item.selected-item')?.getAttribute('data-text') || null;
+                    selectedRandomQuestionNum = document.querySelector('.item.selected-item')?.getAttribute('data-qn') || null;
                 }
             } else { 
                 chosenQuestionsDisplay.innerHTML = ''; 
-                selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                selectedRandomQuestionText = document.querySelector('.item.selected-item')?.getAttribute('data-text') || null;
+                selectedRandomQuestionNum = document.querySelector('.item.selected-item')?.getAttribute('data-qn') || null;
             }
             saveCurrentChosenQuestions();
             
@@ -1678,7 +1773,7 @@
         });
 
         // backToTopicsButton.addEventListener('click', () => {
-        //     window.location.href = '../index.html'; // Path back to index.html
+            // window.location.href = '../index.html'; // Path back to index.html
         // });
 
         window.addEventListener('scroll', () => {
@@ -1926,6 +2021,17 @@
         });
 
         updateClearButtonText();
+
+        // --- Utilities ---
+        // Simple HTML escape to safely insert question text into attributes and innerHTML
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     </script>
 </body>
 </html>
