@@ -36,7 +36,9 @@
             cursor: pointer; /* Indicate it's clickable */
             position: relative; /* For subtle number badge */
         }
-        /* Subtle question number badge (top-right) */
+        /* Subtle question number badge (top-right)
+           Hide the badge entirely if data-qn is empty or missing.
+        */
         .item::after {
             content: attr(data-qn); /* Uses data attribute like "#12" */
             position: absolute;
@@ -51,6 +53,10 @@
             line-height: 1;
             opacity: 0.85; /* keep it subtle */
             pointer-events: none;
+            display: none; /* default to hidden; will be shown only when data-qn present */
+        }
+        .item[data-qn]:not([data-qn=""])::after {
+            display: inline-block;
         }
 
         /* This class is for highlighting the original items when clicked to be chosen */
@@ -78,7 +84,7 @@
             text-align: center; /* Centered text */
             position: relative; /* For subtle number badge */
         }
-        /* Subtle number for chosen items too */
+        /* Subtle number for chosen items too; hidden if number is unavailable */
         .chosen-item::after {
             content: attr(data-qn);
             position: absolute;
@@ -93,6 +99,10 @@
             line-height: 1;
             opacity: 0.85;
             pointer-events: none;
+            display: none; /* default hidden */
+        }
+        .chosen-item[data-qn]:not([data-qn=""])::after {
+            display: inline-block; /* show only when we truly have a number */
         }
 
         /* Highlight for chosen items when clicked */
@@ -1138,8 +1148,8 @@
                 savedQuestions.forEach(questionText => {
                     // Try to find its number from fullItemList
                     const match = fullItemList.find(q => q.text === questionText);
-                    const qNum = match ? match.num : null;
-                    addChosenQuestionToDOM(questionText, qNum ? `#${qNum}` : null);
+                    const qNum = match ? `#${match.num}` : null;
+                    addChosenQuestionToDOM(questionText, qNum);
                 });
             } else {
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap a question above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
@@ -1319,7 +1329,7 @@
             items.forEach(item => {
                 item.addEventListener('click', function() {
                     const questionText = this.getAttribute('data-text'); // use data-text, not inner text
-                    const questionNum = this.getAttribute('data-qn');    // like "#12"
+                    const questionNum = this.getAttribute('data-qn') || null;    // like "#12" or null/empty
 
                     // Remove selected-item from previously selected item in resultDisplay or searchResultsDisplay
                     const previouslySelected = document.querySelectorAll('.item.selected-item');
@@ -1335,7 +1345,7 @@
                     if (this.classList.contains('selected-item')) {
                         selectedRandomQuestionText = questionText;
                         selectedRandomQuestionNum = questionNum;
-                        addChosenQuestion(questionText, questionNum); // Add to saved with number
+                        addChosenQuestion(questionText, questionNum); // Add to saved with number (or null)
                     } else {
                         selectedRandomQuestionText = null;
                         selectedRandomQuestionNum = null;
@@ -1371,13 +1381,18 @@
             chosenItemDiv.classList.add('chosen-item');
             chosenItemDiv.textContent = questionText;
             chosenItemDiv.setAttribute('data-text', questionText);
-            if (questionNum) {
+
+            // If we have a number, set it; otherwise, try to infer; if still unknown, do not set data-qn
+            if (questionNum && typeof questionNum === 'string' && questionNum.trim() !== '') {
                 chosenItemDiv.setAttribute('data-qn', questionNum);
             } else {
-                // Try to infer number from master list if not provided
                 const match = fullItemList.find(q => q.text === questionText);
-                if (match) chosenItemDiv.setAttribute('data-qn', `#${match.num}`);
+                if (match && Number.isInteger(match.num)) {
+                    chosenItemDiv.setAttribute('data-qn', `#${match.num}`);
+                }
+                // If not found, omit data-qn so the CSS badge won't render
             }
+
             chosenQuestionsDisplay.appendChild(chosenItemDiv);
 
             chosenItemDiv.addEventListener('click', function() {
@@ -1393,7 +1408,7 @@
                 if (willSelect) {
                     this.classList.add('selected-chosen-item');
                     selectedRandomQuestionText = this.getAttribute('data-text');
-                    selectedRandomQuestionNum = this.getAttribute('data-qn');
+                    selectedRandomQuestionNum = this.getAttribute('data-qn') || null;
                 } else {
                     this.classList.remove('selected-chosen-item');
                     selectedRandomQuestionText = null;
@@ -1457,12 +1472,10 @@
                 // If nothing is available, inform user (and do NOT refill)
                 resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
             } else {
-                // Render each with subtle number
+                // Render each with subtle number (only if number available)
                 let itemDivs = picked.map(item => {
-                    // item.num is the 1-based line number; format as "#n"
-                    const qn = `#${item.num}`;
-                    // Each card carries data-text and data-qn so styling and logic can use them
-                    return `<div class="item" data-text="${escapeHtml(item.text)}" data-qn="${qn}">${escapeHtml(item.text)}</div>`;
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : ""; // empty if missing
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
                 });
                 let resultHTML = itemDivs.join('');
                 resultDisplay.innerHTML = resultHTML;
@@ -1499,15 +1512,6 @@
             }
 
             // --- NEW: Enhanced number query parsing (single, ranges, comma lists) ---
-            // Accept patterns like:
-            //  - "12"
-            //  - "#12"
-            //  - "1-3"
-            //  - "#1-#3"
-            //  - "1,3,4"
-            //  - "1, 3,4"
-            //  - "1-3, 7, 10-12"
-            // Spaces are ignored around commas and dashes.
             const numericQueryResult = parseNumericQuery(currentSearchTerm);
             if (numericQueryResult.isNumericQuery) {
                 // Reset selections before showing new results
@@ -1539,10 +1543,9 @@
                     searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFoundMsg}</p>`;
                 } else {
                     let itemDivs = results.map(item => {
-                        const qn = `#${item.num}`;
-                        return `<div class="item" data-text="${escapeHtml(item.text)}" data-qn="${qn}">${escapeHtml(item.text)}</div>`;
+                        const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                        return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
                     });
-                    // If some numbers were invalid/not found, append a gentle note
                     const note = notFound.length > 0 
                         ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>`
                         : '';
@@ -1582,8 +1585,8 @@
                 selectedRandomQuestionNum = null;
             } else {
                 let itemDivs = filteredResult.map(item => {
-                    const qn = `#${item.num}`;
-                    return `<div class="item" data-text="${escapeHtml(item.text)}" data-qn="${qn}">${escapeHtml(item.text)}</div>`;
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
                 });
                 let resultHTML = itemDivs.join('');
                 searchResultsDisplay.innerHTML = resultHTML;
