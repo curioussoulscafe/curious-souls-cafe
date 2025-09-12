@@ -36,6 +36,8 @@
       transition: background 0.15s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.15s;
       cursor: pointer;
       margin-bottom: 0.5rem;
+      position: relative; /* For number badge positioning */
+      padding-right: 2.25rem; /* Space for the number badge */
     }
     .question-chip:hover, .action-chip:hover {
       background-color: #eef2ff;
@@ -45,6 +47,23 @@
       background-color: var(--highlight-color);
       transform: scale(1.02);
       box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    /* NEW: Style for question number badge */
+    .question-chip::after {
+      content: attr(data-qn);
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      font-size: 0.75rem;
+      color: #6b7280;
+      background: #eef2ff;
+      border: 1px solid #e5e7eb;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      line-height: 1;
+      opacity: 0.85;
+      pointer-events: none;
     }
 
     .question-text, .action-text {
@@ -578,6 +597,7 @@
     // Keys
     const SAVED_PREFIX = 'csc_saved_questions_';
     const ACTIONS_KEY = 'csc_saved_actions_action_prompts';
+    const CACHE_VERSION = '20250912'; // Must match version in topic pages to find cached lists
 
     const searchInput = document.getElementById('search-input');
     const resultsEl = document.getElementById('results');
@@ -660,6 +680,20 @@
         deleteConfirmModal.classList.remove('show');
     });
 
+    // NEW: Parser for question text files (from topic pages)
+    function buildQuestionsWithNumbers(text) {
+        const lines = text.split('\n');
+        const items = [];
+        let num = 0;
+        for (let i = 0; i < lines.length; i++) {
+            const trimmed = lines[i].trim();
+            if (trimmed.length === 0) continue;
+            num += 1;
+            items.push({ num, text: trimmed });
+        }
+        return items;
+    }
+
     // Data loaders
     function readAllSavedQuestions() {
       const topics = [];
@@ -672,7 +706,19 @@
             const list = raw ? JSON.parse(raw) : [];
             const topicId = key.substring(SAVED_PREFIX.length);
             const topicName = topicId.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-            topics.push({ key, topicId, topicName, questions: Array.isArray(list) ? list : [] });
+            
+            // NEW: Try to load the full question list from cache to get numbers
+            const fullListCacheKey = `csc_topic_${topicId}_${CACHE_VERSION}`;
+            const cachedFullListText = localStorage.getItem(fullListCacheKey);
+            let questionNumberMap = new Map();
+            if (cachedFullListText) {
+                const fullList = buildQuestionsWithNumbers(cachedFullListText);
+                fullList.forEach(item => {
+                    questionNumberMap.set(item.text, item.num);
+                });
+            }
+            
+            topics.push({ key, topicId, topicName, questions: Array.isArray(list) ? list : [], questionNumberMap });
           } catch {}
         }
       }
@@ -835,6 +881,12 @@
         filtered.forEach(q => {
           const chip = document.createElement('div');
           chip.className = 'question-chip';
+
+          // Add question number if available, but NOT for "All in One" topic
+          const questionNumber = topic.questionNumberMap.get(q);
+          if (questionNumber && topic.topicName.trim().toLowerCase() !== 'all in one') {
+              chip.setAttribute('data-qn', `#${questionNumber}`);
+          }
 
           const txt = document.createElement('div');
           txt.className = 'question-text wrap-anywhere';
