@@ -1,4 +1,4 @@
-const CACHE_NAME = '20250912';
+const CACHE_NAME = '20250913';
 
 const FILES_TO_CACHE = [
   // Root and main pages
@@ -62,6 +62,7 @@ const FILES_TO_CACHE = [
   '/pages/true-wealth.html',
   '/pages/saved-questions.html',
   '/pages/legacy.html',
+  '/pages/global-event-list.html',
 
   // Pages (descriptions)
   '/pages/descriptions/authenticity.html',
