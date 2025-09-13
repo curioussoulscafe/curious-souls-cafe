@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         :root {
@@ -27,6 +26,7 @@
         .item {
             margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
             padding: 1rem; 
+            padding-right: 2.25rem; /* NEW: extra space so the number badge doesn't crowd text */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
@@ -34,12 +34,36 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
+            position: relative; /* For subtle number badge */
+        }
+        /* Subtle question number badge (top-right)
+           Hide the badge entirely if data-qn is empty or missing.
+        */
+        .item::after {
+            content: attr(data-qn); /* Uses data attribute like "#12" */
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: #6b7280; /* gray-500 */
+            background: #eef2ff; /* indigo-50 */
+            border: 1px solid #e5e7eb; /* gray-200 */
+            padding: 2px 6px;
+            border-radius: 9999px;
+            line-height: 1;
+            opacity: 0.85; /* keep it subtle */
+            pointer-events: none;
+            display: none; /* default to hidden; will be shown only when data-qn present */
+        }
+        .item[data-qn]:not([data-qn=""])::after {
+            display: inline-block;
         }
 
         /* This class is for highlighting the original items when clicked to be chosen */
         .item.selected-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
             padding: 1.15rem; /* Slightly larger padding on selection */
+            padding-right: 2.5rem; /* keep extra right padding when selected */
             font-size: 1.35rem; /* Slightly larger font size on selection */
             margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
             transform: scale(1.03); /* Slightly enlarge when selected */
@@ -49,6 +73,7 @@
         .chosen-item {
             margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
             padding: 1rem; 
+            padding-right: 2.25rem; /* NEW: extra space for number badge in saved list */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
@@ -57,12 +82,34 @@
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
             text-align: center; /* Centered text */
+            position: relative; /* For subtle number badge */
+        }
+        /* Subtle number for chosen items too; hidden if number is unavailable */
+        .chosen-item::after {
+            content: attr(data-qn);
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 0.72rem;
+            color: #6b7280;
+            background: #eef2ff;
+            border: 1px solid #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            line-height: 1;
+            opacity: 0.85;
+            pointer-events: none;
+            display: none; /* default hidden */
+        }
+        .chosen-item[data-qn]:not([data-qn=""])::after {
+            display: inline-block; /* show only when we truly have a number */
         }
 
         /* Highlight for chosen items when clicked */
         .chosen-item.selected-chosen-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
             padding: 1.15rem; /* Slightly larger padding on selection */
+            padding-right: 2.5rem; /* keep extra right padding when selected */
             font-size: 1.35rem; /* Slightly larger font size on selection */
             margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
             transform: scale(1.03); /* Slightly enlarge when selected */
@@ -391,7 +438,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
 
         /* New style for the description link */
         .description-link-container {
@@ -773,8 +819,7 @@
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
     <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
         <div class="flex justify-center mb-6">
-            <a href="../index.html"> <!-- Updated path to index.html -->
-                <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            <a href="../index.html"> <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
             </a>
         </div>
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
@@ -786,14 +831,11 @@
             Explore your personal definition, experiences, and journey with happiness.
         </p>
 
-        <!-- Hyperlink to the full description and getting started page -->
         <div class="description-link-container">
-            <!-- Getting Started button now with info icon -->
             <button id="getting-started-link" class="description-link">
                 <i class="fas fa-info-circle"></i> Get started
             </button>
             <span class="separator">|</span>
-            <!-- About the topic without icon -->
             <a href="descriptions\happiness.html" class="description-link">
                 About the topic
             </a>
@@ -806,7 +848,6 @@
             <div id="difficulty-filter" class="flex flex-wrap justify-center gap-2">
                 <button data-filter="lighter" class="filter-btn" title="Show light questions">🌱 Light</button>
                 <button data-filter="middle" class="filter-btn" title="Show medium questions">☕</button>
-                <!--<button data-filter="all" class="filter-btn active" title="Show all questions">All</button>-->
                 <button data-filter="deeper" class="filter-btn" title="Show deep questions">🌀 Deep</button>
             </div>
         </div>
@@ -830,7 +871,6 @@
             <p id="random-result" class="text-gray-800 text-center font-medium">Loading questions...</p>
         </div>
 
-        <!-- Consolidated Look Up Online Button -->
         <div class="mt-4 pt-4 border-t border-gray-300 flex flex-col items-center">
             <button id="look-up-online-btn" class="bg-gradient-to-r from-blue-400 to-green-400 hover:from-blue-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded-full shadow-md
                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
@@ -839,9 +879,8 @@
             </button>
         </div>
 
-        <div class="mb-8"> <!-- Added mb-8 for more separation -->
-            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search for questions:</label>
-            <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+        <div class="mb-8"> <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search or enter question no. (with prefix #):</label>
+            <input type="text" id="search-input" placeholder="Enter search term or #number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
                 Search
             </button>
@@ -859,39 +898,29 @@
             </button>
         </div>
 
-        <!-- <button id="back-to-topics" title="Leave Page">
-            <i class="fas fa-arrow-left"></i> Leave Page
-        </button> -->
-
-        <!-- Manage Saved Items button -->
         <a href="saved-items.html" id="manage-saved-items" class="mt-3 inline-flex items-center justify-center w-full bg-purple-400 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out" title="Manage Saved Items">
             <i class="fas fa-folder-open mr-2"></i> Manage Saved Items
         </a>
 
-        <!-- Bottom tip -->
         <div class="bottom-tip" aria-live="polite">
             <span>💡</span>
             <span>Tap the top logo for home</span>
         </div>
         
-        <!-- Link to show QR Code -->
         <br>
         <a href="#" id="show-qr-code-link" class="qr-code-link">
             <i class="fas fa-qrcode"></i> Share page/QR code
         </a>
     </div>
 
-    <!-- Floating Dice Button (links to dice.html in the same folder) -->
     <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
         <i class="fas fa-dice"></i>
     </a>
 
-    <!-- Floating Look Up / Translate Button -- icon only -->
     <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
         <i class="fas fa-search"></i>
     </button>
 
-    <!-- NEW Floating Share Button -->
     <button id="floating-share" title="Share selected question" aria-label="Share selected question">
         <i class="fas fa-share-nodes"></i>
     </button>
@@ -900,7 +929,6 @@
         &#9650; Top
     </button>
 
-    <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
             <p id="confirmation-text" class="text-lg font-semibold text-gray-800 mb-2">Are you sure you want to clear the saved questions?</p>
@@ -912,7 +940,6 @@
         </div>
     </div>
 
-    <!-- New Confirmation Modal for empty search -->
     <div id="empty-search-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
@@ -926,7 +953,6 @@
         </div>
     </div>    
 
-    <!-- Getting Started Modal -->
     <div id="getting-started-modal" class="modal-overlay">
         <div class="modal-content max-w-sm">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
@@ -939,7 +965,6 @@
         </div>
     </div>
 
-    <!-- Search/Translate Choice Modal -->
     <div id="search-engine-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
@@ -981,7 +1006,6 @@
         </div>
     </div>
 
-    <!-- QR Code Modal -->
     <div id="qr-code-modal" class="modal-overlay">
         <div id="qr-modal-content" class="modal-content">
             <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
@@ -1009,12 +1033,17 @@
         const githubRawUrl = "../questions/happiness.txt"; // Relative path to happiness.txt
         // End Hardcoded Configuration
 
-        let fullItemList = []; // Master list of all questions
-        let itemList = []; // The currently filtered list of questions
+        // Each question will be represented as { num: number, text: string, raw: string }
+        // - num: 1-based line number in the source file
+        // - text: the display text (as-is from file)
+        // - raw: same as text (kept for clarity/compat)
+        let fullItemList = []; // Master list of all questions (objects)
+        let itemList = []; // The currently filtered list of questions (objects)
         let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'middle', 'deeper'
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
+        let selectedRandomQuestionNum = null;  // Stores the question number of the currently selected item
 
         const randomizeButton = document.getElementById('randomize-button');
         const resultDisplay = document.getElementById('random-result');
@@ -1092,8 +1121,23 @@
         const savedItemCountKey = `csc_saved_item_count_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
         const saveItemCountToggleKey = `csc_save_item_count_toggle_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
 
+        // Helper: build object list with numbers from text file lines
+        function buildQuestionsWithNumbers(text) {
+            const lines = text.split('\n');
+            const items = [];
+            let num = 0;
+            for (let i = 0; i < lines.length; i++) {
+                const trimmed = lines[i].trim();
+                if (trimmed.length === 0) continue; // skip blank
+                num += 1;
+                items.push({ num, text: trimmed, raw: trimmed });
+            }
+            return items;
+        }
+
         /**
          * Loads saved questions from localStorage and displays them.
+         * We store only text in saved list for backward compatibility, but show number if we can map it.
          */
         function loadSavedQuestions() {
             const savedQuestionsJson = localStorage.getItem(savedQuestionsLocalStorageKey);
@@ -1102,7 +1146,10 @@
             if (savedQuestions.length > 0) { 
                 chosenQuestionsDisplay.innerHTML = ''; 
                 savedQuestions.forEach(questionText => {
-                    addChosenQuestionToDOM(questionText);
+                    // Try to find its number from fullItemList
+                    const match = fullItemList.find(q => q.text === questionText);
+                    const qNum = match ? `#${match.num}` : null;
+                    addChosenQuestionToDOM(questionText, qNum);
                 });
             } else {
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap a question above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
@@ -1129,9 +1176,10 @@
 
         /**
          * Saves the current list of chosen questions to localStorage.
+         * Only saves their text for compatibility.
          */
         function saveCurrentChosenQuestions() {
-            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.textContent);
+            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.getAttribute('data-text'));
             localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
         }
 
@@ -1141,13 +1189,13 @@
         function applyFilter() {
             switch (currentFilter) {
                 case 'lighter':
-                    itemList = fullItemList.filter(item => item.startsWith('🌱'));
+                    itemList = fullItemList.filter(item => item.text.startsWith('🌱'));
                     break;
                 case 'deeper':
-                    itemList = fullItemList.filter(item => item.startsWith('🌀'));
+                    itemList = fullItemList.filter(item => item.text.startsWith('🌀'));
                     break;
                 case 'middle':
-                    itemList = fullItemList.filter(item => !item.startsWith('🌱') && !item.startsWith('🌀'));
+                    itemList = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
                     break;
                 default: // 'all'
                     itemList = [...fullItemList];
@@ -1183,7 +1231,7 @@
 
             if (cachedContent) {
                 console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
-                fullItemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                fullItemList = buildQuestionsWithNumbers(cachedContent);
                 applyFilter(); // Apply the default 'all' filter
                 loadSavedQuestions(); 
             } else {
@@ -1195,7 +1243,7 @@
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     const text = await response.text();
-                    fullItemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                    fullItemList = buildQuestionsWithNumbers(text);
 
                     localStorage.setItem(localStorageKey, text); 
 
@@ -1203,7 +1251,7 @@
                     loadSavedQuestions(); 
                 } catch (error) {
                     console.error("Could not load questions:", error);
-                    resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
+                    document.getElementById('random-result').textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
                     appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
                     topicTitleElement.textContent = `Topic: Error`;
                 }
@@ -1251,7 +1299,7 @@
         }
 
         /**
-         * Show or hide the floating lookup button based on whether any question is selected anywhere.
+         * Show or hide the floating lookup/share button based on whether any question is selected anywhere.
          */
         function refreshFloatingLookupVisibility() {
             const hasSelectedFromRandomOrSearch = document.querySelector('.item.selected-item') !== null;
@@ -1280,7 +1328,8 @@
             const items = targetElement.querySelectorAll('.item');
             items.forEach(item => {
                 item.addEventListener('click', function() {
-                    const questionText = this.textContent;
+                    const questionText = this.getAttribute('data-text'); // use data-text, not inner text
+                    const questionNum = this.getAttribute('data-qn') || null;    // like "#12" or null/empty
 
                     // Remove selected-item from previously selected item in resultDisplay or searchResultsDisplay
                     const previouslySelected = document.querySelectorAll('.item.selected-item');
@@ -1295,9 +1344,11 @@
 
                     if (this.classList.contains('selected-item')) {
                         selectedRandomQuestionText = questionText;
-                        addChosenQuestion(questionText); // Also add to saved questions if selected
+                        selectedRandomQuestionNum = questionNum;
+                        addChosenQuestion(questionText, questionNum); // Add to saved with number (or null)
                     } else {
                         selectedRandomQuestionText = null;
+                        selectedRandomQuestionNum = null;
                         // Keep saved list unchanged; user controls removals there
                     }
                     refreshFloatingLookupVisibility();
@@ -1308,11 +1359,12 @@
         /**
          * Adds a question to the DOM display and saves it to localStorage.
          * @param {string} questionText - The text of the question to add.
+         * @param {string|null} questionNum - The display number (e.g., "#12") or null if unknown.
          */
-        function addChosenQuestion(questionText) {
-            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
+        function addChosenQuestion(questionText, questionNum = null) {
+            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.getAttribute('data-text'));
             if (!existingChosenItems.includes(questionText)) {
-                addChosenQuestionToDOM(questionText);
+                addChosenQuestionToDOM(questionText, questionNum);
                 saveCurrentChosenQuestions();
             }
             updateClearButtonText();
@@ -1322,11 +1374,25 @@
          * Helper function to add a question div to the DOM without affecting localStorage.
          * Used for both initial loading and user interaction.
          * @param {string} questionText - The text of the question to add.
+         * @param {string|null} questionNum - The display number (e.g., "#12") or null.
          */
-        function addChosenQuestionToDOM(questionText) {
+        function addChosenQuestionToDOM(questionText, questionNum = null) {
             const chosenItemDiv = document.createElement('div');
             chosenItemDiv.classList.add('chosen-item');
             chosenItemDiv.textContent = questionText;
+            chosenItemDiv.setAttribute('data-text', questionText);
+
+            // If we have a number, set it; otherwise, try to infer; if still unknown, do not set data-qn
+            if (questionNum && typeof questionNum === 'string' && questionNum.trim() !== '') {
+                chosenItemDiv.setAttribute('data-qn', questionNum);
+            } else {
+                const match = fullItemList.find(q => q.text === questionText);
+                if (match && Number.isInteger(match.num)) {
+                    chosenItemDiv.setAttribute('data-qn', `#${match.num}`);
+                }
+                // If not found, omit data-qn so the CSS badge won't render
+            }
+
             chosenQuestionsDisplay.appendChild(chosenItemDiv);
 
             chosenItemDiv.addEventListener('click', function() {
@@ -1341,10 +1407,12 @@
 
                 if (willSelect) {
                     this.classList.add('selected-chosen-item');
-                    selectedRandomQuestionText = this.textContent;
+                    selectedRandomQuestionText = this.getAttribute('data-text');
+                    selectedRandomQuestionNum = this.getAttribute('data-qn') || null;
                 } else {
                     this.classList.remove('selected-chosen-item');
                     selectedRandomQuestionText = null;
+                    selectedRandomQuestionNum = null;
                 }
                 updateClearButtonText();
                 refreshFloatingLookupVisibility();
@@ -1364,10 +1432,11 @@
             const chosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
             let removedFromDOM = false;
             chosenItems.forEach(item => {
-                if (item.textContent === questionText) {
+                if (item.getAttribute('data-text') === questionText) {
                     // If this item was the currently-selected source for floating lookup, reset selection
                     if (item.classList.contains('selected-chosen-item')) {
                         selectedRandomQuestionText = null;
+                        selectedRandomQuestionNum = null;
                     }
                     chosenQuestionsDisplay.removeChild(item);
                     removedFromDOM = true;
@@ -1390,6 +1459,7 @@
             if (itemList.length === 0) {
                 resultDisplay.textContent = "No questions available to pick. Please load questions first.";
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
                 return;
             }
@@ -1402,7 +1472,11 @@
                 // If nothing is available, inform user (and do NOT refill)
                 resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
             } else {
-                let itemDivs = picked.map(item => `<div class="item">${item}</div>`);
+                // Render each with subtle number (only if number available)
+                let itemDivs = picked.map(item => {
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : ""; // empty if missing
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                });
                 let resultHTML = itemDivs.join('');
                 resultDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(resultDisplay);
@@ -1410,6 +1484,7 @@
 
             // Reset selections across all sections when generating new random set
             selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
             document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
             document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
             refreshFloatingLookupVisibility();
@@ -1419,20 +1494,70 @@
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
                 return;
             }
-            const currentSearchTerm = searchInput.value.trim().toLowerCase();
+            const currentSearchTerm = searchInput.value.trim();
 
             if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
                 searchResultsDisplay.innerHTML = '';
                 searchButton.textContent = "Search";
                 lastSearchTerm = "";
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
                 refreshFloatingLookupVisibility();
                 return;
             }
+
+            // --- NEW: Enhanced number query parsing (single, ranges, comma lists) ---
+            const numericQueryResult = parseNumericQuery(currentSearchTerm);
+            if (numericQueryResult.isNumericQuery) {
+                // Reset selections before showing new results
+                selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
+                refreshFloatingLookupVisibility();
+
+                const nums = Array.from(numericQueryResult.numbers)
+                    .filter(n => Number.isInteger(n) && n > 0);
+                
+                if (nums.length === 0) {
+                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
+                    lastSearchTerm = currentSearchTerm;
+                    searchButton.textContent = "Search / Clear Search";
+                    return;
+                }
+
+                // Build results in the order provided by the user
+                const results = [];
+                const notFound = [];
+                nums.forEach(n => {
+                    const found = fullItemList.find(item => item.num === n);
+                    if (found) results.push(found);
+                    else notFound.push(n);
+                });
+
+                if (results.length === 0) {
+                    const notFoundMsg = notFound.length > 0 ? ` Not found: ${notFound.join(', ')}.` : '';
+                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFoundMsg}</p>`;
+                } else {
+                    let itemDivs = results.map(item => {
+                        const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                        return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                    });
+                    const note = notFound.length > 0 
+                        ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>`
+                        : '';
+                    searchResultsDisplay.innerHTML = itemDivs.join('') + note;
+                    addHighlightingAndChooseLogic(searchResultsDisplay);
+                }
+
+                lastSearchTerm = currentSearchTerm;
+                searchButton.textContent = "Search / Clear Search";
+                return; // End execution for numeric/range/comma search
+            }
+            // --- END: Enhanced number parsing ---
 
             if (currentSearchTerm === "") {
                 // Show confirmation that empty search will display all
@@ -1440,24 +1565,29 @@
                 return;
             }
             
-            executeSearch(currentSearchTerm);
+            executeSearch(currentSearchTerm.toLowerCase());
         }
 
         function executeSearch(searchTerm) {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
                 return;
             }
             
-            const filteredResult = itemList.filter(item => item.toLowerCase().includes(searchTerm));
+            const filteredResult = itemList.filter(item => item.text.toLowerCase().includes(searchTerm));
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
             } else {
-                let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
+                let itemDivs = filteredResult.map(item => {
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                });
                 let resultHTML = itemDivs.join('');
                 searchResultsDisplay.innerHTML = resultHTML;
                 addHighlightingAndChooseLogic(searchResultsDisplay);
@@ -1466,6 +1596,7 @@
             searchButton.textContent = "Search / Clear Search";
             // Clear all selections when new search runs
             selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
             document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
             document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
             refreshFloatingLookupVisibility();
@@ -1623,10 +1754,68 @@
                     console.warn("Web Share API failed or was canceled:", err);
                 }
             } else {
-                // No fallback — intentionally do nothing (or optionally:
+                // No fallback -- intentionally do nothing (or optionally:
                 // alert("Sharing is not supported in this browser. Use the QR/link option instead.");
             }
         }
+
+        // --- NEW: Numeric query parser (ranges and comma support) ---
+        /**
+         * Parses user input to detect if it's a numeric query, which MUST start with '#'.
+         * - Valid: "#12", "#1-3", "#1,3,4", "#1-3, 7, 10-12"
+         * - Invalid (treated as text search): "12", "1-3"
+         * Returns { isNumericQuery: boolean, numbers: Set<number> }
+         */
+        function parseNumericQuery(input) {
+            const raw = input.trim();
+            // A numeric query must now start with a '#' to distinguish it from a text search for a number.
+            if (!raw.startsWith('#')) {
+                return { isNumericQuery: false, numbers: new Set() };
+            }
+
+            // The query content is everything after the first '#'
+            const queryContent = raw.substring(1).trim();
+            if (queryContent.length === 0) return { isNumericQuery: false, numbers: new Set() };
+
+            // Quick test on the content: if it contains anything except digits, spaces, commas, or dashes,
+            // it's an invalid numeric query. We'll fall back to a text search of the original raw string.
+            if (/[^0-9,\-\s]/.test(queryContent)) {
+                return { isNumericQuery: false, numbers: new Set() };
+            }
+            
+            // Normalize: remove spaces from the content part. No need to remove '#' as we've handled the prefix.
+            const normalized = queryContent.replace(/\s+/g, '');
+            if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
+            
+            const parts = normalized.split(',');
+            const nums = new Set();
+
+            for (const part of parts) {
+                if (part === '') continue;
+                if (part.includes('-')) {
+                    // Range
+                    const [aStr, bStr] = part.split('-');
+                    if (!/^\d+$/.test(aStr || '') || !/^\d+$/.test(bStr || '')) continue;
+                    let a = parseInt(aStr, 10);
+                    let b = parseInt(bStr, 10);
+                    if (a <= 0 || b <= 0) continue;
+                    if (a > b) [a, b] = [b, a]; // support reverse ranges like 5-2
+                    // Guard against overly large expansions (safety)
+                    const span = b - a + 1;
+                    if (span > 2000) continue; // arbitrary cap to avoid accidental huge inputs
+                    for (let n = a; n <= b; n++) nums.add(n);
+                } else {
+                    // Single number
+                    if (!/^\d+$/.test(part)) continue;
+                    const n = parseInt(part, 10);
+                    if (n > 0) nums.add(n);
+                }
+            }
+
+            // If after parsing we have at least one number, treat as numeric query
+            return { isNumericQuery: nums.size > 0, numbers: nums };
+        }
+        // --- END: Numeric query parser ---
 
         // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
@@ -1656,11 +1845,13 @@
                 // If selected question was among cleared, reset selection
                 const stillSelectedSaved = document.querySelector('.chosen-item.selected-chosen-item');
                 if (!stillSelectedSaved) {
-                    selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                    selectedRandomQuestionText = document.querySelector('.item.selected-item')?.getAttribute('data-text') || null;
+                    selectedRandomQuestionNum = document.querySelector('.item.selected-item')?.getAttribute('data-qn') || null;
                 }
             } else { 
                 chosenQuestionsDisplay.innerHTML = ''; 
-                selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                selectedRandomQuestionText = document.querySelector('.item.selected-item')?.getAttribute('data-text') || null;
+                selectedRandomQuestionNum = document.querySelector('.item.selected-item')?.getAttribute('data-qn') || null;
             }
             saveCurrentChosenQuestions();
             
@@ -1678,7 +1869,7 @@
         });
 
         // backToTopicsButton.addEventListener('click', () => {
-        //     window.location.href = '../index.html'; // Path back to index.html
+            // window.location.href = '../index.html'; // Path back to index.html
         // });
 
         window.addEventListener('scroll', () => {
@@ -1926,6 +2117,17 @@
         });
 
         updateClearButtonText();
+
+        // --- Utilities ---
+        // Simple HTML escape to safely insert question text into attributes and innerHTML
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     </script>
 </body>
 </html>
