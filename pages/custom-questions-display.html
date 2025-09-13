@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         :root {
@@ -23,50 +22,96 @@
                 #f3f4f6 100%
             );
         }
-        /* Styling for the original items to add space */
+        /* Styling for the original items to add space (from purpose.html) */
         .item {
-            margin-bottom: 0.5rem; /* Increased margin-bottom for more space between items */
-            padding: 0.75rem; /* Slightly less padding than original 1rem */
+            margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
+            padding: 1rem; 
+            padding-right: 2.25rem; /* NEW: extra space so the number badge doesn't crowd text */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
-            border-radius: 0.375rem; /* Rounded corners */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
+            position: relative; /* For subtle number badge */
+        }
+        /* Subtle question number badge (top-right) */
+        .item::after {
+            content: attr(data-qn); /* Uses data attribute like "#12" */
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: #6b7280; /* gray-500 */
+            background: #eef2ff; /* indigo-50 */
+            border: 1px solid #e5e7eb; /* gray-200 */
+            padding: 2px 6px;
+            border-radius: 9999px;
+            line-height: 1;
+            opacity: 0.85; /* keep it subtle */
+            pointer-events: none;
+            display: none; /* default to hidden; will be shown only when data-qn present */
+        }
+        .item[data-qn]:not([data-qn=""])::after {
+            display: inline-block;
         }
 
-        /* This class is for highlighting the original items when clicked to be chosen */
+        /* This class is for highlighting the original items when clicked (from purpose.html) */
         .item.selected-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
-            padding: 1rem; /* Slightly larger padding on selection (was 1.25rem) */
+            padding: 1.15rem; /* Slightly larger padding on selection */
+            padding-right: 2.5rem; /* keep extra right padding when selected */
             font-size: 1.35rem; /* Slightly larger font size on selection */
-            margin-bottom: 1rem; /* Adjusted margin to prevent overlap when enlarged */
-            transform: scale(1.05); /* Slightly enlarge when selected */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* More prominent shadow when selected */
+            margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.03); /* Slightly enlarge when selected */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Even more prominent shadow when selected */
         }
-        /* Styling for the chosen items */
+        /* Styling for the chosen items (from purpose.html) */
         .chosen-item {
-            margin-bottom: 0.5rem; /* Increased margin-bottom for more space between items */
-            padding: 0.75rem; /* Slightly less padding than original 1rem */
+            margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
+            padding: 1rem; 
+            padding-right: 2.25rem; /* NEW: extra space for number badge in saved list */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
-            border-radius: 0.375rem; /* Rounded corners */
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
             text-align: center; /* Centered text */
+            position: relative; /* For subtle number badge */
+        }
+        /* Subtle number for chosen items too; hidden if number is unavailable */
+        .chosen-item::after {
+            content: attr(data-qn);
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 0.72rem;
+            color: #6b7280;
+            background: #eef2ff;
+            border: 1px solid #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            line-height: 1;
+            opacity: 0.85;
+            pointer-events: none;
+            display: none; /* default hidden */
+        }
+        .chosen-item[data-qn]:not([data-qn=""])::after {
+            display: inline-block; /* show only when we truly have a number */
         }
 
-        /* Highlight for chosen items when clicked */
+        /* Highlight for chosen items when clicked (from purpose.html) */
         .chosen-item.selected-chosen-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
-            padding: 1rem; /* Slightly larger padding on selection (was 1.25rem) */
+            padding: 1.15rem; /* Slightly larger padding on selection */
+            padding-right: 2.5rem; /* keep extra right padding when selected */
             font-size: 1.35rem; /* Slightly larger font size on selection */
-            margin-bottom: 1rem; /* Adjusted margin to prevent overlap when enlarged */
-            transform: scale(1.05); /* Slightly enlarge when selected */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* More prominent shadow when selected */
+            margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
+            transform: scale(1.03); /* Slightly enlarge when selected */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Even more prominent shadow when selected */
         }
 
         /* Styles for the back-to-top button */
@@ -675,7 +720,6 @@
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
-    <!-- Floating back button -->
     <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
       <i class="fas fa-arrow-left"></i>
       Back
@@ -696,18 +740,8 @@
             Your personalized discussion, made using your submitted list of questions. 
         </p>
 
-        <!-- Getting Started + About (Get started tip from code A) -->
-        <!-- <div class="description-link-container flex items-center justify-center text-sm text-purple-600 mb-2">
-            <button id="getting-started-link" class="description-link inline-flex items-center font-medium hover:underline">
-                <i class="fas fa-info-circle mr-1"></i> Get started
-            </button>
-            <span class="mx-2 text-purple-600 select-none">|</span>
-            <a href="../index.html" class="description-link hover:underline">About the topic</a>
-        </div> -->
-
         <hr class="border-gray-300 my-3 w-full mx-auto">
 
-        <!-- Filter by type (from code A) -->
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by type:</label>
             <div id="difficulty-filter" class="flex flex-wrap justify-center gap-2">
@@ -737,8 +771,8 @@
         </div>
 
         <div class="mb-4">
-            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search for questions:</label>
-            <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search or enter question no. (with prefix #):</label>
+            <input type="text" id="search-input" placeholder="Enter search term or #number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
                 Search
             </button>
@@ -754,43 +788,22 @@
             <button id="clear-chosen-button" title="Clear Saved Questions">
                 Clear Saved Questions
             </button>
-
-            <!-- Bottom tip pill (from code A) -->
-            <!-- <div class="bottom-tip" aria-live="polite">
-                <span>💡</span>
-                <span>Tap the top logo for home</span>
-            </div> -->
-
-            <!-- Share/QR link (from code A, adapted) -->
-            <!-- <div class="mt-2 flex justify-center">
-                <a href="#" id="show-qr-code-link" class="qr-code-link">
-                    <i class="fas fa-qrcode"></i> Share page/QR code
-                </a>
-            </div> -->
         </div>
 
-        <!-- <button id="back-to-topics" title="Leave Page">
-            <i class="fas fa-arrow-left"></i> Leave Page
-        </button> -->
-
-        <!-- Manage Saved Items button -->
         <a href="saved-items.html" id="manage-saved-items" class="mt-3 inline-flex items-center justify-center w-full bg-purple-400 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out" title="Manage Saved Items">
             <i class="fas fa-folder-open mr-2"></i> Manage Saved Items
         </a>
 
     </div>
 
-    <!-- Floating Dice Button (links to dice.html in the same folder) -->
     <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
         <i class="fas fa-dice"></i>
     </a>
 
-    <!-- Floating Look Up / Translate Button -- icon only -->
     <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
         <i class="fas fa-search"></i>
     </button>
 
-    <!-- Floating Share Button -->
     <button id="floating-share" title="Share selected question" aria-label="Share selected question">
         <i class="fas fa-share-nodes"></i>
     </button>
@@ -799,7 +812,6 @@
         &#9650; Top
     </button>
 
-    <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
             <p id="confirmation-text" class="text-lg font-semibold text-gray-800 mb-2">Are you sure you want to clear the saved questions?</p>
@@ -811,7 +823,6 @@
         </div>
     </div>
 
-    <!-- New Confirmation Modal for empty search -->
     <div id="empty-search-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
@@ -825,7 +836,6 @@
         </div>
     </div>
 
-    <!-- Search/Translate Choice Modal (from code A) -->
     <div id="search-engine-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
@@ -867,7 +877,6 @@
         </div>
     </div>
 
-    <!-- Getting Started Modal (from code A) -->
     <div id="getting-started-modal" class="modal-overlay">
         <div class="modal-content max-w-sm">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
@@ -880,7 +889,6 @@
         </div>
     </div>
 
-    <!-- QR Code Modal (from code A; uses live QR API) -->
     <div id="qr-code-modal" class="modal-overlay">
         <div id="qr-modal-content" class="modal-content">
             <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
@@ -935,12 +943,13 @@
 
         const CUSTOM_QUESTIONS_STORAGE_KEY = 'csc_custom_questions_data'; // LocalStorage key for custom questions
 
-        let fullItemList = []; // Master list (for filter compatibility)
-        let itemList = []; 
+        let fullItemList = []; // Master list of question objects {num, text, raw}
+        let itemList = []; // The currently filtered list of question objects
         let currentFilter = 'all'; // 'all' | 'lighter' | 'middle' | 'deeper'
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected question
+        let selectedRandomQuestionNum = null;  // Stores the question number of the currently selected item
 
         const randomizeButton = document.getElementById('randomize-button');
         const resultDisplay = document.getElementById('random-result');
@@ -953,7 +962,6 @@
         const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
         const clearChosenButton = document.getElementById('clear-chosen-button');
         const backToTopButton = document.getElementById('back-to-top');
-        // const backToTopicsButton = document.getElementById('back-to-topics'); 
         const appTitleElement = document.getElementById('app-title');
         const topicTitleElement = document.getElementById('topic-title');
 
@@ -961,8 +969,8 @@
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
         const confirmClearNo = document.getElementById('confirm-clear-no');
-        const confirmationText = document.getElementById('confirmation-text'); // new
-        const confirmationSubtext = document.getElementById('confirmation-subtext'); // new
+        const confirmationText = document.getElementById('confirmation-text');
+        const confirmationSubtext = document.getElementById('confirmation-subtext');
 
         // Modal elements for empty search confirmation
         const emptySearchModal = document.getElementById('empty-search-modal');
@@ -1022,7 +1030,9 @@
             if (savedQuestions.length > 0) { 
                 chosenQuestionsDisplay.innerHTML = ''; 
                 savedQuestions.forEach(questionText => {
-                    addChosenQuestionToDOM(questionText);
+                    const match = fullItemList.find(q => q.text === questionText);
+                    const qNum = match ? `#${match.num}` : null;
+                    addChosenQuestionToDOM(questionText, qNum);
                 });
             } else {
                 chosenQuestionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap a question above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
@@ -1051,7 +1061,7 @@
          * Saves the current list of chosen questions to localStorage.
          */
         function saveCurrentChosenQuestions() {
-            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.textContent);
+            const currentChosenItems = Array.from(chosenQuestionsDisplay.querySelectorAll('.chosen-item')).map(el => el.getAttribute('data-text'));
             localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
         }
 
@@ -1065,8 +1075,9 @@
             if (cachedContent) {
                 console.log(`Loading custom questions from localStorage.`);
                 const parsed = JSON.parse(cachedContent); // Expect an array of strings
-                // For filter support, store in fullItemList and itemList
-                fullItemList = Array.isArray(parsed) ? parsed : [];
+                const stringArray = Array.isArray(parsed) ? parsed : [];
+                // Convert string array to object array with numbers
+                fullItemList = stringArray.map((item, index) => ({ num: index + 1, text: item, raw: item }));
                 applyFilter(); // initialize itemList and counts
                 loadSavedQuestions(); 
             } else {
@@ -1117,17 +1128,17 @@
             return selectedItems;
         }
 
-        // NEW: Filter logic (from code A)
+        // NEW: Filter logic (from code A, adapted for objects)
         function applyFilter() {
             switch (currentFilter) {
                 case 'lighter':
-                    itemList = fullItemList.filter(item => typeof item === 'string' && item.startsWith('🌱'));
+                    itemList = fullItemList.filter(item => item.text.startsWith('🌱'));
                     break;
                 case 'deeper':
-                    itemList = fullItemList.filter(item => typeof item === 'string' && item.startsWith('🌀'));
+                    itemList = fullItemList.filter(item => item.text.startsWith('🌀'));
                     break;
                 case 'middle':
-                    itemList = fullItemList.filter(item => typeof item === 'string' && !item.startsWith('🌱') && !item.startsWith('🌀'));
+                    itemList = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
                     break;
                 default:
                     itemList = [...fullItemList];
@@ -1159,24 +1170,27 @@
             const items = targetElement.querySelectorAll('.item');
             items.forEach(item => {
                 item.addEventListener('click', function() {
-                    const questionText = this.textContent;
+                    const questionText = this.getAttribute('data-text');
+                    const questionNum = this.getAttribute('data-qn') || null;
 
-                    // Deselect other selected .item entries to keep a single active source
+                    // Deselect other selected .item entries
                     const previouslySelected = document.querySelectorAll('.item.selected-item');
                     previouslySelected.forEach(el => {
                         if (el !== this) el.classList.remove('selected-item');
                     });
 
-                    // Also clear any selected saved items to keep a single active source
+                    // Clear any selected saved items
                     document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
 
                     this.classList.toggle('selected-item');
 
                     if (this.classList.contains('selected-item')) {
                         selectedRandomQuestionText = questionText;
-                        addChosenQuestion(questionText); // add to saved if newly selected
+                        selectedRandomQuestionNum = questionNum;
+                        addChosenQuestion(questionText, questionNum);
                     } else {
                         selectedRandomQuestionText = null;
+                        selectedRandomQuestionNum = null;
                     }
                     refreshFloatingLookupVisibility();
                 });
@@ -1186,41 +1200,52 @@
         /**
          * Adds a question to the DOM display and saves it to localStorage.
          * @param {string} questionText - The text of the question to add.
+         * @param {string|null} questionNum - The display number (e.g., "#12") or null.
          */
-        function addChosenQuestion(questionText) {
-            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
+        function addChosenQuestion(questionText, questionNum = null) {
+            const existingChosenItems = Array.from(chosenQuestionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.getAttribute('data-text'));
             if (!existingChosenItems.includes(questionText)) {
-                addChosenQuestionToDOM(questionText);
+                addChosenQuestionToDOM(questionText, questionNum);
                 saveCurrentChosenQuestions();
             }
             updateClearButtonText();
         }
 
         /**
-         * Helper function to add a question div to the DOM without affecting localStorage.
-         * Used for both initial loading and user interaction.
+         * Helper function to add a question div to the DOM.
          * @param {string} questionText - The text of the question to add.
+         * @param {string|null} questionNum - The display number (e.g., "#12") or null.
          */
-        function addChosenQuestionToDOM(questionText) {
+        function addChosenQuestionToDOM(questionText, questionNum = null) {
             const chosenItemDiv = document.createElement('div');
             chosenItemDiv.classList.add('chosen-item');
             chosenItemDiv.textContent = questionText;
+            chosenItemDiv.setAttribute('data-text', questionText);
+
+            if (questionNum && typeof questionNum === 'string' && questionNum.trim() !== '') {
+                chosenItemDiv.setAttribute('data-qn', questionNum);
+            } else {
+                const match = fullItemList.find(q => q.text === questionText);
+                if (match && Number.isInteger(match.num)) {
+                    chosenItemDiv.setAttribute('data-qn', `#${match.num}`);
+                }
+            }
+
             chosenQuestionsDisplay.appendChild(chosenItemDiv);
 
             chosenItemDiv.addEventListener('click', function() {
-                // When selecting in Saved, clear selections in random/search for clarity
                 document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
-
-                // Toggle and make only one saved item selected at a time
                 const willSelect = !this.classList.contains('selected-chosen-item');
                 document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
 
                 if (willSelect) {
                     this.classList.add('selected-chosen-item');
-                    selectedRandomQuestionText = this.textContent;
+                    selectedRandomQuestionText = this.getAttribute('data-text');
+                    selectedRandomQuestionNum = this.getAttribute('data-qn') || null;
                 } else {
                     this.classList.remove('selected-chosen-item');
                     selectedRandomQuestionText = null;
+                    selectedRandomQuestionNum = null;
                 }
                 updateClearButtonText();
                 refreshFloatingLookupVisibility();
@@ -1240,9 +1265,10 @@
             const chosenItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item');
             let removedFromDOM = false;
             chosenItems.forEach(item => {
-                if (item.textContent === questionText) {
+                if (item.getAttribute('data-text') === questionText) {
                     if (item.classList.contains('selected-chosen-item')) {
                         selectedRandomQuestionText = null;
+                        selectedRandomQuestionNum = null;
                     }
                     chosenQuestionsDisplay.removeChild(item);
                     removedFromDOM = true;
@@ -1265,6 +1291,7 @@
             if (itemList.length === 0) {
                 resultDisplay.textContent = "No questions available to pick. Please add questions first.";
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
                 return;
             }
@@ -1274,34 +1301,74 @@
             if (!picked || picked.length === 0) {
                 resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
             } else {
-                let itemDivs = picked.map(item => `<div class="item">${item}</div>`);
-                let resultHTML = itemDivs.join('');
-                resultDisplay.innerHTML = resultHTML;
+                let itemDivs = picked.map(item => {
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                });
+                resultDisplay.innerHTML = itemDivs.join('');
                 addHighlightingAndChooseLogic(resultDisplay);
             }
-            // Reset current selection when generating new set
             selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
             document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
             document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
             refreshFloatingLookupVisibility();
         }
 
         function displayFilteredItems() {
-            if (itemList.length === 0) {
+            if (fullItemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
                 return;
             }
-            const currentSearchTerm = searchInput.value.trim().toLowerCase();
+            const currentSearchTerm = searchInput.value.trim();
 
             if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
                 searchResultsDisplay.innerHTML = '';
                 searchButton.textContent = "Search";
                 lastSearchTerm = "";
                 selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
                 document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
                 refreshFloatingLookupVisibility();
+                return;
+            }
+
+            const numericQueryResult = parseNumericQuery(currentSearchTerm);
+            if (numericQueryResult.isNumericQuery) {
+                selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
+                refreshFloatingLookupVisibility();
+
+                const nums = Array.from(numericQueryResult.numbers).filter(n => Number.isInteger(n) && n > 0);
+                
+                if (nums.length === 0) {
+                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
+                } else {
+                    const results = [];
+                    const notFound = [];
+                    nums.forEach(n => {
+                        const found = fullItemList.find(item => item.num === n);
+                        if (found) results.push(found);
+                        else notFound.push(n);
+                    });
+
+                    if (results.length === 0) {
+                        searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers found.</p>`;
+                    } else {
+                        let itemDivs = results.map(item => {
+                            const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                            return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                        });
+                        const note = notFound.length > 0 ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>` : '';
+                        searchResultsDisplay.innerHTML = itemDivs.join('') + note;
+                        addHighlightingAndChooseLogic(searchResultsDisplay);
+                    }
+                }
+                lastSearchTerm = currentSearchTerm;
+                searchButton.textContent = "Search / Clear Search";
                 return;
             }
 
@@ -1310,35 +1377,73 @@
                 return;
             }
             
-            executeSearch(currentSearchTerm);
+            executeSearch(currentSearchTerm.toLowerCase());
         }
 
         function executeSearch(searchTerm) {
-            if (itemList.length === 0) {
-                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                selectedRandomQuestionText = null;
-                refreshFloatingLookupVisibility();
+            const sourceList = itemList; // Search within the currently filtered list
+            if (sourceList.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search in the current filter.</p>`;
                 return;
             }
             
-            const filteredResult = itemList.filter(item => typeof item === 'string' && item.toLowerCase().includes(searchTerm));
+            const filteredResult = sourceList.filter(item => item.text.toLowerCase().includes(searchTerm));
 
             if (filteredResult.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
-                selectedRandomQuestionText = null;
             } else {
-                let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
-                let resultHTML = itemDivs.join('');
-                searchResultsDisplay.innerHTML = resultHTML;
+                let itemDivs = filteredResult.map(item => {
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                });
+                searchResultsDisplay.innerHTML = itemDivs.join('');
                 addHighlightingAndChooseLogic(searchResultsDisplay);
             }
             lastSearchTerm = searchTerm;
             searchButton.textContent = "Search / Clear Search";
-            // Clear selections when new search runs
             selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
             document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
             document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
             refreshFloatingLookupVisibility();
+        }
+
+        /**
+         * Parses user input to detect if it's a numeric query, which MUST start with '#'.
+         */
+        function parseNumericQuery(input) {
+            const raw = input.trim();
+            if (!raw.startsWith('#')) {
+                return { isNumericQuery: false, numbers: new Set() };
+            }
+            const queryContent = raw.substring(1).trim();
+            if (queryContent.length === 0 || /[^0-9,\-\s]/.test(queryContent)) {
+                return { isNumericQuery: false, numbers: new Set() };
+            }
+            const normalized = queryContent.replace(/\s+/g, '');
+            if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
+            
+            const parts = normalized.split(',');
+            const nums = new Set();
+
+            for (const part of parts) {
+                if (part === '') continue;
+                if (part.includes('-')) {
+                    const [aStr, bStr] = part.split('-');
+                    if (!/^\d+$/.test(aStr || '') || !/^\d+$/.test(bStr || '')) continue;
+                    let a = parseInt(aStr, 10);
+                    let b = parseInt(bStr, 10);
+                    if (a <= 0 || b <= 0) continue;
+                    if (a > b) [a, b] = [b, a];
+                    if (b - a + 1 > 2000) continue;
+                    for (let n = a; n <= b; n++) nums.add(n);
+                } else {
+                    if (!/^\d+$/.test(part)) continue;
+                    const n = parseInt(part, 10);
+                    if (n > 0) nums.add(n);
+                }
+            }
+            return { isNumericQuery: nums.size > 0, numbers: nums };
         }
 
         /**
@@ -1414,6 +1519,7 @@
                 tempTextArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempTextArea);
+                alert("Question copied to clipboard!");
             } else {
                 alert("No question selected to copy.");
             }
@@ -1447,19 +1553,15 @@
                     console.warn("Web Share API failed or was canceled:", err);
                 }
             }
-            // No fallback per code A
         }
 
         clearChosenButton.addEventListener('click', function() {
-            // Decide which confirmation text to show based on current mode
             const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
             if (highlightedItems.length > 0) {
-                // Selected-only mode
                 confirmationText.innerHTML = "Clear the selected question?";
                 confirmationSubtext.style.display = "block";
                 confirmationSubtext.textContent = "This will remove only the highlighted question from Saved.";
             } else {
-                // All-saved mode (or generic)
                 confirmationText.innerHTML = 'Are you sure you want to clear <span style="font-weight:800; text-decoration: underline;">ALL</span> saved questions?';
                 confirmationSubtext.style.display = "block";
                 confirmationSubtext.textContent = "Warning: This action will remove every saved question for this topic.";
@@ -1469,19 +1571,21 @@
 
         confirmClearYes.addEventListener('click', function() {
             const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
+            const selectedItem = document.querySelector('.item.selected-item');
 
             if (highlightedItems.length > 0) { 
                 highlightedItems.forEach(item => {
                     chosenQuestionsDisplay.removeChild(item);
                 });
-                // If selected was among cleared, reset selection
                 const stillSelectedSaved = document.querySelector('.chosen-item.selected-chosen-item');
                 if (!stillSelectedSaved) {
-                    selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                    selectedRandomQuestionText = selectedItem?.getAttribute('data-text') || null;
+                    selectedRandomQuestionNum = selectedItem?.getAttribute('data-qn') || null;
                 }
             } else { 
                 chosenQuestionsDisplay.innerHTML = ''; 
-                selectedRandomQuestionText = document.querySelector('.item.selected-item')?.textContent || null;
+                selectedRandomQuestionText = selectedItem?.getAttribute('data-text') || null;
+                selectedRandomQuestionNum = selectedItem?.getAttribute('data-qn') || null;
             }
             saveCurrentChosenQuestions();
             
@@ -1497,10 +1601,6 @@
         confirmClearNo.addEventListener('click', function() {
             confirmationModal.classList.remove('show');
         });
-
-        // backToTopicsButton.addEventListener('click', () => {
-        //     window.location.href = '../index.html'; // Path back to index.html
-        // });
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 1) {
@@ -1526,187 +1626,74 @@
             emptySearchModal.classList.remove('show');
         });
 
-        // Floating Look Up / Translate Button Listener (from code A)
         floatingLookupBtn.addEventListener('click', function() {
             if (selectedRandomQuestionText) {
-                searchEngineModal.classList.add('show'); // Show the choice modal
+                searchEngineModal.classList.add('show');
             } else {
                 alert("Please select a question first to look up online / translate.");
             }
         });
 
-        // Floating Share Button Listener (native share only)
         floatingShareBtn.addEventListener('click', handleShareSelectedQuestion);
 
         // Search Engine/Translate Choice Modal Listeners
-        searchGoogleChoiceBtn.addEventListener('click', function() {
-            searchQuestionOnGoogle();
-            searchEngineModal.classList.remove('show');
-        });
-        searchBingChoiceBtn.addEventListener('click', function() {
-            searchQuestionOnBing();
-            searchEngineModal.classList.remove('show');
-        });
-        searchDuckDuckGoChoiceBtn.addEventListener('click', function() { 
-            searchQuestionOnDuckDuckGo();
-            searchEngineModal.classList.remove('show');
-        });
-        searchBraveChoiceBtn.addEventListener('click', function() { 
-            searchQuestionOnBrave();
-            searchEngineModal.classList.remove('show');
-        });
-        translateGoogleChoiceBtn.addEventListener('click', function() { 
-            translateQuestionWithGoogle();
-            searchEngineModal.classList.remove('show');
-        });
-        translateBingChoiceBtn.addEventListener('click', function() { 
-            translateQuestionWithBing();
-            searchEngineModal.classList.remove('show');
-        });
-        copyQuestionBtn.addEventListener('click', function() {
-            copyQuestionToClipboard();
-            searchEngineModal.classList.remove('show');
-        });
-        closeSearchEngineModalBtn.addEventListener('click', function() {
-            searchEngineModal.classList.remove('show');
-        });
+        searchGoogleChoiceBtn.addEventListener('click', () => { searchQuestionOnGoogle(); searchEngineModal.classList.remove('show'); });
+        searchBingChoiceBtn.addEventListener('click', () => { searchQuestionOnBing(); searchEngineModal.classList.remove('show'); });
+        searchDuckDuckGoChoiceBtn.addEventListener('click', () => { searchQuestionOnDuckDuckGo(); searchEngineModal.classList.remove('show'); });
+        searchBraveChoiceBtn.addEventListener('click', () => { searchQuestionOnBrave(); searchEngineModal.classList.remove('show'); });
+        translateGoogleChoiceBtn.addEventListener('click', () => { translateQuestionWithGoogle(); searchEngineModal.classList.remove('show'); });
+        translateBingChoiceBtn.addEventListener('click', () => { translateQuestionWithBing(); searchEngineModal.classList.remove('show'); });
+        copyQuestionBtn.addEventListener('click', () => { copyQuestionToClipboard(); searchEngineModal.classList.remove('show'); });
+        closeSearchEngineModalBtn.addEventListener('click', () => { searchEngineModal.classList.remove('show'); });
 
-        // // --- QR/Share modal behavior (from code A, adapted) ---
-        // let shouldReturnToGettingStarted = false;
-        // function openShareModal(openedFromGettingStarted = false) {
-        //     shouldReturnToGettingStarted = openedFromGettingStarted;
-        //     const pageUrl = window.location.href;
-        //     const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-        //     qrModalImage.src = qrCodeApiUrl;
-        //     qrPageLink.href = pageUrl;
-        //     qrPageLink.textContent = pageUrl;
-        //     qrCodeModal.classList.add('show');
-        // }
-        // function closeShareModal() {
-        //     qrCodeModal.classList.remove('show');
-        //     if (shouldReturnToGettingStarted) {
-        //         gettingStartedModal.classList.add('show');
-        //     }
-        //     shouldReturnToGettingStarted = false;
-        // }
-        // showQrCodeLink.addEventListener('click', function(event) {
-        //     event.preventDefault();
-        //     openShareModal(false);
-        // });
-        // inlineShareTrigger.addEventListener('click', function(event) {
-        //     event.preventDefault();
-        //     gettingStartedModal.classList.remove('show');
-        //     openShareModal(true);
-        // });
-        // qrModalCloseButton.addEventListener('click', function() {
-        //     closeShareModal();
-        // });
-        // qrCodeModal.addEventListener('click', function(event) {
-        //     if (event.target === qrCodeModal) {
-        //         closeShareModal();
-        //     }
-        // });
-
-        // // Copy Link Button Logic (now a text link)
-        // copyLinkTextLink.addEventListener('click', function(event) {
-        //     event.preventDefault();
-        //     const pageUrl = window.location.href;
-        //     const tempInput = document.createElement('textarea');
-        //     tempInput.value = pageUrl;
-        //     document.body.appendChild(tempInput);
-        //     tempInput.select();
-        //     document.execCommand('copy');
-        //     document.body.removeChild(tempInput);
-        //     alert("Link copied to clipboard!");
-        // });
-
-        // // Share Link Button Logic (Web Share API only; no fallback)
-        // shareLinkButton.addEventListener('click', async (event) => {
-        //     event.preventDefault();
-        //     if (navigator.share) {
-        //         try {
-        //             await navigator.share({
-        //                 title: document.title,
-        //                 text: `Join me for a conversation with Custom Questions at Curious Souls Café!`,
-        //                 url: window.location.href
-        //             });
-        //         } catch (err) {
-        //             console.warn('Share canceled or failed:', err);
-        //         }
-        //     }
-        // });
-
-        // // Getting Started Modal Event Listeners (from code A)
-        // gettingStartedIcon.addEventListener('click', () => {
-        //     gettingStartedModal.classList.add('show');
-        // });
-        // closeGettingStartedModalBtn.addEventListener('click', () => {
-        //     gettingStartedModal.classList.remove('show');
-        // });
-
-        // NEW: Event Listeners for Difficulty Filter Buttons (from code A)
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const isCurrentlyActive = button.classList.contains('active');
-
-                // Clear active state from all buttons for mutual exclusivity
                 filterButtons.forEach(btn => btn.classList.remove('active'));
-
                 if (isCurrentlyActive) {
-                    currentFilter = 'all'; // toggle off -> show all
+                    currentFilter = 'all';
                 } else {
                     button.classList.add('active');
                     currentFilter = button.dataset.filter;
                 }
-
                 applyFilter();
             });
         });
 
-        // Init
         loadSavedSettings();
         fetchQuestions();
         
-        randomizeButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            displayRandomItems();
-        });
+        randomizeButton.addEventListener('click', (e) => { e.preventDefault(); displayRandomItems(); });
+        searchButton.addEventListener('click', (e) => { e.preventDefault(); displayFilteredItems(); });
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); displayFilteredItems(); } });
 
-        searchButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            displayFilteredItems();
-        });
-
-        searchInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                displayFilteredItems();
-            }
-        });
-
-        // Event listener for the save count toggle
         saveCountToggle.addEventListener('change', function() {
             if (this.checked) {
-                // Save the current value and the toggle state
                 localStorage.setItem(savedItemCountKey, itemCountInput.value);
                 localStorage.setItem(saveItemCountToggleKey, 'true');
             } else {
-                // Remove the saved value and the toggle state
                 localStorage.removeItem(savedItemCountKey);
                 localStorage.removeItem(saveItemCountToggleKey);
             }
         });
 
-        // Event listener for the item count input
         itemCountInput.addEventListener('input', function() {
-            // If the save toggle is checked, update the stored value in real-time
             if (saveCountToggle.checked) {
                 localStorage.setItem(savedItemCountKey, this.value);
             }
         });
 
         updateClearButtonText();
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
     </script>
 </body>
 </html>

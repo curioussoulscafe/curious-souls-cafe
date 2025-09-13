@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <style>
         :root {
@@ -27,6 +26,7 @@
         .item {
             margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
             padding: 1rem; 
+            padding-right: 2.25rem; /* Extra space for the number badge */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
@@ -34,12 +34,35 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
+            position: relative; /* For the number badge */
+        }
+
+        /* Subtle action number badge (top-right) */
+        .item::after {
+            content: attr(data-qn);
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: #6b7280;
+            background: #eef2ff;
+            border: 1px solid #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            line-height: 1;
+            opacity: 0.85;
+            pointer-events: none;
+            display: none; /* Hidden by default */
+        }
+        .item[data-qn]:not([data-qn=""])::after {
+            display: inline-block; /* Show only when data-qn has content */
         }
 
         /* This class is for highlighting the original items when clicked to be chosen */
         .item.selected-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
             padding: 1.15rem; /* Slightly larger padding on selection */
+            padding-right: 2.5rem; /* Keep extra right padding when selected */
             font-size: 1.35rem; /* Slightly larger font size on selection */
             margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
             transform: scale(1.03); /* Slightly enlarge when selected */
@@ -49,6 +72,7 @@
         .chosen-item {
             margin-bottom: 0.75rem; /* Increased margin-bottom for more space between items */
             padding: 1rem; 
+            padding-right: 2.25rem; /* Extra space for number badge */
             font-size: 1.25rem; /* Default font size is now larger */
             background-color: #f8fafc; /* Light background color to make them stand out */
             border: 1px solid #e2e8f0; /* Subtle border */
@@ -57,12 +81,35 @@
             transition: all 0.2s ease-in-out; /* Smooth transition for selection */
             cursor: pointer; /* Indicate it's clickable */
             text-align: center; /* Centered text */
+            position: relative; /* For the number badge */
+        }
+
+        /* Number badge for chosen items */
+        .chosen-item::after {
+            content: attr(data-qn);
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-size: 0.72rem;
+            color: #6b7280;
+            background: #eef2ff;
+            border: 1px solid #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            line-height: 1;
+            opacity: 0.85;
+            pointer-events: none;
+            display: none; /* Hidden by default */
+        }
+        .chosen-item[data-qn]:not([data-qn=""])::after {
+            display: inline-block; /* Show only when data-qn has content */
         }
 
         /* Highlight for chosen items when clicked */
         .chosen-item.selected-chosen-item {
             background-color: var(--highlight-color); /* Uses CSS variable for dynamic highlight */
             padding: 1.15rem; /* Slightly larger padding on selection */
+            padding-right: 2.5rem; /* Keep extra right padding when selected */
             font-size: 1.35rem; /* Slightly larger font size on selection */
             margin-bottom: 1.25rem; /* Adjusted margin to prevent overlap when enlarged */
             transform: scale(1.03); /* Slightly enlarge when selected */
@@ -539,7 +586,6 @@
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
-    <!-- Floating back button -->
     <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
       <i class="fas fa-arrow-left"></i>
       Back
@@ -547,8 +593,7 @@
 
     <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
         <div class="flex justify-center mb-6">
-            <a href="../index.html"> <!-- Updated path to index.html -->
-                <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
+            <a href="../index.html"> <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
             </a>
         </div>
         <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
@@ -557,20 +602,14 @@
         <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-2">Action Prompts</h2> 
 
         <p class="text-gray-700 text-center mb-4 leading-relaxed">
-            <!-- Creative tasks that spark gratitude, kindness, and inspiration--perfect for rolling the <a href="dice.html" class="text-purple-600 hover:underline font-bold">dice</a>. -->
             Spark gratitude, kindness, and inspiration with these creative tasks, aka dice punishment 😊
         </p>
 
-        <!-- Getting Started + About row (imported/adapted from code B) -->
         <div class="description-link-container">
             <button id="getting-started-link" class="description-link-inline">
                 <i class="fas fa-info-circle" style="margin-right:.35rem;"></i> Get started
             </button>
-            <!-- <span class="separator">|</span>
-            <a href="descriptions/action-prompts.html" class="description-link-inline" title="About this page">
-                About this page
-            </a> -->
-        </div>
+            </div>
 
         <hr class="border-gray-300 my-4 w-full mx-auto">
 
@@ -594,8 +633,8 @@
         </div>
 
         <div class="mb-4">
-            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search actions:</label>
-            <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search or enter action no. (with prefix #):</label>
+            <input type="text" id="search-input" placeholder="Enter search term or #number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
                 Search
             </button>
@@ -613,33 +652,24 @@
             </button>
         </div>
 
-        <!-- <button id="back-to-topics" title="Leave Page">
-            <i class="fas fa-arrow-left"></i> Leave Page
-        </button> -->
-
-        <!-- Manage Saved Items button -->
         <a href="saved-items.html" id="manage-saved-items" class="mt-3 mb-5 inline-flex items-center justify-center w-full bg-purple-400 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out" title="Manage Saved Items">
             <i class="fas fa-folder-open mr-2"></i> Manage Saved Items
         </a>
 
-        <!-- Link to show QR Code (imported from code B, enabled here) -->
         <br>
         <a href="#" id="show-qr-code-link" class="qr-code-link">
             <i class="fas fa-qrcode"></i> Share page/QR code
         </a>
     </div>
 
-    <!-- Floating Dice Button (new) -->
     <a id="floating-dice" href="dice.html" aria-label="Open Dice Roller" title="Open Dice Roller">
         <i class="fas fa-dice"></i>
     </a>
 
-    <!-- Floating Look Up / Translate Button -- icon only -->
     <button id="floating-lookup" title="Look Up Online / Translate" aria-label="Look Up Online / Translate">
         <i class="fas fa-search"></i>
     </button>
 
-    <!-- Floating Share Button -->
     <button id="floating-share" title="Share selected action" aria-label="Share selected action">
         <i class="fas fa-share-nodes"></i>
     </button>
@@ -648,7 +678,6 @@
         &#9650; Top
     </button>
 
-    <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="modal-overlay">
         <div class="modal-content">
             <p id="confirmation-text" class="text-lg font-semibold text-gray-800 mb-2">Are you sure you want to clear the saved actions?</p>
@@ -660,7 +689,6 @@
         </div>
     </div>
 
-    <!-- New Confirmation Modal for empty search -->
     <div id="empty-search-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">
@@ -674,7 +702,6 @@
         </div>
     </div>
 
-    <!-- Search/Translate Choice Modal (imported from code a, adapted to "action") -->
     <div id="search-engine-modal" class="modal-overlay">
         <div class="modal-content">
             <p class="text-lg font-semibold text-gray-800 mb-4">Look It Up Online:</p>
@@ -716,7 +743,6 @@
         </div>
     </div>
 
-    <!-- Getting Started Modal (imported from code B, adapted for Action Prompts) -->
     <div id="getting-started-modal" class="modal-overlay">
         <div class="modal-content max-w-sm">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Get started</h3>
@@ -730,7 +756,6 @@
         </div>
     </div>
 
-    <!-- QR Code Modal -->
     <div id="qr-code-modal" class="modal-overlay">
         <div id="qr-modal-content" class="modal-content">
             <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
@@ -787,14 +812,15 @@
 
         // --- Hardcoded Topic Configuration for Action Prompts ---
         const displayTopicName = "Action Prompts"; // Display name
-        // The URL for the action file, now a relative path.
         const githubRawUrl = "../data/action-prompts.txt"; // Relative path to action-prompts.txt
         // End Hardcoded Configuration
 
-        let itemList = []; 
+        let fullItemList = []; // Master list of all actions (objects)
+        let itemList = []; // The currently active list of actions (objects)
         let lastSearchTerm = "";
         let availableRandomItems = [];
-        let selectedActionText = null; // Stores the text of the currently selected random/search action
+        let selectedActionText = null; // Stores the text of the currently selected action
+        let selectedActionNum = null;  // Stores the number of the currently selected action
 
         const randomizeButton = document.getElementById('randomize-button');
         const resultDisplay = document.getElementById('random-result');
@@ -807,22 +833,21 @@
         const chosenActionsDisplay = document.getElementById('chosen-actions-display');
         const clearChosenButton = document.getElementById('clear-chosen-button');
         const backToTopButton = document.getElementById('back-to-top');
-        // const backToTopicsButton = document.getElementById('back-to-topics'); 
         const appTitleElement = document.getElementById('app-title');
         const topicTitleElement = document.getElementById('topic-title');
 
-        // Floating buttons (imported features)
-        const floatingLookupBtn = document.getElementById('floating-lookup'); // New Floating Look Up / Translate button
-        const floatingShareBtn = document.getElementById('floating-share');   // NEW Floating Share Button (native only)
+        // Floating buttons
+        const floatingLookupBtn = document.getElementById('floating-lookup');
+        const floatingShareBtn = document.getElementById('floating-share');
 
         // Modal elements
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
         const confirmClearNo = document.getElementById('confirm-clear-no');
-        const confirmationText = document.getElementById('confirmation-text'); // new
-        const confirmationSubtext = document.getElementById('confirmation-subtext'); // new
+        const confirmationText = document.getElementById('confirmation-text');
+        const confirmationSubtext = document.getElementById('confirmation-subtext');
 
-        // Modal elements for empty search confirmation
+        // Modal elements for empty search
         const emptySearchModal = document.getElementById('empty-search-modal');
         const confirmEmptySearchYes = document.getElementById('confirm-empty-search-yes');
         const confirmEmptySearchNo = document.getElementById('confirm-empty-search-no');
@@ -836,36 +861,42 @@
         const translateGoogleChoiceBtn = document.getElementById('translate-google-choice-btn'); 
         const translateBingChoiceBtn = document.getElementById('translate-bing-choice-btn'); 
         const closeSearchEngineModalBtn = document.getElementById('close-search-engine-modal');
-        // Copy Action button
         const copyActionBtn = document.getElementById('copy-action-btn');
 
-        // New QR Code Modal elements
-        const showQrCodeLink = document.getElementById('show-qr-code-link'); // enabled
+        // QR Code Modal elements
+        const showQrCodeLink = document.getElementById('show-qr-code-link');
         const qrCodeModal = document.getElementById('qr-code-modal');
         const qrModalImage = document.getElementById('qr-modal-image');
         const qrModalCloseButton = document.getElementById('qr-modal-close-button');
 
-        // Getting Started Modal elements (imported from code B)
+        // Getting Started Modal elements
         const gettingStartedIcon = document.getElementById('getting-started-link');
         const gettingStartedModal = document.getElementById('getting-started-modal');
         const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
         const inlineShareTrigger = document.getElementById('inline-share-trigger');
 
-        // Define the list of highlight colors
         const highlightColors = ["#57FCFF", "#FFFFAD", "#FFC6C6"];
-
-        // Pick a random highlight color on load and apply it to the CSS variable
         const randomHighlightColor = highlightColors[Math.floor(Math.random() * highlightColors.length)];
         document.documentElement.style.setProperty('--highlight-color', randomHighlightColor);
 
-        // --- Persistent Saved Actions Logic ---
         const savedActionsLocalStorageKey = `csc_saved_actions_${displayTopicName.replace(/ /g, '_').toLowerCase()}`; 
         const savedItemCountKey = `csc_saved_item_count_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
         const saveItemCountToggleKey = `csc_save_item_count_toggle_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
 
-        /**
-         * Loads saved actions from localStorage and displays them.
-         */
+        // Helper to build object list with numbers from text file lines
+        function buildActionsWithNumbers(text) {
+            const lines = text.split('\n');
+            const items = [];
+            let num = 0;
+            for (let i = 0; i < lines.length; i++) {
+                const trimmed = lines[i].trim();
+                if (trimmed.length === 0) continue; // skip blank
+                num += 1;
+                items.push({ num, text: trimmed, raw: trimmed });
+            }
+            return items;
+        }
+
         function loadSavedActions() {
             const savedActionsJson = localStorage.getItem(savedActionsLocalStorageKey);
             const savedActions = savedActionsJson ? JSON.parse(savedActionsJson) : [];
@@ -873,7 +904,9 @@
             if (savedActions.length > 0) { 
                 chosenActionsDisplay.innerHTML = ''; 
                 savedActions.forEach(actionText => {
-                    addChosenActionToDOM(actionText);
+                    const match = fullItemList.find(q => q.text === actionText);
+                    const aNum = match ? `#${match.num}` : null;
+                    addChosenActionToDOM(actionText, aNum);
                 });
             } else {
                 chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap an action above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
@@ -881,9 +914,6 @@
             updateClearButtonText();
         }
 
-        /**
-         * Loads saved settings (like item count) from localStorage.
-         */
         function loadSavedSettings() {
             const savedCount = localStorage.getItem(savedItemCountKey);
             const shouldSave = localStorage.getItem(saveItemCountToggleKey) === 'true';
@@ -898,680 +928,363 @@
             }
         }
 
-        /**
-         * Saves the current list of chosen actions to localStorage.
-         */
         function saveCurrentChosenActions() {
-            const currentChosenItems = Array.from(chosenActionsDisplay.querySelectorAll('.chosen-item')).map(el => el.textContent);
+            const currentChosenItems = Array.from(chosenActionsDisplay.querySelectorAll('.chosen-item')).map(el => el.getAttribute('data-text'));
             localStorage.setItem(savedActionsLocalStorageKey, JSON.stringify(currentChosenItems));
         }
         
-        // Function to fetch actions from localStorage or GitHub
         async function fetchActions() {
-            // -- 1. ADD A VERSION IDENTIFIER --
-            const CACHE_VERSION = '20250912'; // Use the same date or version string for consistency
-
-            // -- 2. MODIFY THE LOCALSTORAGE KEY TO INCLUDE THE VERSION --
-            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}_${CACHE_VERSION}`; //
+            const CACHE_VERSION = '20250912';
+            const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}_${CACHE_VERSION}`;
             const cachedContent = localStorage.getItem(localStorageKey);
 
-            appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`; //
-            topicTitleElement.textContent = `${displayTopicName}`; //
+            appTitleElement.textContent = `Curious Souls Café - ${displayTopicName}`;
+            topicTitleElement.textContent = `${displayTopicName}`;
 
             if (cachedContent) {
-                console.log(`Loading "${displayTopicName}" from localStorage.`); //
-                itemList = cachedContent.split('\n').map(line => line.trim()).filter(line => line.length > 0); //
-                availableRandomItems = [...itemList]; //
-                totalActionsSpan.textContent = `(Total: ${itemList.length})`; //
-                displayRandomItems(); //
-                loadSavedActions(); //
+                console.log(`Loading "${displayTopicName}" from localStorage.`);
+                fullItemList = buildActionsWithNumbers(cachedContent);
+                itemList = [...fullItemList];
+                availableRandomItems = [...itemList];
+                totalActionsSpan.textContent = `(Total: ${fullItemList.length})`;
+                displayRandomItems();
+                loadSavedActions();
             } else {
-                console.log(`Loading "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`); //
+                console.log(`Loading "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
                 try {
-                    // -- 3. MODIFY THE FETCH URL TO INCLUDE THE VERSION --
-                    const response = await fetch(`${githubRawUrl}?v=${CACHE_VERSION}`); // Use relative path with cache buster
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`); //
-                    }
+                    const response = await fetch(`${githubRawUrl}?v=${CACHE_VERSION}`);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const text = await response.text();
-                    itemList = text.split('\n').map(line => line.trim()).filter(line => line.length > 0); //
-                    availableRandomItems = [...itemList]; //
-
-                    localStorage.setItem(localStorageKey, text); //
-
-                    totalActionsSpan.textContent = `(Total: ${itemList.length})`; //
-                    displayRandomItems(); //
-                    loadSavedActions(); //
+                    fullItemList = buildActionsWithNumbers(text);
+                    itemList = [...fullItemList];
+                    availableRandomItems = [...itemList];
+                    localStorage.setItem(localStorageKey, text);
+                    totalActionsSpan.textContent = `(Total: ${fullItemList.length})`;
+                    displayRandomItems();
+                    loadSavedActions();
                 } catch (error) {
-                    console.error("Could not load actions:", error); //
-                    resultDisplay.textContent = `Failed to load "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`; //
-                    appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`; //
-                    topicTitleElement.textContent = `Error`; //
+                    console.error("Could not load actions:", error);
+                    resultDisplay.textContent = `Failed to load "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
+                    appTitleElement.textContent = `Curious Souls Café - Error Loading ${displayTopicName}`;
+                    topicTitleElement.textContent = `Error`;
                 }
             }
         }
 
-        // Function to update the "Clear Saved Actions" button text
         function updateClearButtonText() {
             const highlightedItems = chosenActionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
             if (highlightedItems.length > 0) {
                 clearChosenButton.textContent = "Clear Selected";
-                clearChosenButton.classList.add('clear-selected'); // use lighter red variant
+                clearChosenButton.classList.add('clear-selected');
             } else {
-                const allChosenItems = chosenActionsDisplay.querySelectorAll('.chosen-item');
-                if (allChosenItems.length > 0) {
-                    clearChosenButton.textContent = "Clear All Saved";
-                } else {
-                    clearChosenButton.textContent = "Clear Saved Actions";
-                }
-                clearChosenButton.classList.remove('clear-selected'); // revert to default color
+                clearChosenButton.textContent = chosenActionsDisplay.querySelectorAll('.chosen-item').length > 0 ? "Clear All Saved" : "Clear Saved Actions";
+                clearChosenButton.classList.remove('clear-selected');
             }
         }
 
         function selectUniqueItems(arr, numItems) {
-            // If we have no available pool yet, initialize from itemList
-            if (availableRandomItems.length === 0) {
-                availableRandomItems = [...itemList];
-            }
-
-            // If requested more than what's available, only return what's left (no repetition)
+            if (availableRandomItems.length === 0) availableRandomItems = [...itemList];
             const picksToMake = Math.min(numItems, availableRandomItems.length);
-
-            if (picksToMake === 0) {
-                // Nothing left to show
-                return [];
-            }
-
+            if (picksToMake === 0) return [];
             const selectedItems = [];
             for (let i = 0; i < picksToMake; i++) {
                 const randomIndex = Math.floor(Math.random() * availableRandomItems.length);
-                selectedItems.push(availableRandomItems[randomIndex]);
-                availableRandomItems.splice(randomIndex, 1);
+                selectedItems.push(availableRandomItems.splice(randomIndex, 1)[0]);
             }
             return selectedItems;
         }
 
-        /**
-         * Show or hide the floating lookup/share buttons based on whether any action is selected anywhere.
-         */
         function refreshFloatingButtonsVisibility() {
-            const hasSelectedFromRandomOrSearch = document.querySelector('.item.selected-item') !== null;
-            const hasSelectedFromSaved = document.querySelector('.chosen-item.selected-chosen-item') !== null;
-            const shouldShow = !!selectedActionText && (hasSelectedFromRandomOrSearch || hasSelectedFromSaved);
-
-            const displayStyle = shouldShow ? 'flex' : 'none';
+            const hasSelection = document.querySelector('.item.selected-item, .chosen-item.selected-chosen-item') !== null;
+            const displayStyle = hasSelection ? 'flex' : 'none';
             floatingLookupBtn.style.display = displayStyle;
             floatingShareBtn.style.display = displayStyle;
         }
 
-        /**
-         * Removes any leading emoji or symbol from a string.
-         * (regex from code a)
-         */
         function removeEmojiPrefix(text) {
             return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim();
         }
 
-        /**
-         * Adds highlighting logic and click handler for selecting actions.
-         * Controls visibility of the floating features buttons based on selection.
-         * @param {HTMLElement} targetElement The container element holding the items (e.g., resultDisplay, searchResultsDisplay).
-         */
         function addHighlightingAndChooseLogic(targetElement) {
-            const items = targetElement.querySelectorAll('.item');
-            items.forEach(item => {
+            targetElement.querySelectorAll('.item').forEach(item => {
                 item.addEventListener('click', function() {
-                    const actionText = this.textContent;
+                    const actionText = this.getAttribute('data-text');
+                    const actionNum = this.getAttribute('data-qn') || null;
 
-                    // Remove selected-item from previously selected item in resultDisplay or searchResultsDisplay
-                    const previouslySelected = document.querySelectorAll('.item.selected-item');
-                    previouslySelected.forEach(el => {
-                        if (el !== this) el.classList.remove('selected-item');
+                    document.querySelectorAll('.item.selected-item, .chosen-item.selected-chosen-item').forEach(el => {
+                        if (el !== this) el.classList.remove('selected-item', 'selected-chosen-item');
                     });
-
-                    // Also clear any selected saved items to keep a single active source
-                    document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
-
+                    
                     this.classList.toggle('selected-item');
 
                     if (this.classList.contains('selected-item')) {
                         selectedActionText = actionText;
-                        addChosenAction(actionText); // Also add to saved actions if selected
+                        selectedActionNum = actionNum;
+                        addChosenAction(actionText, actionNum);
                     } else {
                         selectedActionText = null;
-                        // Keep saved list unchanged; user controls removals there
+                        selectedActionNum = null;
                     }
                     refreshFloatingButtonsVisibility();
                 });
             });
         }
 
-        /**
-         * Adds an action to the DOM display and saves it to localStorage.
-         * @param {string} actionText - The text of the action to add.
-         */
-        function addChosenAction(actionText) {
-            const existingChosenItems = Array.from(chosenActionsDisplay.children).filter(el => el.tagName === 'DIV').map(el => el.textContent);
-            if (!existingChosenItems.includes(actionText)) {
-                addChosenActionToDOM(actionText);
+        function addChosenAction(actionText, actionNum = null) {
+            const existingItems = Array.from(chosenActionsDisplay.querySelectorAll('.chosen-item')).map(el => el.getAttribute('data-text'));
+            if (!existingItems.includes(actionText)) {
+                addChosenActionToDOM(actionText, actionNum);
                 saveCurrentChosenActions();
             }
             updateClearButtonText();
         }
 
-        /**
-         * Helper function to add an action div to the DOM without affecting localStorage.
-         * Used for both initial loading and user interaction.
-         * @param {string} actionText - The text of the action to add.
-         */
-        function addChosenActionToDOM(actionText) {
+        function addChosenActionToDOM(actionText, actionNum = null) {
             const chosenItemDiv = document.createElement('div');
-            chosenItemDiv.classList.add('chosen-item');
+            chosenItemDiv.className = 'chosen-item';
             chosenItemDiv.textContent = actionText;
+            chosenItemDiv.setAttribute('data-text', actionText);
+
+            const numToShow = actionNum || (fullItemList.find(q => q.text === actionText) ? `#${fullItemList.find(q => q.text === actionText).num}` : null);
+            if (numToShow) chosenItemDiv.setAttribute('data-qn', numToShow);
+            
             chosenActionsDisplay.appendChild(chosenItemDiv);
 
             chosenItemDiv.addEventListener('click', function() {
-                // When selecting in Saved, clear selections in random/search for clarity
-                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
-
-                // Toggle selection in saved
+                document.querySelectorAll('.item.selected-item, .chosen-item.selected-chosen-item').forEach(el => {
+                    if (el !== this) el.classList.remove('selected-item', 'selected-chosen-item');
+                });
                 const willSelect = !this.classList.contains('selected-chosen-item');
-
-                // Only allow one active selected in saved at a time
-                document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
-
-                if (willSelect) {
-                    this.classList.add('selected-chosen-item');
-                    selectedActionText = this.textContent;
-                } else {
-                    this.classList.remove('selected-chosen-item');
-                    selectedActionText = null;
-                }
+                this.classList.toggle('selected-chosen-item');
+                selectedActionText = willSelect ? this.getAttribute('data-text') : null;
+                selectedActionNum = willSelect ? this.getAttribute('data-qn') : null;
                 updateClearButtonText();
                 refreshFloatingButtonsVisibility();
             });
 
             const placeholder = chosenActionsDisplay.querySelector('p.text-gray-500');
-            if (placeholder) {
-                chosenActionsDisplay.removeChild(placeholder);
-            }
-        }
-
-        /**
-         * Removes an action from the DOM display and from localStorage.
-         * @param {string} actionText - The text of the action to remove.
-         */
-        function removeChosenAction(actionText) {
-            const chosenItems = chosenActionsDisplay.querySelectorAll('.chosen-item');
-            let removedFromDOM = false;
-            chosenItems.forEach(item => {
-                if (item.textContent === actionText) {
-                    // If this item was the currently-selected source for floating buttons, reset selection
-                    if (item.classList.contains('selected-chosen-item')) {
-                        selectedActionText = null;
-                    }
-                    chosenActionsDisplay.removeChild(item);
-                    removedFromDOM = true;
-                }
-            });
-
-            if (removedFromDOM) {
-                saveCurrentChosenActions();
-            }
-
-            const remainingActionDivs = chosenActionsDisplay.querySelectorAll('.chosen-item');
-            if (remainingActionDivs.length === 0) {
-                chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap an action above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
-            } 
-            updateClearButtonText();
-            refreshFloatingButtonsVisibility();
+            if (placeholder) placeholder.remove();
         }
 
         function displayRandomItems() {
             if (itemList.length === 0) {
-                resultDisplay.textContent = "No actions available to pick. Please load actions first.";
-                selectedRandomActionText = null;
-                refreshFloatingLookupVisibility();
+                resultDisplay.textContent = "No actions available to pick.";
                 return;
             }
-            const numItemsToPick = parseInt(itemCountInput.value);
+            const numItemsToPick = parseInt(itemCountInput.value) || 0;
+            const picked = selectUniqueItems(itemList, numItemsToPick);
 
-            // Pick without repetition; if fewer available, just show what's left
-            const picked = selectUniqueItems(itemList, isNaN(numItemsToPick) ? 0 : numItemsToPick);
-
-            if (!picked || picked.length === 0) {
-                // If nothing is available, inform user (and do NOT refill)
-                resultDisplay.textContent = "No more unique actions available. Adjust filters or count, or try again later.";
-            } else {
-                let itemDivs = picked.map(item => `<div class="item">${item}</div>`);
-                let resultHTML = itemDivs.join('');
-                resultDisplay.innerHTML = resultHTML;
-                addHighlightingAndChooseLogic(resultDisplay);
-            }
-
-            // Reset selections across all sections when generating new random set
-            selectedRandomActionText = null;
-            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
-            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
-            refreshFloatingLookupVisibility();
+            resultDisplay.innerHTML = picked.length === 0
+                ? "No more unique actions available. Adjust count or try again later."
+                : picked.map(item => {
+                    const an = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${an ? ` data-qn="${an}"` : ''}>${escapeHtml(item.text)}</div>`;
+                  }).join('');
+            
+            if (picked.length > 0) addHighlightingAndChooseLogic(resultDisplay);
+            
+            selectedActionText = null;
+            selectedActionNum = null;
+            document.querySelectorAll('.item.selected-item, .chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-item', 'selected-chosen-item'));
+            refreshFloatingButtonsVisibility();
         }
 
         function displayFilteredItems() {
-            if (itemList.length === 0) {
+            if (fullItemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No actions available to search.</p>`;
-                selectedActionText = null;
-                refreshFloatingButtonsVisibility();
                 return;
             }
-            const currentSearchTerm = searchInput.value.trim().toLowerCase();
+            const currentSearchTerm = searchInput.value.trim();
 
             if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
                 searchResultsDisplay.innerHTML = '';
                 searchButton.textContent = "Search";
                 lastSearchTerm = "";
                 selectedActionText = null;
-                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
+                selectedActionNum = null;
+                refreshFloatingButtonsVisibility();
+                return;
+            }
+
+            const numericQueryResult = parseNumericQuery(currentSearchTerm);
+            if (numericQueryResult.isNumericQuery) {
+                const nums = Array.from(numericQueryResult.numbers).filter(n => Number.isInteger(n) && n > 0);
+                if (nums.length === 0) {
+                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid action numbers found.</p>`;
+                } else {
+                    const results = [], notFound = [];
+                    nums.forEach(n => {
+                        const found = fullItemList.find(item => item.num === n);
+                        if (found) results.push(found);
+                        else notFound.push(n);
+                    });
+                    searchResultsDisplay.innerHTML = results.length === 0
+                        ? `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFound.length > 0 ? ` Not found: ${notFound.join(', ')}` : ''}</p>`
+                        : results.map(item => {
+                              const an = Number.isInteger(item.num) ? `#${item.num}` : "";
+                              return `<div class="item" data-text="${escapeHtml(item.text)}"${an ? ` data-qn="${an}"` : ''}>${escapeHtml(item.text)}</div>`;
+                          }).join('') + (notFound.length > 0 ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>` : '');
+                    if (results.length > 0) addHighlightingAndChooseLogic(searchResultsDisplay);
+                }
+                lastSearchTerm = currentSearchTerm;
+                searchButton.textContent = "Search / Clear Search";
+                selectedActionText = null;
+                selectedActionNum = null;
                 refreshFloatingButtonsVisibility();
                 return;
             }
 
             if (currentSearchTerm === "") {
-                // Show confirmation that empty search will display all
                 emptySearchModal.classList.add('show');
                 return;
             }
             
-            executeSearch(currentSearchTerm);
+            executeSearch(currentSearchTerm.toLowerCase());
         }
 
         function executeSearch(searchTerm) {
-            if (itemList.length === 0) {
-                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No actions available to search.</p>`;
-                selectedActionText = null;
-                refreshFloatingButtonsVisibility();
-                return;
-            }
-            
-            const filteredResult = itemList.filter(item => item.toLowerCase().includes(searchTerm));
+            const filteredResult = itemList.filter(item => item.text.toLowerCase().includes(searchTerm));
+            searchResultsDisplay.innerHTML = filteredResult.length === 0
+                ? `<p class="text-gray-500 text-sm">No actions found matching your search.</p>`
+                : filteredResult.map(item => {
+                    const an = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${an ? ` data-qn="${an}"` : ''}>${escapeHtml(item.text)}</div>`;
+                  }).join('');
 
-            if (filteredResult.length === 0) {
-                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No actions found matching your search.</p>`;
-                selectedActionText = null;
-            } else {
-                let itemDivs = filteredResult.map(item => `<div class="item">${item}</div>`);
-                let resultHTML = itemDivs.join('');
-                searchResultsDisplay.innerHTML = resultHTML;
-                addHighlightingAndChooseLogic(searchResultsDisplay);
-            }
+            if (filteredResult.length > 0) addHighlightingAndChooseLogic(searchResultsDisplay);
+            
             lastSearchTerm = searchTerm;
             searchButton.textContent = "Search / Clear Search";
-            // Clear all selections when new search runs
             selectedActionText = null;
-            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
-            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
+            selectedActionNum = null;
+            document.querySelectorAll('.item.selected-item, .chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-item', 'selected-chosen-item'));
             refreshFloatingButtonsVisibility();
         }
-
-        // --- Search/Translate Choice Modal (imported from code a, adapted to actions) ---
-        /**
-         * Opens a new tab to search/translate the selected action using the provided base URL.
-         */
-        function openSearch(urlBase) {
-            if (!selectedActionText) {
-                alert("Please select an action first.");
-                return;
+        
+        function parseNumericQuery(input) {
+            const raw = input.trim();
+            if (!raw.startsWith('#')) return { isNumericQuery: false, numbers: new Set() };
+            const queryContent = raw.substring(1).trim();
+            if (queryContent.length === 0 || /[^0-9,\-\s]/.test(queryContent)) return { isNumericQuery: false, numbers: new Set() };
+            const normalized = queryContent.replace(/\s+/g, '');
+            if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
+            const parts = normalized.split(',');
+            const nums = new Set();
+            for (const part of parts) {
+                if (part === '') continue;
+                if (part.includes('-')) {
+                    const [aStr, bStr] = part.split('-');
+                    if (!/^\d+$/.test(aStr || '') || !/^\d+$/.test(bStr || '')) continue;
+                    let a = parseInt(aStr, 10), b = parseInt(bStr, 10);
+                    if (a <= 0 || b <= 0 || Math.abs(b - a) > 2000) continue;
+                    if (a > b) [a, b] = [b, a];
+                    for (let n = a; n <= b; n++) nums.add(n);
+                } else {
+                    if (!/^\d+$/.test(part)) continue;
+                    const n = parseInt(part, 10);
+                    if (n > 0) nums.add(n);
+                }
             }
-            const cleaned = removeEmojiPrefix(selectedActionText);
-            const url = urlBase + encodeURIComponent(cleaned);
-            window.open(url, '_blank');
+            return { isNumericQuery: nums.size > 0, numbers: nums };
         }
 
-        /** Opens a new tab to search the selected action on Google. */
+        function openSearch(urlBase) {
+            if (!selectedActionText) { alert("Please select an action first."); return; }
+            const cleaned = removeEmojiPrefix(selectedActionText);
+            window.open(urlBase + encodeURIComponent(cleaned), '_blank');
+        }
         function searchOnGoogle() { openSearch('https://www.google.com/search?q='); }
-
-        /** Opens a new tab to search the selected action on Bing. */
         function searchOnBing() { openSearch('https://www.bing.com/search?q='); }
-
-        /** Opens a new tab to search the selected action on DuckDuckGo. */
         function searchOnDuckDuckGo() { openSearch('https://duckduckgo.com/?q='); }
-
-        /** Opens a new tab to search the selected action on Brave Search. */
         function searchOnBrave() { openSearch('https://search.brave.com/search?q='); }
-
-        /** Opens a new tab to translate the selected action using Google Translate. */
         function translateWithGoogle() { openSearch('https://translate.google.com/?sl=auto&tl=en&text='); }
-
-        /** Opens a new tab to translate the selected action using Bing Translate. */
         function translateWithBing() { openSearch('https://www.bing.com/translator/?from=auto&to=en&text='); }
 
-        /**
-         * Copies the selected action text to the clipboard.
-         */
         function copyActionToClipboard() {
-            if (!selectedActionText) {
-                alert("No action selected to copy.");
-                return;
-            }
+            if (!selectedActionText) { alert("No action selected to copy."); return; }
             const cleaned = removeEmojiPrefix(selectedActionText);
-            // Create a temporary textarea element to copy the text
-            const tempTextArea = document.createElement('textarea');
-            tempTextArea.value = cleaned;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
-            // Provide visual feedback
-            alert("Action copied to clipboard!");
+            navigator.clipboard.writeText(cleaned).then(() => alert("Action copied to clipboard!"));
         }
 
-        /**
-         * Build payload for native share. Avoid URL duplication by putting
-         * action in text and page URL in url.
-         */
-        function buildSharePayload() {
-            if (!selectedActionText) return null;
-            const pageUrl = window.location.href;
-            const cleaned = removeEmojiPrefix(selectedActionText);
-            return {
-                title: `Curious Souls Café - ${displayTopicName}`,
-                text: cleaned, // action only
-                url: pageUrl    // URL separate; many share sheets append it
-            };
-        }
-
-        /**
-         * Attempt to share via Web Share API only; no platform-specific fallback.
-         */
         async function handleShareSelectedAction() {
-            const payload = buildSharePayload();
-            if (!payload) {
-                alert("Please select an action first to share.");
-                return;
-            }
-
+            if (!selectedActionText) { alert("Please select an action first to share."); return; }
+            const cleaned = removeEmojiPrefix(selectedActionText);
             if (navigator.share) {
                 try {
-                    await navigator.share({
-                        title: payload.title,
-                        text: payload.text,
-                        url: payload.url
-                    });
-                    return;
-                } catch (err) {
-                    // If user cancels or share fails, we intentionally do nothing else
-                    console.warn("Web Share API failed or was canceled:", err);
-                }
-            } else {
-                // No fallback -- intentionally do nothing (or optionally:
-                // alert("Sharing is not supported in this browser. Use the QR/link option instead.");
+                    await navigator.share({ title: `Curious Souls Café - ${displayTopicName}`, text: cleaned, url: window.location.href });
+                } catch (err) { console.warn("Web Share API failed or was canceled:", err); }
             }
         }
 
-        // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
-            // Decide which confirmation text to show based on current mode
-            const highlightedItems = chosenActionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
-            if (highlightedItems.length > 0) {
-                // Selected-only mode
-                confirmationText.innerHTML = "Clear the selected action?";
-                confirmationSubtext.style.display = "block";
-                confirmationSubtext.textContent = "This will remove only the highlighted action from Saved.";
-            } else {
-                // All-saved mode (or generic)
-                confirmationText.innerHTML = 'Are you sure you want to clear <span style="font-weight:800; text-decoration: underline;">ALL</span> saved actions?';
-                confirmationSubtext.style.display = "block";
-                confirmationSubtext.textContent = "Warning: This action will remove every saved action for this topic.";
-            }
+            const hasSelection = chosenActionsDisplay.querySelector('.chosen-item.selected-chosen-item') !== null;
+            confirmationText.innerHTML = hasSelection ? "Clear the selected action?" : 'Are you sure you want to clear <span style="font-weight:800; text-decoration: underline;">ALL</span> saved actions?';
+            confirmationSubtext.textContent = hasSelection ? "This will remove only the highlighted action from Saved." : "Warning: This action will remove every saved action for this topic.";
+            confirmationSubtext.style.display = "block";
             confirmationModal.classList.add('show');
         });
 
         confirmClearYes.addEventListener('click', function() {
             const highlightedItems = chosenActionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
-
-            if (highlightedItems.length > 0) { 
-                highlightedItems.forEach(item => {
-                    chosenActionsDisplay.removeChild(item);
-                });
-            } else { 
-                chosenActionsDisplay.innerHTML = ''; 
+            if (highlightedItems.length > 0) {
+                highlightedItems.forEach(item => item.remove());
+            } else {
+                chosenActionsDisplay.innerHTML = '';
             }
             saveCurrentChosenActions();
-            
-            const remainingActionDivs = chosenActionsDisplay.querySelectorAll('.chosen-item');
-            if (remainingActionDivs.length === 0) {
+            if (chosenActionsDisplay.children.length === 0) {
                 chosenActionsDisplay.innerHTML = `<p class="text-gray-500 text-sm">Tap an action above to save it here. To remove it, tap it here and click 'Clear'.</p>`;
             }
             updateClearButtonText();
-            // If the selected action was among cleared, reset selection
-            if (selectedActionText) {
-                const stillSelectedSaved = Array.from(chosenActionsDisplay.querySelectorAll('.chosen-item'))
-                    .some(el => el.textContent === selectedActionText);
-                if (!stillSelectedSaved) {
-                    selectedActionText = document.querySelector('.item.selected-item')?.textContent || null;
-                }
-            }
+            const activeItem = document.querySelector('.item.selected-item');
+            selectedActionText = activeItem ? activeItem.getAttribute('data-text') : null;
+            selectedActionNum = activeItem ? activeItem.getAttribute('data-qn') : null;
             refreshFloatingButtonsVisibility();
             confirmationModal.classList.remove('show');
         });
 
-        confirmClearNo.addEventListener('click', function() {
-            confirmationModal.classList.remove('show');
-        });
-
-        // backToTopicsButton.addEventListener('click', () => {
-        //     window.location.href = '../index.html'; // Path back to index.html
-        // });
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 1) {
-                backToTopButton.style.display = 'block';
-            } else {
-                backToTopButton.style.display = 'none';
-            }
-        });
-
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        confirmEmptySearchYes.addEventListener('click', function() {
-            emptySearchModal.classList.remove('show');
-            executeSearch("");
-        });
-
-        confirmEmptySearchNo.addEventListener('click', function() {
-            emptySearchModal.classList.remove('show');
-        });
-
-        // Floating Look Up / Translate Button Listener
-        floatingLookupBtn.addEventListener('click', function() {
-            if (selectedActionText) {
-                searchEngineModal.classList.add('show'); // Show the choice modal
-            } else {
-                alert("Please select an action first to look up online / translate.");
-            }
-        });
-
-        // NEW: Floating Share Button Listener (native share only)
+        confirmClearNo.addEventListener('click', () => confirmationModal.classList.remove('show'));
+        window.addEventListener('scroll', () => backToTopButton.style.display = window.scrollY > 1 ? 'block' : 'none');
+        backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        confirmEmptySearchYes.addEventListener('click', () => { emptySearchModal.classList.remove('show'); executeSearch(""); });
+        confirmEmptySearchNo.addEventListener('click', () => emptySearchModal.classList.remove('show'));
+        floatingLookupBtn.addEventListener('click', () => { if (selectedActionText) searchEngineModal.classList.add('show'); else alert("Please select an action first."); });
         floatingShareBtn.addEventListener('click', handleShareSelectedAction);
+        searchGoogleChoiceBtn.addEventListener('click', () => { searchOnGoogle(); searchEngineModal.classList.remove('show'); });
+        searchBingChoiceBtn.addEventListener('click', () => { searchOnBing(); searchEngineModal.classList.remove('show'); });
+        searchDuckDuckGoChoiceBtn.addEventListener('click', () => { searchOnDuckDuckGo(); searchEngineModal.classList.remove('show'); });
+        searchBraveChoiceBtn.addEventListener('click', () => { searchOnBrave(); searchEngineModal.classList.remove('show'); });
+        translateGoogleChoiceBtn.addEventListener('click', () => { translateWithGoogle(); searchEngineModal.classList.remove('show'); });
+        translateBingChoiceBtn.addEventListener('click', () => { translateWithBing(); searchEngineModal.classList.remove('show'); });
+        copyActionBtn.addEventListener('click', () => { copyActionToClipboard(); searchEngineModal.classList.remove('show'); });
+        closeSearchEngineModalBtn.addEventListener('click', () => searchEngineModal.classList.remove('show'));
+        gettingStartedIcon.addEventListener('click', () => gettingStartedModal.classList.add('show'));
+        closeGettingStartedModalBtn.addEventListener('click', () => gettingStartedModal.classList.remove('show'));
 
-        // Search Engine/Translate Choice Modal Listeners
-        searchGoogleChoiceBtn.addEventListener('click', function() {
-            searchOnGoogle();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
-        });
-
-        searchBingChoiceBtn.addEventListener('click', function() {
-            searchOnBing();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
-        });
-
-        searchDuckDuckGoChoiceBtn.addEventListener('click', function() { 
-            searchOnDuckDuckGo();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
-        });
-
-        searchBraveChoiceBtn.addEventListener('click', function() { 
-            searchOnBrave();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
-        });
-
-        translateGoogleChoiceBtn.addEventListener('click', function() { 
-            translateWithGoogle();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
-        });
-
-        translateBingChoiceBtn.addEventListener('click', function() { 
-            translateWithBing();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
-        });
-
-        // Copy Action Listener
-        copyActionBtn.addEventListener('click', function() {
-            copyActionToClipboard();
-            searchEngineModal.classList.remove('show'); // Hide modal after copying
-        });
-
-        closeSearchEngineModalBtn.addEventListener('click', function() {
-            searchEngineModal.classList.remove('show'); // Hide modal on cancel
-        });
-
-        // --- Getting Started Modal Events (imported from code B, adapted) ---
-        gettingStartedIcon.addEventListener('click', () => {
-            gettingStartedModal.classList.add('show');
-        });
-        document.getElementById('close-getting-started-modal').addEventListener('click', () => {
-            gettingStartedModal.classList.remove('show');
-        });
-
-        // Share modal open/close helpers (reused by inline share trigger)
         function openShareModal() {
-            const pageUrl = window.location.href;
-            const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-            qrModalImage.src = qrCodeApiUrl; // Set the QR code image source dynamically
-            qrCodeModal.classList.add('show'); // Show the modal
+            qrModalImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(window.location.href)}`;
+            qrCodeModal.classList.add('show');
         }
-        function closeShareModal() {
-            qrCodeModal.classList.remove('show'); // Hide the modal
-        }
+        function closeShareModal() { qrCodeModal.classList.remove('show'); qrCodeModal.dispatchEvent(new Event('modalClosed')); }
+        inlineShareTrigger.addEventListener('click', (e) => { e.preventDefault(); gettingStartedModal.classList.remove('show'); openShareModal(); const restore = () => { gettingStartedModal.classList.add('show'); qrCodeModal.removeEventListener('modalClosed', restore); }; qrCodeModal.addEventListener('modalClosed', restore); });
+        showQrCodeLink.addEventListener('click', (e) => { e.preventDefault(); openShareModal(); });
+        qrModalCloseButton.addEventListener('click', closeShareModal);
+        qrCodeModal.addEventListener('click', (e) => { if (e.target === qrCodeModal) closeShareModal(); });
 
-        // Inline share trigger inside Getting Started modal
-        inlineShareTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            // Open share; keep Getting Started open in background, or hide and re-open after close if you prefer.
-            gettingStartedModal.classList.remove('show'); // close to avoid two overlays
-            openShareModal();
-            // When QR closes, optionally restore Getting Started
-            const restore = () => {
-                gettingStartedModal.classList.add('show');
-                qrCodeModal.removeEventListener('modalClosed', restore);
-            };
-            // Custom event dispatch on close to restore
-            qrCodeModal.addEventListener('modalClosed', restore);
-        });
+        copyLinkTextLink.addEventListener('click', (e) => { e.preventDefault(); navigator.clipboard.writeText(window.location.href).then(() => alert("Link copied to clipboard!")); });
+        shareLinkButton.addEventListener('click', async (e) => { e.preventDefault(); if (navigator.share) { try { await navigator.share({ title: document.title, text: `Join me for a conversation on "${displayTopicName}" at Curious Souls Café!`, url: window.location.href }); } catch (err) { console.warn('Share canceled or failed:', err); } } });
+        
+        randomizeButton.addEventListener('click', (e) => { e.preventDefault(); displayRandomItems(); });
+        searchButton.addEventListener('click', (e) => { e.preventDefault(); displayFilteredItems(); });
+        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); displayFilteredItems(); } });
 
-        // --- QR Code Modal Logic (imported behavior from code B; uses current URL) ---
-        // Show QR modal from link
-        const showQrHandler = function(event) {
-            event.preventDefault(); // Prevent default link behavior
-            openShareModal(); // Open dynamic QR modal
-        };
-        showQrCodeLink.addEventListener('click', showQrHandler);
+        saveCountToggle.addEventListener('change', function() { if (this.checked) { localStorage.setItem(savedItemCountKey, itemCountInput.value); localStorage.setItem(saveItemCountToggleKey, 'true'); } else { localStorage.removeItem(savedItemCountKey); localStorage.removeItem(saveItemCountToggleKey); } });
+        itemCountInput.addEventListener('input', function() { if (saveCountToggle.checked) localStorage.setItem(savedItemCountKey, this.value); });
+        
+        function escapeHtml(str) { return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
 
-        // Close button
-        qrModalCloseButton.addEventListener('click', function() {
-            closeShareModal(); // Hide the modal
-            // fire custom event for potential restorations
-            qrCodeModal.dispatchEvent(new Event('modalClosed'));
-        });
-
-        // Close modal if clicked outside content
-        qrCodeModal.addEventListener('click', function(event) {
-            if (event.target === qrCodeModal) { // Check if the click was on the overlay itself
-                closeShareModal();
-                qrCodeModal.dispatchEvent(new Event('modalClosed'));
-            }
-        });
-
-        // Initial calls on page load
         loadSavedSettings();
         fetchActions();
-
-        // Copy Link Button Logic (now a text link)
-        const copyLinkTextLink = document.getElementById('copy-link-text-link'); // Changed ID
-        copyLinkTextLink.addEventListener('click', function(event) { // Changed to button
-            event.preventDefault(); // Prevent default link behavior
-            const pageUrl = window.location.href;
-            // Use a temporary textarea to copy the URL to clipboard
-            const tempInput = document.createElement('textarea');
-            tempInput.value = pageUrl;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempInput);
-            alert("Link copied to clipboard!");
-        });
-
-        // Share Link Button Logic (Web Share API only; no fallback)
-        const shareLinkButton = document.getElementById('share-link-button');
-        shareLinkButton.addEventListener('click', async (event) => {
-            event.preventDefault();
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: document.title,
-                        text: `Join me for a conversation on "${displayTopicName}" at Curious Souls Café!`,
-                        url: window.location.href
-                    });
-                } catch (err) {
-                    // Swallow errors silently as requested (no fallback)
-                    console.warn('Share canceled or failed:', err);
-                }
-            }
-            // If navigator.share is not available, do nothing (no fallback)
-        });
-        
-        randomizeButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            displayRandomItems();
-        });
-
-        searchButton.addEventListener('click', function(event) {
-            event.preventDefault();
-            displayFilteredItems();
-        });
-
-        searchInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                displayFilteredItems();
-            }
-        });
-
-        // Event listener for the save count toggle
-        saveCountToggle.addEventListener('change', function() {
-            if (this.checked) {
-                // Save the current value and the toggle state
-                localStorage.setItem(savedItemCountKey, itemCountInput.value);
-                localStorage.setItem(saveItemCountToggleKey, 'true');
-            } else {
-                // Remove the saved value and the toggle state
-                localStorage.removeItem(savedItemCountKey);
-                localStorage.removeItem(saveItemCountToggleKey);
-            }
-        });
-
-        // Event listener for the item count input
-        itemCountInput.addEventListener('input', function() {
-            // If the save toggle is checked, update the stored value in real-time
-            if (saveCountToggle.checked) {
-                localStorage.setItem(savedItemCountKey, this.value);
-            }
-        });
-
         updateClearButtonText();
     </script>
 </body>
