@@ -880,7 +880,7 @@
         </div>
 
         <div class="mb-8"> <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search or enter question number:</label>
-            <input type="text" id="search-input" placeholder="Enter search term or a number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <input type="text" id="search-input" placeholder="Enter search term or #number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
                 Search
             </button>
@@ -1761,27 +1761,32 @@
 
         // --- NEW: Numeric query parser (ranges and comma support) ---
         /**
-         * Parses user input to detect if it's a numeric query:
-         * - Single number: "12" or "#12"
-         * - Range: "1-3", "#1-#3" (order-insensitive: "5-2" becomes 2..5)
-         * - Comma list: "1,3,4" (spaces ignored)
-         * - Mixed: "1-3, 7, 10-12"
+         * Parses user input to detect if it's a numeric query, which MUST start with '#'.
+         * - Valid: "#12", "#1-3", "#1,3,4", "#1-3, 7, 10-12"
+         * - Invalid (treated as text search): "12", "1-3"
          * Returns { isNumericQuery: boolean, numbers: Set<number> }
          */
         function parseNumericQuery(input) {
             const raw = input.trim();
-            if (raw.length === 0) return { isNumericQuery: false, numbers: new Set() };
-
-            // Quick test: if it contains anything except digits, #, spaces, commas, or dashes,
-            // we treat it as a text search.
-            if (/[^0-9#,\-\s]/.test(raw)) {
+            // A numeric query must now start with a '#' to distinguish it from a text search for a number.
+            if (!raw.startsWith('#')) {
                 return { isNumericQuery: false, numbers: new Set() };
             }
 
-            // Normalize: remove leading '#' signs, collapse spaces
-            const normalized = raw.replace(/#/g, '').replace(/\s+/g, '');
-            if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
+            // The query content is everything after the first '#'
+            const queryContent = raw.substring(1).trim();
+            if (queryContent.length === 0) return { isNumericQuery: false, numbers: new Set() };
 
+            // Quick test on the content: if it contains anything except digits, spaces, commas, or dashes,
+            // it's an invalid numeric query. We'll fall back to a text search of the original raw string.
+            if (/[^0-9,\-\s]/.test(queryContent)) {
+                return { isNumericQuery: false, numbers: new Set() };
+            }
+            
+            // Normalize: remove spaces from the content part. No need to remove '#' as we've handled the prefix.
+            const normalized = queryContent.replace(/\s+/g, '');
+            if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
+            
             const parts = normalized.split(',');
             const nums = new Set();
 
