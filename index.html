@@ -685,6 +685,14 @@
                 >
                     <i class="fab fa-meetup mr-1"></i> Meet us at our events!
                 </button>
+                <!-- ADDED: Global Event List moved here as the second option -->
+                <a
+                    class="modal-button block w-full text-center"
+                    style="background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe;"
+                    href="./pages/global-event-list.html"
+                >
+                    <i class="fa-solid fa-globe mr-1"></i> Global Event List
+                </a>
                 <a
                     class="modal-button block w-full text-center"
                     style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;"
@@ -812,14 +820,7 @@
                     Kuala Lumpur
                 </a>
                 <!-- ADDED: Global Event List link at the end -->
-                <a
-                    class="modal-button block w-full text-left"
-                    style="background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe;"
-                    href="./pages/global-event-list.html"
-                >
-                    <i class="fa-solid fa-globe mr-2"></i>
-                    Global Event List
-                </a>
+                <!-- Removed from here because it is now placed as the second option in the Feedback modal -->
                 <button
                     type="button"
                     class="modal-button cancel block w-full text-center"
@@ -1330,7 +1331,7 @@
         /**
          * Renders the Action Prompts, Roll the Dice, and Import Questions buttons
          * WITHOUT any starring capability.
-         */
+        */
         function renderActionButtons() {
             actionButtonsContainer.innerHTML = ''; // Clear existing buttons
 
