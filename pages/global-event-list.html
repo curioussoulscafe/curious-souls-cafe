@@ -48,7 +48,7 @@
         .event-card {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem; /* Increased gap for better spacing */
             padding: 1rem;
             margin-bottom: 1rem;
             background-color: #ffffff;
@@ -61,20 +61,49 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
-        .event-session-number {
+
+        /* NEW STYLES for the stacked number block */
+        .event-session-numbers {
             flex-shrink: 0;
-            background-color: #ede9fe; /* Light purple */
-            color: #6b46c1; /* Dark purple */
-            font-weight: 700; /* Bold */
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            background-color: #f5f3ff; /* Lighter purple */
+            color: #5b21b6; /* Deeper purple */
+            font-weight: 700;
+            width: 80px; /* A bit wider to accommodate text */
+            border-radius: 0.65rem;
             display: flex;
+            flex-direction: column; /* Stack items vertically */
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-            border: 2px solid #c4b5fd;
+            text-align: center;
+            border: 1px solid #ddd6fe;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            overflow: hidden; /* Ensures border-radius is respected by children */
         }
+        .session-block {
+            padding: 0.6rem 0.5rem;
+            width: 100%;
+        }
+        .session-block.local {
+            background-color: #ede9fe;
+            border-top: 1px solid #d1c4e9; /* A subtle separator */
+        }
+        .session-label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #7c3aed; /* purple-600 */
+            line-height: 1;
+        }
+        .session-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #4c1d95; /* purple-900 */
+        }
+        
         .event-details {
             flex-grow: 1;
             min-width: 0; /* Prevents text overflow issues in flexbox */
@@ -97,12 +126,6 @@
             display: flex;
             align-items: center;
             gap: 0.35rem;
-        }
-        .event-meta span.local-session {
-            gap: 0.1rem;
-        }
-        .local-session {
-            color: #9ca3af; /* gray-400, for subtlety */
         }
 
         /* Floating Back button */
@@ -183,11 +206,13 @@
                 align-items: flex-start;
                 gap: 0.75rem;
             }
-            .event-session-number {
-                width: 50px;
-                height: 50px;
-                font-size: 1.1rem;
-                margin-bottom: 0.5rem;
+            .event-session-numbers {
+                width: 100%; /* Full width on mobile */
+                flex-direction: row; /* Side-by-side on mobile */
+            }
+            .session-block.local {
+                border-top: none; /* Remove top border */
+                border-left: 1px solid #d1c4e9; /* Use left border as separator */
             }
             .event-title {
                 font-size: 1rem;
@@ -242,920 +267,614 @@
         <div id="event-list-container">
             <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310949336/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#102</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ✨</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span class="local-session"><i class="fas fa-hashtag"></i>7</span><span><i class="fas fa-calendar-alt"></i> Saturday, 13 September 2025</span><span><i class="fas fa-clock"></i> 5:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#102</span></div><div class="session-block local"><span class="session-label">Seoul</span><span class="session-value">#7</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ✨</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span><i class="fas fa-calendar-alt"></i> Saturday, 13 September 2025</span><span><i class="fas fa-clock"></i> 5:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/310932057/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#101</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Art of Friendship: Weaving the Ties That Nourish Us</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>34</span><span><i class="fas fa-calendar-alt"></i> Thursday, 11 September 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#101</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#34</span></div></div>
+                    <div class="event-details"><p class="event-title">The Art of Friendship: Weaving the Ties That Nourish Us</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 11 September 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310918866/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#100</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Legacy: Where Your Purpose Meets the World</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>36</span><span><i class="fas fa-calendar-alt"></i> Thursday, 11 September 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#100</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#36</span></div></div>
+                    <div class="event-details"><p class="event-title">Legacy: Where Your Purpose Meets the World</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 11 September 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310822583/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#99</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ✨New location!✨</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span class="local-session"><i class="fas fa-hashtag"></i>6</span><span><i class="fas fa-calendar-alt"></i> Sunday, 7 September 2025</span><span><i class="fas fa-clock"></i> 5:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#99</span></div><div class="session-block local"><span class="session-label">Seoul</span><span class="session-value">#6</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ✨New location!✨</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span><i class="fas fa-calendar-alt"></i> Sunday, 7 September 2025</span><span><i class="fas fa-clock"></i> 5:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/310807117/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#98</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Big Talk - Skipping small talk and connect with people</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>33</span><span><i class="fas fa-calendar-alt"></i> Thursday, 4 September 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#98</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#33</span></div></div>
+                    <div class="event-details"><p class="event-title">Big Talk - Skipping small talk and connect with people</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 4 September 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310816937/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#97</span></div>
-                    <div class="event-details">
-                        <p class="event-title">True Wealth: Cultivating a Life Rich in Time, Connection & Meaning</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>35</span><span><i class="fas fa-calendar-alt"></i> Thursday, 4 September 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#97</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#35</span></div></div>
+                    <div class="event-details"><p class="event-title">True Wealth: Cultivating a Life Rich in Time, Connection & Meaning</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 4 September 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="javascript:void(0);" class="event-link" id="event-96-link" title="Link not available (private event)" data-city="Kuala Lumpur">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#96</span></div>
-                    <div class="event-details">
-                        <p class="event-title">CSCKL Meetup - WhatsApp Group Edition</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Kuala Lumpur</span><span class="local-session"><i class="fas fa-hashtag"></i>3</span><span><i class="fas fa-calendar-alt"></i> Monday, 1 September 2025</span><span><i class="fas fa-clock"></i> 2:30 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#96</span></div><div class="session-block local"><span class="session-label">Kuala Lumpur</span><span class="session-value">#3</span></div></div>
+                    <div class="event-details"><p class="event-title">CSCKL Meetup - WhatsApp Group Edition</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Kuala Lumpur</span><span><i class="fas fa-calendar-alt"></i> Monday, 1 September 2025</span><span><i class="fas fa-clock"></i> 2:30 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310661854/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#95</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ✨</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span class="local-session"><i class="fas fa-hashtag"></i>5</span><span><i class="fas fa-calendar-alt"></i> Sunday, 31 August 2025</span><span><i class="fas fa-clock"></i> 5:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#95</span></div><div class="session-block local"><span class="session-label">Seoul</span><span class="session-value">#5</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ✨</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span><i class="fas fa-calendar-alt"></i> Sunday, 31 August 2025</span><span><i class="fas fa-clock"></i> 5:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310662393/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#94</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ✨New location!✨</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span class="local-session"><i class="fas fa-hashtag"></i>4</span><span><i class="fas fa-calendar-alt"></i> Thursday, 28 August 2025</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#94</span></div><div class="session-block local"><span class="session-label">Seoul</span><span class="session-value">#4</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ✨New location!✨</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span><i class="fas fa-calendar-alt"></i> Thursday, 28 August 2025</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/310690317/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#93</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>32</span><span><i class="fas fa-calendar-alt"></i> Thursday, 28 August 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#93</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#32</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 28 August 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310666992/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#92</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Purpose: The Compass of a Meaningful Life</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>34</span><span><i class="fas fa-calendar-alt"></i> Thursday, 28 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#92</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#34</span></div></div>
+                    <div class="event-details"><p class="event-title">Purpose: The Compass of a Meaningful Life</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 28 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310590389/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#91</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ✨New location!✨</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span class="local-session"><i class="fas fa-hashtag"></i>3</span><span><i class="fas fa-calendar-alt"></i> Friday, 22 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#91</span></div><div class="session-block local"><span class="session-label">Seoul</span><span class="session-value">#3</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ✨New location!✨</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span><i class="fas fa-calendar-alt"></i> Friday, 22 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310593921/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#90</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Entrepreneurship: Architecting Your Life Venture</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>33</span><span><i class="fas fa-calendar-alt"></i> Thursday, 21 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#90</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#33</span></div></div>
+                    <div class="event-details"><p class="event-title">Entrepreneurship: Architecting Your Life Venture</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 21 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/310547604/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#89</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Art of Friendship: Weaving the Ties That Nourish Us</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>31</span><span><i class="fas fa-calendar-alt"></i> Wednesday, 20 August 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#89</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#31</span></div></div>
+                    <div class="event-details"><p class="event-title">The Art of Friendship: Weaving the Ties That Nourish Us</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Wednesday, 20 August 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310478074/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#88</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Sunday, 17 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#88</span></div><div class="session-block local"><span class="session-label">Seoul</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span><i class="fas fa-calendar-alt"></i> Sunday, 17 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-kuala-lumpur/events/310481336/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Kuala Lumpur">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#87</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Kuala Lumpur</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Sunday, 17 August 2025</span><span><i class="fas fa-clock"></i> 2:30 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#87</span></div><div class="session-block local"><span class="session-label">Kuala Lumpur</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Kuala Lumpur</span><span><i class="fas fa-calendar-alt"></i> Sunday, 17 August 2025</span><span><i class="fas fa-clock"></i> 2:30 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/310464456/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#86</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Happiness : What is it and why does it seem fleeting and elusive?</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>30</span><span><i class="fas fa-calendar-alt"></i> Thursday, 14 August 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#86</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#30</span></div></div>
+                    <div class="event-details"><p class="event-title">Happiness : What is it and why does it seem fleeting and elusive?</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 14 August 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310449371/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#85</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Holistic Adulthood: Finding Our Place in Life’s Unfolding Journey</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>32</span><span><i class="fas fa-calendar-alt"></i> Thursday, 14 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#85</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#32</span></div></div>
+                    <div class="event-details"><p class="event-title">Holistic Adulthood: Finding Our Place in Life’s Unfolding Journey</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 14 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310192158/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#84</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Sunday, 10 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#84</span></div><div class="session-block local"><span class="session-label">Seoul</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span><i class="fas fa-calendar-alt"></i> Sunday, 10 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/310335496/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#83</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Parenting: A sharing of experiences and learning from others.</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>29</span><span><i class="fas fa-calendar-alt"></i> Thursday, 7 August 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#83</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#29</span></div></div>
+                    <div class="event-details"><p class="event-title">Parenting: A sharing of experiences and learning from others.</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 7 August 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310352336/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#82</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Work that Resonates: Navigating Purpose, Passion & Practicality</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>31</span><span><i class="fas fa-calendar-alt"></i> Thursday, 7 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#82</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#31</span></div></div>
+                    <div class="event-details"><p class="event-title">Work that Resonates: Navigating Purpose, Passion & Practicality</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 7 August 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310099800/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Guangzhou">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#81</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet in Guangzhou: Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Guangzhou</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Sunday, 3 August 2025</span><span><i class="fas fa-clock"></i> 3:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#81</span></div><div class="session-block local"><span class="session-label">Guangzhou</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet in Guangzhou: Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Guangzhou</span><span><i class="fas fa-calendar-alt"></i> Sunday, 3 August 2025</span><span><i class="fas fa-clock"></i> 3:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/310225899/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#80</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Mind Speaks : Mental health and insights into the Mind</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>28</span><span><i class="fas fa-calendar-alt"></i> Thursday, 31 July 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#80</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#28</span></div></div>
+                    <div class="event-details"><p class="event-title">The Mind Speaks : Mental health and insights into the Mind</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 31 July 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310227925/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#79</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Inner Child: Reclaiming Wonder, Resilience & Play</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>30</span><span><i class="fas fa-calendar-alt"></i> Thursday, 31 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#79</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#30</span></div></div>
+                    <div class="event-details"><p class="event-title">The Inner Child: Reclaiming Wonder, Resilience & Play</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 31 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308780984/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Macau">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#78</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet in Macau: Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Macau</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Sunday, 27 July 2025</span><span><i class="fas fa-clock"></i> 3:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#78</span></div><div class="session-block local"><span class="session-label">Macau</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet in Macau: Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Macau</span><span><i class="fas fa-calendar-alt"></i> Sunday, 27 July 2025</span><span><i class="fas fa-clock"></i> 3:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/310076927/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#77</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Heart Talks 2.0: Deep Conversations about Love Relationships</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>27</span><span><i class="fas fa-calendar-alt"></i> Thursday, 24 July 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#77</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#27</span></div></div>
+                    <div class="event-details"><p class="event-title">The Heart Talks 2.0: Deep Conversations about Love Relationships</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 24 July 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/310060450/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#76</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Interdependence: The Art of Needing and Being Needed</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>29</span><span><i class="fas fa-calendar-alt"></i> Thursday, 24 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#76</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#29</span></div></div>
+                    <div class="event-details"><p class="event-title">Interdependence: The Art of Needing and Being Needed</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 24 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/309825676/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#75</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Friendship Central: Weaving the Ties That Nourish Us</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>28</span><span><i class="fas fa-calendar-alt"></i> Saturday, 19 July 2025</span><span><i class="fas fa-clock"></i> 11:30 am</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#75</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#28</span></div></div>
+                    <div class="event-details"><p class="event-title">Friendship Central: Weaving the Ties That Nourish Us</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Saturday, 19 July 2025</span><span><i class="fas fa-clock"></i> 11:30 am</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/309542466/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#74</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Big Talk - Skipping small talk and connect with people</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>26</span><span><i class="fas fa-calendar-alt"></i> Thursday, 17 July 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#74</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#26</span></div></div>
+                    <div class="event-details"><p class="event-title">Big Talk - Skipping small talk and connect with people</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 17 July 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/309558126/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#73</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>27</span><span><i class="fas fa-calendar-alt"></i> Thursday, 17 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#73</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#27</span></div></div>
+                    <div class="event-details"><p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 17 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/309074340/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#72</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Dinner and Meaningful Conversation at Taipei 101</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>10</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 15 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#72</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#10</span></div></div>
+                    <div class="event-details"><p class="event-title">Dinner and Meaningful Conversation at Taipei 101</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 15 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/308779192/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#71</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Happiness: What is it and why does it seem fleeting and elusive?</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>9</span><span><i class="fas fa-calendar-alt"></i> Sunday, 13 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#71</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#9</span></div></div>
+                    <div class="event-details"><p class="event-title">Happiness: What is it and why does it seem fleeting and elusive?</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Sunday, 13 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/308770595/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#70</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Heart Talks: Deep Conversations about Love Relationships</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>8</span><span><i class="fas fa-calendar-alt"></i> Sunday, 13 July 2025</span><span><i class="fas fa-clock"></i> 10:00 am</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#70</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#8</span></div></div>
+                    <div class="event-details"><p class="event-title">The Heart Talks: Deep Conversations about Love Relationships</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Sunday, 13 July 2025</span><span><i class="fas fa-clock"></i> 10:00 am</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/308779126/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#69</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Mind Speaks: Mental Health and Insights into the Mind</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>7</span><span><i class="fas fa-calendar-alt"></i> Saturday, 12 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#69</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#7</span></div></div>
+                    <div class="event-details"><p class="event-title">The Mind Speaks: Mental Health and Insights into the Mind</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Saturday, 12 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/308921284/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#68</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>25</span><span><i class="fas fa-calendar-alt"></i> Thursday, 10 July 2025</span><span><i class="fas fa-clock"></i> 7:25 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#68</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#25</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 10 July 2025</span><span><i class="fas fa-clock"></i> 7:25 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308869091/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#67</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Reimagine: Gently Shaping New Stories for Ourselves and Our Times</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>26</span><span><i class="fas fa-calendar-alt"></i> Thursday, 10 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#67</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#26</span></div></div>
+                    <div class="event-details"><p class="event-title">Reimagine: Gently Shaping New Stories for Ourselves and Our Times</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 10 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308779982/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Shenzhen">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#66</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet in Shenzhen: Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Shenzhen</span><span class="local-session"><i class="fas fa-hashtag"></i>3</span><span><i class="fas fa-calendar-alt"></i> Sunday, 6 July 2025</span><span><i class="fas fa-clock"></i> 10:15 am</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#66</span></div><div class="session-block local"><span class="session-label">Shenzhen</span><span class="session-value">#3</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet in Shenzhen: Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Shenzhen</span><span><i class="fas fa-calendar-alt"></i> Sunday, 6 July 2025</span><span><i class="fas fa-clock"></i> 10:15 am</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/308723366/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#65</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Happiness : What is it and why does it seem fleeting and elusive?</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>24</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 July 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#65</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#24</span></div></div>
+                    <div class="event-details"><p class="event-title">Happiness : What is it and why does it seem fleeting and elusive?</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 July 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308748790/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#64</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" tribute)</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>25</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#64</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#25</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" tribute)</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/308598811/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#63</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Mind Speaks : Mental health and insights into the Mind</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>23</span><span><i class="fas fa-calendar-alt"></i> Thursday, 26 June 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#63</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#23</span></div></div>
+                    <div class="event-details"><p class="event-title">The Mind Speaks : Mental health and insights into the Mind</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 26 June 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308581941/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#62</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Weaving Our Threads Forward: A Mid-Year Reflection</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>24</span><span><i class="fas fa-calendar-alt"></i> Thursday, 26 June 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#62</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#24</span></div></div>
+                    <div class="event-details"><p class="event-title">Weaving Our Threads Forward: A Mid-Year Reflection</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 26 June 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308545448/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Zoom">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#61</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet on Zoom: Meaningful Conversations for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Zoom</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Sunday, 22 June 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#61</span></div><div class="session-block local"><span class="session-label">Zoom</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet on Zoom: Meaningful Conversations for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Zoom</span><span><i class="fas fa-calendar-alt"></i> Sunday, 22 June 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/308524035/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#60</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Heart Talks 2.0: Deep Conversations about Love Relationships</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>22</span><span><i class="fas fa-calendar-alt"></i> Thursday, 19 June 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#60</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#22</span></div></div>
+                    <div class="event-details"><p class="event-title">The Heart Talks 2.0: Deep Conversations about Love Relationships</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 19 June 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308525703/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#59</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" tribute)</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>23</span><span><i class="fas fa-calendar-alt"></i> Thursday, 19 June 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#59</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#23</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" tribute)</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 19 June 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/308382949/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#58</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Big Talk - Skipping small talk and connect with people</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>21</span><span><i class="fas fa-calendar-alt"></i> Thursday, 12 June 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#58</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#21</span></div></div>
+                    <div class="event-details"><p class="event-title">Big Talk - Skipping small talk and connect with people</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 12 June 2025</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308371692/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#57</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Private Acts, Public Selves: Authenticity at the Intersection of Selfhood</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>22</span><span><i class="fas fa-calendar-alt"></i> Thursday, 12 June 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#57</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#22</span></div></div>
+                    <div class="event-details"><p class="event-title">Private Acts, Public Selves: Authenticity at the Intersection of Selfhood</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 12 June 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/308203149/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#56</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>20</span><span><i class="fas fa-calendar-alt"></i> Thursday, 5 June 2025</span><span><i class="fas fa-clock"></i> 7:25 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#56</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#20</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 5 June 2025</span><span><i class="fas fa-clock"></i> 7:25 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/308065892/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#55</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>21</span><span><i class="fas fa-calendar-alt"></i> Thursday, 29 May 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#55</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#21</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 29 May 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/307895079/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#54</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Happiness : What is it and why does it seem fleeting and elusive?</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>19</span><span><i class="fas fa-calendar-alt"></i> Thursday, 22 May 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#54</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#19</span></div></div>
+                    <div class="event-details"><p class="event-title">Happiness : What is it and why does it seem fleeting and elusive?</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 22 May 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/307896830/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#53</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Thresholds of Change: Deep Conversations about Transitions</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>20</span><span><i class="fas fa-calendar-alt"></i> Thursday, 22 May 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#53</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#20</span></div></div>
+                    <div class="event-details"><p class="event-title">Thresholds of Change: Deep Conversations about Transitions</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 22 May 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/307780300/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#52</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Joyful Journeys: Deep Conversations about Happiness</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>19</span><span><i class="fas fa-calendar-alt"></i> Thursday, 15 May 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#52</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#19</span></div></div>
+                    <div class="event-details"><p class="event-title">Joyful Journeys: Deep Conversations about Happiness</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 15 May 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-osaka/events/307156635/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Osaka">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#51</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversations for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Osaka</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 13 May 2025</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#51</span></div><div class="session-block local"><span class="session-label">Osaka</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversations for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Osaka</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 13 May 2025</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-osaka/events/306950468/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Osaka">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#50</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversations for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Osaka</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Sunday, 11 May 2025</span><span><i class="fas fa-clock"></i> 4:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#50</span></div><div class="session-block local"><span class="session-label">Osaka</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversations for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Osaka</span><span><i class="fas fa-calendar-alt"></i> Sunday, 11 May 2025</span><span><i class="fas fa-clock"></i> 4:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/307648870/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#49</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Mind Speaks : Mental health and insights into the Mind</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>18</span><span><i class="fas fa-calendar-alt"></i> Thursday, 8 May 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#49</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#18</span></div></div>
+                    <div class="event-details"><p class="event-title">The Mind Speaks : Mental health and insights into the Mind</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 8 May 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/307649114/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#48</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>18</span><span><i class="fas fa-calendar-alt"></i> Thursday, 8 May 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#48</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#18</span></div></div>
+                    <div class="event-details"><p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 8 May 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/307383659/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#47</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Heart Talks 2.0: Deep Conversations about Love Relationships</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>17</span><span><i class="fas fa-calendar-alt"></i> Thursday, 24 April 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#47</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#17</span></div></div>
+                    <div class="event-details"><p class="event-title">The Heart Talks 2.0: Deep Conversations about Love Relationships</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 24 April 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/307416103/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#46</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>17</span><span><i class="fas fa-calendar-alt"></i> Thursday, 24 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#46</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#17</span></div></div>
+                    <div class="event-details"><p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 24 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306911710/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Shanghai">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#45</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet in Shanghai: Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Shanghai</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Saturday, 19 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#45</span></div><div class="session-block local"><span class="session-label">Shanghai</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet in Shanghai: Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Shanghai</span><span><i class="fas fa-calendar-alt"></i> Saturday, 19 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/307265928/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#44</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Big Talk - Skipping small talk and connect with people</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>16</span><span><i class="fas fa-calendar-alt"></i> Thursday, 17 April 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#44</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#16</span></div></div>
+                    <div class="event-details"><p class="event-title">Big Talk - Skipping small talk and connect with people</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 17 April 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/307297531/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#43</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>16</span><span><i class="fas fa-calendar-alt"></i> Thursday, 17 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#43</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#16</span></div></div>
+                    <div class="event-details"><p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 17 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/307139948/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#42</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>15</span><span><i class="fas fa-calendar-alt"></i> Thursday, 10 April 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#42</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#15</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 10 April 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/307173216/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#41</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>15</span><span><i class="fas fa-calendar-alt"></i> Thursday, 10 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#41</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#15</span></div></div>
+                    <div class="event-details"><p class="event-title">Pause, Reflect, and Reconnect at Curious Souls Café</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 10 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306830144/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Guangzhou">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#40</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet in Guangzhou: Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Guangzhou</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Sunday, 6 April 2025</span><span><i class="fas fa-clock"></i> 3:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#40</span></div><div class="session-block local"><span class="session-label">Guangzhou</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet in Guangzhou: Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Guangzhou</span><span><i class="fas fa-calendar-alt"></i> Sunday, 6 April 2025</span><span><i class="fas fa-clock"></i> 3:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/306990749/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#39</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Mind Speaks : Mental health and insights into the Mind</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>14</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 April 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#39</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#14</span></div></div>
+                    <div class="event-details"><p class="event-title">The Mind Speaks : Mental health and insights into the Mind</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 April 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/307060081/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#38</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Mind Speaks: Mental Health and Insights into the Mind</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>14</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#38</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#14</span></div></div>
+                    <div class="event-details"><p class="event-title">The Mind Speaks: Mental Health and Insights into the Mind</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 April 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306829794/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Shenzhen">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#37</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet in Shenzhen: Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Shenzhen</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 1 April 2025</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#37</span></div><div class="session-block local"><span class="session-label">Shenzhen</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet in Shenzhen: Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Shenzhen</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 1 April 2025</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306119869/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Macau">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#36</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet in Macau: Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Macau</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Sunday, 30 March 2025</span><span><i class="fas fa-clock"></i> 3:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#36</span></div><div class="session-block local"><span class="session-label">Macau</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet in Macau: Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Macau</span><span><i class="fas fa-calendar-alt"></i> Sunday, 30 March 2025</span><span><i class="fas fa-clock"></i> 3:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/306874399/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#35</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Heart Talks 2.0: Deep Conversations about Love Relationships</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>13</span><span><i class="fas fa-calendar-alt"></i> Thursday, 27 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#35</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#13</span></div></div>
+                    <div class="event-details"><p class="event-title">The Heart Talks 2.0: Deep Conversations about Love Relationships</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 27 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306869616/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#34</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>13</span><span><i class="fas fa-calendar-alt"></i> Thursday, 27 March 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#34</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#13</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 27 March 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/306761510/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#33</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Big Talk - Skipping small talk and connect with people</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>12</span><span><i class="fas fa-calendar-alt"></i> Thursday, 20 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#33</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#12</span></div></div>
+                    <div class="event-details"><p class="event-title">Big Talk - Skipping small talk and connect with people</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 20 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306754961/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#32</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>12</span><span><i class="fas fa-calendar-alt"></i> Thursday, 20 March 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#32</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#12</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 20 March 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306113319/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Shenzhen">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#31</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet in Shenzhen: Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Shenzhen</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 18 March 2025</span><span><i class="fas fa-clock"></i> 10:15 am</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#31</span></div><div class="session-block local"><span class="session-label">Shenzhen</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet in Shenzhen: Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Shenzhen</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 18 March 2025</span><span><i class="fas fa-clock"></i> 10:15 am</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/306622670/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#30</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>11</span><span><i class="fas fa-calendar-alt"></i> Thursday, 13 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#30</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#11</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 13 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306608630/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#29</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Heart Talks: Deep Conversations about Love Relationships</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>11</span><span><i class="fas fa-calendar-alt"></i> Thursday, 13 March 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#29</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#11</span></div></div>
+                    <div class="event-details"><p class="event-title">The Heart Talks: Deep Conversations about Love Relationships</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 13 March 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/306491128/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#28</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Heart Talks: Deep Conversations about Love Relationships</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>10</span><span><i class="fas fa-calendar-alt"></i> Thursday, 6 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#28</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#10</span></div></div>
+                    <div class="event-details"><p class="event-title">The Heart Talks: Deep Conversations about Love Relationships</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 6 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306446992/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#27</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>10</span><span><i class="fas fa-calendar-alt"></i> Thursday, 6 March 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#27</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#10</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 6 March 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306373695/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Zoom">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#26</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Let's Meet on Zoom: Meaningful Conversations for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Zoom</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Sunday, 2 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#26</span></div><div class="session-block local"><span class="session-label">Zoom</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Let's Meet on Zoom: Meaningful Conversations for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Zoom</span><span><i class="fas fa-calendar-alt"></i> Sunday, 2 March 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/306369292/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#25</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Big Talk - Skipping small talk and connect with people</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>9</span><span><i class="fas fa-calendar-alt"></i> Thursday, 27 February 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#25</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#9</span></div></div>
+                    <div class="event-details"><p class="event-title">Big Talk - Skipping small talk and connect with people</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 27 February 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306339649/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#24</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" tribute)</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>9</span><span><i class="fas fa-calendar-alt"></i> Thursday, 27 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#24</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#9</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" tribute)</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 27 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/306210750/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#23</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>8</span><span><i class="fas fa-calendar-alt"></i> Thursday, 20 February 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#23</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#8</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 20 February 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/306167725/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#22</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>8</span><span><i class="fas fa-calendar-alt"></i> Thursday, 20 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#22</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#8</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 20 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/306063918/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#21</span></div>
-                    <div class="event-details">
-                        <p class="event-title">The Heart Talks: Deep Conversations about Love and Relationships</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>7</span><span><i class="fas fa-calendar-alt"></i> Thursday, 13 February 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#21</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#7</span></div></div>
+                    <div class="event-details"><p class="event-title">The Heart Talks: Deep Conversations about Love and Relationships</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 13 February 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/305855766/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#20</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>7</span><span><i class="fas fa-calendar-alt"></i> Thursday, 13 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#20</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#7</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 13 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/306046306/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#19</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Dinner and Meaningful Conversation at Taipei 101</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>6</span><span><i class="fas fa-calendar-alt"></i> Monday, 10 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#19</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#6</span></div></div>
+                    <div class="event-details"><p class="event-title">Dinner and Meaningful Conversation at Taipei 101</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Monday, 10 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/305950085/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#18</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" series)</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>5</span><span><i class="fas fa-calendar-alt"></i> Sunday, 9 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#18</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#5</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" series)</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Sunday, 9 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/305821661/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#17</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Bring Your Own Book Club (including a Curious Souls Cafe session)</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>4</span><span><i class="fas fa-calendar-alt"></i> Saturday, 8 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#17</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#4</span></div></div>
+                    <div class="event-details"><p class="event-title">Bring Your Own Book Club (including a Curious Souls Cafe session)</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Saturday, 8 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/305809250/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#16</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>3</span><span><i class="fas fa-calendar-alt"></i> Friday, 7 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#16</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#3</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Friday, 7 February 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/305907264/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#15</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Big Talk - Skipping small talk and connect with people</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>6</span><span><i class="fas fa-calendar-alt"></i> Thursday, 6 February 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#15</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#6</span></div></div>
+                    <div class="event-details"><p class="event-title">Big Talk - Skipping small talk and connect with people</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 6 February 2025</span><span><i class="fas fa-clock"></i> 7:15 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/305804386/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#14</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>5</span><span><i class="fas fa-calendar-alt"></i> Thursday, 30 January 2025</span><span><i class="fas fa-clock"></i> 4:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#14</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#5</span></div></div>
+                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 30 January 2025</span><span><i class="fas fa-clock"></i> 4:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/305708018/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#13</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>4</span><span><i class="fas fa-calendar-alt"></i> Thursday, 23 January 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#13</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#4</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 23 January 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/305604437/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#12</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>3</span><span><i class="fas fa-calendar-alt"></i> Thursday, 16 January 2025</span><span><i class="fas fa-clock"></i> 7:10 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#12</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#3</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Thursday, 16 January 2025</span><span><i class="fas fa-clock"></i> 7:10 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/305468144/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#11</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Sunday, 12 January 2025</span><span><i class="fas fa-clock"></i> 7:10 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#11</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Sunday, 12 January 2025</span><span><i class="fas fa-clock"></i> 7:10 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-kuala-lumpur/events/305294913/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Kuala Lumpur">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#10</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Kuala Lumpur</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Saturday, 11 January 2025</span><span><i class="fas fa-clock"></i> 2:10 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#10</span></div><div class="session-block local"><span class="session-label">Kuala Lumpur</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Kuala Lumpur</span><span><i class="fas fa-calendar-alt"></i> Saturday, 11 January 2025</span><span><i class="fas fa-clock"></i> 2:10 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/305262338/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#9</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Monday, 6 January 2025</span><span><i class="fas fa-clock"></i> 7:10 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#9</span></div><div class="session-block local"><span class="session-label">Singapore</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Singapore</span><span><i class="fas fa-calendar-alt"></i> Monday, 6 January 2025</span><span><i class="fas fa-clock"></i> 7:10 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/304928095/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#8</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Sunday, 8 December 2024</span><span><i class="fas fa-clock"></i> 7:10 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#8</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Sunday, 8 December 2024</span><span><i class="fas fa-clock"></i> 7:10 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-taipei/events/304721183/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Taipei">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#7</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 3 December 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#7</span></div><div class="session-block local"><span class="session-label">Taipei</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Taipei</span><span><i class="fas fa-calendar-alt"></i> Tuesday, 3 December 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/302980601/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#6</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>6</span><span><i class="fas fa-calendar-alt"></i> Thursday, 29 August 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#6</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#6</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 29 August 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/302822053/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#5</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>5</span><span><i class="fas fa-calendar-alt"></i> Thursday, 22 August 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#5</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#5</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 22 August 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/302683291/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#4</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>4</span><span><i class="fas fa-calendar-alt"></i> Thursday, 15 August 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#4</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#4</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 15 August 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/302549052/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#3</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>3</span><span><i class="fas fa-calendar-alt"></i> Thursday, 8 August 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#3</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#3</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 8 August 2024</span><span><i class="fas fa-clock"></i> 7:20 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/302451485/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#2</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>2</span><span><i class="fas fa-calendar-alt"></i> Thursday, 1 August 2024</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#2</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#2</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 1 August 2024</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe/events/302313098/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
-                    <div class="event-session-number"><span>#1</span></div>
-                    <div class="event-details">
-                        <p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p>
-                        <div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span class="local-session"><i class="fas fa-hashtag"></i>1</span><span><i class="fas fa-calendar-alt"></i> Thursday, 25 July 2024</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div>
-                    </div>
+                    <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#1</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#1</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 25 July 2024</span><span><i class="fas fa-clock"></i> 7:30 pm</span></div></div>
                 </div>
             </a>
         </div>
@@ -1210,7 +929,9 @@
                 eventLinks.forEach(link => {
                     const eventCity = link.dataset.city;
                     const eventTitle = link.querySelector('.event-title').textContent.toLowerCase();
-                    const eventNumberText = link.querySelector('.event-session-number span').textContent;
+                    
+                    // Updated to search inside the new structure
+                    const eventNumberText = link.querySelector('.session-block.global .session-value').textContent; 
                     const eventNumber = parseInt(eventNumberText.replace('#', ''), 10);
 
                     // Determine filter match
@@ -1225,7 +946,9 @@
 
                     // Determine search match
                     let searchMatch = false;
-                    if (searchTerm.startsWith('#')) {
+                    if (!searchTerm || searchTerm.length === 0) {
+                        searchMatch = true; // Show all if search is empty
+                    } else if (searchTerm.startsWith('#')) {
                         const query = searchTerm.substring(1).trim();
                         let targetNumbers = [];
 
@@ -1285,7 +1008,7 @@
                      if (window.history.length > 1) {
                         window.history.back();
                     } else {
-                        window.location.href = './index.html';
+                        window.location.href = './index.html'; // Fallback for no history
                     }
                 });
             }
