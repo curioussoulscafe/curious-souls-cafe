@@ -938,10 +938,6 @@
             <i class="fas fa-folder-open mr-2"></i> Manage Saved Items
         </a>
 
-        <a href="global-event-list.html" id="global-event-list-link" class="mt-3 inline-flex items-center justify-center w-full bg-indigo-400 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out" title="View Global Event List">
-            <i class="fas fa-list-ol mr-2"></i> Global Event List
-        </a>
-
         <div class="bottom-tip" aria-live="polite">
             <span>💡</span>
             <span>Tap the top logo for home</span>
@@ -1715,10 +1711,22 @@
             return text.replace(/^[\p{Emoji_Presentation}\p{Emoji}\p{S}\p{P}\s_]+/u, '').trim();
         }
 
+        /**
+         * Removes the trailing city/event info, e.g., "(Hong Kong Event 1 · Global 1)"
+         * @param {string} text The input string.
+         * @returns {string} The string with the trailing info removed.
+         */
+        function removeTrailingEventInfo(text) {
+            if (!text) return '';
+            // This regex matches optional whitespace followed by parentheses containing any characters,
+            // at the very end of the string.
+            return text.replace(/\s*\([^)]+\)$/, '').trim();
+        }
+
         // --- Search Engine Functions ---
         function searchQuestionOnGoogle() {
             if (selectedRandomQuestionText) {
-                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
                 const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(googleSearchUrl, '_blank');
             } else {
@@ -1728,7 +1736,7 @@
 
         function searchQuestionOnBing() {
             if (selectedRandomQuestionText) {
-                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
                 const bingSearchUrl = `https://www.bing.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(bingSearchUrl, '_blank');
             } else {
@@ -1738,7 +1746,7 @@
 
         function searchQuestionOnDuckDuckGo() {
             if (selectedRandomQuestionText) {
-                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
                 const duckduckgoSearchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(duckduckgoSearchUrl, '_blank');
             } else {
@@ -1748,7 +1756,7 @@
 
         function searchQuestionOnBrave() {
             if (selectedRandomQuestionText) {
-                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
                 const braveSearchUrl = `https://search.brave.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(braveSearchUrl, '_blank');
             } else {
@@ -1758,7 +1766,7 @@
 
         function translateQuestionWithGoogle() { 
             if (selectedRandomQuestionText) {
-                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
                 const translateUrl = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(translateUrl, '_blank');
             } else {
@@ -1768,7 +1776,7 @@
 
         function translateQuestionWithBing() { 
             if (selectedRandomQuestionText) {
-                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
                 const translateUrl = `https://www.bing.com/translator/?from=auto&to=en&text=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(translateUrl, '_blank');
             } else {
@@ -1778,7 +1786,7 @@
 
         function copyQuestionToClipboard() {
             if (selectedRandomQuestionText) {
-                const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+                const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
                 const tempTextArea = document.createElement('textarea');
                 tempTextArea.value = cleanedQuestion;
                 document.body.appendChild(tempTextArea);
@@ -1794,7 +1802,7 @@
         function buildSharePayload() {
             if (!selectedRandomQuestionText) return null;
             const pageUrl = window.location.href;
-            const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
+            const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
             return {
                 title: `Curious Souls Café - ${displayTopicName}`,
                 text: cleanedQuestion,
