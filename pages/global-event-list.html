@@ -249,7 +249,7 @@
         </p>
 
         <div class="mb-6 relative">
-            <input type="text" id="search-input" placeholder="Search titles or use #1, #5-10..." class="w-full p-3 pl-10 border border-gray-300 rounded-full focus:ring-purple-500 focus:border-purple-500 transition">
+            <input type="text" id="search-input" placeholder="Search title, #num (global/regional), or city:num (e.g., sg:5)" class="w-full p-3 pl-10 border border-gray-300 rounded-full focus:ring-purple-500 focus:border-purple-500 transition">
             <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
         </div>
 
@@ -265,7 +265,7 @@
         </div>
 
         <div id="event-list-container">
-            <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310949336/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
+             <a href="https://www.meetup.com/curious-souls-cafe-seoul/events/310949336/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Seoul">
                 <div class="event-card">
                     <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#102</span></div><div class="session-block local"><span class="session-label">Seoul</span><span class="session-value">#7</span></div></div>
                     <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ✨</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Seoul</span><span><i class="fas fa-calendar-alt"></i> Saturday, 13 September 2025</span><span><i class="fas fa-clock"></i> 5:00 pm</span></div></div>
@@ -895,7 +895,7 @@
             const event96Link = document.getElementById('event-96-link');
 
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) { // Show button after scrolling down 100px
+                if (window.scrollY > 100) {
                     backToTopButton.style.display = 'block';
                 } else {
                     backToTopButton.style.display = 'none';
@@ -903,24 +903,46 @@
             });
 
             backToTopButton.addEventListener('click', () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
             if (event96Link) {
                 event96Link.addEventListener('click', function(event) {
-                    event.preventDefault(); // Prevents the link from trying to navigate
+                    event.preventDefault();
                     alert('A link is unavailable for this event as it is a private gathering for the CSCKL WhatsApp Group.');
                 });
             }
 
-            // --- Filter and Search functionality ---
+            // --- Enhanced Filter and Search functionality ---
             const searchInput = document.getElementById('search-input');
             const filterContainer = document.getElementById('filter-container');
             const eventLinks = document.querySelectorAll('#event-list-container .event-link');
             const otherCities = ['Guangzhou', 'Macau', 'Shanghai', 'Shenzhen', 'Zoom'];
+            const cityPrefixMap = {
+                'hk': 'Hong Kong',
+                'kl': 'Kuala Lumpur',
+                'osaka': 'Osaka',
+                'seoul': 'Seoul',
+                'sg': 'Singapore',
+                'taipei': 'Taipei'
+            };
+
+            const parseNumbers = (query) => {
+                let targetNumbers = [];
+                if (query.includes('-')) {
+                    const parts = query.split('-').map(n => parseInt(n.trim(), 10));
+                    if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+                        const [start, end] = parts.sort((a, b) => a - b);
+                        for (let i = start; i <= end; i++) targetNumbers.push(i);
+                    }
+                } else if (query.includes(',')) {
+                    targetNumbers = query.split(',').map(n => parseInt(n.trim(), 10)).filter(n => !isNaN(n));
+                } else {
+                    const singleNum = parseInt(query, 10);
+                    if (!isNaN(singleNum)) targetNumbers.push(singleNum);
+                }
+                return targetNumbers;
+            };
 
             function filterAndSearchEvents() {
                 const activeFilter = filterContainer.querySelector('.filter-btn.active').dataset.filter;
@@ -929,61 +951,44 @@
                 eventLinks.forEach(link => {
                     const eventCity = link.dataset.city;
                     const eventTitle = link.querySelector('.event-title').textContent.toLowerCase();
-                    
-                    // Updated to search inside the new structure
-                    const eventNumberText = link.querySelector('.session-block.global .session-value').textContent; 
-                    const eventNumber = parseInt(eventNumberText.replace('#', ''), 10);
+                    const globalNumText = link.querySelector('.session-block.global .session-value').textContent;
+                    const regionalNumText = link.querySelector('.session-block.local .session-value').textContent;
+                    const globalNum = parseInt(globalNumText.replace('#', ''), 10);
+                    const regionalNum = parseInt(regionalNumText.replace('#', ''), 10);
 
                     // Determine filter match
-                    let filterMatch = false;
-                    if (activeFilter === 'all') {
-                        filterMatch = true;
-                    } else if (activeFilter === 'Other') {
-                        filterMatch = otherCities.includes(eventCity);
-                    } else {
-                        filterMatch = eventCity === activeFilter;
-                    }
+                    let filterMatch = (activeFilter === 'all') ||
+                                      (activeFilter === 'Other' && otherCities.includes(eventCity)) ||
+                                      (eventCity === activeFilter);
 
                     // Determine search match
                     let searchMatch = false;
-                    if (!searchTerm || searchTerm.length === 0) {
-                        searchMatch = true; // Show all if search is empty
-                    } else if (searchTerm.startsWith('#')) {
-                        const query = searchTerm.substring(1).trim();
-                        let targetNumbers = [];
-
-                        if (query.includes('-')) {
-                            const parts = query.split('-').map(n => parseInt(n.trim(), 10));
-                            if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-                                const [start, end] = parts.sort((a, b) => a - b);
-                                for (let i = start; i <= end; i++) {
-                                    targetNumbers.push(i);
-                                }
-                            }
-                        } else if (query.includes(',')) {
-                            targetNumbers = query.split(',')
-                                                 .map(n => parseInt(n.trim(), 10))
-                                                 .filter(n => !isNaN(n));
-                        } else {
-                            const singleNum = parseInt(query, 10);
-                            if (!isNaN(singleNum)) {
-                                targetNumbers.push(singleNum);
+                    if (!searchTerm) {
+                        searchMatch = true;
+                    } else if (searchTerm.includes(':')) {
+                        // City-specific regional search (e.g., "sg:5")
+                        const [prefix, numQuery] = searchTerm.split(':');
+                        const targetCity = cityPrefixMap[prefix];
+                        if (targetCity && targetCity === eventCity) {
+                            const targetNumbers = parseNumbers(numQuery);
+                            if (targetNumbers.includes(regionalNum)) {
+                                searchMatch = true;
                             }
                         }
-                        
-                        if (targetNumbers.includes(eventNumber)) {
+                    } else if (searchTerm.startsWith('#')) {
+                        // Universal number search (e.g., "#7")
+                        const query = searchTerm.substring(1).trim();
+                        const targetNumbers = parseNumbers(query);
+                        if (targetNumbers.includes(globalNum) || targetNumbers.includes(regionalNum)) {
                             searchMatch = true;
                         }
                     } else {
+                        // Title search
                         searchMatch = eventTitle.includes(searchTerm);
                     }
 
                     // Show or hide based on both conditions
-                    if (filterMatch && searchMatch) {
-                        link.style.display = 'block';
-                    } else {
-                        link.style.display = 'none';
-                    }
+                    link.style.display = (filterMatch && searchMatch) ? 'block' : 'none';
                 });
             }
 
@@ -1008,7 +1013,7 @@
                      if (window.history.length > 1) {
                         window.history.back();
                     } else {
-                        window.location.href = './index.html'; // Fallback for no history
+                        window.location.href = './index.html'; // Fallback
                     }
                 });
             }
@@ -1018,9 +1023,7 @@
                 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                 if (!prefersReduced) {
                     floatingBackButton.classList.add('attention');
-                    setTimeout(() => {
-                        floatingBackButton.classList.remove('attention');
-                    }, 3000);
+                    setTimeout(() => floatingBackButton.classList.remove('attention'), 3000);
                 } else {
                     floatingBackButton.style.outline = '2px solid #a855f7';
                     floatingBackButton.style.outlineOffset = '2px';
