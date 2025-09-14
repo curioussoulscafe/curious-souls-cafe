@@ -814,6 +814,28 @@
         .bottom-tip i {
             color: #f59e0b; /* amber-500 */
         }
+
+        /* ---- City filter buttons (from global-event-list.html) ---- */
+        .city-filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #c4b5fd; /* purple-300 */
+            border-radius: 9999px;
+            background-color: #ffffff;
+            color: #6b46c1; /* purple-700 */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.9rem;
+        }
+        .city-filter-btn:hover {
+            background-color: #f5f3ff; /* purple-50 */
+            border-color: #a78bfa; /* purple-400 */
+        }
+        .city-filter-btn.active {
+            background-color: #6b46c1; /* purple-700 */
+            color: #ffffff;
+            border-color: #6b46c1;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -842,6 +864,21 @@
         </div>
 
         <hr class="border-gray-300 my-4 w-full mx-auto">
+
+        <!-- NEW: City filter buttons (ported from global-event-list.html) -->
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by Meetup group/city:</label>
+            <div id="city-filter" class="flex flex-wrap justify-center gap-2">
+                <button class="city-filter-btn active" data-city="all">All</button>
+                <button class="city-filter-btn" data-city="Hong Kong">Hong Kong</button>
+                <button class="city-filter-btn" data-city="Kuala Lumpur">Kuala Lumpur</button>
+                <button class="city-filter-btn" data-city="Osaka">Osaka</button>
+                <button class="city-filter-btn" data-city="Seoul">Seoul</button>
+                <button class="city-filter-btn" data-city="Singapore">Singapore</button>
+                <button class="city-filter-btn" data-city="Taipei">Taipei</button>
+                <button class="city-filter-btn" data-city="Other">Let's Meet</button>
+            </div>
+        </div>
 
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by type:</label>
@@ -1033,13 +1070,15 @@
         const githubRawUrl = "../questions/global-curiosities.txt"; // Relative path to global-curiosities.txt
         // End Hardcoded Configuration
 
-        // Each question will be represented as { num: number, text: string, raw: string }
+        // Each question will be represented as { num: number, text: string, raw: string, city: string }
         // - num: 1-based line number in the source file
         // - text: the display text (as-is from file)
         // - raw: same as text (kept for clarity/compat)
+        // - city: parsed city from "(City Event N · Global M)" or "Other" if unmatched
         let fullItemList = []; // Master list of all questions (objects)
         let itemList = []; // The currently filtered list of questions (objects)
-        let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'middle', 'deeper'
+        let currentFilter = 'all'; // Difficulty filter: 'all', 'lighter', 'middle', 'deeper'
+        let currentCityFilter = 'all'; // City filter: 'all', specific city, or 'Other'
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
@@ -1121,7 +1160,38 @@
         const savedItemCountKey = `csc_saved_item_count_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
         const saveItemCountToggleKey = `csc_save_item_count_toggle_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
 
-        // Helper: build object list with numbers from text file lines
+        // Helper: parse city from the tail marker "(City Event N · Global M)"
+        function parseCityFromLine(trimmed) {
+            const match = trimmed.match(/\(([^()]+?)\s+Event\s+\d+\s*·\s*Global\s+\d+\)\s*$/);
+            if (!match) return 'Other';
+            const segment = match[1].trim();
+            // The city is the part before "Event"
+            // e.g. "Hong Kong" from "Hong Kong"
+            // For safety, handle cases with extra words like "Let's Meet in ...": map them later
+            return segment;
+        }
+
+        // Normalize city names to known set or "Other"
+        function normalizeCity(cityRaw) {
+            const known = ['Hong Kong','Kuala Lumpur','Osaka','Seoul','Singapore','Taipei'];
+            // Direct hit
+            if (known.includes(cityRaw)) return cityRaw;
+
+            // Map phrases found in question tail to a canonical city or Other
+            const map = {
+                'Guangzhou': 'Other',
+                'Macau': 'Other',
+                'Shanghai': 'Other',
+                'Shenzhen': 'Other',
+                'Zoom': 'Other',
+            };
+            if (map[cityRaw]) return map[cityRaw];
+
+            // Some lines may have "Let's Meet in X" elsewhere, but tail already standardized.
+            return 'Other';
+        }
+
+        // Helper: build object list with numbers and city from text file lines
         function buildQuestionsWithNumbers(text) {
             const lines = text.split('\n');
             const items = [];
@@ -1130,7 +1200,9 @@
                 const trimmed = lines[i].trim();
                 if (trimmed.length === 0) continue; // skip blank
                 num += 1;
-                items.push({ num, text: trimmed, raw: trimmed });
+                const cityRaw = parseCityFromLine(trimmed);
+                const city = normalizeCity(cityRaw);
+                items.push({ num, text: trimmed, raw: trimmed, city });
             }
             return items;
         }
@@ -1183,25 +1255,37 @@
             localStorage.setItem(savedQuestionsLocalStorageKey, JSON.stringify(currentChosenItems));
         }
 
-        /**
-         * Filters the master list of questions based on the current selection.
-         */
+        // Combined filters: difficulty + city
         function applyFilter() {
+            // Base by difficulty
+            let filtered = [];
             switch (currentFilter) {
                 case 'lighter':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌱'));
+                    filtered = fullItemList.filter(item => item.text.startsWith('🌱'));
                     break;
                 case 'deeper':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌀'));
+                    filtered = fullItemList.filter(item => item.text.startsWith('🌀'));
                     break;
                 case 'middle':
-                    itemList = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
+                    filtered = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
                     break;
                 default: // 'all'
-                    itemList = [...fullItemList];
+                    filtered = [...fullItemList];
                     break;
             }
-            
+
+            // City filter
+            if (currentCityFilter !== 'all') {
+                if (currentCityFilter === 'Other') {
+                    const otherCities = ['Other']; // already normalized above
+                    filtered = filtered.filter(item => otherCities.includes(item.city));
+                } else {
+                    filtered = filtered.filter(item => item.city === currentCityFilter);
+                }
+            }
+
+            itemList = filtered;
+
             // Reset the pool of available items for the randomizer
             availableRandomItems = [...itemList];
             
@@ -1457,7 +1541,7 @@
 
         function displayRandomItems() {
             if (itemList.length === 0) {
-                resultDisplay.textContent = "No questions available to pick. Please load questions first.";
+                resultDisplay.textContent = "No questions available to pick. Please adjust filters or load questions first.";
                 selectedRandomQuestionText = null;
                 selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
@@ -1538,11 +1622,26 @@
                     else notFound.push(n);
                 });
 
-                if (results.length === 0) {
+                // Apply city filter to numeric results as well
+                const cityFilteredResults = results.filter(item => {
+                    if (currentCityFilter === 'all') return true;
+                    if (currentCityFilter === 'Other') return item.city === 'Other';
+                    return item.city === currentCityFilter;
+                });
+
+                // Apply difficulty filter to numeric results as well
+                const difficultyFilteredResults = cityFilteredResults.filter(item => {
+                    if (currentFilter === 'lighter') return item.text.startsWith('🌱');
+                    if (currentFilter === 'deeper') return item.text.startsWith('🌀');
+                    if (currentFilter === 'middle') return !item.text.startsWith('🌱') && !item.text.startsWith('🌀');
+                    return true;
+                });
+
+                if (difficultyFilteredResults.length === 0) {
                     const notFoundMsg = notFound.length > 0 ? ` Not found: ${notFound.join(', ')}.` : '';
-                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFoundMsg}</p>`;
+                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers under current filters.${notFoundMsg}</p>`;
                 } else {
-                    let itemDivs = results.map(item => {
+                    let itemDivs = difficultyFilteredResults.map(item => {
                         const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
                         return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
                     });
@@ -1614,23 +1713,16 @@
         }
 
         // --- Search Engine Functions ---
-        /**
-         * Opens a new tab to search the selected question on Google.
-         */
         function searchQuestionOnGoogle() {
             if (selectedRandomQuestionText) {
                 const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
                 const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(googleSearchUrl, '_blank');
             } else {
-                // This scenario should be prevented by the floating button
                 alert("Please select a question first to look up on Google.");
             }
         }
 
-        /**
-         * Opens a new tab to search the selected question on Bing.
-         */
         function searchQuestionOnBing() {
             if (selectedRandomQuestionText) {
                 const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
@@ -1641,9 +1733,6 @@
             }
         }
 
-        /**
-         * Opens a new tab to search the selected question on DuckDuckGo.
-         */
         function searchQuestionOnDuckDuckGo() {
             if (selectedRandomQuestionText) {
                 const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
@@ -1654,9 +1743,6 @@
             }
         }
 
-        /**
-         * Opens a new tab to search the selected question on Brave Search.
-         */
         function searchQuestionOnBrave() {
             if (selectedRandomQuestionText) {
                 const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
@@ -1667,14 +1753,9 @@
             }
         }
 
-        /**
-         * Opens a new tab to translate the selected question using Google Translate.
-         */
         function translateQuestionWithGoogle() { 
             if (selectedRandomQuestionText) {
                 const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
-                // Use Google Translate with auto-detect source language and target English
-                // User can change target language on Google Translate page
                 const translateUrl = `https://translate.google.com/?sl=auto&tl=en&text=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(translateUrl, '_blank');
             } else {
@@ -1682,13 +1763,9 @@
             }
         }
 
-        /**
-         * Opens a new tab to translate the selected question using Bing Translate.
-         */
         function translateQuestionWithBing() { 
             if (selectedRandomQuestionText) {
                 const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
-                // Bing Translate with auto-detect source language and target English
                 const translateUrl = `https://www.bing.com/translator/?from=auto&to=en&text=${encodeURIComponent(cleanedQuestion)}`;
                 window.open(translateUrl, '_blank');
             } else {
@@ -1696,44 +1773,32 @@
             }
         }
 
-        /**
-         * Copies the selected question text to the clipboard.
-         */
         function copyQuestionToClipboard() {
             if (selectedRandomQuestionText) {
                 const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
-                // Create a temporary textarea element to copy the text
                 const tempTextArea = document.createElement('textarea');
                 tempTextArea.value = cleanedQuestion;
                 document.body.appendChild(tempTextArea);
                 tempTextArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempTextArea);
-                // Provide visual feedback
                 alert("Question copied to clipboard!");
             } else {
                 alert("No question selected to copy.");
             }
         }
 
-        /**
-         * Build payload for native share. Avoid URL duplication by putting
-         * question in text and page URL in url.
-         */
         function buildSharePayload() {
             if (!selectedRandomQuestionText) return null;
             const pageUrl = window.location.href;
             const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
             return {
                 title: `Curious Souls Café - ${displayTopicName}`,
-                text: cleanedQuestion, // question only
-                url: pageUrl           // URL separate; many share sheets append it
+                text: cleanedQuestion,
+                url: pageUrl
             };
         }
 
-        /**
-         * Attempt to share via Web Share API only; no platform-specific fallback.
-         */
         async function handleShareSelectedQuestion() {
             const payload = buildSharePayload();
             if (!payload) {
@@ -1750,69 +1815,45 @@
                     });
                     return;
                 } catch (err) {
-                    // If user cancels or share fails, we intentionally do nothing else
                     console.warn("Web Share API failed or was canceled:", err);
                 }
-            } else {
-                // No fallback -- intentionally do nothing (or optionally:
-                // alert("Sharing is not supported in this browser. Use the QR/link option instead.");
             }
         }
 
         // --- NEW: Numeric query parser (ranges and comma support) ---
-        /**
-         * Parses user input to detect if it's a numeric query, which MUST start with '#'.
-         * - Valid: "#12", "#1-3", "#1,3,4", "#1-3, 7, 10-12"
-         * - Invalid (treated as text search): "12", "1-3"
-         * Returns { isNumericQuery: boolean, numbers: Set<number> }
-         */
         function parseNumericQuery(input) {
             const raw = input.trim();
-            // A numeric query must now start with a '#' to distinguish it from a text search for a number.
             if (!raw.startsWith('#')) {
                 return { isNumericQuery: false, numbers: new Set() };
             }
-
-            // The query content is everything after the first '#'
             const queryContent = raw.substring(1).trim();
             if (queryContent.length === 0) return { isNumericQuery: false, numbers: new Set() };
-
-            // Quick test on the content: if it contains anything except digits, spaces, commas, or dashes,
-            // it's an invalid numeric query. We'll fall back to a text search of the original raw string.
             if (/[^0-9,\-\s]/.test(queryContent)) {
                 return { isNumericQuery: false, numbers: new Set() };
             }
-            
-            // Normalize: remove spaces from the content part. No need to remove '#' as we've handled the prefix.
             const normalized = queryContent.replace(/\s+/g, '');
             if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
-            
             const parts = normalized.split(',');
             const nums = new Set();
 
             for (const part of parts) {
                 if (part === '') continue;
                 if (part.includes('-')) {
-                    // Range
                     const [aStr, bStr] = part.split('-');
                     if (!/^\d+$/.test(aStr || '') || !/^\d+$/.test(bStr || '')) continue;
                     let a = parseInt(aStr, 10);
                     let b = parseInt(bStr, 10);
                     if (a <= 0 || b <= 0) continue;
-                    if (a > b) [a, b] = [b, a]; // support reverse ranges like 5-2
-                    // Guard against overly large expansions (safety)
+                    if (a > b) [a, b] = [b, a];
                     const span = b - a + 1;
-                    if (span > 2000) continue; // arbitrary cap to avoid accidental huge inputs
+                    if (span > 2000) continue;
                     for (let n = a; n <= b; n++) nums.add(n);
                 } else {
-                    // Single number
                     if (!/^\d+$/.test(part)) continue;
                     const n = parseInt(part, 10);
                     if (n > 0) nums.add(n);
                 }
             }
-
-            // If after parsing we have at least one number, treat as numeric query
             return { isNumericQuery: nums.size > 0, numbers: nums };
         }
         // --- END: Numeric query parser ---
@@ -1867,10 +1908,6 @@
         confirmClearNo.addEventListener('click', function() {
             confirmationModal.classList.remove('show');
         });
-
-        // backToTopicsButton.addEventListener('click', () => {
-            // window.location.href = '../index.html'; // Path back to index.html
-        // });
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 1) {
@@ -1968,7 +2005,6 @@
         });
 
         // --- QR Code Modal Logic ---
-        // Track whether Share was opened from the Getting Started ("Meaningful Talk") modal
         let shouldReturnToGettingStarted = false;
 
         function openShareModal(openedFromGettingStarted = false) {
@@ -1983,38 +2019,32 @@
             const qrOverlay = document.getElementById('qr-code-modal');
             qrOverlay.classList.remove('show');
 
-            // If we came from Getting Started modal, restore it; otherwise, do nothing.
             if (shouldReturnToGettingStarted) {
                 document.getElementById('getting-started-modal').classList.add('show');
             }
-            // Reset the flag after handling
             shouldReturnToGettingStarted = false;
         }
 
         document.getElementById('show-qr-code-link').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default link behavior
-            openShareModal(false); // Opened from page link at bottom; do not return to Getting Started
+            event.preventDefault();
+            openShareModal(false);
         });
 
-        // Inline share trigger inside Getting Started modal
         document.getElementById('inline-share-trigger').addEventListener('click', function(event) {
             event.preventDefault();
-            // Close the Getting Started modal and open Share modal, remembering origin
             document.getElementById('getting-started-modal').classList.remove('show');
-            openShareModal(true); // Opened from Getting Started; should return there on close
+            openShareModal(true);
         });
 
         document.getElementById('qr-modal-close-button').addEventListener('click', function() {
             closeShareModal();
         });
 
-        // Close modal if clicked outside content
         document.getElementById('qr-code-modal').addEventListener('click', function(event) {
-            if (event.target === document.getElementById('qr-code-modal')) { // Check if the click was on the overlay itself
+            if (event.target === document.getElementById('qr-code-modal')) {
                 closeShareModal();
             }
         });
-
 
         // Initial calls on page load
         loadSavedSettings();
@@ -2025,7 +2055,6 @@
         copyLinkTextLink.addEventListener('click', function(event) { // Changed to button
             event.preventDefault(); // Prevent default link behavior
             const pageUrl = window.location.href;
-            // Use a temporary textarea to copy the URL to clipboard
             const tempInput = document.createElement('textarea');
             tempInput.value = pageUrl;
             document.body.appendChild(tempInput);
@@ -2047,11 +2076,9 @@
                         url: window.location.href
                     });
                 } catch (err) {
-                    // Swallow errors silently as requested (no fallback)
                     console.warn('Share canceled or failed:', err);
                 }
             }
-            // If navigator.share is not available, do nothing (no fallback)
         });
         
         randomizeButton.addEventListener('click', function(event) {
@@ -2081,16 +2108,23 @@
                 filterButtons.forEach(btn => btn.classList.remove('active'));
 
                 if (isCurrentlyActive) {
-                    // If it was active, we are toggling it off. No button should be active.
-                    document.body; // no-op to keep structure similar
                     currentFilter = 'all'; // Default filter when none are selected
                 } else {
-                    // If it was not active, we are toggling it on.
-                    button.classList.add('active'); // Make the clicked button active
+                    button.classList.add('active');
                     currentFilter = button.dataset.filter; // Set the filter
                 }
+                applyFilter();
+            });
+        });
 
-                // Apply the filter based on the new state
+        // NEW: City filter listeners (ported behavior)
+        const cityButtons = document.querySelectorAll('#city-filter .city-filter-btn');
+        cityButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Toggle active button visual and set currentCityFilter
+                cityButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCityFilter = btn.getAttribute('data-city') || 'all';
                 applyFilter();
             });
         });
@@ -2098,11 +2132,9 @@
         // Event listener for the save count toggle
         saveCountToggle.addEventListener('change', function() {
             if (this.checked) {
-                // Save the current value and the toggle state
                 localStorage.setItem(savedItemCountKey, itemCountInput.value);
                 localStorage.setItem(saveItemCountToggleKey, 'true');
             } else {
-                // Remove the saved value and the toggle state
                 localStorage.removeItem(savedItemCountKey);
                 localStorage.removeItem(saveItemCountToggleKey);
             }
@@ -2110,7 +2142,6 @@
 
         // Event listener for the item count input
         itemCountInput.addEventListener('input', function() {
-            // If the save toggle is checked, update the stored value in real-time
             if (saveCountToggle.checked) {
                 localStorage.setItem(savedItemCountKey, this.value);
             }
