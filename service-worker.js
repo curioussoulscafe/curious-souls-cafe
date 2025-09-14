@@ -1,4 +1,4 @@
-const CACHE_NAME = '20250913';
+const CACHE_NAME = '20250914';
 
 const FILES_TO_CACHE = [
   // Root and main pages
