@@ -223,19 +223,20 @@
             This page lists all global sessions of Curious Souls Café. The <strong>Global Session number</strong> (#) matches the number on questions in <a href="global-curiosities.html" class="text-purple-600 hover:underline font-semibold">"Global Curiosities"</a>, showing when and where each question was created (the smaller # is for regions).
         </p>
 
+        <div class="mb-6 relative">
+            <input type="text" id="search-input" placeholder="Search titles or use #1, #5-10..." class="w-full p-3 pl-10 border border-gray-300 rounded-full focus:ring-purple-500 focus:border-purple-500 transition">
+            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        </div>
+
         <div id="filter-container" class="flex flex-wrap justify-center gap-2 mb-6">
             <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="Guangzhou">Guangzhou</button>
             <button class="filter-btn" data-filter="Hong Kong">Hong Kong</button>
             <button class="filter-btn" data-filter="Kuala Lumpur">Kuala Lumpur</button>
-            <button class="filter-btn" data-filter="Macau">Macau</button>
             <button class="filter-btn" data-filter="Osaka">Osaka</button>
             <button class="filter-btn" data-filter="Seoul">Seoul</button>
-            <button class="filter-btn" data-filter="Shanghai">Shanghai</button>
-            <button class="filter-btn" data-filter="Shenzhen">Shenzhen</button>
             <button class="filter-btn" data-filter="Singapore">Singapore</button>
             <button class="filter-btn" data-filter="Taipei">Taipei</button>
-            <button class="filter-btn" data-filter="Zoom">Zoom</button>
+            <button class="filter-btn" data-filter="Other">Outings</button>
         </div>
 
         <div id="event-list-container">
@@ -1196,31 +1197,85 @@
                 });
             }
 
-            // --- Filter functionality ---
+            // --- Filter and Search functionality ---
+            const searchInput = document.getElementById('search-input');
             const filterContainer = document.getElementById('filter-container');
             const eventLinks = document.querySelectorAll('#event-list-container .event-link');
-            
+            const otherCities = ['Guangzhou', 'Macau', 'Shanghai', 'Shenzhen', 'Zoom'];
+
+            function filterAndSearchEvents() {
+                const activeFilter = filterContainer.querySelector('.filter-btn.active').dataset.filter;
+                const searchTerm = searchInput.value.trim().toLowerCase();
+
+                eventLinks.forEach(link => {
+                    const eventCity = link.dataset.city;
+                    const eventTitle = link.querySelector('.event-title').textContent.toLowerCase();
+                    const eventNumberText = link.querySelector('.event-session-number span').textContent;
+                    const eventNumber = parseInt(eventNumberText.replace('#', ''), 10);
+
+                    // Determine filter match
+                    let filterMatch = false;
+                    if (activeFilter === 'all') {
+                        filterMatch = true;
+                    } else if (activeFilter === 'Other') {
+                        filterMatch = otherCities.includes(eventCity);
+                    } else {
+                        filterMatch = eventCity === activeFilter;
+                    }
+
+                    // Determine search match
+                    let searchMatch = false;
+                    if (searchTerm.startsWith('#')) {
+                        const query = searchTerm.substring(1).trim();
+                        let targetNumbers = [];
+
+                        if (query.includes('-')) {
+                            const parts = query.split('-').map(n => parseInt(n.trim(), 10));
+                            if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+                                const [start, end] = parts.sort((a, b) => a - b);
+                                for (let i = start; i <= end; i++) {
+                                    targetNumbers.push(i);
+                                }
+                            }
+                        } else if (query.includes(',')) {
+                            targetNumbers = query.split(',')
+                                                 .map(n => parseInt(n.trim(), 10))
+                                                 .filter(n => !isNaN(n));
+                        } else {
+                            const singleNum = parseInt(query, 10);
+                            if (!isNaN(singleNum)) {
+                                targetNumbers.push(singleNum);
+                            }
+                        }
+                        
+                        if (targetNumbers.includes(eventNumber)) {
+                            searchMatch = true;
+                        }
+                    } else {
+                        searchMatch = eventTitle.includes(searchTerm);
+                    }
+
+                    // Show or hide based on both conditions
+                    if (filterMatch && searchMatch) {
+                        link.style.display = 'block';
+                    } else {
+                        link.style.display = 'none';
+                    }
+                });
+            }
+
             if (filterContainer && eventLinks.length > 0) {
                 filterContainer.addEventListener('click', (e) => {
                     if (e.target.classList.contains('filter-btn')) {
-                        // Update active button state
-                        const buttons = filterContainer.querySelectorAll('.filter-btn');
-                        buttons.forEach(btn => btn.classList.remove('active'));
+                        filterContainer.querySelector('.filter-btn.active').classList.remove('active');
                         e.target.classList.add('active');
-
-                        const filterValue = e.target.getAttribute('data-filter');
-
-                        // Filter the event list
-                        eventLinks.forEach(link => {
-                            const eventCity = link.getAttribute('data-city');
-                            if (filterValue === 'all' || eventCity === filterValue) {
-                                link.style.display = 'block';
-                            } else {
-                                link.style.display = 'none';
-                            }
-                        });
+                        filterAndSearchEvents();
                     }
                 });
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', filterAndSearchEvents);
             }
 
             // Floating Back button behavior
