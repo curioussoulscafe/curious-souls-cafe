@@ -880,11 +880,17 @@
             </button>
         </div>
 
-        <div class="mb-8"> <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search or enter question no. (use prefix #):</label>
-            <input type="text" id="search-input" placeholder="Enter search term or #number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
-            <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
-                Search
-            </button>
+        <div class="mb-8">
+            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search for questions:</label>
+            <input type="text" id="search-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <div class="flex gap-2">
+                <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
+                    Search
+                </button>
+                <button id="clear-text-search-button" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+                    Clear
+                </button>
+            </div>
         </div>
 
         <div id="search-results" class="mb-4"></div>
@@ -1072,6 +1078,7 @@
         const saveCountToggle = document.getElementById('save-item-count-toggle');
         const searchInput = document.getElementById('search-input');
         const searchButton = document.getElementById('search-button');
+        const clearTextSearchButton = document.getElementById('clear-text-search-button');
         const searchResultsDisplay = document.getElementById('search-results');
         const totalQuestionsSpan = document.getElementById('total-questions');
         const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
@@ -1234,7 +1241,6 @@
             
             // Clear any previous search results as the source list has changed
             searchResultsDisplay.innerHTML = '';
-            searchButton.textContent = "Search";
             lastSearchTerm = "";
         }
 
@@ -1523,17 +1529,6 @@
             }
             const currentSearchTerm = searchInput.value.trim();
 
-            if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
-                searchResultsDisplay.innerHTML = '';
-                searchButton.textContent = "Search";
-                lastSearchTerm = "";
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
-                refreshFloatingLookupVisibility();
-                return;
-            }
-
             // --- NEW: Enhanced number query parsing (single, ranges, comma lists) ---
             const numericQueryResult = parseNumericQuery(currentSearchTerm);
             if (numericQueryResult.isNumericQuery) {
@@ -1548,7 +1543,6 @@
                 if (nums.length === 0) {
                     searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
                     lastSearchTerm = currentSearchTerm;
-                    searchButton.textContent = "Search / Clear Search";
                     return;
                 }
 
@@ -1577,7 +1571,6 @@
                 }
 
                 lastSearchTerm = currentSearchTerm;
-                searchButton.textContent = "Search / Clear Search";
                 return; // End execution for numeric/range/comma search
             }
             // --- END: Enhanced number parsing ---
@@ -1616,7 +1609,6 @@
                 addHighlightingAndChooseLogic(searchResultsDisplay);
             }
             lastSearchTerm = searchTerm;
-            searchButton.textContent = "Search / Clear Search";
             // Clear all selections when new search runs
             selectedRandomQuestionText = null;
             selectedRandomQuestionNum = null;
@@ -2080,6 +2072,22 @@
         randomizeButton.addEventListener('click', function(event) {
             event.preventDefault();
             displayRandomItems();
+        });
+
+        // Event listener for the new clear text search button
+        clearTextSearchButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            searchInput.value = ''; // Clear the input field
+
+            const selectedItemInSearch = searchResultsDisplay.querySelector('.item.selected-item');
+            if (selectedItemInSearch) {
+                selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
+                refreshFloatingLookupVisibility();
+            }
+            
+            searchResultsDisplay.innerHTML = '';
+            lastSearchTerm = "";
         });
 
         searchButton.addEventListener('click', function(event) {
