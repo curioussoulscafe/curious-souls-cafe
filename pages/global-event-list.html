@@ -230,6 +230,81 @@
                 bottom: 12px;
             }
         }
+
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(17, 24, 39, 0.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: #fff;
+            border-radius: 0.75rem;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .modal-header {
+            padding: 1rem 1.25rem 0.25rem;
+            text-align: center;
+        }
+        .modal-subheader {
+            padding: 0 1.25rem 0.75rem;
+            text-align: center;
+            color: #6b7280;
+        }
+        .city-list {
+            padding: 0.75rem 1rem 1rem;
+        }
+        .city-item a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            color: #374151;
+            background: #fafafa;
+            transition: border-color 0.2s, transform 0.1s, background 0.2s;
+        }
+        .city-item a:hover {
+            border-color: #a78bfa;
+            background: #f5f3ff;
+            transform: translateY(-1px);
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem 1rem;
+        }
+        .btn {
+            padding: 0.5rem 0.9rem;
+            border-radius: 0.625rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .btn-close {
+            background: #ffffff;
+            border-color: #e5e7eb;
+            color: #374151;
+        }
+        .btn-close:hover {
+            border-color: #9ca3af;
+            background: #f9fafb;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center p-4">
@@ -245,7 +320,7 @@
         <h2 class="text-xl font-semibold text-purple-600 text-center mb-4">Global Event List</h2> 
 
         <p class="text-gray-700 text-center mb-6 leading-relaxed">
-            Global events of Curious Souls Café at a glance, from each of our meetup groups.
+            Previous global events of Curious Souls Café at a glance. Visit our <a href="#" id="meetup-link" class="text-purple-700 font-semibold">meetup</a> groups for latest events.
         </p>
 
         <div class="mb-6 relative">
@@ -889,6 +964,59 @@
         &#9650; Top
     </button>
 
+    <!-- City chooser modal -->
+    <div id="city-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="city-modal-title" aria-modal="true">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="city-modal-title" class="text-xl font-semibold text-purple-700">Choose your city</h3>
+            </div>
+            <div class="modal-subheader">
+                <p class="text-sm">Find our events on Meetup:</p>
+            </div>
+            <div class="city-list space-y-2">
+                <div class="city-item">
+                    <a href="https://www.meetup.com/curious-souls-cafe/" target="_blank" rel="noopener noreferrer">
+                        <span>Hong Kong (and beyond)</span>
+                        <i class="fas fa-arrow-up-right-from-square text-purple-600"></i>
+                    </a>
+                </div>
+                <div class="city-item">
+                    <a href="https://www.meetup.com/curious-souls-cafe-singapore/" target="_blank" rel="noopener noreferrer">
+                        <span>Singapore</span>
+                        <i class="fas fa-arrow-up-right-from-square text-purple-600"></i>
+                    </a>
+                </div>
+                <div class="city-item">
+                    <a href="https://www.meetup.com/curious-souls-cafe-seoul/" target="_blank" rel="noopener noreferrer">
+                        <span>Seoul</span>
+                        <i class="fas fa-arrow-up-right-from-square text-purple-600"></i>
+                    </a>
+                </div>
+                <div class="city-item">
+                    <a href="https://www.meetup.com/curious-souls-cafe-taipei/" target="_blank" rel="noopener noreferrer">
+                        <span>Taipei</span>
+                        <i class="fas fa-arrow-up-right-from-square text-purple-600"></i>
+                    </a>
+                </div>
+                <div class="city-item">
+                    <a href="https://www.meetup.com/curious-souls-cafe-osaka/" target="_blank" rel="noopener noreferrer">
+                        <span>Osaka</span>
+                        <i class="fas fa-arrow-up-right-from-square text-purple-600"></i>
+                    </a>
+                </div>
+                <div class="city-item">
+                    <a href="https://www.meetup.com/curious-souls-cafe-kuala-lumpur/" target="_blank" rel="noopener noreferrer">
+                        <span>Kuala Lumpur</span>
+                        <i class="fas fa-arrow-up-right-from-square text-purple-600"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="city-modal-close" class="btn btn-close">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const backToTopButton = document.getElementById('back-to-top');
@@ -1034,6 +1162,42 @@
                 }
             }
             runBackButtonAttention();
+
+            // Modal logic for "meetup" link
+            const meetupLink = document.getElementById('meetup-link');
+            const cityModal = document.getElementById('city-modal');
+            const cityModalClose = document.getElementById('city-modal-close');
+
+            function openModal() {
+                cityModal.classList.add('active');
+                cityModal.setAttribute('aria-hidden', 'false');
+            }
+            function closeModal() {
+                cityModal.classList.remove('active');
+                cityModal.setAttribute('aria-hidden', 'true');
+            }
+
+            if (meetupLink) {
+                meetupLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openModal();
+                });
+            }
+            if (cityModalClose) {
+                cityModalClose.addEventListener('click', closeModal);
+            }
+            // Close when clicking outside modal content
+            cityModal.addEventListener('click', (e) => {
+                if (e.target === cityModal) {
+                    closeModal();
+                }
+            });
+            // Escape key closes modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && cityModal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
         });
     </script>
 </body>
