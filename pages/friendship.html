@@ -879,18 +879,31 @@
             </button>
         </div>
 
-        <div class="mb-8"> <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search or enter question no. (use prefix #):</label>
-            <input type="text" id="search-input" placeholder="Enter search term or #number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+        <div class="mb-4">
+            <label for="search-text-input" class="block text-gray-700 text-sm font-bold mb-2">Search by keyword:</label>
+            <input type="text" id="search-text-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <div class="flex gap-2">
-                <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
+                <button id="search-text-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
                     Search
                 </button>
-                <button id="clear-search-button" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+                <button id="clear-text-search-button" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
                     Clear
                 </button>
             </div>
         </div>
 
+        <hr class="border-gray-300 my-6 w-full mx-auto">
+
+        <div class="mb-4">
+            <label for="goto-number-input" class="block text-gray-700 text-sm font-bold mb-2">Go to question number:</label>
+            <div class="flex gap-2">
+                <input type="text" id="goto-number-input" placeholder="e.g., 5 or 10-15 or 5,8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <button id="goto-number-button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+                    Go
+                </button>
+            </div>
+        </div>
+        
         <div id="search-results" class="mb-4"></div>
 
         <div class="mt-8 pt-4 border-t border-gray-300">
@@ -1054,15 +1067,19 @@
         const resultDisplay = document.getElementById('random-result');
         const itemCountInput = document.getElementById('item-count');
         const saveCountToggle = document.getElementById('save-item-count-toggle');
-        const searchInput = document.getElementById('search-input');
-        const searchButton = document.getElementById('search-button');
-        const clearSearchButton = document.getElementById('clear-search-button'); // NEW: Clear Search Button
+        
+        // NEW: Element constants for separated search/goto fields
+        const searchTextInput = document.getElementById('search-text-input');
+        const searchTextButton = document.getElementById('search-text-button');
+        const clearTextSearchButton = document.getElementById('clear-text-search-button');
+        const gotoNumberInput = document.getElementById('goto-number-input');
+        const gotoNumberButton = document.getElementById('goto-number-button');
+        
         const searchResultsDisplay = document.getElementById('search-results');
         const totalQuestionsSpan = document.getElementById('total-questions');
         const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
         const clearChosenButton = document.getElementById('clear-chosen-button');
         const backToTopButton = document.getElementById('back-to-top');
-        // const backToTopicsButton = document.getElementById('back-to-topics'); 
         const appTitleElement = document.getElementById('app-title');
         const topicTitleElement = document.getElementById('topic-title');
 
@@ -1070,8 +1087,8 @@
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
         const confirmClearNo = document.getElementById('confirm-clear-no');
-        const confirmationText = document.getElementById('confirmation-text'); // new
-        const confirmationSubtext = document.getElementById('confirmation-subtext'); // new
+        const confirmationText = document.getElementById('confirmation-text');
+        const confirmationSubtext = document.getElementById('confirmation-subtext');
 
         // Modal elements for empty search confirmation
         const emptySearchModal = document.getElementById('empty-search-modal');
@@ -1495,69 +1512,69 @@
             refreshFloatingLookupVisibility();
         }
 
-        function displayFilteredItems() {
+        // NEW: Handles text search logic
+        function handleTextSearch() {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                refreshFloatingLookupVisibility();
                 return;
             }
-            const currentSearchTerm = searchInput.value.trim();
-
-            // --- NEW: Enhanced number query parsing (single, ranges, comma lists) ---
-            const numericQueryResult = parseNumericQuery(currentSearchTerm);
-            if (numericQueryResult.isNumericQuery) {
-                // Reset selections before showing new results
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                refreshFloatingLookupVisibility();
-
-                const nums = Array.from(numericQueryResult.numbers)
-                    .filter(n => Number.isInteger(n) && n > 0);
-                
-                if (nums.length === 0) {
-                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
-                    lastSearchTerm = currentSearchTerm;
-                    return;
-                }
-
-                // Build results in the order provided by the user
-                const results = [];
-                const notFound = [];
-                nums.forEach(n => {
-                    const found = fullItemList.find(item => item.num === n);
-                    if (found) results.push(found);
-                    else notFound.push(n);
-                });
-
-                if (results.length === 0) {
-                    const notFoundMsg = notFound.length > 0 ? ` Not found: ${notFound.join(', ')}.` : '';
-                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFoundMsg}</p>`;
-                } else {
-                    let itemDivs = results.map(item => {
-                        const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
-                        return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
-                    });
-                    const note = notFound.length > 0 
-                        ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>`
-                        : '';
-                    searchResultsDisplay.innerHTML = itemDivs.join('') + note;
-                    addHighlightingAndChooseLogic(searchResultsDisplay);
-                }
-
-                lastSearchTerm = currentSearchTerm;
-                return; // End execution for numeric/range/comma search
-            }
-            // --- END: Enhanced number parsing ---
+            const currentSearchTerm = searchTextInput.value.trim();
+            
+            // To avoid confusion, clear the other input field
+            gotoNumberInput.value = '';
 
             if (currentSearchTerm === "") {
-                // Show confirmation that empty search will display all
                 emptySearchModal.classList.add('show');
                 return;
             }
             
             executeSearch(currentSearchTerm.toLowerCase());
+        }
+
+        // NEW: Handles "Go to number" logic
+        function handleGoToNumber() {
+            const numberQuery = gotoNumberInput.value.trim();
+            if (numberQuery === '') return;
+
+            // To avoid confusion, clear the other input field
+            searchTextInput.value = '';
+            
+            const numericQueryResult = parseNumericQuery(numberQuery);
+            
+            selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
+            refreshFloatingLookupVisibility();
+
+            const nums = Array.from(numericQueryResult.numbers)
+                .filter(n => Number.isInteger(n) && n > 0);
+            
+            if (nums.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
+                return;
+            }
+
+            const results = [];
+            const notFound = [];
+            nums.forEach(n => {
+                const found = fullItemList.find(item => item.num === n);
+                if (found) results.push(found);
+                else notFound.push(n);
+            });
+
+            if (results.length === 0) {
+                const notFoundMsg = notFound.length > 0 ? ` Not found: ${notFound.join(', ')}.` : '';
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFoundMsg}</p>`;
+            } else {
+                let itemDivs = results.map(item => {
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                });
+                const note = notFound.length > 0 
+                    ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>`
+                    : '';
+                searchResultsDisplay.innerHTML = itemDivs.join('') + note;
+                addHighlightingAndChooseLogic(searchResultsDisplay);
+            }
         }
 
         function executeSearch(searchTerm) {
@@ -1750,31 +1767,20 @@
             }
         }
 
-        // --- NEW: Numeric query parser (ranges and comma support) ---
         /**
-         * Parses user input to detect if it's a numeric query, which MUST start with '#'.
-         * - Valid: "#12", "#1-3", "#1,3,4", "#1-3, 7, 10-12"
-         * - Invalid (treated as text search): "12", "1-3"
+         * Parses user input for numbers, ranges, and commas. No longer requires a '#' prefix.
+         * - Valid: "12", "1-3", "1,3,4", "1-3, 7, 10-12"
          * Returns { isNumericQuery: boolean, numbers: Set<number> }
          */
         function parseNumericQuery(input) {
-            const raw = input.trim();
-            // A numeric query must now start with a '#' to distinguish it from a text search for a number.
-            if (!raw.startsWith('#')) {
-                return { isNumericQuery: false, numbers: new Set() };
-            }
-
-            // The query content is everything after the first '#'
-            const queryContent = raw.substring(1).trim();
+            const queryContent = input.trim();
             if (queryContent.length === 0) return { isNumericQuery: false, numbers: new Set() };
-
-            // Quick test on the content: if it contains anything except digits, spaces, commas, or dashes,
-            // it's an invalid numeric query. We'll fall back to a text search of the original raw string.
+            
+            // Test if the content contains anything except valid characters for a number query.
             if (/[^0-9,\-\s]/.test(queryContent)) {
                 return { isNumericQuery: false, numbers: new Set() };
             }
             
-            // Normalize: remove spaces from the content part. No need to remove '#' as we've handled the prefix.
             const normalized = queryContent.replace(/\s+/g, '');
             if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
             
@@ -1784,41 +1790,33 @@
             for (const part of parts) {
                 if (part === '') continue;
                 if (part.includes('-')) {
-                    // Range
                     const [aStr, bStr] = part.split('-');
                     if (!/^\d+$/.test(aStr || '') || !/^\d+$/.test(bStr || '')) continue;
                     let a = parseInt(aStr, 10);
                     let b = parseInt(bStr, 10);
                     if (a <= 0 || b <= 0) continue;
-                    if (a > b) [a, b] = [b, a]; // support reverse ranges like 5-2
-                    // Guard against overly large expansions (safety)
+                    if (a > b) [a, b] = [b, a]; // support reverse ranges
                     const span = b - a + 1;
-                    if (span > 2000) continue; // arbitrary cap to avoid accidental huge inputs
+                    if (span > 2000) continue; // safety cap
                     for (let n = a; n <= b; n++) nums.add(n);
                 } else {
-                    // Single number
                     if (!/^\d+$/.test(part)) continue;
                     const n = parseInt(part, 10);
                     if (n > 0) nums.add(n);
                 }
             }
-
-            // If after parsing we have at least one number, treat as numeric query
             return { isNumericQuery: nums.size > 0, numbers: nums };
         }
-        // --- END: Numeric query parser ---
 
         // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
             // Decide which confirmation text to show based on current mode
             const highlightedItems = chosenQuestionsDisplay.querySelectorAll('.chosen-item.selected-chosen-item');
             if (highlightedItems.length > 0) {
-                // Selected-only mode
                 confirmationText.innerHTML = "Clear the selected question?";
                 confirmationSubtext.style.display = "block";
                 confirmationSubtext.textContent = "This will remove only the highlighted question from Saved.";
             } else {
-                // All-saved mode (or generic)
                 confirmationText.innerHTML = 'Are you sure you want to clear <span style="font-weight:800; text-decoration: underline;">ALL</span> saved questions?';
                 confirmationSubtext.style.display = "block";
                 confirmationSubtext.textContent = "Warning: This action will remove every saved question for this topic.";
@@ -1833,7 +1831,6 @@
                 highlightedItems.forEach(item => {
                     chosenQuestionsDisplay.removeChild(item);
                 });
-                // If selected question was among cleared, reset selection
                 const stillSelectedSaved = document.querySelector('.chosen-item.selected-chosen-item');
                 if (!stillSelectedSaved) {
                     selectedRandomQuestionText = document.querySelector('.item.selected-item')?.getAttribute('data-text') || null;
@@ -1858,10 +1855,6 @@
         confirmClearNo.addEventListener('click', function() {
             confirmationModal.classList.remove('show');
         });
-
-        // backToTopicsButton.addEventListener('click', () => {
-            // window.location.href = '../index.html'; // Path back to index.html
-        // });
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 1) {
@@ -1896,10 +1889,10 @@
             gettingStartedModal.classList.remove('show');
         });
         
-        // Consolidated Look Up Online Button Listener (keep original but route to modal)
+        // Consolidated Look Up Online Button Listener
         lookUpOnlineBtn.addEventListener('click', function() {
             if (selectedRandomQuestionText) {
-                searchEngineModal.classList.add('show'); // Show the choice modal
+                searchEngineModal.classList.add('show');
             } else {
                 alert("Please select a question first to look up online / translate.");
             }
@@ -1908,115 +1901,97 @@
         // Floating Look Up / Translate Button Listener
         floatingLookupBtn.addEventListener('click', function() {
             if (selectedRandomQuestionText) {
-                searchEngineModal.classList.add('show'); // Show the choice modal
+                searchEngineModal.classList.add('show');
             } else {
                 alert("Please select a question first to look up online / translate.");
             }
         });
 
-        // NEW: Floating Share Button Listener (native share only)
+        // Floating Share Button Listener
         floatingShareBtn.addEventListener('click', handleShareSelectedQuestion);
 
         // Search Engine/Translate Choice Modal Listeners
         searchGoogleChoiceBtn.addEventListener('click', function() {
             searchQuestionOnGoogle();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
+            searchEngineModal.classList.remove('show');
         });
-
         searchBingChoiceBtn.addEventListener('click', function() {
             searchQuestionOnBing();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
+            searchEngineModal.classList.remove('show');
         });
-
         searchDuckDuckGoChoiceBtn.addEventListener('click', function() { 
             searchQuestionOnDuckDuckGo();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
+            searchEngineModal.classList.remove('show');
         });
-
         searchBraveChoiceBtn.addEventListener('click', function() { 
             searchQuestionOnBrave();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
+            searchEngineModal.classList.remove('show');
         });
-
         translateGoogleChoiceBtn.addEventListener('click', function() { 
             translateQuestionWithGoogle();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
+            searchEngineModal.classList.remove('show');
         });
-
         translateBingChoiceBtn.addEventListener('click', function() { 
             translateQuestionWithBing();
-            searchEngineModal.classList.remove('show'); // Hide modal after choice
+            searchEngineModal.classList.remove('show');
         });
-
-        // Copy Question Listener
         copyQuestionBtn.addEventListener('click', function() {
             copyQuestionToClipboard();
-            searchEngineModal.classList.remove('show'); // Hide modal after copying
+            searchEngineModal.classList.remove('show');
         });
-
         closeSearchEngineModalBtn.addEventListener('click', function() {
-            searchEngineModal.classList.remove('show'); // Hide modal on cancel
+            searchEngineModal.classList.remove('show');
         });
 
         // --- QR Code Modal Logic ---
-        // Track whether Share was opened from the Getting Started ("Meaningful Talk") modal
         let shouldReturnToGettingStarted = false;
 
         function openShareModal(openedFromGettingStarted = false) {
             shouldReturnToGettingStarted = openedFromGettingStarted;
             const pageUrl = window.location.href;
             const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
-            document.getElementById('qr-modal-image').src = qrCodeApiUrl; // Set the QR code image source
-            document.getElementById('qr-code-modal').classList.add('show'); // Show the modal
+            document.getElementById('qr-modal-image').src = qrCodeApiUrl;
+            document.getElementById('qr-code-modal').classList.add('show');
         }
 
         function closeShareModal() {
             const qrOverlay = document.getElementById('qr-code-modal');
             qrOverlay.classList.remove('show');
-
-            // If we came from Getting Started modal, restore it; otherwise, do nothing.
             if (shouldReturnToGettingStarted) {
                 document.getElementById('getting-started-modal').classList.add('show');
             }
-            // Reset the flag after handling
             shouldReturnToGettingStarted = false;
         }
 
         document.getElementById('show-qr-code-link').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default link behavior
-            openShareModal(false); // Opened from page link at bottom; do not return to Getting Started
+            event.preventDefault();
+            openShareModal(false);
         });
 
-        // Inline share trigger inside Getting Started modal
         document.getElementById('inline-share-trigger').addEventListener('click', function(event) {
             event.preventDefault();
-            // Close the Getting Started modal and open Share modal, remembering origin
             document.getElementById('getting-started-modal').classList.remove('show');
-            openShareModal(true); // Opened from Getting Started; should return there on close
+            openShareModal(true);
         });
 
         document.getElementById('qr-modal-close-button').addEventListener('click', function() {
             closeShareModal();
         });
 
-        // Close modal if clicked outside content
         document.getElementById('qr-code-modal').addEventListener('click', function(event) {
-            if (event.target === document.getElementById('qr-code-modal')) { // Check if the click was on the overlay itself
+            if (event.target === document.getElementById('qr-code-modal')) {
                 closeShareModal();
             }
         });
-
 
         // Initial calls on page load
         loadSavedSettings();
         fetchQuestions();
 
-        // Copy Link Button Logic (now a text link)
-        const copyLinkTextLink = document.getElementById('copy-link-text-link'); // Changed ID
-        copyLinkTextLink.addEventListener('click', function(event) { // Changed to button
-            event.preventDefault(); // Prevent default link behavior
+        const copyLinkTextLink = document.getElementById('copy-link-text-link');
+        copyLinkTextLink.addEventListener('click', function(event) {
+            event.preventDefault();
             const pageUrl = window.location.href;
-            // Use a temporary textarea to copy the URL to clipboard
             const tempInput = document.createElement('textarea');
             tempInput.value = pageUrl;
             document.body.appendChild(tempInput);
@@ -2026,7 +2001,6 @@
             alert("Link copied to clipboard!");
         });
 
-        // Share Link Button Logic (Web Share API only; no fallback)
         const shareLinkButton = document.getElementById('share-link-button');
         shareLinkButton.addEventListener('click', async (event) => {
             event.preventDefault();
@@ -2038,11 +2012,9 @@
                         url: window.location.href
                     });
                 } catch (err) {
-                    // Swallow errors silently as requested (no fallback)
                     console.warn('Share canceled or failed:', err);
                 }
             }
-            // If navigator.share is not available, do nothing (no fallback)
         });
         
         randomizeButton.addEventListener('click', function(event) {
@@ -2050,76 +2022,73 @@
             displayRandomItems();
         });
 
-        // NEW: Event listener for the clear search button
-        clearSearchButton.addEventListener('click', function(event) {
+        // NEW: Event listener for the clear text search button
+        clearTextSearchButton.addEventListener('click', function(event) {
             event.preventDefault();
-            searchInput.value = ''; // Clear the input field
+            searchTextInput.value = ''; // Clear the input field
 
-            // Before clearing the HTML, check if the currently selected item is inside
             const selectedItemInSearch = searchResultsDisplay.querySelector('.item.selected-item');
             if (selectedItemInSearch) {
-                // If the selection is from the search results, clear the global selection state
                 selectedRandomQuestionText = null;
                 selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
             }
             
-            searchResultsDisplay.innerHTML = ''; // Clear the results display
-            lastSearchTerm = ""; // Reset the last search term tracker
+            searchResultsDisplay.innerHTML = '';
+            lastSearchTerm = "";
         });
 
-        searchButton.addEventListener('click', function(event) {
+        // UPDATED: Event listeners for new search and go-to-number buttons
+        searchTextButton.addEventListener('click', function(event) {
             event.preventDefault();
-            displayFilteredItems();
+            handleTextSearch();
         });
 
-        searchInput.addEventListener('keypress', function(event) {
+        searchTextInput.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
-                displayFilteredItems();
+                handleTextSearch();
+            }
+        });
+        
+        gotoNumberButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            handleGoToNumber();
+        });
+
+        gotoNumberInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                handleGoToNumber();
             }
         });
 
-        // NEW: Event Listeners for Difficulty Filter Buttons
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const isCurrentlyActive = button.classList.contains('active');
-
-                // First, clear active state from all buttons to ensure mutual exclusivity
                 filterButtons.forEach(btn => btn.classList.remove('active'));
-
                 if (isCurrentlyActive) {
-                    // If it was active, we are toggling it off. No button should be active.
-                    document.body; // no-op to keep structure similar
-                    currentFilter = 'all'; // Default filter when none are selected
+                    currentFilter = 'all';
                 } else {
-                    // If it was not active, we are toggling it on.
-                    button.classList.add('active'); // Make the clicked button active
-                    currentFilter = button.dataset.filter; // Set the filter
+                    button.classList.add('active');
+                    currentFilter = button.dataset.filter;
                 }
-
-                // Apply the filter based on the new state
                 applyFilter();
             });
         });
 
-        // Event listener for the save count toggle
         saveCountToggle.addEventListener('change', function() {
             if (this.checked) {
-                // Save the current value and the toggle state
                 localStorage.setItem(savedItemCountKey, itemCountInput.value);
                 localStorage.setItem(saveItemCountToggleKey, 'true');
             } else {
-                // Remove the saved value and the toggle state
                 localStorage.removeItem(savedItemCountKey);
                 localStorage.removeItem(saveItemCountToggleKey);
             }
         });
 
-        // Event listener for the item count input
         itemCountInput.addEventListener('input', function() {
-            // If the save toggle is checked, update the stored value in real-time
             if (saveCountToggle.checked) {
                 localStorage.setItem(savedItemCountKey, this.value);
             }
