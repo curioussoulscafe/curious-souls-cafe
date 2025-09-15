@@ -598,6 +598,7 @@
     // Keys
     const SAVED_PREFIX = 'csc_saved_questions_';
     const ACTIONS_KEY = 'csc_saved_actions_action_prompts';
+    const UNDO_PROMPT_KEY = 'csc_undo_prompt_shown'; // Key for one-time undo prompt
     const CACHE_VERSION = '20250914-03'; // Must match version in topic pages to find cached lists
 
     const searchInput = document.getElementById('search-input');
@@ -652,6 +653,13 @@
     let selectedText = null;
     let selectedType = null; // 'topic' | 'action'
     let selectedTopicId = null; // kebab-case topic id when type === 'topic'
+
+    // NEW: State for session-only deletions. This holds the state for the lifetime of the page.
+    // It's populated once on page load and is the source of truth for what questions to render.
+    let allKnownQuestions = new Map();
+    // This set tracks questions that are visually struck-through but will reappear on page refresh.
+    let softDeletedQuestions = new Set();
+
 
     // NEW: Deletion Confirmation Modal Logic
     /**
@@ -796,29 +804,38 @@
     function render() {
       const query = searchInput.value.trim().toLowerCase();
 
-      const topics = readAllSavedQuestions();
-      const totalTopicsWithSaved = topics.filter(t => t.questions.length > 0).length;
-      const totalQuestions = topics.reduce((sum, t) => sum + t.questions.length, 0);
-
+      // Read current data from storage for counts and state, but render based on allKnownQuestions
+      const topicsFromStorage = readAllSavedQuestions();
+      const totalActiveQuestions = topicsFromStorage.reduce((sum, t) => sum + t.questions.length, 0);
       const allActions = readSavedActions();
       const totalActions = allActions.length;
+
+      const topicsWithSavedQuestions = Array.from(allKnownQuestions.values()).filter(data => data.questions.length > 0).length;
+
       const filteredActions = query
         ? allActions.filter(a => stripPrefix(a).toLowerCase().includes(query))
         : allActions.slice();
 
-      summaryEl.textContent = `Topics with saved questions: ${totalTopicsWithSaved} • Total saved questions: ${totalQuestions} • Saved actions: ${totalActions}`;
+      summaryEl.textContent = `Topics with saved questions: ${topicsWithSavedQuestions} • Total saved questions: ${totalActiveQuestions} • Saved actions: ${totalActions}`;
 
       resultsEl.innerHTML = '';
-      let anyQuestionShown = false;
+      let anyTopicShown = false;
 
-      topics.forEach(topic => {
-        if (topic.questions.length === 0) return;
-        const filtered = query
-          ? topic.questions.filter(q => stripPrefix(q).toLowerCase().includes(query))
-          : topic.questions.slice();
-        if (filtered.length === 0) return;
+      // Iterate over the state map which holds ALL questions from page load. This ensures topic shells remain.
+      allKnownQuestions.forEach((topicData, topicKey) => {
+        const { topicName, topicId, questions: allQuestionsForTopic, questionNumberMap } = topicData;
+        
+        // Filter the full list of questions for this topic (both active and soft-deleted)
+        const filteredQuestions = query
+            ? allQuestionsForTopic.filter(q => stripPrefix(q).toLowerCase().includes(query))
+            : allQuestionsForTopic.slice();
 
-        anyQuestionShown = true;
+        // Hide topic ONLY if a search is active and finds nothing in this topic
+        if (query && filteredQuestions.length === 0) {
+            return;
+        }
+
+        anyTopicShown = true;
 
         const card = document.createElement('div');
         card.className = 'topic-card';
@@ -830,11 +847,12 @@
         left.className = 'flex items-center gap-2';
         const title = document.createElement('h3');
         title.className = 'text-lg font-semibold section-title';
-        title.textContent = topic.topicName;
+        title.textContent = topicName;
 
         const count = document.createElement('span');
         count.className = 'badge';
-        count.textContent = `${filtered.length} / ${topic.questions.length}`;
+        const currentActiveCount = (topicsFromStorage.find(t => t.key === topicKey) || { questions: [] }).questions.length;
+        count.textContent = `${currentActiveCount} / ${allQuestionsForTopic.length}`;
 
         left.appendChild(title);
         left.appendChild(count);
@@ -845,9 +863,8 @@
         const openTopicBtn = document.createElement('a');
         openTopicBtn.className = 'pill';
         openTopicBtn.innerHTML = '<i class="fa-solid fa-up-right-from-square mr-1"></i>Open';
-        const kebab = kebabizeTopicId(topic.topicId);
+        const kebab = kebabizeTopicId(topicId);
         openTopicBtn.href = `./${kebab}.html`;
-        // openTopicBtn.target = '_blank';
         openTopicBtn.rel = 'noopener noreferrer';
         openTopicBtn.title = 'Open topic page';
 
@@ -855,8 +872,11 @@
         clearTopicBtn.className = 'pill danger';
         clearTopicBtn.innerHTML = '<i class="fa-solid fa-trash-can mr-1"></i>Clear';
         clearTopicBtn.addEventListener('click', () => {
-          showDeleteConfirmation(`Clear all saved questions for “${topic.topicName}”?`, () => {
-              saveTopicList(topic.key, []);
+          showDeleteConfirmation(`Clear all saved questions for “${topicName}”?`, () => {
+              // Instead of deleting, we "soft delete" all questions for this topic for this session.
+              const questionsToSoftDelete = allKnownQuestions.get(topicKey)?.questions || [];
+              questionsToSoftDelete.forEach(q => softDeletedQuestions.add(q));
+              saveTopicList(topicKey, []); // Empty the active list in localStorage
               render();
           });
         });
@@ -879,56 +899,90 @@
         const list = document.createElement('div');
         list.className = 'space-y-2';
 
-        filtered.forEach(q => {
-          const chip = document.createElement('div');
-          chip.className = 'question-chip';
+        if (allQuestionsForTopic.length === 0) {
+            list.innerHTML = `<p class="subtle text-sm italic px-2">No questions saved for this topic.</p>`;
+        } else if (query && filteredQuestions.length === 0) {
+            list.innerHTML = `<p class="subtle text-sm italic px-2">No saved questions match your search.</p>`;
+        } else {
+            filteredQuestions.forEach(q => {
+                const isDeleted = softDeletedQuestions.has(q);
 
-          // Add question number if available, but NOT for "All in One" topic
-          const questionNumber = topic.questionNumberMap.get(q);
-          if (questionNumber && topic.topicName.trim().toLowerCase() !== 'all in one') {
-              chip.setAttribute('data-qn', `#${questionNumber}`);
-          }
+                const chip = document.createElement('div');
+                chip.className = 'question-chip';
 
-          const txt = document.createElement('div');
-          txt.className = 'question-text wrap-anywhere';
-          txt.textContent = q;
-
-          const qa = document.createElement('div');
-          qa.className = 'question-actions flex items-center gap-2 shrink-0';
-
-          const removeBtn = document.createElement('button');
-          removeBtn.className = 'pill danger';
-          removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-          removeBtn.title = 'Remove from saved';
-          removeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const questionText = stripPrefix(q);
-            const truncatedText = questionText.length > 50 ? questionText.substring(0, 50) + '...' : questionText;
-            showDeleteConfirmation(`Remove "${truncatedText}"?`, () => {
-                const current = readAllSavedQuestions().find(t => t.key === topic.key);
-                if (!current) return;
-                const idx = current.questions.indexOf(q);
-                if (idx >= 0) {
-                    current.questions.splice(idx, 1);
-                    saveTopicList(topic.key, current.questions);
-                    render();
+                // Add question number if available, but NOT for "All in One" topic
+                const questionNumber = questionNumberMap.get(q);
+                if (questionNumber && topicName.trim().toLowerCase() !== 'all in one') {
+                    chip.setAttribute('data-qn', `#${questionNumber}`);
                 }
+
+                const txt = document.createElement('div');
+                txt.className = 'question-text wrap-anywhere';
+                txt.textContent = q;
+                // Apply strikethrough style if soft-deleted
+                if (isDeleted) {
+                    txt.style.textDecoration = 'line-through';
+                    txt.style.opacity = '0.7';
+                }
+
+                const qa = document.createElement('div');
+                qa.className = 'question-actions flex items-center gap-2 shrink-0';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'pill danger';
+                // Change button to Undo if soft-deleted
+                if (isDeleted) {
+                    removeBtn.innerHTML = '<i class="fa-solid fa-undo"></i>';
+                    removeBtn.title = 'Undo remove';
+                } else {
+                    removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                    removeBtn.title = 'Remove from saved';
+                }
+
+                removeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // NO confirmation prompt for single-question deletion
+                    const currentList = JSON.parse(localStorage.getItem(topicKey) || '[]');
+                    
+                    if (softDeletedQuestions.has(q)) {
+                        // --- UNDO a deletion ---
+                        softDeletedQuestions.delete(q);
+                        if (!currentList.includes(q)) {
+                            currentList.push(q);
+                            saveTopicList(topicKey, currentList);
+                        }
+                    } else {
+                        // --- PERFORM a soft deletion ---
+                        softDeletedQuestions.add(q);
+                        const idx = currentList.indexOf(q);
+                        if (idx > -1) {
+                            currentList.splice(idx, 1);
+                            saveTopicList(topicKey, currentList);
+                        }
+                        // Show a one-time prompt about the undo feature
+                        const promptShown = localStorage.getItem(UNDO_PROMPT_KEY);
+                        if (!promptShown) {
+                            alert("You can undo this by clicking the button again before refreshing the page.\n\n(Undo is only available for single questions, not for clearing entire topics.)");
+                            localStorage.setItem(UNDO_PROMPT_KEY, 'true');
+                        }
+                    }
+                    render(); // Re-render to update the UI state
+                });
+
+                qa.appendChild(removeBtn);
+
+                chip.appendChild(txt);
+                chip.appendChild(qa);
+
+                chip.addEventListener('click', () => toggleChipSelection(chip, {
+                    type: 'topic',
+                    text: q,
+                    topicId: kebabizeTopicId(topicId)
+                }));
+
+                list.appendChild(chip);
             });
-          });
-
-          qa.appendChild(removeBtn);
-
-          chip.appendChild(txt);
-          chip.appendChild(qa);
-
-          chip.addEventListener('click', () => toggleChipSelection(chip, {
-            type: 'topic',
-            text: q,
-            topicId: kebabizeTopicId(topic.topicId)
-          }));
-
-          list.appendChild(chip);
-        });
+        }
 
         collapseBtn.addEventListener('click', () => {
           list.classList.add('hidden');
@@ -948,9 +1002,12 @@
 
       renderActionsSection(filteredActions, totalActions);
 
-      const anyShown = anyQuestionShown || (totalActions > 0 && filteredActions.length > 0);
-      emptyStateEl.classList.toggle('hidden', anyShown);
-      if (!anyShown) clearAllSelected();
+      const anyActionShown = totalActions > 0 && filteredActions.length > 0;
+      const anyDataOnPage = Array.from(allKnownQuestions.values()).some(d => d.questions.length > 0) || totalActions > 0;
+
+      // Show empty state only if there was never anything to show on page load.
+      emptyStateEl.classList.toggle('hidden', anyDataOnPage);
+      if (!anyTopicShown && !anyActionShown) clearAllSelected();
     }
 
     function renderActionsSection(filteredActions, totalActions) {
@@ -1101,6 +1158,9 @@
             }
             keys.forEach(k => localStorage.removeItem(k));
             localStorage.removeItem(ACTIONS_KEY);
+            // Clear the in-memory state as well
+            allKnownQuestions.clear();
+            softDeletedQuestions.clear();
             render();
             clearAllSelected();
         });
@@ -1507,8 +1567,24 @@
       setTimeout(runBackButtonAttention, 0);
     }
 
-    // Initial render
-    render();
+    // NEW: Initialize state and perform first render
+    function initializeAndRenderFirstTime() {
+        const topics = readAllSavedQuestions();
+        topics.forEach(topic => {
+            // Populate the in-memory state with all questions found on page load.
+            // This map becomes the source of truth for what questions EXIST for a topic in this session.
+            allKnownQuestions.set(topic.key, {
+                topicName: topic.topicName,
+                topicId: topic.topicId,
+                questions: [...topic.questions], // A copy of questions at page load
+                questionNumberMap: topic.questionNumberMap
+            });
+        });
+        render(); // Initial render
+    }
+
+    // Initial load
+    initializeAndRenderFirstTime();
   </script>
 </body>
 </html>
