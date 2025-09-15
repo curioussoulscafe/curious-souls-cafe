@@ -771,11 +771,28 @@
         </div>
 
         <div class="mb-4">
-            <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search or enter question no. (use prefix #):</label>
-            <input type="text" id="search-input" placeholder="Enter search term or #number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
-            <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
-                Search
-            </button>
+            <label for="search-text-input" class="block text-gray-700 text-sm font-bold mb-2">Search by keyword:</label>
+            <input type="text" id="search-text-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <div class="flex gap-2">
+                <button id="search-text-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
+                    Search
+                </button>
+                <button id="clear-text-search-button" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+                    Clear
+                </button>
+            </div>
+        </div>
+
+        <hr class="border-gray-300 my-6 w-full mx-auto">
+
+        <div class="mb-4">
+            <label for="goto-number-input" class="block text-gray-700 text-sm font-bold mb-2">Go to question number:</label>
+            <div class="flex gap-2">
+                <input type="text" id="goto-number-input" placeholder="e.g., 5 or 10-15 or 5,8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <button id="goto-number-button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+                    Go
+                </button>
+            </div>
         </div>
 
         <div id="search-results" class="mb-4"></div>
@@ -955,8 +972,13 @@
         const resultDisplay = document.getElementById('random-result');
         const itemCountInput = document.getElementById('item-count');
         const saveCountToggle = document.getElementById('save-item-count-toggle');
-        const searchInput = document.getElementById('search-input');
-        const searchButton = document.getElementById('search-button');
+        
+        const searchTextInput = document.getElementById('search-text-input');
+        const searchTextButton = document.getElementById('search-text-button');
+        const clearTextSearchButton = document.getElementById('clear-text-search-button');
+        const gotoNumberInput = document.getElementById('goto-number-input');
+        const gotoNumberButton = document.getElementById('goto-number-button');
+        
         const searchResultsDisplay = document.getElementById('search-results');
         const totalQuestionsSpan = document.getElementById('total-questions');
         const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
@@ -1149,7 +1171,6 @@
             displayRandomItems();
             // Clear search results when filter changes
             searchResultsDisplay.innerHTML = '';
-            searchButton.textContent = "Search";
             lastSearchTerm = "";
         }
 
@@ -1315,62 +1336,14 @@
             refreshFloatingLookupVisibility();
         }
 
-        function displayFilteredItems() {
-            if (fullItemList.length === 0) {
+        function handleTextSearch() {
+            if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                refreshFloatingLookupVisibility();
                 return;
             }
-            const currentSearchTerm = searchInput.value.trim();
-
-            if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
-                searchResultsDisplay.innerHTML = '';
-                searchButton.textContent = "Search";
-                lastSearchTerm = "";
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
-                refreshFloatingLookupVisibility();
-                return;
-            }
-
-            const numericQueryResult = parseNumericQuery(currentSearchTerm);
-            if (numericQueryResult.isNumericQuery) {
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                refreshFloatingLookupVisibility();
-
-                const nums = Array.from(numericQueryResult.numbers).filter(n => Number.isInteger(n) && n > 0);
-                
-                if (nums.length === 0) {
-                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
-                } else {
-                    const results = [];
-                    const notFound = [];
-                    nums.forEach(n => {
-                        const found = fullItemList.find(item => item.num === n);
-                        if (found) results.push(found);
-                        else notFound.push(n);
-                    });
-
-                    if (results.length === 0) {
-                        searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers found.</p>`;
-                    } else {
-                        let itemDivs = results.map(item => {
-                            const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
-                            return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
-                        });
-                        const note = notFound.length > 0 ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>` : '';
-                        searchResultsDisplay.innerHTML = itemDivs.join('') + note;
-                        addHighlightingAndChooseLogic(searchResultsDisplay);
-                    }
-                }
-                lastSearchTerm = currentSearchTerm;
-                searchButton.textContent = "Search / Clear Search";
-                return;
-            }
+            const currentSearchTerm = searchTextInput.value.trim();
+            
+            gotoNumberInput.value = '';
 
             if (currentSearchTerm === "") {
                 emptySearchModal.classList.add('show');
@@ -1378,6 +1351,50 @@
             }
             
             executeSearch(currentSearchTerm.toLowerCase());
+        }
+
+        function handleGoToNumber() {
+            const numberQuery = gotoNumberInput.value.trim();
+            if (numberQuery === '') return;
+
+            searchTextInput.value = '';
+            
+            const numericQueryResult = parseNumericQuery(numberQuery);
+            
+            selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
+            refreshFloatingLookupVisibility();
+
+            const nums = Array.from(numericQueryResult.numbers)
+                .filter(n => Number.isInteger(n) && n > 0);
+            
+            if (nums.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
+                return;
+            }
+
+            const results = [];
+            const notFound = [];
+            nums.forEach(n => {
+                const found = fullItemList.find(item => item.num === n);
+                if (found) results.push(found);
+                else notFound.push(n);
+            });
+
+            if (results.length === 0) {
+                const notFoundMsg = notFound.length > 0 ? ` Not found: ${notFound.join(', ')}.` : '';
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFoundMsg}</p>`;
+            } else {
+                let itemDivs = results.map(item => {
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                });
+                const note = notFound.length > 0 
+                    ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>`
+                    : '';
+                searchResultsDisplay.innerHTML = itemDivs.join('') + note;
+                addHighlightingAndChooseLogic(searchResultsDisplay);
+            }
         }
 
         function executeSearch(searchTerm) {
@@ -1400,7 +1417,6 @@
                 addHighlightingAndChooseLogic(searchResultsDisplay);
             }
             lastSearchTerm = searchTerm;
-            searchButton.textContent = "Search / Clear Search";
             selectedRandomQuestionText = null;
             selectedRandomQuestionNum = null;
             document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
@@ -1408,18 +1424,14 @@
             refreshFloatingLookupVisibility();
         }
 
-        /**
-         * Parses user input to detect if it's a numeric query, which MUST start with '#'.
-         */
         function parseNumericQuery(input) {
-            const raw = input.trim();
-            if (!raw.startsWith('#')) {
+            const queryContent = input.trim();
+            if (queryContent.length === 0) return { isNumericQuery: false, numbers: new Set() };
+            
+            if (/[^0-9,\-\s]/.test(queryContent)) {
                 return { isNumericQuery: false, numbers: new Set() };
             }
-            const queryContent = raw.substring(1).trim();
-            if (queryContent.length === 0 || /[^0-9,\-\s]/.test(queryContent)) {
-                return { isNumericQuery: false, numbers: new Set() };
-            }
+            
             const normalized = queryContent.replace(/\s+/g, '');
             if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
             
@@ -1665,8 +1677,43 @@
         fetchQuestions();
         
         randomizeButton.addEventListener('click', (e) => { e.preventDefault(); displayRandomItems(); });
-        searchButton.addEventListener('click', (e) => { e.preventDefault(); displayFilteredItems(); });
-        searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') { e.preventDefault(); displayFilteredItems(); } });
+
+        clearTextSearchButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            searchTextInput.value = '';
+            const selectedItemInSearch = searchResultsDisplay.querySelector('.item.selected-item');
+            if (selectedItemInSearch) {
+                selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
+                refreshFloatingLookupVisibility();
+            }
+            searchResultsDisplay.innerHTML = '';
+            lastSearchTerm = "";
+        });
+
+        searchTextButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            handleTextSearch();
+        });
+
+        searchTextInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                handleTextSearch();
+            }
+        });
+        
+        gotoNumberButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            handleGoToNumber();
+        });
+
+        gotoNumberInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                handleGoToNumber();
+            }
+        });
 
         saveCountToggle.addEventListener('change', function() {
             if (this.checked) {
