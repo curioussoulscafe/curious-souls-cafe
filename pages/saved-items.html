@@ -872,10 +872,10 @@
         clearTopicBtn.innerHTML = '<i class="fa-solid fa-trash-can mr-1"></i>Clear';
         clearTopicBtn.addEventListener('click', () => {
           showDeleteConfirmation(`Clear all saved questions for “${topicName}”?`, () => {
-              // Instead of deleting, we "soft delete" all questions for this topic for this session.
+              // Soft-delete visually for this session and permanently remove from storage.
               const questionsToSoftDelete = allKnownQuestions.get(topicKey)?.questions || [];
               questionsToSoftDelete.forEach(q => softDeletedQuestions.add(q));
-              saveTopicList(topicKey, []); // Empty the active list in localStorage
+              localStorage.removeItem(topicKey);
               render();
           });
         });
