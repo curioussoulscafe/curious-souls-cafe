@@ -880,13 +880,31 @@
             </button>
         </div>
 
-        <div class="mb-8"> <label for="search-input" class="block text-gray-700 text-sm font-bold mb-2">Search or enter question no. (use prefix #):</label>
-            <input type="text" id="search-input" placeholder="Enter search term or #number..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
-            <button id="search-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
-                Search
-            </button>
+        <div class="mb-4">
+            <label for="search-text-input" class="block text-gray-700 text-sm font-bold mb-2">Search by keyword:</label>
+            <input type="text" id="search-text-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+            <div class="flex gap-2">
+                <button id="search-text-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
+                    Search
+                </button>
+                <button id="clear-text-search-button" class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+                    Clear
+                </button>
+            </div>
         </div>
 
+        <hr class="border-gray-300 my-6 w-full mx-auto">
+
+        <div class="mb-4">
+            <label for="goto-number-input" class="block text-gray-700 text-sm font-bold mb-2">Go to question number:</label>
+            <div class="flex gap-2">
+                <input type="text" id="goto-number-input" placeholder="e.g., 5 or 10-15 or 5,8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <button id="goto-number-button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+                    Go
+                </button>
+            </div>
+        </div>
+        
         <div id="search-results" class="mb-4"></div>
 
         <div class="mt-8 pt-4 border-t border-gray-300">
@@ -1050,8 +1068,14 @@
         const resultDisplay = document.getElementById('random-result');
         const itemCountInput = document.getElementById('item-count');
         const saveCountToggle = document.getElementById('save-item-count-toggle');
-        const searchInput = document.getElementById('search-input');
-        const searchButton = document.getElementById('search-button');
+        
+        // NEW: Element constants for separated search/goto fields
+        const searchTextInput = document.getElementById('search-text-input');
+        const searchTextButton = document.getElementById('search-text-button');
+        const clearTextSearchButton = document.getElementById('clear-text-search-button');
+        const gotoNumberInput = document.getElementById('goto-number-input');
+        const gotoNumberButton = document.getElementById('goto-number-button');
+        
         const searchResultsDisplay = document.getElementById('search-results');
         const totalQuestionsSpan = document.getElementById('total-questions');
         const chosenQuestionsDisplay = document.getElementById('chosen-questions-display');
@@ -1214,7 +1238,6 @@
             
             // Clear any previous search results as the source list has changed
             searchResultsDisplay.innerHTML = '';
-            searchButton.textContent = "Search";
             lastSearchTerm = "";
         }
 
@@ -1491,82 +1514,69 @@
             refreshFloatingLookupVisibility();
         }
 
-        function displayFilteredItems() {
+        // NEW: Handles text search logic
+        function handleTextSearch() {
             if (itemList.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                refreshFloatingLookupVisibility();
                 return;
             }
-            const currentSearchTerm = searchInput.value.trim();
-
-            if (currentSearchTerm === lastSearchTerm && searchResultsDisplay.innerHTML !== '') {
-                searchResultsDisplay.innerHTML = '';
-                searchButton.textContent = "Search";
-                lastSearchTerm = "";
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
-                refreshFloatingLookupVisibility();
-                return;
-            }
-
-            // --- NEW: Enhanced number query parsing (single, ranges, comma lists) ---
-            const numericQueryResult = parseNumericQuery(currentSearchTerm);
-            if (numericQueryResult.isNumericQuery) {
-                // Reset selections before showing new results
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                refreshFloatingLookupVisibility();
-
-                const nums = Array.from(numericQueryResult.numbers)
-                    .filter(n => Number.isInteger(n) && n > 0);
-                
-                if (nums.length === 0) {
-                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
-                    lastSearchTerm = currentSearchTerm;
-                    searchButton.textContent = "Search / Clear Search";
-                    return;
-                }
-
-                // Build results in the order provided by the user
-                const results = [];
-                const notFound = [];
-                nums.forEach(n => {
-                    const found = fullItemList.find(item => item.num === n);
-                    if (found) results.push(found);
-                    else notFound.push(n);
-                });
-
-                if (results.length === 0) {
-                    const notFoundMsg = notFound.length > 0 ? ` Not found: ${notFound.join(', ')}.` : '';
-                    searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFoundMsg}</p>`;
-                } else {
-                    let itemDivs = results.map(item => {
-                        const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
-                        return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
-                    });
-                    const note = notFound.length > 0 
-                        ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>`
-                        : '';
-                    searchResultsDisplay.innerHTML = itemDivs.join('') + note;
-                    addHighlightingAndChooseLogic(searchResultsDisplay);
-                }
-
-                lastSearchTerm = currentSearchTerm;
-                searchButton.textContent = "Search / Clear Search";
-                return; // End execution for numeric/range/comma search
-            }
-            // --- END: Enhanced number parsing ---
+            const currentSearchTerm = searchTextInput.value.trim();
+            
+            // To avoid confusion, clear the other input field
+            gotoNumberInput.value = '';
 
             if (currentSearchTerm === "") {
-                // Show confirmation that empty search will display all
                 emptySearchModal.classList.add('show');
                 return;
             }
             
             executeSearch(currentSearchTerm.toLowerCase());
+        }
+
+        // NEW: Handles "Go to number" logic
+        function handleGoToNumber() {
+            const numberQuery = gotoNumberInput.value.trim();
+            if (numberQuery === '') return;
+
+            // To avoid confusion, clear the other input field
+            searchTextInput.value = '';
+            
+            const numericQueryResult = parseNumericQuery(numberQuery);
+            
+            selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
+            refreshFloatingLookupVisibility();
+
+            const nums = Array.from(numericQueryResult.numbers)
+                .filter(n => Number.isInteger(n) && n > 0);
+            
+            if (nums.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
+                return;
+            }
+
+            const results = [];
+            const notFound = [];
+            nums.forEach(n => {
+                const found = fullItemList.find(item => item.num === n);
+                if (found) results.push(found);
+                else notFound.push(n);
+            });
+
+            if (results.length === 0) {
+                const notFoundMsg = notFound.length > 0 ? ` Not found: ${notFound.join(', ')}.` : '';
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers in this topic.${notFoundMsg}</p>`;
+            } else {
+                let itemDivs = results.map(item => {
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                });
+                const note = notFound.length > 0 
+                    ? `<p class="text-gray-400 text-xs mt-2">Not found: ${notFound.join(', ')}.</p>`
+                    : '';
+                searchResultsDisplay.innerHTML = itemDivs.join('') + note;
+                addHighlightingAndChooseLogic(searchResultsDisplay);
+            }
         }
 
         function executeSearch(searchTerm) {
@@ -1594,7 +1604,6 @@
                 addHighlightingAndChooseLogic(searchResultsDisplay);
             }
             lastSearchTerm = searchTerm;
-            searchButton.textContent = "Search / Clear Search";
             // Clear all selections when new search runs
             selectedRandomQuestionText = null;
             selectedRandomQuestionNum = null;
@@ -1760,31 +1769,20 @@
             }
         }
 
-        // --- NEW: Numeric query parser (ranges and comma support) ---
         /**
-         * Parses user input to detect if it's a numeric query, which MUST start with '#'.
-         * - Valid: "#12", "#1-3", "#1,3,4", "#1-3, 7, 10-12"
-         * - Invalid (treated as text search): "12", "1-3"
+         * Parses user input for numbers, ranges, and commas. No longer requires a '#' prefix.
+         * - Valid: "12", "1-3", "1,3,4", "1-3, 7, 10-12"
          * Returns { isNumericQuery: boolean, numbers: Set<number> }
          */
         function parseNumericQuery(input) {
-            const raw = input.trim();
-            // A numeric query must now start with a '#' to distinguish it from a text search for a number.
-            if (!raw.startsWith('#')) {
-                return { isNumericQuery: false, numbers: new Set() };
-            }
-
-            // The query content is everything after the first '#'
-            const queryContent = raw.substring(1).trim();
+            const queryContent = input.trim();
             if (queryContent.length === 0) return { isNumericQuery: false, numbers: new Set() };
-
-            // Quick test on the content: if it contains anything except digits, spaces, commas, or dashes,
-            // it's an invalid numeric query. We'll fall back to a text search of the original raw string.
+            
+            // Test if the content contains anything except valid characters for a number query.
             if (/[^0-9,\-\s]/.test(queryContent)) {
                 return { isNumericQuery: false, numbers: new Set() };
             }
             
-            // Normalize: remove spaces from the content part. No need to remove '#' as we've handled the prefix.
             const normalized = queryContent.replace(/\s+/g, '');
             if (normalized.length === 0) return { isNumericQuery: false, numbers: new Set() };
             
@@ -1794,29 +1792,23 @@
             for (const part of parts) {
                 if (part === '') continue;
                 if (part.includes('-')) {
-                    // Range
                     const [aStr, bStr] = part.split('-');
                     if (!/^\d+$/.test(aStr || '') || !/^\d+$/.test(bStr || '')) continue;
                     let a = parseInt(aStr, 10);
                     let b = parseInt(bStr, 10);
                     if (a <= 0 || b <= 0) continue;
-                    if (a > b) [a, b] = [b, a]; // support reverse ranges like 5-2
-                    // Guard against overly large expansions (safety)
+                    if (a > b) [a, b] = [b, a]; // support reverse ranges
                     const span = b - a + 1;
-                    if (span > 2000) continue; // arbitrary cap to avoid accidental huge inputs
+                    if (span > 2000) continue; // safety cap
                     for (let n = a; n <= b; n++) nums.add(n);
                 } else {
-                    // Single number
                     if (!/^\d+$/.test(part)) continue;
                     const n = parseInt(part, 10);
                     if (n > 0) nums.add(n);
                 }
             }
-
-            // If after parsing we have at least one number, treat as numeric query
             return { isNumericQuery: nums.size > 0, numbers: nums };
         }
-        // --- END: Numeric query parser ---
 
         // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
@@ -2060,15 +2052,44 @@
             displayRandomItems();
         });
 
-        searchButton.addEventListener('click', function(event) {
+        // NEW: Event listener for the clear text search button
+        clearTextSearchButton.addEventListener('click', function(event) {
             event.preventDefault();
-            displayFilteredItems();
+            searchTextInput.value = ''; // Clear the input field
+
+            const selectedItemInSearch = searchResultsDisplay.querySelector('.item.selected-item');
+            if (selectedItemInSearch) {
+                selectedRandomQuestionText = null;
+                selectedRandomQuestionNum = null;
+                refreshFloatingLookupVisibility();
+            }
+            
+            searchResultsDisplay.innerHTML = '';
+            lastSearchTerm = "";
         });
 
-        searchInput.addEventListener('keypress', function(event) {
+        // UPDATED: Event listeners for new search and go-to-number buttons
+        searchTextButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            handleTextSearch();
+        });
+
+        searchTextInput.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
-                displayFilteredItems();
+                handleTextSearch();
+            }
+        });
+        
+        gotoNumberButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            handleGoToNumber();
+        });
+
+        gotoNumberInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                handleGoToNumber();
             }
         });
 
