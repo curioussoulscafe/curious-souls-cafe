@@ -801,6 +801,16 @@
     }
 
     function render() {
+      // Preserve scroll position and collapsed states before re-rendering
+      const savedScrollY = window.scrollY;
+      const collapsedKeys = new Set();
+      document.querySelectorAll('.topic-card[data-topic-key]').forEach(card => {
+          const list = card.querySelector('.space-y-2');
+          if (list && list.classList.contains('hidden')) {
+              collapsedKeys.add(card.dataset.topicKey);
+          }
+      });
+
       const query = searchInput.value.trim().toLowerCase();
 
       // Read current data from storage for counts and state, but render based on allKnownQuestions
@@ -838,6 +848,7 @@
 
         const card = document.createElement('div');
         card.className = 'topic-card';
+        card.dataset.topicKey = topicKey;
 
         const header = document.createElement('div');
         header.className = 'flex items-center justify-between flex-wrap gap-2 mb-3';
@@ -976,6 +987,13 @@
                 list.appendChild(chip);
             });
         }
+        
+        // Restore the collapsed state if it was previously collapsed
+        if (collapsedKeys.has(topicKey)) {
+            list.classList.add('hidden');
+            collapseBtn.classList.add('hidden');
+            expandBtn.classList.remove('hidden');
+        }
 
         collapseBtn.addEventListener('click', () => {
           list.classList.add('hidden');
@@ -993,7 +1011,7 @@
         resultsEl.appendChild(card);
       });
 
-      renderActionsSection(filteredActions, totalActions);
+      renderActionsSection(filteredActions, totalActions, collapsedKeys.has('actions-section'));
 
       const anyActionShown = totalActions > 0 && filteredActions.length > 0;
       const anyDataOnPage = Array.from(allKnownQuestions.values()).some(d => d.questions.length > 0) || totalActions > 0;
@@ -1001,9 +1019,12 @@
       // Show empty state only if there was never anything to show on page load.
       emptyStateEl.classList.toggle('hidden', anyDataOnPage);
       if (!anyTopicShown && !anyActionShown) clearAllSelected();
+      
+      // Restore scroll position instantly
+      window.scrollTo({ top: savedScrollY, behavior: 'instant' });
     }
 
-    function renderActionsSection(filteredActions, totalActions) {
+    function renderActionsSection(filteredActions, totalActions, wasCollapsed) {
       actionsMount.innerHTML = '';
       if (totalActions === 0) return;
 
@@ -1012,6 +1033,7 @@
 
       const card = document.createElement('div');
       card.className = 'topic-card';
+      card.dataset.topicKey = 'actions-section';
 
       const header = document.createElement('div');
       header.className = 'flex items-center justify-between flex-wrap gap-2 mb-3';
@@ -1118,6 +1140,13 @@
 
           list.appendChild(chip);
         });
+      }
+
+      // Restore the collapsed state if it was previously collapsed
+      if (wasCollapsed) {
+          list.classList.add('hidden');
+          collapseBtn.classList.add('hidden');
+          expandBtn.classList.remove('hidden');
       }
 
       collapseBtn.addEventListener('click', () => {
