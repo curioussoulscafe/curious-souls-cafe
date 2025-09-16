@@ -329,7 +329,7 @@
         </div>
 
         <div id="filter-container" class="flex flex-wrap justify-center gap-2 mb-6">
-            <button class="filter-btn active" data-filter="all">All</button>
+            <!-- Removed "All" button; city buttons now act as independent toggles -->
             <button class="filter-btn" data-filter="Hong Kong">Hong Kong</button>
             <button class="filter-btn" data-filter="Kuala Lumpur">Kuala Lumpur</button>
             <button class="filter-btn" data-filter="Osaka">Osaka</button>
@@ -1055,6 +1055,9 @@
                 'taipei': 'Taipei'
             };
 
+            // NEW: Maintain a Set for selected cities to support toggle behavior; empty set = no city filter (ALL)
+            const selectedCityFilters = new Set();
+
             const parseNumbers = (query) => {
                 let targetNumbers = [];
                 if (query.includes('-')) {
@@ -1072,8 +1075,19 @@
                 return targetNumbers;
             };
 
+            function cityFilterMatch(eventCity) {
+                // If no city filter selected, treat as match (i.e., show all)
+                if (selectedCityFilters.size === 0) return true;
+
+                // If "Other" selected and eventCity is in otherCities, it matches
+                if (selectedCityFilters.has('Other') && otherCities.includes(eventCity)) {
+                    return true;
+                }
+                // Otherwise, it matches if the event city is among selected standard cities
+                return selectedCityFilters.has(eventCity);
+            }
+
             function filterAndSearchEvents() {
-                const activeFilter = filterContainer.querySelector('.filter-btn.active').dataset.filter;
                 const searchTerm = searchInput.value.trim().toLowerCase();
 
                 eventLinks.forEach(link => {
@@ -1084,10 +1098,8 @@
                     const globalNum = parseInt(globalNumText.replace('#', ''), 10);
                     const regionalNum = parseInt(regionalNumText.replace('#', ''), 10);
 
-                    // Determine filter match
-                    let filterMatch = (activeFilter === 'all') ||
-                                      (activeFilter === 'Other' && otherCities.includes(eventCity)) ||
-                                      (eventCity === activeFilter);
+                    // Determine filter match (multi-select toggles)
+                    let filterMatch = cityFilterMatch(eventCity);
 
                     // Determine search match
                     let searchMatch = false;
@@ -1104,7 +1116,7 @@
                             }
                         }
                     } else if (searchTerm.startsWith('#')) {
-                        // Universal number search (e.g., "#7")
+                        // Universal number search (e.g., "#7" or "#5-8" or "#3,5")
                         const query = searchTerm.substring(1).trim();
                         const targetNumbers = parseNumbers(query);
                         if (targetNumbers.includes(globalNum) || targetNumbers.includes(regionalNum)) {
@@ -1120,11 +1132,23 @@
                 });
             }
 
+            // UPDATED: City filter behavior to toggles (no single active button, no "All")
             if (filterContainer && eventLinks.length > 0) {
                 filterContainer.addEventListener('click', (e) => {
                     if (e.target.classList.contains('filter-btn')) {
-                        filterContainer.querySelector('.filter-btn.active').classList.remove('active');
-                        e.target.classList.add('active');
+                        const btn = e.target;
+                        const city = btn.getAttribute('data-filter');
+
+                        // Toggle active state
+                        btn.classList.toggle('active');
+
+                        // Update Set accordingly
+                        if (btn.classList.contains('active')) {
+                            selectedCityFilters.add(city);
+                        } else {
+                            selectedCityFilters.delete(city);
+                        }
+
                         filterAndSearchEvents();
                     }
                 });
@@ -1133,6 +1157,9 @@
             if (searchInput) {
                 searchInput.addEventListener('input', filterAndSearchEvents);
             }
+
+            // Initial filter state: none selected => show all
+            filterAndSearchEvents();
 
             // Floating Back button behavior
             const floatingBackButton = document.getElementById('floating-back-button');
