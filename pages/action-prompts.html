@@ -583,6 +583,28 @@
             color: #6b46c1;
             user-select: none;
         }
+
+        /* NEW: Styles for filter buttons (imported from code B) */
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db; /* Tailwind gray-300 */
+            background-color: #ffffff;
+            color: #4b5563; /* Tailwind gray-600 */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 0.9rem;
+        }
+        .filter-btn:hover {
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .filter-btn.active {
+            background-color: #8b5cf6; /* A purple that fits the theme */
+            color: #ffffff;
+            border-color: #8b5cf6;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -612,6 +634,16 @@
             </div>
 
         <hr class="border-gray-300 my-4 w-full mx-auto">
+
+        <!-- NEW: Filter buttons (imported/adapted from code B) -->
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by type:</label>
+            <div id="difficulty-filter" class="flex flex-wrap justify-center gap-2">
+                <button data-filter="lighter" class="filter-btn" title="Show light actions">🌱 Light</button>
+                <button data-filter="middle" class="filter-btn" title="Show medium actions">☕</button>
+                <button data-filter="deeper" class="filter-btn" title="Show deep actions">🌀 Deep</button>
+            </div>
+        </div>
 
         <div class="mb-4">
             <div class="flex justify-between items-center mb-2">
@@ -834,7 +866,12 @@
         // End Hardcoded Configuration
 
         let fullItemList = []; // Master list of all actions (objects)
+        // NOTE: itemList now reflects the union of selected difficulty filters (or all if none selected)
         let itemList = []; // The currently active list of actions (objects)
+
+        // NEW: multi-select filters state
+        let activeFilters = new Set(); // values: 'lighter','middle','deeper'
+
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedActionText = null; // Stores the text of the currently selected action
@@ -969,10 +1006,7 @@
             if (cachedContent) {
                 console.log(`Loading "${displayTopicName}" from localStorage.`);
                 fullItemList = buildActionsWithNumbers(cachedContent);
-                itemList = [...fullItemList];
-                availableRandomItems = [...itemList];
-                totalActionsSpan.textContent = `(Total: ${fullItemList.length})`;
-                displayRandomItems();
+                applyFilter(); // NEW: initialize filtered view (defaults to all)
                 loadSavedActions();
             } else {
                 console.log(`Loading "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
@@ -981,11 +1015,8 @@
                     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                     const text = await response.text();
                     fullItemList = buildActionsWithNumbers(text);
-                    itemList = [...fullItemList];
-                    availableRandomItems = [...itemList];
                     localStorage.setItem(localStorageKey, text);
-                    totalActionsSpan.textContent = `(Total: ${fullItemList.length})`;
-                    displayRandomItems();
+                    applyFilter(); // NEW: initialize filtered view (defaults to all)
                     loadSavedActions();
                 } catch (error) {
                     console.error("Could not load actions:", error);
@@ -1341,6 +1372,54 @@
         
         function escapeHtml(str) { return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
 
+        // --- FILTER INTEGRATION (from code B, adapted to actions) ---
+        // Determines category by leading emoji: 🌱 = lighter, 🌀 = deeper, otherwise middle
+        function applyFilter() {
+            const isLighter = (t) => t.startsWith('🌱');
+            const isDeeper  = (t) => t.startsWith('🌀');
+            const isMiddle  = (t) => !isLighter(t) && !isDeeper(t);
+
+            if (activeFilters.size === 0 || activeFilters.size === 3) {
+                itemList = [...fullItemList];
+            } else {
+                itemList = fullItemList.filter(item => {
+                    const t = item.text;
+                    return (
+                        (activeFilters.has('lighter') && isLighter(t)) ||
+                        (activeFilters.has('deeper')  && isDeeper(t))  ||
+                        (activeFilters.has('middle')  && isMiddle(t))
+                    );
+                });
+            }
+
+            // Reset the pool for randomizer and update totals
+            availableRandomItems = [...itemList];
+            totalActionsSpan.textContent = `(Total: ${itemList.length})`;
+
+            // Refresh random items and clear any previous search results
+            displayRandomItems();
+            searchResultsDisplay.innerHTML = '';
+            lastSearchTerm = "";
+        }
+
+        // --- MULTI-SELECT FILTER BUTTONS wiring ---
+        const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const key = button.dataset.filter; // 'lighter' | 'middle' | 'deeper'
+                const willActivate = !button.classList.contains('active');
+                if (willActivate) {
+                    button.classList.add('active');
+                    activeFilters.add(key);
+                } else {
+                    button.classList.remove('active');
+                    activeFilters.delete(key);
+                }
+                applyFilter();
+            });
+        });
+
+        // Initial load
         loadSavedSettings();
         fetchActions();
         updateClearButtonText();
