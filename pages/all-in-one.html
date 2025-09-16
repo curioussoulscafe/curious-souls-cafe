@@ -1066,7 +1066,13 @@
         // - raw: same as text (kept for clarity/compat)
         let fullItemList = []; // Master list of all questions (objects)
         let itemList = []; // The currently filtered list of questions (objects)
-        let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'middle', 'deeper'
+
+        // NEW: support multiple filter selections
+        // - When empty => treat as 'all'
+        // - Possible values: 'lighter' (🌱), 'middle' (no 🌱/🌀), 'deeper' (🌀)
+        const multiSelectedFilters = new Set();
+        let currentFilter = 'all'; // kept for backward compatibility; value derived from multiSelectedFilters when needed
+
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
@@ -1215,19 +1221,32 @@
          * Filters the master list of questions based on the current selection.
          */
         function applyFilter() {
-            switch (currentFilter) {
-                case 'lighter':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌱'));
-                    break;
-                case 'deeper':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌀'));
-                    break;
-                case 'middle':
-                    itemList = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
-                    break;
-                default: // 'all'
-                    itemList = [...fullItemList];
-                    break;
+            // When no filters are selected => treat as 'all'
+            if (multiSelectedFilters.size === 0) {
+                currentFilter = 'all'; // keep legacy variable coherent
+                itemList = [...fullItemList];
+            } else if (multiSelectedFilters.size === 3) {
+                // All three selected is equivalent to 'all'
+                currentFilter = 'all';
+                itemList = [...fullItemList];
+            } else {
+                // Build the predicate based on selected tags
+                const wantLight = multiSelectedFilters.has('lighter');
+                const wantDeep = multiSelectedFilters.has('deeper');
+                const wantMiddle = multiSelectedFilters.has('middle');
+
+                itemList = fullItemList.filter(item => {
+                    const isLight = item.text.startsWith('🌱');
+                    const isDeep = item.text.startsWith('🌀');
+                    const isMiddle = !isLight && !isDeep;
+
+                    return (wantLight && isLight) ||
+                           (wantDeep && isDeep) ||
+                           (wantMiddle && isMiddle);
+                });
+
+                // Keep a representative value in currentFilter (not used for logic anymore)
+                currentFilter = Array.from(multiSelectedFilters).join('+');
             }
             
             // Reset the pool of available items for the randomizer
@@ -1884,8 +1903,8 @@
         });
 
         // backToTopicsButton.addEventListener('click', () => {
-        //     window.location.href = '../index.html'; // Path back to index.html
-        // });
+            //     window.location.href = '../index.html'; // Path back to index.html
+            // });
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 1) {
@@ -2106,22 +2125,19 @@
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const isCurrentlyActive = button.classList.contains('active');
+                const key = button.dataset.filter;
 
-                // First, clear active state from all buttons to ensure mutual exclusivity
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-
-                if (isCurrentlyActive) {
-                    // If it was active, we are toggling it off. No button should be active.
-                    document.body; // no-op to keep structure similar
-                    currentFilter = 'all'; // Default filter when none are selected
+                // Toggle this specific button's active state (multi-select support)
+                const willActivate = !button.classList.contains('active');
+                if (willActivate) {
+                    button.classList.add('active');
+                    multiSelectedFilters.add(key);
                 } else {
-                    // If it was not active, we are toggling it on.
-                    button.classList.add('active'); // Make the clicked button active
-                    currentFilter = button.dataset.filter; // Set the filter
+                    button.classList.remove('active');
+                    multiSelectedFilters.delete(key);
                 }
 
-                // Apply the filter based on the new state
+                // Apply the filter based on the new multi-selection state
                 applyFilter();
             });
         });
