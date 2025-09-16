@@ -1094,7 +1094,15 @@
         // - city: parsed city from "(City Event N · Global M)" or "Other" if unmatched
         let fullItemList = []; // Master list of all questions (objects)
         let itemList = []; // The currently filtered list of questions (objects)
-        let currentFilter = 'all'; // Difficulty filter: 'all', 'lighter', 'middle', 'deeper'
+
+        // REPLACED: single 'currentFilter' with a Set to support multiple selection.
+        // Keep a helper for compatibility where needed.
+        let selectedDifficultyFilters = new Set(); // e.g., {'lighter','deeper'} means show Light AND Deep
+        function getCurrentFilterLogicalState() {
+            // Helper to describe effective state; used only for messages if needed
+            if (selectedDifficultyFilters.size === 0) return 'all';
+            return Array.from(selectedDifficultyFilters);
+        }
 
         // NEW: Maintain a Set for selected cities to support toggle behavior; empty set = no city filter (ALL)
         let selectedCityFilters = new Set(); 
@@ -1284,19 +1292,22 @@
         function applyFilter() {
             // Base by difficulty
             let filtered = [];
-            switch (currentFilter) {
-                case 'lighter':
-                    filtered = fullItemList.filter(item => item.text.startsWith('🌱'));
-                    break;
-                case 'deeper':
-                    filtered = fullItemList.filter(item => item.text.startsWith('🌀'));
-                    break;
-                case 'middle':
-                    filtered = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
-                    break;
-                default: // 'all'
-                    filtered = [...fullItemList];
-                    break;
+            // Multi-select logic:
+            // - If no difficulty selected -> include all.
+            // - If some selected -> include items that match ANY selected difficulty.
+            if (selectedDifficultyFilters.size === 0) {
+                filtered = [...fullItemList];
+            } else {
+                filtered = fullItemList.filter(item => {
+                    const isLight = item.text.startsWith('🌱');
+                    const isDeep = item.text.startsWith('🌀');
+                    const isMiddle = !isLight && !isDeep;
+
+                    if (selectedDifficultyFilters.has('lighter') && isLight) return true;
+                    if (selectedDifficultyFilters.has('deeper') && isDeep) return true;
+                    if (selectedDifficultyFilters.has('middle') && isMiddle) return true;
+                    return false;
+                });
             }
 
             // City filter (NEW: toggles, multiple allowed)
@@ -1340,7 +1351,7 @@
             if (cachedContent) {
                 console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
                 fullItemList = buildQuestionsWithNumbers(cachedContent);
-                applyFilter(); // Apply the default 'all' filter
+                applyFilter(); // Apply filters (none selected initially)
                 loadSavedQuestions(); 
             } else {
                 console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
@@ -1355,7 +1366,7 @@
 
                     localStorage.setItem(localStorageKey, text); 
 
-                    applyFilter(); // Apply the default 'all' filter
+                    applyFilter(); // Apply filters (none selected initially)
                     loadSavedQuestions(); 
                 } catch (error) {
                     console.error("Could not load questions:", error);
@@ -1656,11 +1667,15 @@
             });
 
             const difficultyFilteredResults = cityFilteredResults.filter(item => {
-                if (currentFilter === 'all') return true;
-                if (currentFilter === 'lighter') return item.text.startsWith('🌱');
-                if (currentFilter === 'deeper') return item.text.startsWith('🌀');
-                if (currentFilter === 'middle') return !item.text.startsWith('🌱') && !item.text.startsWith('🌀');
-                return true; 
+                // Respect multi-select difficulty
+                if (selectedDifficultyFilters.size === 0) return true;
+                const isLight = item.text.startsWith('🌱');
+                const isDeep = item.text.startsWith('🌀');
+                const isMiddle = !isLight && !isDeep;
+                if (selectedDifficultyFilters.has('lighter') && isLight) return true;
+                if (selectedDifficultyFilters.has('deeper') && isDeep) return true;
+                if (selectedDifficultyFilters.has('middle') && isMiddle) return true;
+                return false;
             });
 
             if (difficultyFilteredResults.length === 0) {
@@ -2141,18 +2156,23 @@
         });
 
 
-        // NEW: Event Listeners for Difficulty Filter Buttons
+        // UPDATED: Difficulty Filter Buttons to support MULTI-SELECT
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const isCurrentlyActive = button.classList.contains('active');
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                if (isCurrentlyActive) {
-                    currentFilter = 'all';
+                const key = button.dataset.filter; // 'lighter' | 'middle' | 'deeper'
+
+                // Toggle UI active state
+                button.classList.toggle('active');
+
+                // Update Set
+                if (button.classList.contains('active')) {
+                    selectedDifficultyFilters.add(key);
                 } else {
-                    button.classList.add('active');
-                    currentFilter = button.dataset.filter;
+                    selectedDifficultyFilters.delete(key);
                 }
+
+                // Apply combined filters
                 applyFilter();
             });
         });
