@@ -1058,7 +1058,12 @@
         // - raw: same as text (kept for clarity/compat)
         let fullItemList = []; // Master list of all questions (objects)
         let itemList = []; // The currently filtered list of questions (objects)
-        let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'middle', 'deeper'
+
+        // CHANGED: Support multiple filters at once.
+        // - activeFilters: Set of strings among 'lighter','middle','deeper'.
+        // - When empty => treat as 'all'.
+        let activeFilters = new Set(); // Default: none selected => 'all'
+
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
@@ -1210,21 +1215,25 @@
 
         /**
          * Filters the master list of questions based on the current selection.
+         * CHANGED: Now supports multi-select filters using activeFilters Set.
+         * - If activeFilters is empty => treat as 'all'.
+         * - Otherwise, include items that match ANY of the active types.
          */
         function applyFilter() {
-            switch (currentFilter) {
-                case 'lighter':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌱'));
-                    break;
-                case 'deeper':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌀'));
-                    break;
-                case 'middle':
-                    itemList = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
-                    break;
-                default: // 'all'
-                    itemList = [...fullItemList];
-                    break;
+            // Helper: determine type of a question from its text
+            const getType = (item) => {
+                if (item.text.startsWith('🌱')) return 'lighter';
+                if (item.text.startsWith('🌀')) return 'deeper';
+                // "middle" is anything without the above emojis
+                return 'middle';
+            };
+
+            if (activeFilters.size === 0) {
+                // No filters selected => show ALL
+                itemList = [...fullItemList];
+            } else {
+                // Include item if its type is in the active set
+                itemList = fullItemList.filter(item => activeFilters.has(getType(item)));
             }
             
             // Reset the pool of available items for the randomizer
@@ -1256,7 +1265,7 @@
             if (cachedContent) {
                 console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
                 fullItemList = buildQuestionsWithNumbers(cachedContent);
-                applyFilter(); // Apply the default 'all' filter
+                applyFilter(); // Apply current filters (multi-select supported)
                 loadSavedQuestions(); 
             } else {
                 console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
@@ -1271,7 +1280,7 @@
 
                     localStorage.setItem(localStorageKey, text); 
 
-                    applyFilter(); // Apply the default 'all' filter
+                    applyFilter(); // Apply current filters (multi-select supported)
                     loadSavedQuestions(); 
                 } catch (error) {
                     console.error("Could not load questions:", error);
@@ -2093,26 +2102,28 @@
             }
         });
 
-        // NEW: Event Listeners for Difficulty Filter Buttons
+        // NEW: Event Listeners for Difficulty Filter Buttons (MULTI-SELECT)
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
+
+        // Helper: recompute activeFilters based on current button classes (keeps state robust)
+        function recomputeActiveFilters() {
+            activeFilters.clear();
+            filterButtons.forEach(btn => {
+                if (btn.classList.contains('active')) {
+                    activeFilters.add(btn.dataset.filter);
+                }
+            });
+        }
+
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const isCurrentlyActive = button.classList.contains('active');
+                // Toggle this button's active state (no mutual exclusivity)
+                button.classList.toggle('active');
 
-                // First, clear active state from all buttons to ensure mutual exclusivity
-                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Sync activeFilters with current UI state
+                recomputeActiveFilters();
 
-                if (isCurrentlyActive) {
-                    // If it was active, we are toggling it off. No button should be active.
-                    document.body; // no-op to keep structure similar
-                    currentFilter = 'all'; // Default filter when none are selected
-                } else {
-                    // If it was not active, we are toggling it on.
-                    button.classList.add('active'); // Make the clicked button active
-                    currentFilter = button.dataset.filter; // Set the filter
-                }
-
-                // Apply the filter based on the new state
+                // Apply the filter based on the new multi-select state
                 applyFilter();
             });
         });
