@@ -514,7 +514,7 @@
             text-decoration: none;
             transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
             display: flex;
-                       align-items: center;
+            align-items: center;
             gap: 0.25rem;
             margin-top: 0.5rem;
             justify-content: center;
@@ -962,11 +962,7 @@
 
         let fullItemList = []; // Master list of question objects {num, text, raw}
         let itemList = []; // The currently filtered list of question objects
-
-        // MULTI-SELECT: active filters set replaces single currentFilter
-        // Possible values: 'lighter' | 'middle' | 'deeper'
-        const activeFilters = new Set();
-
+        let activeFilters = new Set(); // Stores active filters like 'lighter', 'deeper'
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected question
@@ -994,7 +990,7 @@
         // Modal elements
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
-        theConfirmClearNo = document.getElementById('confirm-clear-no'); // keep existing id usage below
+        const confirmClearNo = document.getElementById('confirm-clear-no');
         const confirmationText = document.getElementById('confirmation-text');
         const confirmationSubtext = document.getElementById('confirmation-subtext');
 
@@ -1156,22 +1152,28 @@
 
         // NEW: Filter logic (from code A, adapted for objects)
         function applyFilter() {
-            // When no filter buttons are selected, show all (same as 'all')
             if (activeFilters.size === 0) {
+                // If no filters are active, behave as if 'all' is selected
                 itemList = [...fullItemList];
             } else {
-                // OR logic across selected filters
+                // Filter the full list based on the active filters
                 itemList = fullItemList.filter(item => {
-                    const isLight = item.text.startsWith('🌱');
-                    const isDeep = item.text.startsWith('🌀');
-                    const isMiddle = !isLight && !isDeep;
-                    return (
-                        (activeFilters.has('lighter') && isLight) ||
-                        (activeFilters.has('deeper') && isDeep) ||
-                        (activeFilters.has('middle') && isMiddle)
-                    );
+                    // An item is included if it matches ANY of the active filter conditions
+                    return Array.from(activeFilters).some(filter => {
+                        if (filter === 'lighter') {
+                            return item.text.startsWith('🌱');
+                        }
+                        if (filter === 'deeper') {
+                            return item.text.startsWith('🌀');
+                        }
+                        if (filter === 'middle') {
+                            return !item.text.startsWith('🌱') && !item.text.startsWith('🌀');
+                        }
+                        return false; // Default case, should not be reached with valid filters
+                    });
                 });
             }
+
             availableRandomItems = [...itemList];
             totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
             displayRandomItems();
@@ -1664,23 +1666,21 @@
         copyQuestionBtn.addEventListener('click', () => { copyQuestionToClipboard(); searchEngineModal.classList.remove('show'); });
         closeSearchEngineModalBtn.addEventListener('click', () => { searchEngineModal.classList.remove('show'); });
 
-        // MULTI-SELECT: Filter button behavior now toggles each independently.
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const key = button.dataset.filter;
-                const isActive = button.classList.contains('active');
+                const filter = button.dataset.filter;
+                // Toggle the visual state of the button
+                button.classList.toggle('active');
 
-                // Toggle active state visually and in activeFilters set
-                if (isActive) {
-                    button.classList.remove('active');
-                    activeFilters.delete(key);
+                // Update the activeFilters set
+                if (activeFilters.has(filter)) {
+                    activeFilters.delete(filter);
                 } else {
-                    button.classList.add('active');
-                    activeFilters.add(key);
+                    activeFilters.add(filter);
                 }
-
-                // Apply filter with current multi-selection
+                
+                // Re-apply the filter with the new set of active filters
                 applyFilter();
             });
         });
