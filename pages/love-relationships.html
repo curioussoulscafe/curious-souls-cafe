@@ -836,7 +836,7 @@
                 <i class="fas fa-info-circle"></i> Get started
             </button>
             <span class="separator">|</span>
-            <a href="descriptions\love-relationships.html" class="description-link">
+            <a href="descriptions\love-relationships.html.html" class="description-link">
                 About the topic
             </a>
         </div>
@@ -1029,12 +1029,12 @@
             <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Join This Topic</h3>
             <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
-            <img id="qr-modal-image" src="images/qr/qr-code-topic-love-relationships.png" alt="QR Code for this page"
+            <img id="qr-modal-image" src="images/qr/qr-code-topic-love-relationships.html.png" alt="QR Code for this page"
                  onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Loading';">
 
             <p class="text-sm text-gray-700 mt-2">
                 <i class="fa-solid fa-link mr-1"></i> 
-                <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html</a>
+                <a href="https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html.html" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all">https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html.html</a>
                 <br>
                 <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link</button>
                 &nbsp;<span class="text-gray-400 text-sm select-none">|</span>&nbsp;&nbsp;<button id="share-link-button" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-share-from-square"></i> Share...</button>
@@ -1048,7 +1048,7 @@
         // --- Hardcoded Topic Configuration for Love Relationships ---
         const displayTopicName = "Love Relationships"; // Display name
         // The URL for the question file, now a relative path.
-        const githubRawUrl = "../questions/love-relationships.txt"; // Relative path to love-relationships.txt
+        const githubRawUrl = "../questions/love-relationships.html.txt"; // Relative path to love-relationships.html.txt
         // End Hardcoded Configuration
 
         // Each question will be represented as { num: number, text: string, raw: string }
@@ -1056,8 +1056,13 @@
         // - text: the display text (as-is from file)
         // - raw: same as text (kept for clarity/compat)
         let fullItemList = []; // Master list of all questions (objects)
+
+        // NOTE: itemList now always reflects the union of all selected difficulty filters (or full list if none selected)
         let itemList = []; // The currently filtered list of questions (objects)
-        let currentFilter = 'all'; // Default filter setting: 'all', 'lighter', 'middle', 'deeper'
+
+        // NEW: support multiple selected filters
+        let activeFilters = new Set(); // values among: 'lighter','middle','deeper'
+
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected random/search question
@@ -1208,21 +1213,27 @@
 
         /**
          * Filters the master list of questions based on the current selection.
+         * Supports multiple selections: union of selected categories.
+         * If no filter is active, treat as 'all'.
          */
         function applyFilter() {
-            switch (currentFilter) {
-                case 'lighter':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌱'));
-                    break;
-                case 'deeper':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌀'));
-                    break;
-                case 'middle':
-                    itemList = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
-                    break;
-                default: // 'all'
-                    itemList = [...fullItemList];
-                    break;
+            // Helper to test category
+            const isLighter = (t) => t.startsWith('🌱');
+            const isDeeper = (t) => t.startsWith('🌀');
+            const isMiddle  = (t) => !isLighter(t) && !isDeeper(t);
+
+            if (activeFilters.size === 0 || activeFilters.size === 3) {
+                // No filters selected, or all selected: show all
+                itemList = [...fullItemList];
+            } else {
+                itemList = fullItemList.filter(item => {
+                    const t = item.text;
+                    return (
+                        (activeFilters.has('lighter') && isLighter(t)) ||
+                        (activeFilters.has('deeper') && isDeeper(t)) ||
+                        (activeFilters.has('middle')  && isMiddle(t))
+                    );
+                });
             }
             
             // Reset the pool of available items for the randomizer
@@ -1254,7 +1265,7 @@
             if (cachedContent) {
                 console.log(`Loading questions for topic "${displayTopicName}" from localStorage.`);
                 fullItemList = buildQuestionsWithNumbers(cachedContent);
-                applyFilter(); // Apply the default 'all' filter
+                applyFilter(); // Apply union filter (defaults to all when none selected)
                 loadSavedQuestions(); 
             } else {
                 console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
@@ -1269,7 +1280,7 @@
 
                     localStorage.setItem(localStorageKey, text); 
 
-                    applyFilter(); // Apply the default 'all' filter
+                    applyFilter(); // Apply union filter (defaults to all)
                     loadSavedQuestions(); 
                 } catch (error) {
                     console.error("Could not load questions:", error);
@@ -2063,21 +2074,29 @@
             }
         });
 
+        // --- MULTI-SELECT FILTER BUTTONS ---
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
+
+        // Preserve existing comments and overall flow; only change selection logic to allow multiple
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const isCurrentlyActive = button.classList.contains('active');
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                if (isCurrentlyActive) {
-                    currentFilter = 'all';
-                } else {
+                const key = button.dataset.filter; // 'lighter' | 'middle' | 'deeper'
+                // Toggle active state for this button only
+                const willActivate = !button.classList.contains('active');
+                if (willActivate) {
                     button.classList.add('active');
-                    currentFilter = button.dataset.filter;
+                    activeFilters.add(key);
+                } else {
+                    button.classList.remove('active');
+                    activeFilters.delete(key);
                 }
+
+                // Apply union filter based on activeFilters set
                 applyFilter();
             });
         });
 
+        // Persisted "Save count" behavior stays the same
         saveCountToggle.addEventListener('change', function() {
             if (this.checked) {
                 localStorage.setItem(savedItemCountKey, itemCountInput.value);
