@@ -514,7 +514,7 @@
             text-decoration: none;
             transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
             display: flex;
-            align-items: center;
+                       align-items: center;
             gap: 0.25rem;
             margin-top: 0.5rem;
             justify-content: center;
@@ -962,7 +962,11 @@
 
         let fullItemList = []; // Master list of question objects {num, text, raw}
         let itemList = []; // The currently filtered list of question objects
-        let currentFilter = 'all'; // 'all' | 'lighter' | 'middle' | 'deeper'
+
+        // MULTI-SELECT: active filters set replaces single currentFilter
+        // Possible values: 'lighter' | 'middle' | 'deeper'
+        const activeFilters = new Set();
+
         let lastSearchTerm = "";
         let availableRandomItems = [];
         let selectedRandomQuestionText = null; // Stores the text of the currently selected question
@@ -990,7 +994,7 @@
         // Modal elements
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
-        const confirmClearNo = document.getElementById('confirm-clear-no');
+        theConfirmClearNo = document.getElementById('confirm-clear-no'); // keep existing id usage below
         const confirmationText = document.getElementById('confirmation-text');
         const confirmationSubtext = document.getElementById('confirmation-subtext');
 
@@ -1152,19 +1156,21 @@
 
         // NEW: Filter logic (from code A, adapted for objects)
         function applyFilter() {
-            switch (currentFilter) {
-                case 'lighter':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌱'));
-                    break;
-                case 'deeper':
-                    itemList = fullItemList.filter(item => item.text.startsWith('🌀'));
-                    break;
-                case 'middle':
-                    itemList = fullItemList.filter(item => !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
-                    break;
-                default:
-                    itemList = [...fullItemList];
-                    break;
+            // When no filter buttons are selected, show all (same as 'all')
+            if (activeFilters.size === 0) {
+                itemList = [...fullItemList];
+            } else {
+                // OR logic across selected filters
+                itemList = fullItemList.filter(item => {
+                    const isLight = item.text.startsWith('🌱');
+                    const isDeep = item.text.startsWith('🌀');
+                    const isMiddle = !isLight && !isDeep;
+                    return (
+                        (activeFilters.has('lighter') && isLight) ||
+                        (activeFilters.has('deeper') && isDeep) ||
+                        (activeFilters.has('middle') && isMiddle)
+                    );
+                });
             }
             availableRandomItems = [...itemList];
             totalQuestionsSpan.textContent = `(Total: ${itemList.length})`;
@@ -1658,17 +1664,23 @@
         copyQuestionBtn.addEventListener('click', () => { copyQuestionToClipboard(); searchEngineModal.classList.remove('show'); });
         closeSearchEngineModalBtn.addEventListener('click', () => { searchEngineModal.classList.remove('show'); });
 
+        // MULTI-SELECT: Filter button behavior now toggles each independently.
         const filterButtons = document.querySelectorAll('#difficulty-filter .filter-btn');
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const isCurrentlyActive = button.classList.contains('active');
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                if (isCurrentlyActive) {
-                    currentFilter = 'all';
+                const key = button.dataset.filter;
+                const isActive = button.classList.contains('active');
+
+                // Toggle active state visually and in activeFilters set
+                if (isActive) {
+                    button.classList.remove('active');
+                    activeFilters.delete(key);
                 } else {
                     button.classList.add('active');
-                    currentFilter = button.dataset.filter;
+                    activeFilters.add(key);
                 }
+
+                // Apply filter with current multi-selection
                 applyFilter();
             });
         });
