@@ -1,6 +1,6 @@
 # Curious Souls Café - Web App for Meaningful Conversations
 
-Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [live web app](https://curioussoulscafe.github.io/curious-souls-cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
+Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about)! This [live web app](https://app.curioussouls.cafe/) is your companion for exploring fascinating ideas and fostering meaningful connections with others. Through thought-provoking questions, it offers conversation starters for friends, prompts for personal journaling, or fresh ideas to ponder.
 
 Originally created to facilitate meaningful discussions during Curious Souls Café [meetup events](https://curioussoulscafe.substack.com/p/event-structure), this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
 
@@ -9,16 +9,16 @@ Originally created to facilitate meaningful discussions during Curious Souls Caf
 Step into meaningful conversations with ease! Here's how you can join the fun:
 
 1. **Launch the Live Web App**  
-   Open the Curious Souls Café web app in your browser by clicking this link: [Curious Souls Café Web App](https://curioussoulscafe.github.io/curious-souls-cafe/).
+   Open the Curious Souls Café web app in your browser by clicking this link: [Curious Souls Café Web App](https://app.curioussouls.cafe/).
 
 2. **Invite Others**  
    On the main page, you'll find a QR code. Share it with friends or participants—anyone can scan it to instantly join the conversation.
 
 3. **Pick a Topic**  
-   Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin! [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) is recommended for first-timers.
+   Gather your group, choose a topic (or question deck) that resonates with everyone, and let the exploration of ideas begin! [Icebreaker](https://app.curioussouls.cafe/pages/icebreaker.html) is recommended for first-timers.
 
 4. **Start the Conversation**  
-   Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion): With the three questions presented (by default), each person chooses their favorite one, and then determine whose question goes first (e.g., the particpant who arrives first, or the one whose virtual question card matches the color of a [virtual dice roll](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html)). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.
+   Unsure where to start? Try [Style One – Open Discussion](https://curioussoulscafe.substack.com/i/154389021/style-one-open-discussion): With the three questions presented (by default), each person chooses their favorite one, and then determine whose question goes first (e.g., the particpant who arrives first, or the one whose virtual question card matches the color of a [virtual dice roll](https://app.curioussouls.cafe/pages/dice.html)). After the first person has finished sharing, they pick a direction (clockwise or counterclockwise) for the discussion to proceed.
    
    Participants take turns answering the chosen question, with the option to pass if they feel uncomfortable. This style fosters a relaxed and organic way to engage with the group while ensuring everyone has the opportunity to participate.
 
@@ -36,27 +36,27 @@ Our in-person Curious Souls Café [meetup](https://curioussoulscafe.substack.com
 
 Explore diverse themes like self-discovery, happiness, love, and authenticity, or revisit thought-provoking prompts inspired by our global community. These questions help uncover insights about who you are, where you've been, and where you’re headed:
 
-- **[Adulthood](https://curioussoulscafe.github.io/curious-souls-cafe/pages/adulthood.html)**: Explore the holistic journey of adulting—personal growth, authenticity, maturity, and connection to self, others, and the world.
-- **[Authenticity](https://curioussoulscafe.github.io/curious-souls-cafe/pages/authenticity.html)**: Align your actions with your values and embrace your true self.
-- **[Entrepreneurship](https://curioussoulscafe.github.io/curious-souls-cafe/pages/entrepreneurship.html)**: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.
-- **[Friendship](https://curioussoulscafe.github.io/curious-souls-cafe/pages/friendship.html)**: Deepen connection, celebrate shared moments, and explore the many facets of meaningful friendships.
-- **[Global Curiosities](https://curioussoulscafe.github.io/curious-souls-cafe/pages/global-curiosities.html)**: Questions written by participants at Curious Souls Cafe sessions around the world.
-- **[Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
-- **[Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and heart-warming conversations.
-- **[Inner Child](https://curioussoulscafe.github.io/curious-souls-cafe/pages/inner-child.html)**: Reconnect with your playful younger self, nurture creativity, and explore the transformative power of curiosity, wonder, and self-compassion.
-- **[Interdependence](https://curioussoulscafe.github.io/curious-souls-cafe/pages/interdependence.html)**: Explore interdependent connection, and the invisible threads that sustain our relationships and communities.
-- **[Legacy](https://curioussoulscafe.github.io/curious-souls-cafe/pages/legacy.html)**: Reflect on the impact you make in the world and transform your values into a meaningful legacy.
-- **[Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html)**: Reflect on the dynamics of love and intimacy.
-- **[Parenting](https://curioussoulscafe.github.io/curious-souls-cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
-- **[Purpose](https://curioussoulscafe.github.io/curious-souls-cafe/pages/purpose.html)**: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.
-- **[Reflection](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
-- **[Reimagine](https://curioussoulscafe.github.io/curious-souls-cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
-- **[The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, mindfulness, and personal well-being.
-- **[Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.
-- **[True Wealth](https://curioussoulscafe.github.io/curious-souls-cafe/pages/true-wealth.html)**: Explore what it means to live a truly rich life—beyond material wealth—through questions that spark reflection on abundance, sufficiency, connection, and purpose.
-- **[Work that Resonates](https://curioussoulscafe.github.io/curious-souls-cafe/pages/work-that-resonates.html)**: Explore your evolving relationship with work, purpose, and fulfillment.
+- **[Adulthood](https://app.curioussouls.cafe/pages/adulthood.html)**: Explore the holistic journey of adulting—personal growth, authenticity, maturity, and connection to self, others, and the world.
+- **[Authenticity](https://app.curioussouls.cafe/pages/authenticity.html)**: Align your actions with your values and embrace your true self.
+- **[Entrepreneurship](https://app.curioussouls.cafe/pages/entrepreneurship.html)**: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.
+- **[Friendship](https://app.curioussouls.cafe/pages/friendship.html)**: Deepen connection, celebrate shared moments, and explore the many facets of meaningful friendships.
+- **[Global Curiosities](https://app.curioussouls.cafe/pages/global-curiosities.html)**: Questions written by participants at Curious Souls Cafe sessions around the world.
+- **[Happiness](https://app.curioussouls.cafe/pages/happiness.html)**: Explore your personal definition, experiences, and journey with happiness.
+- **[Icebreaker](https://app.curioussouls.cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and heart-warming conversations.
+- **[Inner Child](https://app.curioussouls.cafe/pages/inner-child.html)**: Reconnect with your playful younger self, nurture creativity, and explore the transformative power of curiosity, wonder, and self-compassion.
+- **[Interdependence](https://app.curioussouls.cafe/pages/interdependence.html)**: Explore interdependent connection, and the invisible threads that sustain our relationships and communities.
+- **[Legacy](https://app.curioussouls.cafe/pages/legacy.html)**: Reflect on the impact you make in the world and transform your values into a meaningful legacy.
+- **[Love Relationships](https://app.curioussouls.cafe/pages/love-relationships.html)**: Reflect on the dynamics of love and intimacy.
+- **[Parenting](https://app.curioussouls.cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
+- **[Purpose](https://app.curioussouls.cafe/pages/purpose.html)**: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.
+- **[Reflection](https://app.curioussouls.cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.   
+- **[Reimagine](https://app.curioussouls.cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
+- **[The Mind Speaks](https://app.curioussouls.cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, mindfulness, and personal well-being.
+- **[Transitions](https://app.curioussouls.cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.
+- **[True Wealth](https://app.curioussouls.cafe/pages/true-wealth.html)**: Explore what it means to live a truly rich life—beyond material wealth—through questions that spark reflection on abundance, sufficiency, connection, and purpose.
+- **[Work that Resonates](https://app.curioussouls.cafe/pages/work-that-resonates.html)**: Explore your evolving relationship with work, purpose, and fulfillment.
 
-💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Happiness](https://curioussoulscafe.github.io/curious-souls-cafe/pages/happiness.html), [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html), and [The Mind Speaks](https://curioussoulscafe.github.io/curious-souls-cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/global-curiosities.html) from our global events.
+💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for the topics [Happiness](https://app.curioussouls.cafe/pages/happiness.html), [Love Relationships](https://app.curioussouls.cafe/pages/love-relationships.html), and [The Mind Speaks](https://app.curioussouls.cafe/pages/the-mind-speaks.html), as well as to all curious souls (participants) who contributed [past questions](https://app.curioussouls.cafe/pages/global-curiosities.html) from our global events.
 
 Let these decks inspire your journey of exploration, connection, and growth!
 
@@ -64,7 +64,7 @@ Note: Questions with a spiral emoiji 🌀 are deeper, thought-provoking ones, wh
 
 ## ✨ What You Can Do with the Web App
 
-* **Pick a Topic:** On the [main page](https://curioussoulscafe.github.io/curious-souls-cafe/), you'll see general questions like [Icebreaker](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html) and different topics like [Transitions](https://curioussoulscafe.github.io/curious-souls-cafe/pages/transitions.html) or [Love Relationships](https://curioussoulscafe.github.io/curious-souls-cafe/pages/love-relationships.html). Just click (or tap) on a topic button to dive in!
+* **Pick a Topic:** On the [main page](https://app.curioussouls.cafe/), you'll see general questions like [Icebreaker](https://app.curioussouls.cafe/pages/icebreaker.html) and different topics like [Transitions](https://app.curioussouls.cafe/pages/transitions.html) or [Love Relationships](https://app.curioussouls.cafe/pages/love-relationships.html). Just click (or tap) on a topic button to dive in!
 
 * **Favorite Topics & Actions:** Easily mark your favorite topics by tapping the star icon next to them. Favorited items will appear at the top of the list for quick access, and your preferences are saved for your next visit.
 
@@ -96,7 +96,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
 3. **Quick Scroll to Top:** The sticky **"Top" button** located at the bottom-right corner of any topic page can be used to quickly scroll back to the top of the screen. This is especially useful if you've scrolled far down and need to quickly access controls or re-read the topic title.
 
-4. **Direct Topic Page Links**: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Icebreaker" topic, you would use: `<URL>/pages/icebreaker.html` like [this](https://curioussoulscafe.github.io/curious-souls-cafe/pages/icebreaker.html).
+4. **Direct Topic Page Links**: Each topic page has its own unique URL. You can directly link participants to a specific topic page by appending the appropriate HTML file name to the base URL. For example, to direct users to the "Icebreaker" topic, you would use: `<URL>/pages/icebreaker.html` like [this](https://app.curioussouls.cafe/pages/icebreaker.html).
 
 5. **Single Random Question for Punishments:** For participants who land on a punishment (e.g., via specific [dice](./pages/descriptions/dice.html) colors used by our facilitators) which requires them to randomly choose a question and answer it:
 
@@ -104,7 +104,7 @@ Here are some helpful tips to enhance your Curious Souls Café experience:
 
    * Then, have the participant tap **"Next Random Questions!"** so that only one random question is displayed.
 
-6. **Roll the Dice:** On each page, you'll find a flating [dice](https://curioussoulscafe.github.io/curious-souls-cafe/pages/dice.html) button at the bottom right corner. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](./pages/descriptions/dice.html) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
+6. **Roll the Dice:** On each page, you'll find a flating [dice](https://app.curioussouls.cafe/pages/dice.html) button at the bottom right corner. This will take you to a special page where you can roll a virtual dice to get a random color outcome. Each color corresponds to a different [category or action](./pages/descriptions/dice.html) in our in-person discussions, adding an element of chance and fun! It supports customization of colors and the number of sides, so that it can be used to break a tie too!
 
 7. **Advanced Search & Clear:**
 
