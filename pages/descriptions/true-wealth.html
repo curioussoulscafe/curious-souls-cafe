@@ -150,10 +150,10 @@
       <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>)
     </p>
 
-    <p>A reflective exploration of what it means to be truly wealthy—to possess an abundance of what genuinely nourishes us.</p>
+    <p>A reflective exploration of what it means to be truly wealthy--to possess an abundance of what genuinely nourishes us.</p>
     <blockquote>
       "True wealth is the ability to fully experience life."
-      <br>— Adapted from Henry David Thoreau
+      <br>-- Adapted from Henry David Thoreau
     </blockquote>
     <p>In a world that often equates wealth with financial capital, we are invited to discover a more profound and personal abundance. This gathering is for those curious to explore the currencies of time, attention, well-being, and connection that form the bedrock of a life well-lived.</p>
     <p>Come explore what it means to be rich in the ways that matter most. Share from the heart, and leave with a renewed sense of your own true wealth.</p>
@@ -208,50 +208,47 @@
   </div>
 
   <script>
-    function goBackFallback() {
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = '../index.html';
-      }
-    }
-
-    function runBackButtonAttention() {
-      const floatingBackButton = document.getElementById('floating-back-button');
-      if (!floatingBackButton) return;
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!prefersReduced) {
-        floatingBackButton.classList.add('attention');
-        setTimeout(() => {
-          floatingBackButton.classList.remove('attention');
-        }, 3000);
-      } else {
-        floatingBackButton.style.outline = '2px solid #a855f7';
-        floatingBackButton.style.outlineOffset = '2px';
-        setTimeout(() => {
-          floatingBackButton.style.outline = '';
-          floatingBackButton.style.outlineOffset = '';
-        }, 2000);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const floatingBackButton = document.getElementById('floating-back-button');
-      if (floatingBackButton) {
-        floatingBackButton.addEventListener('click', goBackFallback);
-      }
-      runBackButtonAttention();
-    });
-  </script>
-
-  <script>
     // Back behavior with fallback + first-visit attention effect
+    function safeNavigate(url) {
+      try {
+        window.location.href = url;
+      } catch (e) {
+        window.location.href = '/';
+      }
+    }
+
+    function isSameOrigin(url) {
+      try {
+        const u = new URL(url, window.location.href);
+        return u.origin === window.location.origin;
+      } catch {
+        return false;
+      }
+    }
+
     function goBackFallback() {
-      if (window.history.length > 1) {
+      // Prefer going back if there's history
+      if (window.history && window.history.length > 1) {
+        const current = window.location.href;
         window.history.back();
+        // Fallback if navigation didn't happen
+        setTimeout(() => {
+          if (window.location.href === current) {
+            if (document.referrer && isSameOrigin(document.referrer)) {
+              safeNavigate(document.referrer);
+            } else {
+              // Fallback to home of the web app root
+              safeNavigate('../index.html');
+            }
+          }
+        }, 250);
       } else {
-        // Fallback to home of the web app root
-        window.location.href = './index.html';
+        // No history — try same-origin referrer; else fallback to app root
+        if (document.referrer && isSameOrigin(document.referrer)) {
+          safeNavigate(document.referrer);
+        } else {
+          safeNavigate('../index.html');
+        }
       }
     }
 
@@ -277,9 +274,54 @@
     document.addEventListener('DOMContentLoaded', () => {
       const floatingBackButton = document.getElementById('floating-back-button');
       if (floatingBackButton) {
-        floatingBackButton.addEventListener('click', goBackFallback);
+        floatingBackButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          goBackFallback();
+        });
       }
-      runBackButtonAttention();
+
+      // ------- Hash based show/hide of Back button -------
+      // Supports:
+      // - #show-back   => force show
+      // - #hide-back   => force hide
+      // - any other/no hash => default behavior (hidden unless shown programmatically)
+      function applyBackButtonHashRule() {
+        const hash = (window.location.hash || '').toLowerCase();
+        if (!floatingBackButton) return;
+
+        // Reset inline overrides first
+        floatingBackButton.style.display = '';
+        floatingBackButton.style.visibility = '';
+        floatingBackButton.style.pointerEvents = '';
+
+        if (hash === '#hide-back') {
+          // Hide completely and disable attention animation
+          floatingBackButton.style.display = 'none';
+          floatingBackButton.classList.remove('attention');
+        } else if (hash === '#show-back') {
+          // Make sure it is visible regardless of other logic
+          floatingBackButton.style.display = 'inline-flex';
+          // Give a gentle attention nudge once when forced visible
+          runBackButtonAttention();
+        } else {
+          // No special hash: keep default behavior (invisible by default)
+          floatingBackButton.style.display = 'none';
+          floatingBackButton.classList.remove('attention');
+        }
+      }
+
+      // Run once on load
+      applyBackButtonHashRule();
+
+      // Update if hash changes dynamically
+      window.addEventListener('hashchange', applyBackButtonHashRule);
+
+      // Run attention after potential hash rule visibility set
+      // Only if not explicitly hidden by hash
+      if ((window.location.hash || '').toLowerCase() !== '#hide-back') {
+        runBackButtonAttention();
+      }
+      // ------- End hash based show/hide -------
     });
   </script>
 </body>

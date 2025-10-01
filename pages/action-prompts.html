@@ -180,7 +180,7 @@
             display: none; /* Hidden by default; shown when an action is selected */
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
             text-decoration: none;
             z-index: 1150; /* above Share for emphasis */
             transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
@@ -191,7 +191,7 @@
         }
         #floating-lookup:hover, #floating-lookup:focus {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
             outline: none;
             filter: brightness(1.05);
         }
@@ -212,7 +212,7 @@
             display: none; /* Hidden by default; shown when an action is selected */
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-decoration: none;
             z-index: 1130; /* below lookup but above Top */
             transition: transform 0.15s ease-in-out, box-shadow 0.2s ease-in-out, filter 0.2s;
@@ -223,7 +223,7 @@
         }
         #floating-share:hover, #floating-share:focus {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 10px 18px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2);
             outline: none;
             filter: brightness(1.05);
         }
@@ -703,7 +703,7 @@
             </button>
         </div>
 
-        <a href="saved-items.html" id="manage-saved-items" class="mt-3 mb-5 inline-flex items-center justify-center w-full bg-purple-400 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out" title="Manage Saved Items">
+        <a href="saved-items.html#show-back" id="manage-saved-items" class="mt-3 mb-5 inline-flex items-center justify-center w-full bg-purple-400 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out" title="Manage Saved Items">
             <i class="fas fa-folder-open mr-2"></i> Manage Saved Items
         </a>
 
@@ -765,7 +765,7 @@
                 <button id="search-bing-choice-btn" style="background-color: #008AD6; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
                     <i class="fab fa-microsoft" style="margin-right: 0.5rem;"></i> Search Bing
                 </button>
-                <button id="search-duckduckgo-choice-btn" style="background-color: #e3722a; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
+                <button id="search-duckduckgo-choice-btn" style="background-color: #e3722a; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
                     <i class="fas fa-search" style="margin-right: 0.5rem;"></i> Search DuckDuckGo
                 </button>
                 <button id="search-brave-choice-btn" style="background-color: #FB542B; color: white; font-weight: bold; padding: 0.5rem 1rem; font-size: 0.9rem; border-radius: 9999px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s ease-in-out; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
@@ -852,12 +852,56 @@
             }, 2000);
           }
         }
+
         document.addEventListener('DOMContentLoaded', () => {
           const floatingBackButton = document.getElementById('floating-back-button');
           if (floatingBackButton) {
             floatingBackButton.addEventListener('click', goBackFallback);
+          }
+
+          // ------- Hash based show/hide of Back button -------
+          // Supports:
+          // - #show-back   => force show
+          // - #hide-back   => force hide
+          // - any other/no hash => default behavior (button hidden unless shown programmatically)
+          function applyBackButtonHashRule() {
+            const hash = (window.location.hash || '').toLowerCase();
+            if (!floatingBackButton) return;
+
+            // Reset inline overrides first
+            floatingBackButton.style.display = '';
+            floatingBackButton.style.visibility = '';
+            floatingBackButton.style.pointerEvents = '';
+
+            if (hash === '#hide-back') {
+              // Hide completely and disable attention animation
+              floatingBackButton.style.display = 'none';
+              floatingBackButton.classList.remove('attention');
+            } else if (hash === '#show-back') {
+              // Make sure it is visible regardless of other logic
+              floatingBackButton.style.display = 'inline-flex';
+              // Give a gentle attention nudge once when forced visible
+              runBackButtonAttention();
+            } else {
+              // No special hash: keep default behavior (start hidden)
+              floatingBackButton.style.display = 'none';
+              floatingBackButton.classList.remove('attention');
+            }
+          }
+
+          // Run once on load
+          applyBackButtonHashRule();
+
+          // Update if hash changes dynamically
+          window.addEventListener('hashchange', applyBackButtonHashRule);
+
+          // Run attention after potential hash rule visibility set
+          // Only if not explicitly hidden by hash
+          if ((window.location.hash || '').toLowerCase() !== '#hide-back' && (window.location.hash || '').toLowerCase() !== '#show-back') {
+            // In default mode we still do a subtle nudge when user lands (optional).
             runBackButtonAttention();
           }
+          // ------- End hash based show/hide -------
         });
 
         // --- Hardcoded Topic Configuration for Action Prompts ---
@@ -904,7 +948,7 @@
         // Modal elements
         const confirmationModal = document.getElementById('confirmation-modal');
         const confirmClearYes = document.getElementById('confirm-clear-yes');
-        theConfirmNo = document.getElementById('confirm-clear-no'); // keep name consistent below
+        const theConfirmNo = document.getElementById('confirm-clear-no'); // keep name consistent below
         const confirmClearNo = theConfirmNo;
         const confirmationText = document.getElementById('confirmation-text');
         const confirmationSubtext = document.getElementById('confirmation-subtext');
@@ -1315,6 +1359,7 @@
         confirmClearNo.addEventListener('click', () => confirmationModal.classList.remove('show'));
         window.addEventListener('scroll', () => backToTopButton.style.display = window.scrollY > 1 ? 'block' : 'none');
         backToTopButton.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        // Removed duplicate re-declarations of confirmEmptySearchYes/No
         confirmEmptySearchYes.addEventListener('click', () => { emptySearchModal.classList.remove('show'); executeSearch(""); });
         confirmEmptySearchNo.addEventListener('click', () => emptySearchModal.classList.remove('show'));
         floatingLookupBtn.addEventListener('click', () => { if (selectedActionText) searchEngineModal.classList.add('show'); else alert("Please select an action first."); });

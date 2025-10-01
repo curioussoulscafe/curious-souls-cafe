@@ -462,12 +462,93 @@
       }
     }
 
+    // Helpers for safe navigation (mirroring global-event-list.html behavior)
+    function safeNavigate(url) {
+      try {
+        window.location.href = url;
+      } catch (e) {
+        window.location.href = '/';
+      }
+    }
+    function isSameOrigin(url) {
+      try {
+        const u = new URL(url, window.location.href);
+        return u.origin === window.location.origin;
+      } catch {
+        return false;
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const floatingBackButton = document.getElementById('floating-back-button');
       if (floatingBackButton) {
-        floatingBackButton.addEventListener('click', goBackFallback);
+        // Maintain original click behavior with a slightly more robust fallback
+        floatingBackButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (window.history && window.history.length > 1) {
+            const current = window.location.href;
+            window.history.back();
+            setTimeout(() => {
+              if (window.location.href === current) {
+                if (document.referrer && isSameOrigin(document.referrer)) {
+                  safeNavigate(document.referrer);
+                } else {
+                  safeNavigate('../index.html');
+                }
+              }
+            }, 250);
+          } else {
+            if (document.referrer && isSameOrigin(document.referrer)) {
+              safeNavigate(document.referrer);
+            } else {
+              safeNavigate('../index.html');
+            }
+          }
+        });
       }
-      runBackButtonAttention();
+
+      // ------- Hash based show/hide of Back button -------
+      // Supports:
+      // - #show-back   => force show
+      // - #hide-back   => force hide
+      // - any other/no hash => default behavior (invisible by default here)
+      function applyBackButtonHashRule() {
+        const hash = (window.location.hash || '').toLowerCase();
+        if (!floatingBackButton) return;
+
+        // Reset inline overrides first
+        floatingBackButton.style.display = '';
+        floatingBackButton.style.visibility = '';
+        floatingBackButton.style.pointerEvents = '';
+
+        if (hash === '#hide-back') {
+          // Hide completely and disable attention animation
+          floatingBackButton.style.display = 'none';
+          floatingBackButton.classList.remove('attention');
+        } else if (hash === '#show-back') {
+          // Make sure it is visible regardless of other logic
+          floatingBackButton.style.display = 'inline-flex';
+          // Give a gentle attention nudge once when forced visible
+          runBackButtonAttention();
+        } else {
+          // No special hash: keep default behavior (not shown by default)
+          floatingBackButton.style.display = 'none';
+          floatingBackButton.classList.remove('attention');
+        }
+      }
+
+      // Run once on load
+      applyBackButtonHashRule();
+
+      // Update if hash changes dynamically
+      window.addEventListener('hashchange', applyBackButtonHashRule);
+
+      // Run attention after potential hash rule visibility set
+      // Only if not explicitly hidden by hash
+      if ((window.location.hash || '').toLowerCase() !== '#hide-back') {
+        runBackButtonAttention();
+      }
+      // ------- End hash based show/hide -------
     });
   </script>
 </body>
