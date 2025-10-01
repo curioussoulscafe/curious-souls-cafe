@@ -497,7 +497,6 @@
     </p>
 
     <button id="restore-defaults-button" class="restore-button" style="margin-top: 1.5rem">Restore Defaults</button>
-    <!--<button onclick="location.href='../index.html'" class="leave-page-button"><i class="fas fa-arrow-left"></i> Leave Page</button>-->
     
     <!-- Action Prompts button: same file target as Restore Defaults (sibling in same folder), different color, specified label -->
     <a href="action-prompts.html" class="action-prompts-button" aria-label="Action Prompts">Action Prompts</a>
@@ -595,7 +594,8 @@
 
     const localStorageKey = 'customDiceColors';
     const stripeModeLocalStorageKey = 'stripeModeEnabled';
-    const configureInfoLocalStorageKey = 'configureInfoPromptSeen';
+    theConfigureInfoLocalStorageKey = 'configureInfoPromptSeen'; // keep key name same as before
+    const configureInfoLocalStorageKey = theConfigureInfoLocalStorageKey;
 
     const defaultDiceColors = [
       { value: "#57fcff", label: "Blue" },
@@ -706,7 +706,6 @@
       picker.type='color';
       picker.className='color-picker-input';
 
-      // Wrap for flexible inputs so we can move them to line 2 on narrow screens
       const inputsWrap = document.createElement('div');
       inputsWrap.className = 'inputs-wrap';
 
@@ -727,7 +726,6 @@
       removeButton.setAttribute('aria-label','Remove color');
       removeButton.className='remove-btn bg-red-400 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-full text-xs';
 
-      // Initialize values
       const valueHex = initialHex || findSharplyDifferentColor(customDiceColors);
       const hex = toHex(valueHex);
       picker.value = hex;
@@ -738,7 +736,6 @@
         hexInput.classList.toggle('advanced-hidden', !advancedToggle.checked);
       };
 
-      // Events
       picker.addEventListener('input', () => {
         const hx = picker.value.toUpperCase();
         hexInput.value = hx;
@@ -770,7 +767,6 @@
         updateCustomDiceColors();
       });
 
-      // Compose row
       inputsWrap.appendChild(nameInput);
       inputsWrap.appendChild(hexInput);
 
@@ -940,19 +936,17 @@
       updateCustomDiceColors();
       diceResultText.textContent = "Settings restored to defaults!";
 
-      // Reset info prompt, disable Punishments by default, disable Configure
       localStorage.removeItem(configureInfoLocalStorageKey);
-      stripeModeToggle.checked = false;           // OFF by default
+      stripeModeToggle.checked = false;
       saveStripeModeState();
       configureToggle.checked = false;
       updateConfigVisibility();
     }
 
-    // Load saved state; if none, default to OFF (unchecked)
     function loadStripeModeState(){
         const saved = localStorage.getItem(stripeModeLocalStorageKey);
         if (saved === null) {
-            stripeModeToggle.checked = false;    // default OFF
+            stripeModeToggle.checked = false;
             saveStripeModeState();
         } else {
             stripeModeToggle.checked = saved === 'true';
@@ -962,25 +956,48 @@
       localStorage.setItem(stripeModeLocalStorageKey, stripeModeToggle.checked ? 'true' : 'false');
     }
 
+    // Robust back navigation helpers (aligned with global-event-list)
+    const HOME_FALLBACK = '../index.html';
+    function safeNavigate(url) {
+      try { window.location.href = url; }
+      catch { window.location.href = HOME_FALLBACK || '/'; }
+    }
+    function isSameOrigin(url) {
+      try { return new URL(url, window.location.href).origin === window.location.origin; }
+      catch { return false; }
+    }
     function goBackFallback() {
+      const current = window.location.href;
       if (window.history.length > 1) {
         window.history.back();
+        setTimeout(() => {
+          if (window.location.href === current) {
+            if (document.referrer && isSameOrigin(document.referrer)) {
+              safeNavigate(document.referrer);
+            } else {
+              safeNavigate(HOME_FALLBACK || '/');
+            }
+          }
+        }, 250);
       } else {
-        window.location.href = '../index.html';
+        if (document.referrer && isSameOrigin(document.referrer)) {
+          safeNavigate(document.referrer);
+        } else {
+          safeNavigate(HOME_FALLBACK || '/');
+        }
       }
     }
 
     // Trigger attention animation on first load/visit of the page instance
     function runBackButtonAttention() {
+      if (!floatingBackButton) return;
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!prefersReduced) {
         floatingBackButton.classList.add('attention');
-        // Remove class after animation ends to restore hover transforms cleanly
         setTimeout(() => {
           floatingBackButton.classList.remove('attention');
-        }, 3000); // a bit longer than 3x 900ms to be safe
+        }, 3000);
       } else {
-        // For reduced motion, add a brief static outline highlight then remove
         floatingBackButton.style.outline = '2px solid #a855f7';
         floatingBackButton.style.outlineOffset = '2px';
         setTimeout(() => {
@@ -990,8 +1007,30 @@
       }
     }
 
+    // Hash-based show/hide of Back button (ported behavior)
+    function applyBackButtonHashRule() {
+      if (!floatingBackButton) return;
+      const hash = (window.location.hash || '').toLowerCase();
+
+      // Reset inline overrides
+      floatingBackButton.style.display = '';
+      floatingBackButton.style.visibility = '';
+      floatingBackButton.style.pointerEvents = '';
+
+      if (hash === '#hide-back') {
+        floatingBackButton.style.display = 'none';
+        floatingBackButton.classList.remove('attention');
+      } else if (hash === '#show-back') {
+        floatingBackButton.style.display = 'inline-flex';
+        runBackButtonAttention();
+      } else {
+        // Default: keep hidden initially (matches previous default behavior)
+        floatingBackButton.style.display = 'none';
+        floatingBackButton.classList.remove('attention');
+      }
+    }
+
     function updateConfigVisibility() {
-      // Show the configuration elements when the toggle is checked (on).
       const showConfig = configureToggle.checked;
       configElementsToToggle.forEach(el => {
         if (el) {
@@ -1000,7 +1039,12 @@
       });
     }
 
-    document.addEventListener('DOMContentLoaded', runBackButtonAttention);
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initial attention (only if not explicitly hidden)
+      if ((window.location.hash || '').toLowerCase() !== '#hide-back') {
+        runBackButtonAttention();
+      }
+    });
 
     advancedToggle.addEventListener('change', () => {
       const hexInputs = colorsInputContainer.querySelectorAll('.hex-input');
@@ -1009,7 +1053,7 @@
 
     loadColorsFromLocalStorage();
     loadStripeModeState();
-    updateConfigVisibility(); // Set initial visibility based on the toggle's default state
+    updateConfigVisibility();
 
     rollCustomDiceButton.addEventListener('click', rollCustomDice);
     addColorButton.addEventListener('click', () => makeRow());
@@ -1044,6 +1088,10 @@
 
     floatingBackButton.addEventListener('click', goBackFallback);
 
+    // Apply hash rule now and on hash changes
+    applyBackButtonHashRule();
+    window.addEventListener('hashchange', applyBackButtonHashRule);
+
     // --------------------------
     // Share page / QR code logic
     // --------------------------
@@ -1053,7 +1101,6 @@
     const qrModalCloseButton = document.getElementById('qr-modal-close-button');
     const qrPageLink = document.getElementById('qr-page-link');
 
-    // Getting Started modal + inline share trigger support (open QR, then return)
     const gettingStartedModal = document.getElementById('getting-started-modal');
     const inlineShareTrigger = document.getElementById('inline-share-trigger');
     const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
@@ -1105,7 +1152,6 @@
       });
     }
 
-    // Copy Link Button Logic
     const copyLinkTextLink = document.getElementById('copy-link-text-link');
     if (copyLinkTextLink) {
       copyLinkTextLink.addEventListener('click', (e) => {
@@ -1121,7 +1167,6 @@
       });
     }
 
-    // Share Link Button Logic (Web Share API only)
     const shareLinkButton = document.getElementById('share-link-button');
     if (shareLinkButton) {
       shareLinkButton.addEventListener('click', async (e) => {
@@ -1140,7 +1185,6 @@
       });
     }
 
-    // Optional: wire up Getting Started modal close if needed
     if (closeGettingStartedModalBtn) {
       closeGettingStartedModalBtn.addEventListener('click', () => {
         gettingStartedModal.classList.remove('show');
