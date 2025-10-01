@@ -4,6 +4,8 @@ Welcome to the [Curious Souls Café](https://curioussoulscafe.substack.com/about
 
 Originally created to facilitate meaningful discussions during Curious Souls Café [meetup events](https://curioussoulscafe.substack.com/p/event-structure), this app is now available to everyone, bringing the spirit of curiosity and connection to your fingertips. (Please note: the app is actively evolving, so features may be added, updated, or refined as we continue to enhance the experience.)
 
+To learn more about the original Curisous Souls Café initiative, check out our [website](https://curioussouls.cafe/).
+
 ## 🚀 Getting Started
 
 Step into meaningful conversations with ease! Here's how you can join the fun:
