@@ -601,7 +601,7 @@
             <a href="https://www.meetup.com/curious-souls-cafe/events/308748790/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Hong Kong">
                 <div class="event-card">
                     <div class="event-session-numbers"><div class="session-block global"><span class="session-label">Global</span><span class="session-value">#64</span></div><div class="session-block local"><span class="session-label">Hong Kong</span><span class="session-value">#25</span></div></div>
-                    <div class="event-details"><p class="event-title">Meaningful Conversation for Curious Minds ("Big Talk" tribute)</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
+                    <div class="event-details"><p class="event-title">Curious Souls Café - Meaningful Conversation for Curious Minds ("Big Talk" tribute)</p><div class="event-meta"><span><i class="fas fa-map-marker-alt"></i> Hong Kong</span><span><i class="fas fa-calendar-alt"></i> Thursday, 3 July 2025</span><span><i class="fas fa-clock"></i> 7:00 pm</span></div></div>
                 </div>
             </a>
             <a href="https://www.meetup.com/curious-souls-cafe-singapore/events/308598811/" target="_blank" rel="noopener noreferrer" class="event-link" data-city="Singapore">
@@ -1236,7 +1236,7 @@
                             }
                         }, 250);
                     } else {
-                        // No history — try referrer if same-origin, else go home/root
+                        // No history -- try referrer if same-origin, else go home/root
                         if (document.referrer && isSameOrigin(document.referrer)) {
                             safeNavigate(document.referrer);
                         } else {
@@ -1261,7 +1261,49 @@
                     }, 2000);
                 }
             }
-            runBackButtonAttention();
+
+            // ------- Hash based show/hide of Back button -------
+            // Supports:
+            // - #show-back   => force show
+            // - #hide-back   => force hide
+            // - any other/no hash => default behavior (show button normally)
+            function applyBackButtonHashRule() {
+                const hash = (window.location.hash || '').toLowerCase();
+                if (!floatingBackButton) return;
+
+                // Reset inline overrides first
+                floatingBackButton.style.display = '';
+                floatingBackButton.style.visibility = '';
+                floatingBackButton.style.pointerEvents = '';
+
+                if (hash === '#hide-back') {
+                    // Hide completely and disable attention animation
+                    floatingBackButton.style.display = 'none';
+                    floatingBackButton.classList.remove('attention');
+                } else if (hash === '#show-back') {
+                    // Make sure it is visible regardless of other logic
+                    floatingBackButton.style.display = 'inline-flex';
+                    // Give a gentle attention nudge once when forced visible
+                    runBackButtonAttention();
+                } else {
+                    // No special hash: keep default behavior (visible by default)
+                    // Ensure it's not accidentally hidden
+                    floatingBackButton.style.display = 'inline-flex';
+                }
+            }
+
+            // Run once on load
+            applyBackButtonHashRule();
+
+            // Update if hash changes dynamically
+            window.addEventListener('hashchange', applyBackButtonHashRule);
+
+            // Run attention after potential hash rule visibility set
+            // Only if not explicitly hidden by hash
+            if ((window.location.hash || '').toLowerCase() !== '#hide-back') {
+                runBackButtonAttention();
+            }
+            // ------- End hash based show/hide -------
 
             // Modal logic for "meetup" link
             const meetupLink = document.getElementById('meetup-link');
