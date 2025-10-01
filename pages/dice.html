@@ -393,6 +393,12 @@
     #getting-started-modal .getting-started-list a:active {
       color: #551A8B !important;
     }
+    .bottom-tip {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      color: #4b5563; background: #f3f4f6; border: 1px dashed #d1d5db;
+      border-radius: 9999px; padding: 0.5rem 0.875rem; font-size: 0.9rem; margin-top: 0.75rem; user-select: none;
+    }
+    .bottom-tip i { color: #f59e0b; }
   </style>
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
@@ -500,6 +506,11 @@
     
     <!-- Action Prompts button: same file target as Restore Defaults (sibling in same folder), different color, specified label -->
     <a href="action-prompts.html#show-back" class="action-prompts-button" aria-label="Action Prompts">Action Prompts</a>
+
+    <div class="bottom-tip" aria-live="polite">
+        <span>💡</span>
+        <span>Tap the top logo for home</span>
+    </div>
 
     <!-- Share page/QR link (from code A) -->
     <br>
