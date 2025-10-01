@@ -1193,12 +1193,55 @@
 
             // Floating Back button behavior
             const floatingBackButton = document.getElementById('floating-back-button');
+
+            // Configurable fallback path if root (/) isn't desired. Leave as '' to use root.
+            const HOME_FALLBACK = ''; // e.g., '/index.html' or '/events/'
+            
+            function safeNavigate(url) {
+                try {
+                    window.location.href = url;
+                } catch (e) {
+                    // As a last resort, attempt root
+                    window.location.href = '/';
+                }
+            }
+
+            function isSameOrigin(url) {
+                try {
+                    const u = new URL(url, window.location.href);
+                    return u.origin === window.location.origin;
+                } catch {
+                    return false;
+                }
+            }
+
             if (floatingBackButton) {
-                floatingBackButton.addEventListener('click', () => {
-                     if (window.history.length > 1) {
+                floatingBackButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    // Prefer going back if there's history
+                    if (window.history && window.history.length > 1) {
                         window.history.back();
+                        // Some browsers in standalone contexts may ignore back if there's no actual entry.
+                        // Add a short timeout to fallback if location didn't change.
+                        const current = window.location.href;
+                        setTimeout(() => {
+                            if (window.location.href === current) {
+                                // Try referrer if same-origin
+                                if (document.referrer && isSameOrigin(document.referrer)) {
+                                    safeNavigate(document.referrer);
+                                } else {
+                                    safeNavigate(HOME_FALLBACK || '/');
+                                }
+                            }
+                        }, 250);
                     } else {
-                        window.location.href = './index.html'; // Fallback
+                        // No history — try referrer if same-origin, else go home/root
+                        if (document.referrer && isSameOrigin(document.referrer)) {
+                            safeNavigate(document.referrer);
+                        } else {
+                            safeNavigate(HOME_FALLBACK || '/');
+                        }
                     }
                 });
             }
