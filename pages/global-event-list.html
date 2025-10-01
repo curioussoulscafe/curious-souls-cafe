@@ -1286,9 +1286,10 @@
                     // Give a gentle attention nudge once when forced visible
                     runBackButtonAttention();
                 } else {
-                    // No special hash: keep default behavior (visible by default)
-                    // Ensure it's not accidentally hidden
-                    floatingBackButton.style.display = 'inline-flex';
+                    // No special hash: keep default behavior (invisible by default)
+                    // Ensure it's not accidentally shown
+                    floatingBackButton.style.display = 'none';
+                    floatingBackButton.classList.remove('attention');
                 }
             }
 
