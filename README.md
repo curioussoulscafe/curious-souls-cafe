@@ -8,6 +8,8 @@ To learn more about the original Curisous Souls Café initiative, check out our 
 
 ## 🚀 Getting Started
 
+**Tip:** A simplified version of 'Getting Started' is available conveniently within most pages in the [app](https://app.curioussouls.cafe/) including a QR code or link of the page to quickly onboard new participants.
+
 Step into meaningful conversations with ease! Here's how you can join the fun:
 
 1. **Launch the Live Web App**  
