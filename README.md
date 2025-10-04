@@ -18,7 +18,7 @@ Step into meaningful conversations with ease! Here's how to use the app:
 
 3.  **Pick a Topic** Choose a question deck that resonates with your group. The [Icebreaker](https://app.curioussouls.cafe/pages/icebreaker.html) deck is recommended for first-timers.
 
-4.  **Start the Conversation** At our events, we often use a structured format to ensure everyone can participate comfortably. A common method is for each person to choose one of the displayed questions, and the group decides which to discuss first.
+4.  **Start the Conversation** Each person chooses one of the displayed questions, and the group decides which to discuss first.
 
 **Pro Tip:**
 - For a deeper understanding of how our events are structured, including different conversation styles and facilitation tips, check out our [Event Structure Guide](https://curioussouls.cafe/event-structure.html).
