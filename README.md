@@ -67,6 +67,7 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 ## 💡 Tips for Using the App
 
 - **Highlight the Chosen Question**: Tap the chosen question to highlight it. This helps everyone focus on the active prompt.
+- **Question Color**: A random color (blue, red, or yellow) will be revealed after tapping. These colors match the default options of the dice, which can be used to decide whose question goes first.
 - **Return to Main Page**: Clicking the round logo at the top of any page will take you back to the topic selection screen.
 - **Quick Scroll to Top**: Use the sticky "Top" button at the bottom-right to quickly return to the top of any page.
 - **Direct Topic Links**: Each topic has a unique URL (e.g., `<URL>/pages/icebreaker.html`) that you can share directly with participants.
