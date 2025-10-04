@@ -21,7 +21,7 @@ Step into meaningful conversations with ease! Here's how to use the app:
 4.  **Start the Conversation** At our events, we often use a structured format to ensure everyone can participate comfortably. A common method is for each person to choose one of the displayed questions, and the group decides which to discuss first.
 
 **Pro Tip:**
-- For a deeper understanding of how our events are structured, including different conversation styles and facilitation tips, check out our [Event Structure Guide](https://curioussoulscafe.substack.com/i/154389021/event-structure).
+- For a deeper understanding of how our events are structured, including different conversation styles and facilitation tips, check out our [Event Structure Guide](https://curioussouls.cafe/event-structure.html).
 - Curious about how our past events went? Explore our [Event Archive](https://curioussoulscafe.substack.com/archive) for anonymous highlights from our meetups.
 
 ## 📚 The Question Decks
