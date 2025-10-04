@@ -882,48 +882,38 @@
     </div>
 
     <!-- NEW: Guide modal (links to Code A headers via anchors) -->
-    <div id="guide-modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="guide-modal-title" aria-describedby="guide-modal-desc">
+    <div
+        id="guide-modal-overlay"
+        class="modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="guide-modal-title"
+    >
         <div class="modal-content">
-            <h3 id="guide-modal-title" class="text-lg font-semibold mb-2 text-purple-600">App guide contents</h3>
-            <p id="guide-modal-desc" class="text-gray-700 mb-3">Jump to a section:</p>
+            <h3 id="guide-modal-title" class="text-lg font-semibold mb-4 text-purple-600">
+                Guide to Curious Souls Café App
+            </h3>
             <div class="space-y-2">
-                <!-- For each header in readme.html (Code A), link via anchor -->
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#curious-souls-caf-">
-                    <i class="fa-solid fa-house mr-1"></i> Overview
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#what-is-curious-souls-caf">
+                    <i class="fa-solid fa-circle-info mr-1"></i> What is Curious Souls Café?
                 </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-getting-started">
-                    <i class="fa-solid fa-rocket mr-1"></i> Getting Started
+                <a class="modal-button block w-full text-center" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff;" href="readme.html#--getting-started">
+                    <i class="fa-solid fa-rocket mr-1"></i> 🚀 Getting Started
                 </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-introducing-the-question-decks">
-                    <i class="fa-solid fa-book mr-1"></i> Introducing the Question Decks
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#--the-question-decks">
+                    <i class="fa-solid fa-book-open mr-1"></i> 📚 The Question Decks
                 </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-what-you-can-do-with-the-web-app">
-                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> What You Can Do with the Web App
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#--app-features-amp-tools">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> ✨ App Features & Tools
                 </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-a-fun-little-secret-">
-                    <i class="fa-solid fa-dice mr-1"></i> A Fun Little Secret!
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#--tips-for-using-the-app">
+                    <i class="fa-solid fa-lightbulb mr-1"></i> 💡 Tips for Using the App
                 </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-tips-for-using-the-app">
-                    <i class="fa-solid fa-lightbulb mr-1"></i> Tips for Using the App
+                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#--for-contributors">
+                    <i class="fa-solid fa-file-code mr-1"></i> 📂 For Contributors
                 </a>
-                <!-- Changed: Advanced -> Contribute with GitHub icon -->
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-how-files-are-organized">
-                    <i class="fa-brands fa-github mr-1"></i> Contribute
-                </a>
-                <!-- <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-for-contributors">
-                    <i class="fa-solid fa-people-group mr-1"></i> For Event Facilitators
-                </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-how-to-add-new-question-sets">
-                    <i class="fa-solid fa-square-plus mr-1"></i> How to Add New Question Sets
-                </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#lightning-update-service-worker">
-                    <i class="fa-solid fa-bolt mr-1"></i> Update Service Worker
-                </a>
-                <a class="modal-button block w-full text-center" style="background:#f8fafc; color:#334155; border:1px solid #e5e7eb;" href="readme.html#-managing-live-discussion-questions">
-                    <i class="fa-solid fa-comments mr-1"></i> Managing Live Discussion Questions
-                </a> -->
-                <button type="button" class="modal-button cancel block w-full text-center" id="close-guide-modal">
-                    <i class="fa-solid fa-xmark mr-1"></i> Cancel
+                <button type="button" class="modal-button cancel block w-full text-center mt-3" id="close-guide-modal">
+                    <i class="fa-solid fa-xmark mr-1"></i> Close
                 </button>
             </div>
         </div>
