@@ -21,7 +21,7 @@ Step into meaningful conversations with ease! Here's how to use the app:
 4.  **Start the Conversation** Each person chooses one of the displayed questions, and the group decides which to discuss first.
 
 **Pro Tip:**
-- For a deeper understanding of how our events are structured, including different conversation styles and facilitation tips, check out our [Event Structure Guide](https://curioussouls.cafe/event-structure.html).
+- For a deeper understanding of how our events are structured, including different conversation styles and facilitation tips, check out our [Event Structure Guide](https://curioussouls.cafe/pages/event-structure.html).
 - Curious about how our past events went? Explore our [Event Archive](https://curioussoulscafe.substack.com/archive) for anonymous highlights from our meetups.
 
 ## 📚 The Question Decks
