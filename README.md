@@ -58,7 +58,7 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 - **Save Questions**: Tap any question to add it to a "Saved Questions" list for easy reference during a discussion.
 - **Submit Custom Questions**: Add your own list of questions for a private session. Your custom list is saved locally in your browser.
 - **Search and Filter**: Use the search bar on the main page to find topics, or within a topic page to find specific questions.
-- **Question Numbering**: There is a question number at the top right corner of each question (except for the dymanic question deck, 'All Questions') that can be shared with other particiapnts to quickly jump to a particular question.
+- **Question Numbering**: There is a question number at the top right corner of each question (except for the dymanic question deck, 'All Questions') that can be shared with other participants to quickly jump to a particular question.
 - **Favorite Topics**: Tap the star icon next to a topic to move it to the top of the list for quick access.
 - **The Dice Roller**: Access the [Virtual Dice Roller](https://app.curioussouls.cafe/pages/dice.html) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
 - **Optimized for On-the-Go**: The web app is designed to work seamlessly on smartphones and tablets.
@@ -73,7 +73,7 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 
 ## 📂 For Contributors
 
-The web app is open source and organized for easy contributions.
+The web app is <a href="https://github.com/curioussoulscafe/curious-souls-cafe" target="_blank">open source</a> and organized for easy contributions.
 
 ### File Organization
 - `index.html` is the main page in the **root folder**.
