@@ -22,7 +22,7 @@ Step into meaningful conversations with ease! Here's how to use the app:
 
 **Pro Tip:**
 - For a deeper understanding of how our events are structured, including different conversation styles and facilitation tips, check out our [Event Structure Guide](https://curioussouls.cafe/how-it-works).
-- Curious about how our past events went? Explore our [Event Archive](https://curioussoulscafe.substack.com/archive) for anonymous highlights from our meetups.
+- Curious about how our past events went? Explore our [Event Archive](https://curioussouls.cafe/insights/) for anonymous highlights from our meetups.
 
 ## 📚 The Question Decks
 
