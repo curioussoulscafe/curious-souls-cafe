@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="app-title">Curious Souls Café - Roll the Dice!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+      background: linear-gradient(to right, #f3f4f6 0%, #ede9fe 20%, #ede9fe 80%, #f3f4f6 100%);
+    }
+    .logo-link { background: none; border: none; padding: 0; cursor: pointer; transition: transform .2s; display: flex; justify-content: center; align-items: center; }
+    .logo-link img { width: 6rem; height: 6rem; border-radius: 9999px; border: 2px solid #a855f7; }
+    .logo-link img:hover { transform: scale(1.05); }
+
+    .roll-button {
+      background-image: linear-gradient(to right, #a855f7, #ec4899);
+      color: white; padding: 1rem 1.5rem; border-radius: .5rem; font-size: 1.125rem; font-weight: 600; margin-bottom: 1.75rem;
+      transition: all .2s ease-in-out; box-shadow: 0 4px 6px rgba(0,0,0,.1); cursor: pointer; width: 100%; text-align: center; display: block;
+    }
+    .roll-button:hover { background-image: linear-gradient(to right, #9333ea, #db2777); transform: translateY(-2px); box-shadow: 0 6px 8px rgba(0,0,0,.15); }
+    .roll-button:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,.1); }
+
+    .leave-page-button {
+      background-color:#c53030; color:white; border:none; padding:.5rem 1rem; font-size:1rem; font-weight:bold; border-radius:9999px;
+      box-shadow:0 4px 6px rgba(0,0,0,.1); cursor:pointer; transition:all .3s ease-in-out; width:100%; margin-top:1rem; display:block; text-align:center;
+    }
+    .leave-page-button:hover { background-color:#9b2c2c; box-shadow:0 6px 8px rgba(0,0,0,.15); }
+
+    .perspective-1000 { perspective:1000px; }
+    .dice-cube { position:relative; width:96px; height:96px; margin:0 auto; transform-style:preserve-3d; transition: transform 1.5s ease-out; }
+    .dice-face {
+      position:absolute; width:96px; height:96px; display:flex; justify-content:center; align-items:center; font-size:1.5rem; font-weight:bold;
+      color:#333; border:1px solid #ccc; border-radius:.5rem; background-color:#f0f0f0; backface-visibility:hidden;
+      box-shadow: inset 0 0 10px rgba(0,0,0,.1); word-break:break-word; padding:5px; line-height:1.2; text-align:center;
+    }
+    .face-front  { transform: rotateY(0deg) translateZ(48px); }
+    .face-back   { transform: rotateY(180deg) translateZ(48px); }
+    .face-right  { transform: rotateY(90deg) translateZ(48px); }
+    .face-left   { transform: rotateY(-90deg) translateZ(48px); }
+    .face-top    { transform: rotateX(90deg) translateZ(48px); }
+    .face-bottom { transform: rotateX(-90deg) translateZ(48px); }
+
+    .dice-cube.rolling { animation: roll-keyframes 1s linear infinite; }
+    @keyframes roll-keyframes {
+      0% { transform: rotateX(0) rotateY(0) rotateZ(0); }
+      100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+    }
+
+    /* Color row container */
+    .color-input-group {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: .5rem;
+      width: 100%;
+      max-width: 520px;
+      margin: 0.375rem auto;
+      padding: 0 .25rem;
+    }
+
+    /* Number at left */
+    .color-number {
+      font-weight: bold;
+      width: 1.5rem;
+      text-align: right;
+      flex: 0 0 auto;
+    }
+
+    /* Color picker (swatch) */
+    input[type="color"].color-picker-input {
+      width: 32px; height: 32px;
+      border-radius: 6px; border: 1px solid #d1d5db;
+      padding: 0; cursor: pointer; appearance: none; background-color: transparent;
+      flex: 0 0 auto;
+    }
+    input[type="color"].color-picker-input::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"].color-picker-input::-webkit-color-swatch { border: none; border-radius: 4px; }
+    input[type="color"].color-picker-input::-moz-color-swatch-wrapper { padding: 0; }
+    input[type="color"].color-picker-input::-moz-color-swatch { border: none; border-radius: 4px; }
+
+    /* Inputs area (name + optional hex) wrapped in a flex that can move to line 2 */
+    .inputs-wrap {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      min-width: 0;
+      flex: 1 1 auto;   /* take remaining space on wide screens */
+    }
+
+    /* Name input: flexible and truncates text */
+    .name-input {
+      min-width: 0;      /* allow shrinking */
+      flex: 1 1 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Hex input: fixed character width, no shrink so full value is visible */
+    .hex-input {
+      width: 10ch;
+      max-width: 12ch;
+      flex: 0 0 10ch;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      overflow: hidden;
+      text-overflow: clip;
+      white-space: nowrap;
+    }
+
+    /* Delete (X) button pinned at right, never shrinks */
+    .remove-btn {
+      flex: 0 0 auto;
+    }
+
+    /* Prevent small fixed items from shrinking */
+    .color-number,
+    .color-picker-input,
+    .remove-btn {
+      flex-shrink: 0;
+    }
+
+    /* Hide hex neatly when Advanced is off */
+    .advanced-hidden {
+      display: none !important;
+    }
+
+    #add-color-button {
+      background-color:#6b7280; color:white; padding:.75rem 1rem; border-radius:9999px; font-weight:bold; transition:all .3s ease-in-out;
+      box-shadow:0 4px 6px rgba(0,0,0,.1); cursor:pointer; width:100%; margin-bottom: 1rem; font-size:1rem;
+    }
+    #add-color-button:hover { background-color:#4b5563; transform:translateY(-2px); box-shadow:0 6px 8px rgba(0,0,0,.15); }
+    #add-color-button:active { transform:translateY(0); box-shadow:0 2px 4px rgba(0,0,0,.1); }
+
+    .restore-button {
+      background-color:#fc8181; color:white; padding:.5rem 1rem; border-radius:9999px; font-weight:600; transition:.2s;
+      box-shadow:0 4px 6px rgba(0,0,0,.1); cursor:pointer; width:100%; text-align:center; display:block; margin-top:1rem; font-size:1rem;
+    }
+    .restore-button:hover { background-color:#f56565; transform:translateY(-2px); box-shadow:0 6px 8px rgba(0,0,0,.15); }
+    .restore-button:active { transform:translateY(0); box-shadow:0 2px 4px rgba(0,0,0,.1); }
+
+    /* New: Action Prompts button style (same as Restore Defaults but different color) */
+    .action-prompts-button {
+      background-color:#b182e3; /* purple-400 */
+      color:white;
+      padding:.5rem 1rem;
+      border-radius:9999px;
+      font-weight:600;
+      transition:.2s;
+      box-shadow:0 4px 6px rgba(0,0,0,.1);
+      cursor:pointer;
+      width:100%;
+      text-align:center;
+      display:block;
+      margin-top:0.75rem;
+      font-size:1rem;
+      text-decoration:none; /* for anchor */
+    }
+    .action-prompts-button:hover {
+      background-color:#a46ede; /* purple-500 */
+      transform:translateY(-2px);
+      box-shadow:0 6px 8px rgba(0,0,0,.15);
+    }
+    .action-prompts-button:active {
+      transform:translateY(0);
+      box-shadow:0 2px 4px rgba(0,0,0,.1);
+    }
+
+    .modal-overlay { position:fixed; inset:0; width:100%; height:100%; background-color:rgba(0,0,0,.6); display:flex; justify-content:center; align-items:center; z-index:2000; opacity:0; visibility:hidden; transition:opacity .3s, visibility .3s; }
+    .modal-overlay.show { opacity:1; visibility:visible; }
+    .modal-content { background:white; padding:2rem; border-radius:.75rem; box-shadow:0 10px 15px rgba(0,0,0,.2); text-align:center; max-width:320px; width:90%; transform:translateY(-20px); transition:transform .3s; }
+    .modal-overlay.show .modal-content { transform:translateY(0); }
+    .modal-buttons { display:flex; justify-content:space-around; margin-top:1.5rem; }
+    .modal-button { padding:.75rem 1.25rem; border-radius:9999px; font-weight:bold; cursor:pointer; transition:all .2s; }
+    .modal-button.confirm { background-color:#c53030; color:white; }
+    .modal-button.confirm:hover { background-color:#9b2c2c; }
+    .modal-button.cancel { background-color:#e2e8f0; color:#4a5568; }
+    .modal-button.cancel:hover { background-color:#cbd5e0; }
+    .modal-button.info-ok { background-color:#a855f7; color:white; }
+    .modal-button.info-ok:hover { background-color:#9333ea; }
+
+
+    .punishment-button {
+      background-color:#ef4444; color:white; padding:.75rem 1.5rem; border-radius:.5rem; font-size:1rem; font-weight:600; margin-top:1rem; width:100%; display:block; text-align:center;
+      box-shadow:0 4px 6px rgba(0,0,0,.1); transition:all .2s ease-in-out;
+    }
+    .punishment-button:hover { background-color:#dc2626; transform:translateY(-2px); box-shadow:0 6px 8px rgba(0,0,0,.15); }
+    .punishment-button:active { transform:translateY(0); box-shadow:0 2px 4px rgba(0,0,0,.1); }
+
+    .toggle-switch { position:relative; display:inline-block; width:60px; height:34px; }
+    .toggle-switch input { opacity:0; width:0; height:0; }
+    .slider { position:absolute; cursor:pointer; inset:0; background-color:#ccc; transition:.4s; border-radius:34px; }
+    .slider:before { position:absolute; content:""; height:26px; width:26px; left:4px; bottom:4px; background:white; transition:.4s; border-radius:50%; }
+    input:checked + .slider { background-color:#a855f7; }
+    input:focus + .slider { box-shadow:0 0 1px #a855f7; }
+    input:checked + .slider:before { transform:translateX(26px); }
+
+    .qr-code-link { font-size:.875rem; color:#6b46c1; text-decoration:none; transition: color .2s, text-decoration .2s; display:flex; align-items:center; gap:.25rem; margin-top:.5rem; justify-content:center; }
+    .qr-code-link:hover { color:#805ad5; text-decoration:underline; }
+
+    /* New style for the description link */
+    .description-link-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: #6b46c1;
+    }
+    .description-link {
+        display: inline-flex;
+        align-items: center;
+        text-align: center;
+        color: #6b46c1;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease-in-out;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0;
+    }
+    .description-link:hover {
+        color: #805ad5;
+        text-decoration: underline;
+    }
+    .description-link i {
+        margin-right: 0.35rem;
+    }
+    .separator {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 0.35rem;
+        color: #6b46c1;
+        font-size: 1em;
+        height: 1em;
+    }
+
+    .pill { display:inline-flex; align-items:center; gap:.5rem; padding:.25rem .5rem; border-radius:9999px; border:1px solid rgba(0,0,0,.1); font-weight:600; }
+
+    .floating-back-btn {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
+      background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
+
+      /* Adjustable attention effect variables */
+      --pulse-from: #43c6a6;
+      --pulse-to: #6b7280;
+      --glow-color: rgba(99,102,241,0.55); /* indigo-ish glow */
+    }
+    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
+    .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
+
+    /* Attention animation */
+    @keyframes backBtnPulse {
+      0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+      50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
+      100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+    }
+    .floating-back-btn.attention {
+      animation: backBtnPulse 900ms ease-in-out 0s 3; /* ~2.7s total */
+    }
+
+    /* Respect user reduced-motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .floating-back-btn.attention {
+        animation: none;
+        outline: 2px solid #a855f7; /* subtle static highlight */
+        outline-offset: 2px;
+      }
+    }
+
+    /* Extra-small screens tweaks */
+    @media (max-width: 360px) {
+      .color-input-group {
+        flex-wrap: wrap;
+        row-gap: .35rem;
+      }
+      .color-number { width: 1.25rem; order: 0; }
+      .color-picker-input { order: 1; }
+      .remove-btn { order: 2; margin-left: auto; }
+      .inputs-wrap {
+        order: 3;
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+      .name-input { flex: 1 1 auto; max-width: 100%; }
+      .hex-input  { flex: 0 0 10ch; width: 10ch; max-width: 12ch; }
+    }
+
+    /* QR modal additions (from code A) */
+    #qr-modal-content {
+      max-width: 350px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    #qr-modal-content img {
+      width: 100%;
+      height: auto;
+      max-width: 250px;
+      margin: 0 auto 1rem auto;
+      display: block;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .qr-modal-close-button {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #4a5568;
+      line-height: 1;
+      padding: 0.25rem;
+      border-radius: 50%;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .qr-modal-close-button:hover {
+      background-color: #e2e8f0;
+      color: #2d3748;
+    }
+
+    /* Inline share trigger button style (looks like italic text) */
+    #inline-share-trigger {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      color: #0000EE;
+      font-style: italic;
+      cursor: pointer;
+    }
+    #inline-share-trigger:hover, #inline-share-trigger:focus {
+      text-decoration: underline;
+      color: #551A8B;
+      outline: none;
+    }
+
+    /* Getting started list styling to match code A */
+    .getting-started-list {
+      list-style-type: none;
+      padding-left: 0;
+      text-align: left;
+      counter-reset: step-counter;
+    }
+    .getting-started-list li {
+      margin-bottom: 0.75rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+    .getting-started-list li::before {
+      content: counter(step-counter);
+      counter-increment: step-counter;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: #9f7aea;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    #getting-started-modal .getting-started-list a {
+      color: #0000EE !important;
+      font-weight: normal !important;
+      background: none !important;
+      border: none !important;
+      text-decoration: none !important;
+      cursor: pointer;
+    }
+    #getting-started-modal .getting-started-list a:hover,
+    #getting-started-modal .getting-started-list a:focus {
+      color: #551A8B !important;
+      text-decoration: underline !important;
+      outline: none;
+    }
+    #getting-started-modal .getting-started-list a:active {
+      color: #551A8B !important;
+    }
+    .bottom-tip {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      color: #4b5563; background: #f3f4f6; border: 1px dashed #d1d5db;
+      border-radius: 9999px; padding: 0.5rem 0.875rem; font-size: 0.9rem; margin-top: 0.75rem; user-select: none;
+    }
+    .bottom-tip i { color: #f59e0b; }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-4">
+  <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
+    <i class="fas fa-arrow-left"></i>
+    Back
+  </button>
+
+  <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
+    <div class="flex justify-center mb-6">
+      <a href="../index.html" class="logo-link">
+        <img src="../images/csc_logo.jpg" alt="Curious Souls Cafe Logo">
+      </a>
+    </div>
+    <h1 class="text-2xl font-semibold text-purple-600 text-center mb-2">Curious Souls Café</h1>
+
+    <hr class="border-purple-300 mb-4 w-1/2 mx-auto">        
+    <h2 id="topic-title" class="text-xl font-semibold text-purple-600 text-center mb-4">Dice Roller</h2> 
+
+    <p class="text-gray-700 text-center mb-4 leading-relaxed">
+      Roll the dice 🎲 to spark fun discussions and actions or meaningful punishment 😊
+    </p>
+
+    <!-- Hyperlink to the full description and getting started page -->
+    <div class="description-link-container">
+        <!-- Getting Started button now with info icon -->
+        <!-- <button id="getting-started-link" class="description-link">
+             Quick start
+        </button> -->
+        <i class="fas fa-info-circle"></i>
+        &nbsp;&nbsp;
+        <a href="./descriptions/#show-back" class="description-link">
+            About
+        </a>
+        <span class="separator">|</span>
+        <a href="./descriptions/#how-to-use-the-virtual-dice-roller" class="description-link">
+            How-to
+        </a>
+    </div>
+
+    <hr class="border-gray-300 my-4 w-full mx-auto">
+
+    <div class="flex items-center justify-center mb-2 gap-x-6">
+      <div class="flex items-center">
+        <label for="stripe-mode-toggle" class="mr-3 text-gray-700 font-semibold">Punish</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="stripe-mode-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="flex items-center">
+        <label for="configure-toggle" class="mr-3 text-gray-700 font-semibold">Adjust</label>
+        <label class="toggle-switch">
+          <input type="checkbox" id="configure-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div id="roll-first-section" class="my-4 text-center">
+      <p id="dice-result-text" class="text-lg font-medium text-gray-800 mt-2">Press to get the dice rolling!</p>
+      <button id="roll-custom-dice-button" class="roll-button mt-4">Roll the Dice</button>
+    </div>
+
+    <div id="virtual-dice" class="relative w-24 h-24 mx-auto perspective-1000 mt-6">
+      <div class="dice-cube">
+        <div class="dice-face face-front"></div>
+        <div class="dice-face face-back"></div>
+        <div class="dice-face face-right"></div>
+        <div class="dice-face face-left"></div>
+        <div class="dice-face face-top"></div>
+        <div class="dice-face face-bottom"></div>
+      </div>
+    </div>
+
+    <div id="custom-dice-config-section" class="my-6 text-center">
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-gray-700 text-sm font-bold">Choose colors:</label>
+          <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer select-none">
+            <input id="advanced-toggle" type="checkbox" class="cursor-pointer">
+            Advanced (hex)
+          </label>
+        </div>
+
+        <div id="colors-input-container">
+          </div>
+        <p id="sides-count-message" class="text-gray-700 text-sm mb-2 text-center" style="margin-top: 1.3rem;"></p>
+      </div>
+    </div>
+
+    <button id="add-color-button">Add Color / Side</button>
+    <br>
+
+    <div id="dice-colors-list" class="mt-2 pt-4 border-t border-gray-300">
+      <h3 class="text-lg font-semibold text-gray-700 mb-2 text-center">Dice Colors:</h3>
+      <ul id="configured-colors-ul" class="list-none p-0 flex flex-wrap justify-center gap-2 mb-4"></ul>
+    </div>
+
+    <p id="saved-colors-message" class="text-gray-700 text-sm mb-2 text-center mt-4" style="margin-top: 1.3rem;">
+      Your colors are saved for next time.
+    </p>
+
+    <button id="restore-defaults-button" class="restore-button" style="margin-top: 1.5rem">Restore Defaults</button>
+    
+    <!-- Action Prompts button: same file target as Restore Defaults (sibling in same folder), different color, specified label -->
+    <a href="../action-prompts/" class="action-prompts-button" aria-label="Action Prompts">Action Prompts</a>
+
+    <div class="bottom-tip" aria-live="polite">
+        <span>💡</span>
+        <span>Tap the top logo for home</span>
+    </div>
+
+    <!-- Share page/QR link (from code A) -->
+    <br>
+    <a href="#" id="show-qr-code-link" class="qr-code-link">
+      <i class="fas fa-qrcode"></i> Share page/QR code
+    </a>
+  </div>
+
+  <div id="restore-confirm-modal" class="modal-overlay">
+    <div class="modal-content">
+      <p class="text-lg font-semibold text-gray-800 mb-4">Restore all dice and custom color settings to defaults?</p>
+      <div class="modal-buttons">
+        <button id="confirm-restore-yes" class="modal-button confirm">Yes</button>
+        <button id="confirm-restore-no" class="modal-button cancel">No</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="configure-info-modal" class="modal-overlay">
+    <div class="modal-content">
+      <p class="text-lg font-semibold text-gray-800 mb-4">This area is advanced❗</p>
+      <p class="text-left text-gray-700 mb-4">
+        <strong>Friendly Reminder:</strong> The virtual question cards are pre-defined in three fixed colors:
+      </p>
+      <ol class="list-disc list-inside text-left mb-4 text-gray-700 pl-4">
+          <li><strong>Blue</strong></li>
+          <li><strong>Yellow</strong></li>
+          <li><strong>Red</strong></li>
+      </ol>
+      <p class="text-left text-gray-700">
+        Any changes here will only affect the dice. These changes will not alter the number of question card colors available.<br><br>⚠️ This will be shown once only.</p>
+      <div class="modal-buttons mt-6">
+          <button id="confirm-info-ok" class="modal-button info-ok w-full">Got it!</button>
+      </div>
+    </div>
+  </div>
+
+    <!-- Getting Started Modal (already present; includes inline share trigger) -->
+    <div id="getting-started-modal" class="modal-overlay">
+        <div class="modal-content max-w-sm">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
+            <ol class="getting-started-list">
+                <li><b>Invite Others:</b> Share the <button id="inline-share-trigger" type="button"><i>QR code or link</i></button> to get everyone onboard.</li>
+                <li><b>Pick a Question:</b> Each person selects a question that resonates with them. Tap to save it.</li>
+                <li><b>Start the Conversation:</b> Invite a person to share their question and answer, then everyone goes around (e.g., clockwise) answering the same question. Once done, the next person shares their chosen question, and so on.<br><br><strong>Optional:</strong> Roll the dice and match its color to the color of the question or team to decide who starts.
+            </ol>
+            <button id="close-getting-started-modal" class="modal-button cancel mt-4">Got it!</button>
+        </div>
+    </div>
+
+  <!-- QR Code Modal (ported from code A; URL and QR are generated for current page) -->
+  <div id="qr-code-modal" class="modal-overlay">
+    <div id="qr-modal-content" class="modal-content">
+      <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Share This Page</h3>
+      <p class="text-gray-600 text-sm mb-4">Scan the QR code below to quickly share or access this page:</p>
+      <img id="qr-modal-image" src="" alt="QR Code for this page"
+           onerror="this.onerror=null;this.src='https://placehold.co/192x192/E0E0E0/6B46C1?text=QR+Code+Loading';">
+
+      <p class="text-sm text-gray-700 mt-2">
+        <i class="fa-solid fa-link mr-1"></i> 
+        <a id="qr-page-link" href="#" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline break-all"></a>
+        <br>
+        <button id="copy-link-text-link" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-copy">&nbsp;&nbsp;</i>Copy page link</button>
+        &nbsp;<span class="text-gray-400 text-sm select-none">|</span>&nbsp;&nbsp;<button id="share-link-button" class="text-blue-600 text-sm mt-4 hover:underline"><i class="fas fa-share-from-square"></i> Share...</button>
+      </p>
+      <p class="text-gray-500 text-sm mt-4">Let's help fellow curious souls launch this page and start the conversation! 😊</p>
+    </div>
+  </div>
+
+  <script>
+    const virtualDice = document.getElementById('virtual-dice').querySelector('.dice-cube');
+    const diceFaces = virtualDice.querySelectorAll('.dice-face');
+
+    const colorsInputContainer = document.getElementById('colors-input-container');
+    const addColorButton = document.getElementById('add-color-button');
+    const restoreDefaultsButton = document.getElementById('restore-defaults-button');
+    const rollCustomDiceButton = document.getElementById('roll-custom-dice-button');
+    const diceResultText = document.getElementById('dice-result-text');
+    const configuredColorsUl = document.getElementById('configured-colors-ul');
+    const sidesCountMessage = document.getElementById('sides-count-message');
+    const stripeModeToggle = document.getElementById('stripe-mode-toggle');
+    const advancedToggle = document.getElementById('advanced-toggle');
+    const floatingBackButton = document.getElementById('floating-back-button');
+    const configureToggle = document.getElementById('configure-toggle');
+
+    const configElementsToToggle = [
+      document.getElementById('custom-dice-config-section'),
+      document.getElementById('add-color-button'),
+      document.getElementById('saved-colors-message'),
+    ];
+
+    const localStorageKey = 'customDiceColors';
+    const stripeModeLocalStorageKey = 'stripeModeEnabled';
+    theConfigureInfoLocalStorageKey = 'configureInfoPromptSeen'; // keep key name same as before
+    const configureInfoLocalStorageKey = theConfigureInfoLocalStorageKey;
+
+    const defaultDiceColors = [
+      { value: "#57fcff", label: "Blue" },
+      { value: "#ffffad", label: "Yellow" },
+      { value: "#ffc6c6", label: "Red" }
+    ];
+
+    let customDiceColors = [];
+
+    function hexToRgb(hex) {
+      const r = parseInt(hex.substring(1,3),16);
+      const g = parseInt(hex.substring(3,5),16);
+      const b = parseInt(hex.substring(5,7),16);
+      return { r,g,b };
+    }
+    function getColorDistance(a,b){
+      return Math.sqrt((a.r-b.r)**2 + (a.g-b.g)**2 + (a.b-b.b)**2);
+    }
+    function getRandomHexColor(){
+      return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+    }
+    function toHex(value){
+      if(value.startsWith('#')) return value.toUpperCase();
+      const temp=document.createElement('div');
+      temp.style.color=value;
+      document.body.appendChild(temp);
+      const rgbStr=getComputedStyle(temp).color;
+      document.body.removeChild(temp);
+      const m=rgbStr.match(/\d+/g);
+      if(!m) return '#000000';
+      const r=Number(m[0]).toString(16).padStart(2,'0');
+      const g=Number(m[1]).toString(16).padStart(2,'0');
+      const b=Number(m[2]).toString(16).padStart(2,'0');
+      return ('#'+r+g+b).toUpperCase();
+    }
+    function getContrastYIQ(hex){
+      const {r,g,b}=hexToRgb(toHex(hex));
+      const yiq=((r*299)+(g*587)+(b*114))/1000;
+      return yiq>=128 ? 'black' : 'white';
+    }
+
+    function friendlyNameFromHex(hex){
+      const {r,g,b}=hexToRgb(hex);
+      const max = Math.max(r,g,b), min = Math.min(r,g,b);
+      const d = max - min;
+      let hue = 0;
+      if(d!==0){
+        if(max===r) hue = ((g-b)/d)%6;
+        else if(max===g) hue = (b-r)/d + 2;
+        else hue = (r-g)/d + 4;
+        hue = Math.round(hue*60);
+        if(hue<0) hue+=360;
+      }
+      const light = (max+min)/2/255;
+      const sat = d===0 ? 0 : d/(255 - Math.abs(2*light*255 - 255));
+
+      const lightLabel = light>0.82 ? 'Very Light ' : light>0.7 ? 'Light ' : light<0.18 ? 'Very Dark ' : light<0.3 ? 'Dark ' : '';
+      const satLabel = sat<0.12 ? 'Gray' : null;
+
+      if(satLabel==='Gray'){
+        if(light>0.9) return 'White';
+        if(light<0.1) return 'Black';
+        return lightLabel + 'Gray';
+      }
+
+      let hueName = 'Color';
+      const h = ((hue%360)+360)%360;
+      if(h<15 || h>=345) hueName='Red';
+      else if(h<45) hueName='Orange';
+      else if(h<65) hueName='Yellow';
+      else if(h<95) hueName='Lime';
+      else if(h<150) hueName='Green';
+      else if(h<190) hueName='Cyan';
+      else if(h<250) hueName='Blue';
+      else if(h<290) hueName='Purple';
+      else if(h<330) hueName='Magenta';
+      else hueName='Red';
+
+      const soft = sat<0.35 ? 'Soft ' : '';
+      return (lightLabel + soft + hueName).trim().replace(/\s+/g,' ');
+    }
+
+    function findSharplyDifferentColor(existing){
+      const maxAttempts=100, minDistanceThreshold=120;
+      if(existing.length===0) return getRandomHexColor();
+      const existingRgb = existing.map(c => hexToRgb(toHex(c.value)));
+      let best='#000000', bestMin=-1;
+      for(let i=0;i<maxAttempts;i++){
+        const cand = getRandomHexColor();
+        const rgb = hexToRgb(cand);
+        let minDist=Infinity;
+        for(const e of existingRgb){ minDist = Math.min(minDist, getColorDistance(rgb,e)); }
+        if(minDist>bestMin){ bestMin=minDist; }
+        if(bestMin>=minDistanceThreshold){ return cand; }
+        best = cand;
+      }
+      return best;
+    }
+
+    function makeRow(initialHex='', initialLabel=''){
+      const row = document.createElement('div');
+      row.className='color-input-group';
+
+      const number = document.createElement('span');
+      number.className='color-number';
+
+      const picker = document.createElement('input');
+      picker.type='color';
+      picker.className='color-picker-input';
+
+      const inputsWrap = document.createElement('div');
+      inputsWrap.className = 'inputs-wrap';
+
+      const nameInput = document.createElement('input');
+      nameInput.type='text';
+      nameInput.placeholder='Color name';
+      nameInput.className='name-input shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline';
+
+      const hexInput = document.createElement('input');
+      hexInput.type='text';
+      hexInput.placeholder='#RRGGBB';
+      hexInput.inputMode = 'text';
+      hexInput.className='hex-input shadow appearance-none border rounded py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline advanced-hidden';
+
+      const removeButton = document.createElement('button');
+      removeButton.title='Remove';
+      removeButton.innerHTML='&times;';
+      removeButton.setAttribute('aria-label','Remove color');
+      removeButton.className='remove-btn bg-red-400 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-full text-xs';
+
+      const valueHex = initialHex || findSharplyDifferentColor(customDiceColors);
+      const hex = toHex(valueHex);
+      picker.value = hex;
+      hexInput.value = hex;
+      nameInput.value = initialLabel || friendlyNameFromHex(hex);
+
+      const syncAdvancedVisibility = () => {
+        hexInput.classList.toggle('advanced-hidden', !advancedToggle.checked);
+      };
+
+      picker.addEventListener('input', () => {
+        const hx = picker.value.toUpperCase();
+        hexInput.value = hx;
+        if(!nameInput.dataset.userTyped || nameInput.value.trim()===''){
+          nameInput.value = friendlyNameFromHex(hx);
+        }
+        updateCustomDiceColors();
+      });
+
+      nameInput.addEventListener('input', () => {
+        nameInput.dataset.userTyped = '1';
+        updateCustomDiceColors();
+      });
+
+      hexInput.addEventListener('input', () => {
+        const val = hexInput.value.trim();
+        if(/^#([A-Fa-f0-9]{6})$/.test(val)){
+          const up = val.toUpperCase();
+          picker.value = up;
+          if(!nameInput.dataset.userTyped || nameInput.value.trim()===''){
+            nameInput.value = friendlyNameFromHex(up);
+          }
+          updateCustomDiceColors();
+        }
+      });
+
+      removeButton.addEventListener('click', () => {
+        colorsInputContainer.removeChild(row);
+        updateCustomDiceColors();
+      });
+
+      inputsWrap.appendChild(nameInput);
+      inputsWrap.appendChild(hexInput);
+
+      row.appendChild(number);
+      row.appendChild(picker);
+      row.appendChild(inputsWrap);
+      row.appendChild(removeButton);
+
+      colorsInputContainer.appendChild(row);
+      syncAdvancedVisibility();
+      updateCustomDiceColors();
+    }
+
+    function updateCustomDiceColors(){
+      customDiceColors = [];
+      const rows = colorsInputContainer.querySelectorAll('.color-input-group');
+      rows.forEach((row, idx) => {
+        const numSpan = row.querySelector('.color-number');
+        const picker = row.querySelector('input[type="color"]');
+        const nameInput = row.querySelector('.name-input');
+        const hexInput = row.querySelector('.hex-input');
+
+        if(numSpan) numSpan.textContent = `${idx+1}.`;
+
+        const hexVal = picker?.value ? picker.value.toUpperCase() : (hexInput?.value || '').toUpperCase();
+        const label = (nameInput?.value || '').trim() || friendlyNameFromHex(hexVal);
+
+        if(hexVal){
+          customDiceColors.push({ value: hexVal, label });
+        }
+      });
+
+      populateDiceColorsList(configuredColorsUl, customDiceColors);
+      updateDiceFaceVisuals(false);
+      localStorage.setItem(localStorageKey, JSON.stringify(customDiceColors));
+
+      sidesCountMessage.textContent = `There are ${customDiceColors.length} sides currently on this dice.`;
+      rollCustomDiceButton.textContent = `Roll the Dice!`;
+    }
+
+    function setFaceContent(faceElement, outcome, displayText, isStriped=false){
+      faceElement.textContent = displayText;
+      faceElement.style.backgroundColor = outcome.value;
+      faceElement.style.color = getContrastYIQ(outcome.value);
+      faceElement.style.backgroundImage = '';
+      if(isStriped){
+        const stripeColor = getContrastYIQ(outcome.value) === 'black' ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.3)';
+        faceElement.style.backgroundImage = `repeating-linear-gradient(45deg, transparent, transparent 10px, ${stripeColor} 10px, ${stripeColor} 20px)`;
+      }
+    }
+
+    function updateDiceFaceVisuals(showNumbers){
+      diceFaces.forEach((face, index) => {
+        if(customDiceColors.length>0){
+          const display = showNumbers ? `${index+1}` : '';
+          setFaceContent(face, customDiceColors[index % customDiceColors.length], display);
+        } else {
+          face.textContent=''; face.style.backgroundColor='#f0f0f0'; face.style.color='#333'; face.style.backgroundImage='';
+        }
+      });
+    }
+
+    function rollCustomDice(){
+      const numSides = customDiceColors.length;
+      if(numSides===0){ diceResultText.textContent = "Please add at least one color for the dice faces."; return; }
+
+      rollCustomDiceButton.disabled = true;
+      diceResultText.textContent = "Rolling...";
+
+      const isStripeModeEnabled = stripeModeToggle.checked;
+      const stripedOutcomeIndices = [];
+      if(isStripeModeEnabled && numSides>1){
+        let count = (numSides===2) ? 1 : Math.floor(Math.random()*Math.min(numSides-1,3))+1;
+        const idxs = Array.from({length:numSides}, (_,i)=>i);
+        for(let i=idxs.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idxs[i],idxs[j]]=[idxs[j]]; }
+        for(let i=0;i<count;i++) stripedOutcomeIndices.push(idxs[i]);
+      }
+
+      virtualDice.classList.add('rolling');
+      const rand = () => (Math.floor(Math.random()*4)*90) + (360*3) + Math.random()*30 - 15;
+      const rx = rand(), ry = rand(), rz = rand();
+      virtualDice.style.transition='transform 1.5s ease-out';
+      virtualDice.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)`;
+
+      const randomSideIndex = Math.floor(Math.random()*numSides);
+      const finalOutcome = customDiceColors[randomSideIndex];
+      const hasStripe = isStripeModeEnabled && stripedOutcomeIndices.includes(randomSideIndex);
+
+      diceFaces.forEach((face, index) => {
+        const faceColor = customDiceColors[index % customDiceColors.length];
+        setFaceContent(face, faceColor, '');
+      });
+
+      setTimeout(() => {
+        virtualDice.classList.remove('rolling');
+        virtualDice.style.transition='none';
+        virtualDice.style.transform='rotateX(0deg) rotateY(0deg) rotateZ(0deg)';
+
+        diceFaces.forEach(face => {
+          setFaceContent(face, finalOutcome, (randomSideIndex+1).toString(), hasStripe);
+        });
+
+        const textColor = getContrastYIQ(finalOutcome.value);
+        diceResultText.innerHTML =
+          `You rolled: <span class="pill" style="background-color:${finalOutcome.value}; color:${textColor};">`+
+          `<span style="display:inline-block; width:.75rem; height:.75rem; border-radius:9999px; background:${textColor==='black'?'rgba(0,0,0,.35)':'rgba(255,255,255,.7)'}"></span>`+
+          `${finalOutcome.label}</span>` +
+          (hasStripe ? ` <p style="margin-top: 12px"><span class="text-red-600 font-bold">(With Stripes!)</span></p>`
+                    : (isStripeModeEnabled ? ` ` : ''));
+
+        if(hasStripe){
+          const btn=document.createElement('button');
+          btn.textContent='Choose Punishment';
+          btn.className='punishment-button';
+          btn.onclick=()=>{ window.location.href='../action-prompts/#show-back'; };
+          diceResultText.appendChild(btn);
+        }
+
+        rollCustomDiceButton.disabled=false;
+        setTimeout(()=>{ virtualDice.style.transition='transform 1.5s ease-in-out'; },50);
+      },1500);
+    }
+
+    function populateDiceColorsList(ul, colors){
+      ul.innerHTML='';
+      if(colors.length===0){
+        ul.innerHTML='<p class="text-gray-500 text-sm text-center w-full">No colors configured.</p>';
+        return;
+      }
+      colors.forEach((c, i) => {
+        const li=document.createElement('li');
+        li.className='inline-flex items-center gap-2 px-3 py-1 rounded-full font-semibold text-sm border border-gray-300';
+        li.style.backgroundColor=c.value;
+        li.style.color=getContrastYIQ(c.value);
+        li.innerHTML = `<span class="opacity-80">${i+1}.</span> ${escapeHtml(c.label)}`;
+        ul.appendChild(li);
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+    }
+
+    function loadColorsFromLocalStorage(){
+      const saved = localStorage.getItem(localStorageKey);
+      let colorsToLoad = defaultDiceColors;
+      if(saved){
+        try{
+          const parsed = JSON.parse(saved);
+          if(Array.isArray(parsed) && parsed.length){
+            colorsToLoad = parsed.map(c => ({
+              value: toHex(c.value || '#000000'),
+              label: (c.label && String(c.label).trim()) || friendlyNameFromHex(toHex(c.value || '#000000'))
+            }));
+          }
+        }catch(e){ console.warn('Bad saved colors, loading defaults.'); }
+      }
+      colorsInputContainer.innerHTML='';
+      colorsToLoad.forEach(c => makeRow(c.value, c.label));
+      updateCustomDiceColors();
+    }
+
+    function restoreDefaultColors(){
+      localStorage.removeItem(localStorageKey);
+      colorsInputContainer.innerHTML='';
+      defaultDiceColors.forEach(c => makeRow(c.value, c.label));
+      updateCustomDiceColors();
+      diceResultText.textContent = "Settings restored to defaults!";
+
+      localStorage.removeItem(configureInfoLocalStorageKey);
+      stripeModeToggle.checked = false;
+      saveStripeModeState();
+      configureToggle.checked = false;
+      updateConfigVisibility();
+    }
+
+    function loadStripeModeState(){
+        const saved = localStorage.getItem(stripeModeLocalStorageKey);
+        if (saved === null) {
+            stripeModeToggle.checked = false;
+            saveStripeModeState();
+        } else {
+            stripeModeToggle.checked = saved === 'true';
+        }
+    }
+    function saveStripeModeState(){
+      localStorage.setItem(stripeModeLocalStorageKey, stripeModeToggle.checked ? 'true' : 'false');
+    }
+
+    // Robust back navigation helpers (aligned with global-event-list)
+    const HOME_FALLBACK = '../index.html';
+    function safeNavigate(url) {
+      try { window.location.href = url; }
+      catch { window.location.href = HOME_FALLBACK || '/'; }
+    }
+    function isSameOrigin(url) {
+      try { return new URL(url, window.location.href).origin === window.location.origin; }
+      catch { return false; }
+    }
+    function goBackFallback() {
+      const current = window.location.href;
+      if (window.history.length > 1) {
+        window.history.back();
+        setTimeout(() => {
+          if (window.location.href === current) {
+            if (document.referrer && isSameOrigin(document.referrer)) {
+              safeNavigate(document.referrer);
+            } else {
+              safeNavigate(HOME_FALLBACK || '/');
+            }
+          }
+        }, 250);
+      } else {
+        if (document.referrer && isSameOrigin(document.referrer)) {
+          safeNavigate(document.referrer);
+        } else {
+          safeNavigate(HOME_FALLBACK || '/');
+        }
+      }
+    }
+
+    // Trigger attention animation on first load/visit of the page instance
+    function runBackButtonAttention() {
+      if (!floatingBackButton) return;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        floatingBackButton.classList.add('attention');
+        setTimeout(() => {
+          floatingBackButton.classList.remove('attention');
+        }, 3000);
+      } else {
+        floatingBackButton.style.outline = '2px solid #a855f7';
+        floatingBackButton.style.outlineOffset = '2px';
+        setTimeout(() => {
+          floatingBackButton.style.outline = '';
+          floatingBackButton.style.outlineOffset = '';
+        }, 2000);
+      }
+    }
+
+    // Hash-based show/hide of Back button (ported behavior)
+    function applyBackButtonHashRule() {
+      if (!floatingBackButton) return;
+      const hash = (window.location.hash || '').toLowerCase();
+
+      // Reset inline overrides
+      floatingBackButton.style.display = '';
+      floatingBackButton.style.visibility = '';
+      floatingBackButton.style.pointerEvents = '';
+
+      if (hash === '#hide-back') {
+        floatingBackButton.style.display = 'none';
+        floatingBackButton.classList.remove('attention');
+      } else if (hash === '#show-back') {
+        floatingBackButton.style.display = 'inline-flex';
+        runBackButtonAttention();
+      } else {
+        // Default: keep hidden initially (matches previous default behavior)
+        floatingBackButton.style.display = 'none';
+        floatingBackButton.classList.remove('attention');
+      }
+    }
+
+    function updateConfigVisibility() {
+      const showConfig = configureToggle.checked;
+      configElementsToToggle.forEach(el => {
+        if (el) {
+          el.style.display = showConfig ? '' : 'none';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initial attention (only if not explicitly hidden)
+      if ((window.location.hash || '').toLowerCase() !== '#hide-back') {
+        runBackButtonAttention();
+      }
+    });
+
+    advancedToggle.addEventListener('change', () => {
+      const hexInputs = colorsInputContainer.querySelectorAll('.hex-input');
+      hexInputs.forEach(inp => inp.classList.toggle('advanced-hidden', !advancedToggle.checked));
+    });
+
+    loadColorsFromLocalStorage();
+    loadStripeModeState();
+    updateConfigVisibility();
+
+    rollCustomDiceButton.addEventListener('click', rollCustomDice);
+    addColorButton.addEventListener('click', () => makeRow());
+    stripeModeToggle.addEventListener('change', saveStripeModeState);
+
+    const restoreConfirmModal = document.getElementById('restore-confirm-modal');
+    const confirmRestoreYes = document.getElementById('confirm-restore-yes');
+    const confirmRestoreNo = document.getElementById('confirm-restore-no');
+    
+    const configureInfoModal = document.getElementById('configure-info-modal');
+    const confirmInfoOk = document.getElementById('confirm-info-ok');
+
+    configureToggle.addEventListener('change', () => {
+      const hasSeenPrompt = localStorage.getItem(configureInfoLocalStorageKey) === 'true';
+      const isEnabling = configureToggle.checked;
+
+      if (isEnabling && !hasSeenPrompt) {
+        configureInfoModal.classList.add('show');
+      }
+      
+      updateConfigVisibility();
+    });
+
+    confirmInfoOk.addEventListener('click', () => {
+        configureInfoModal.classList.remove('show');
+        localStorage.setItem(configureInfoLocalStorageKey, 'true');
+    });
+
+    restoreDefaultsButton.addEventListener('click', () => restoreConfirmModal.classList.add('show'));
+    confirmRestoreYes.addEventListener('click', () => { restoreDefaultColors(); restoreConfirmModal.classList.remove('show'); });
+    confirmRestoreNo.addEventListener('click', () => restoreConfirmModal.classList.remove('show'));
+
+    floatingBackButton.addEventListener('click', goBackFallback);
+
+    // Apply hash rule now and on hash changes
+    applyBackButtonHashRule();
+    window.addEventListener('hashchange', applyBackButtonHashRule);
+
+    // --------------------------
+    // Share page / QR code logic
+    // --------------------------
+    const showQrCodeLink = document.getElementById('show-qr-code-link');
+    const qrCodeModal = document.getElementById('qr-code-modal');
+    const qrModalImage = document.getElementById('qr-modal-image');
+    const qrModalCloseButton = document.getElementById('qr-modal-close-button');
+    const qrPageLink = document.getElementById('qr-page-link');
+
+    const gettingStartedModal = document.getElementById('getting-started-modal');
+    const inlineShareTrigger = document.getElementById('inline-share-trigger');
+    const closeGettingStartedModalBtn = document.getElementById('close-getting-started-modal');
+
+    let shouldReturnToGettingStarted = false;
+
+    function openShareModal(openedFromGettingStarted = false) {
+      shouldReturnToGettingStarted = openedFromGettingStarted;
+      const pageUrl = window.location.href;
+      const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+      qrModalImage.src = qrCodeApiUrl;
+      qrPageLink.textContent = pageUrl;
+      qrPageLink.href = pageUrl;
+      qrCodeModal.classList.add('show');
+    }
+
+    function closeShareModal() {
+      qrCodeModal.classList.remove('show');
+      if (shouldReturnToGettingStarted) {
+        gettingStartedModal.classList.add('show');
+      }
+      shouldReturnToGettingStarted = false;
+    }
+
+    if (showQrCodeLink) {
+      showQrCodeLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openShareModal(false);
+      });
+    }
+
+    if (inlineShareTrigger) {
+      inlineShareTrigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        gettingStartedModal.classList.remove('show');
+        openShareModal(true);
+      });
+    }
+
+    if (qrModalCloseButton) {
+      qrModalCloseButton.addEventListener('click', closeShareModal);
+    }
+
+    if (qrCodeModal) {
+      qrCodeModal.addEventListener('click', (e) => {
+        if (e.target === qrCodeModal) {
+          closeShareModal();
+        }
+      });
+    }
+
+    const copyLinkTextLink = document.getElementById('copy-link-text-link');
+    if (copyLinkTextLink) {
+      copyLinkTextLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const pageUrl = window.location.href;
+        const tempInput = document.createElement('textarea');
+        tempInput.value = pageUrl;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+        alert("Link copied to clipboard!");
+      });
+    }
+
+    const shareLinkButton = document.getElementById('share-link-button');
+    if (shareLinkButton) {
+      shareLinkButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: document.title,
+              text: `Join me on Curious Souls Café - Dice Roller!`,
+              url: window.location.href
+            });
+          } catch (err) {
+            console.warn('Share canceled or failed:', err);
+          }
+        }
+      });
+    }
+
+    if (closeGettingStartedModalBtn) {
+      closeGettingStartedModalBtn.addEventListener('click', () => {
+        gettingStartedModal.classList.remove('show');
+      });
+    }
+  </script>
+</body>
+</html>

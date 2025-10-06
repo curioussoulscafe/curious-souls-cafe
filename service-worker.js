@@ -36,10 +36,12 @@ const FILES_TO_CACHE = [
 
   // Pages
   '/pages/action-prompts.html',
+  '/action-prompts/index.html',
   '/pages/authenticity.html',
   '/pages/custom-questions-display.html',
   '/pages/custom-questions-input.html',
   '/pages/dice.html',
+  '/dice/index.html',
   '/pages/friendship.html',
   '/pages/happiness.html',
   '/pages/icebreaker.html',
