@@ -22,7 +22,7 @@ Step into meaningful conversations with ease! Here's how to use the app:
 
 **Pro Tip:**
 - For a deeper understanding of how our events are structured, including different conversation styles and facilitation tips, check out our [Event Structure Guide](https://curioussouls.cafe/how-it-works).
-- Curious about how our past events went? Explore our [Event Archive](https://curioussouls.cafe/insights/) for anonymous highlights from our meetups.
+- Curious about how our past events went? Explore our [Event Insights](https://curioussouls.cafe/insights/) for anonymous highlights from our meetups.
 
 ## 📚 The Question Decks
 
@@ -60,7 +60,7 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 - **Search and Filter**: Use the search bar on the main page to find topics, or within a topic page to find specific questions.
 - **Question Numbering**: There is a question number at the top right corner of each question (except for the dymanic question deck, 'All Questions') that can be shared with other participants to quickly jump to a particular question.
 - **Favorite Topics**: Tap the star icon next to a topic to move it to the top of the list for quick access.
-- **The Dice Roller**: Access the [Virtual Dice Roller](https://app.curioussouls.cafe/pages/dice.html) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
+- **The Dice Roller**: Access the [Virtual Dice Roller](https://curioussouls.cafe/dice) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
 - **Optimized for On-the-Go**: The web app is designed to work seamlessly on smartphones and tablets.
 - **Join a Live Discussion**: During special events, a prominent "Live Discussion" button may appear on the main page, giving you access to real-time questions curated for that event.
 
