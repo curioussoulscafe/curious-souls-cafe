@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Curious Souls Café - Saved Items (Questions & Actions)</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <style>
@@ -879,7 +879,7 @@
         openTopicBtn.className = 'pill';
         openTopicBtn.innerHTML = '<i class="fa-solid fa-up-right-from-square mr-1"></i>Open';
         const kebab = kebabizeTopicId(topicId);
-        openTopicBtn.href = `./${kebab}.html`;
+        openTopicBtn.href = `../pages/${kebab}.html`; // !!! TBC 
         openTopicBtn.rel = 'noopener noreferrer';
         openTopicBtn.title = 'Open topic page';
 

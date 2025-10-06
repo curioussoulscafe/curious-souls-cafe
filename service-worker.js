@@ -62,7 +62,8 @@ const FILES_TO_CACHE = [
   '/pages/all-in-one.html',
   '/pages/global-curiosities.html',
   '/pages/true-wealth.html',
-  '/pages/saved-questions.html',
+  '/pages/saved-items.html',
+  '/saved-items/index.html',
   '/pages/legacy.html',
   '/pages/global-event-list.html',
 
