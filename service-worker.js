@@ -40,6 +40,8 @@ const FILES_TO_CACHE = [
   '/pages/authenticity.html',
   '/pages/custom-questions-display.html',
   '/pages/custom-questions-input.html',
+  '/custom-questions/index.html',
+  '/custom-questions/imported/index.html',
   '/pages/dice.html',
   '/dice/index.html',
   '/pages/friendship.html',
