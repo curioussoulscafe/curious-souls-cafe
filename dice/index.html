@@ -8,7 +8,6 @@
   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-  <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <style>
     body {
@@ -422,12 +421,7 @@
       Roll the dice 🎲 to spark fun discussions and actions or meaningful punishment 😊
     </p>
 
-    <!-- Hyperlink to the full description and getting started page -->
     <div class="description-link-container">
-        <!-- Getting Started button now with info icon -->
-        <!-- <button id="getting-started-link" class="description-link">
-             Quick start
-        </button> -->
         <i class="fas fa-info-circle"></i>
         &nbsp;&nbsp;
         <a href="https://curioussouls.cafe/dice/#show-back" class="description-link">
@@ -504,7 +498,6 @@
 
     <button id="restore-defaults-button" class="restore-button" style="margin-top: 1.5rem">Restore Defaults</button>
     
-    <!-- Action Prompts button: same file target as Restore Defaults (sibling in same folder), different color, specified label -->
     <a href="../action-prompts/" class="action-prompts-button" aria-label="Action Prompts">Action Prompts</a>
 
     <div class="bottom-tip" aria-live="polite">
@@ -512,7 +505,6 @@
         <span>Tap the top logo for home</span>
     </div>
 
-    <!-- Share page/QR link (from code A) -->
     <br>
     <a href="#" id="show-qr-code-link" class="qr-code-link">
       <i class="fas fa-qrcode"></i> Share page/QR code
@@ -548,7 +540,6 @@
     </div>
   </div>
 
-    <!-- Getting Started Modal (already present; includes inline share trigger) -->
     <div id="getting-started-modal" class="modal-overlay">
         <div class="modal-content max-w-sm">
             <h3 class="text-xl font-semibold text-gray-800 mb-4">🚀 Meaningful Talk</h3>
@@ -561,7 +552,6 @@
         </div>
     </div>
 
-  <!-- QR Code Modal (ported from code A; URL and QR are generated for current page) -->
   <div id="qr-code-modal" class="modal-overlay">
     <div id="qr-modal-content" class="modal-content">
       <button class="qr-modal-close-button" id="qr-modal-close-button">&times;</button>
@@ -1118,13 +1108,19 @@
 
     let shouldReturnToGettingStarted = false;
 
+    // *** START: MODIFIED SHARE/QR SECTION ***
+    // Helper function to get the clean URL without hash
+    function getCleanUrl() {
+        return `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+    }
+
     function openShareModal(openedFromGettingStarted = false) {
       shouldReturnToGettingStarted = openedFromGettingStarted;
-      const pageUrl = window.location.href;
-      const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+      const cleanUrl = getCleanUrl();
+      const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(cleanUrl)}`;
       qrModalImage.src = qrCodeApiUrl;
-      qrPageLink.textContent = pageUrl;
-      qrPageLink.href = pageUrl;
+      qrPageLink.textContent = cleanUrl;
+      qrPageLink.href = cleanUrl;
       qrCodeModal.classList.add('show');
     }
 
@@ -1167,9 +1163,9 @@
     if (copyLinkTextLink) {
       copyLinkTextLink.addEventListener('click', (e) => {
         e.preventDefault();
-        const pageUrl = window.location.href;
+        const cleanUrl = getCleanUrl();
         const tempInput = document.createElement('textarea');
-        tempInput.value = pageUrl;
+        tempInput.value = cleanUrl;
         document.body.appendChild(tempInput);
         tempInput.select();
         document.execCommand('copy');
@@ -1187,7 +1183,7 @@
             await navigator.share({
               title: document.title,
               text: `Join me on Curious Souls Café - Dice Roller!`,
-              url: window.location.href
+              url: getCleanUrl()
             });
           } catch (err) {
             console.warn('Share canceled or failed:', err);
@@ -1195,6 +1191,7 @@
         }
       });
     }
+    // *** END: MODIFIED SHARE/QR SECTION ***
 
     if (closeGettingStartedModalBtn) {
       closeGettingStartedModalBtn.addEventListener('click', () => {
