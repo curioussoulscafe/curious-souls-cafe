@@ -62,7 +62,7 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 - **Get Random Questions**: Select the number of questions to display from any deck.
 - **Save Questions**: Tap any question to add it to a "Saved Questions" list for easy reference during a discussion.
 - **Search and Filter**: Use the search bar on the main page to find topics, or within a topic page to find specific questions.
-- **Light & Deep**: Filter questions by difficulty level: 🌱 (light), ☕ (middle), and 🌀 (deep)
+- **Light & Deep**: Filter questions by difficulty levels: 🌱 (light), ☕ (middle), and 🌀 (deep)
 - **Question Numbering**: There is a question number at the top right corner of each question (except for the dymanic question deck, 'All Questions') that can be shared with other participants to quickly jump to a particular question.
 - **Sharing Questions**: Select a question and tap the 'sharing' icon on the bottom right corner to share the question via numberous methods supported by your device (e.g., messaging apps).
 - **Look Up Online**: Select a question and tap the 'magnifier' icon on the bottom right corner to research the question online via AI-powered search engines and dictionaries.
