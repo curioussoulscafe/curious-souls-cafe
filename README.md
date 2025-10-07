@@ -54,8 +54,8 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 
 ## 🎉 Bundled Apps
 
-- **The Dice Roller**: Access the [Virtual Dice Roller](https://curioussouls.cafe/dice) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
-- **Meaningful Actions**: Access the [Action Prompts](https://curioussouls.cafe/action-prompts) to spark gratitude, kindness, and inspiration with randomly presented creative tasks.
+- **The Dice Roller**: Access the [Virtual Dice Roller](https://app.curioussouls.cafe/dice) (or read its [docs](https://curioussouls.cafe/dice/)) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
+- **Meaningful Actions**: Access the [Action Prompts](https://app.curioussouls.cafe/action-prompts) to spark gratitude, kindness, and inspiration with randomly presented creative tasks.
 
 ## ✨ App Features & Tools
 
