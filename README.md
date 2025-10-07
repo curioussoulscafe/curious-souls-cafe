@@ -78,14 +78,14 @@ The web app is <a href="https://github.com/curioussoulscafe/curious-souls-cafe" 
 
 ### File Organization
 - `index.html` is the main page in the **root folder**.
-- Topic pages (e.g., `icebreaker.html`) are in the **`/pages`** folder.
+- Topic pages (e.g., `icebreaker/index.html`) are in the **`/topics`** folder.
 - Question sets (`.txt` files) are in the **`/questions`** folder.
 - Images and other data are in the **`/images`** and **`/data`** folders, respectively.
 
 ### How to Add New Question Sets
 1.  **Add Questions File**: Create a new `.txt` file in the `/questions` folder (e.g., `MyNewTopic.txt`). Add one question per line.
 
-2.  **Create HTML Page**: Duplicate an existing topic page (e.g., `icebreaker.html`) in the `/pages` folder and rename it (e.g., `mynewtopic.html`). Update the file's content to reference your new topic and `.txt` file.
+2.  **Create HTML Page**: Duplicate an existing topic folder (e.g., `icebreaker/index.html`) in the `/topics` folder and rename it (e.g., `mynewtopic/index.html`). Update the file's content to reference your new topic and `.txt` file.
 
 3.  **Register the Deck**: In `index.html`, find the `TOPIC_CONFIGS` array and add a new object for your topic, specifying its `name`, `htmlFileName`, and `txtUrl`.
 
