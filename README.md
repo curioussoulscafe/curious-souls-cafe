@@ -16,7 +16,7 @@ Step into meaningful conversations with ease! Here's how to use the app:
 
 2.  **Invite Others** Share the QR code on the main page so others can join instantly.
 
-3.  **Pick a Topic** Choose a question deck that resonates with your group. The [Icebreaker](https://app.curioussouls.cafe/pages/icebreaker.html) deck is recommended for first-timers.
+3.  **Pick a Topic** Choose a question deck that resonates with your group. The [Icebreaker](https://app.curioussouls.cafe/topics/icebreaker/) deck is recommended for first-timers.
 
 4.  **Start the Conversation** Each person chooses one of the displayed questions, and the group decides which to discuss first.
 
@@ -28,34 +28,34 @@ Step into meaningful conversations with ease! Here's how to use the app:
 
 At the heart of our gatherings are questions designed to guide soul-searching discussions. This app includes numerous decks on diverse themes, many of which were co-developed with our global community.
 
-* **[Adulthood](https://app.curioussouls.cafe/pages/adulthood.html)**: Explore the holistic journey of adulting—personal growth, authenticity, and connection.
-* **[Authenticity](https://app.curioussouls.cafe/pages/authenticity.html)**: Align your actions with your values and embrace your true self.
-* **[Entrepreneurship](https://app.curioussouls.cafe/pages/entrepreneurship.html)**: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.
-* **[Friendship](https://app.curioussouls.cafe/pages/friendship.html)**: Deepen connection and explore the many facets of meaningful friendships.
-* **[Global Curiosities](https://app.curioussouls.cafe/pages/global-curiosities.html)**: Questions written by participants from our events around the world.
-* **[Happiness](https://app.curioussouls.cafe/pages/happiness.html)**: Explore your personal definition and journey with happiness.
-* **[Interdependence](https://app.curioussouls.cafe/pages/interdependence.html)**: Explore interdependent connection and the invisible threads that sustain our relationships and communities.
-* **[Icebreaker](https://app.curioussouls.cafe/pages/icebreaker.html)**: Spark lighthearted, meaningful, and heart-warming conversations.
-* **[Inner Child](https://app.curioussouls.cafe/pages/inner-child.html)**: Reconnect with your playful younger self and nurture creativity.
-* **[Legacy](https://app.curioussouls.cafe/pages/legacy.html)**: Reflect on the impact you make in the world and transform your values into a meaningful legacy.
-* **[Love Relationships](https://app.curioussouls.cafe/pages/love-relationships.html)**: Reflect on the dynamics of love and intimacy.
-* **[Parenting](https://app.curioussouls.cafe/pages/parenting.html)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
-* **[Purpose](https://app.curioussouls.cafe/pages/purpose.html)**: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.
-* **[Reflection](https://app.curioussouls.cafe/pages/reflection.html)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.
-* **[Reimagine](https://app.curioussouls.cafe/pages/reimagine.html)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
-* **[The Mind Speaks](https://app.curioussouls.cafe/pages/the-mind-speaks.html)**: Reflect on thoughts, feelings, mindfulness, and personal well-being.
-* **[Transitions](https://app.curioussouls.cafe/pages/transitions.html)**: Navigate life’s changes with prompts that foster reflection and personal growth.
-* **[True Wealth](https://app.curioussouls.cafe/pages/true-wealth.html)**: Explore what it means to live a truly rich life—beyond material wealth—through questions that spark reflection on abundance, sufficiency, connection, and purpose
-* **[Work that Resonates](https://app.curioussouls.cafe/pages/work-that-resonates.html)**: Explore your evolving relationship with work, purpose, and fulfillment.
+* **[Adulthood](https://app.curioussouls.cafe/topics/adulthood/)**: Explore the holistic journey of adulting—personal growth, authenticity, and connection.
+* **[Authenticity](https://app.curioussouls.cafe/topics/authenticity/)**: Align your actions with your values and embrace your true self.
+* **[Entrepreneurship](https://app.curioussouls.cafe/topics/entrepreneurship/)**: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.
+* **[Friendship](https://app.curioussouls.cafe/topics/friendship/)**: Deepen connection and explore the many facets of meaningful friendships.
+* **[Global Curiosities](https://app.curioussouls.cafe/topics/global-curiosities/)**: Questions written by participants from our events around the world.
+* **[Happiness](https://app.curioussouls.cafe/topics/happiness/)**: Explore your personal definition and journey with happiness.
+* **[Interdependence](https://app.curioussouls.cafe/topics/interdependence/)**: Explore interdependent connection and the invisible threads that sustain our relationships and communities.
+* **[Icebreaker](https://app.curioussouls.cafe/topics/icebreaker/)**: Spark lighthearted, meaningful, and heart-warming conversations.
+* **[Inner Child](https://app.curioussouls.cafe/topics/inner-child/)**: Reconnect with your playful younger self and nurture creativity.
+* **[Legacy](https://app.curioussouls.cafe/topics/legacy/)**: Reflect on the impact you make in the world and transform your values into a meaningful legacy.
+* **[Love Relationships](https://app.curioussouls.cafe/topics/love-relationships/)**: Reflect on the dynamics of love and intimacy.
+* **[Parenting](https://app.curioussouls.cafe/topics/parenting/)**: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.
+* **[Purpose](https://app.curioussouls.cafe/topics/purpose/)**: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.
+* **[Reflection](https://app.curioussouls.cafe/topics/reflection/)**: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.
+* **[Reimagine](https://app.curioussouls.cafe/topics/reimagine/)**: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.
+* **[The Mind Speaks](https://app.curioussouls.cafe/topics/the-mind-speaks/)**: Reflect on thoughts, feelings, mindfulness, and personal well-being.
+* **[Transitions](https://app.curioussouls.cafe/topics/transitions/)**: Navigate life’s changes with prompts that foster reflection and personal growth.
+* **[True Wealth](https://app.curioussouls.cafe/topics/true-wealth/)**: Explore what it means to live a truly rich life—beyond material wealth—through questions that spark reflection on abundance, sufficiency, connection, and purpose
+* **[Work that Resonates](https://app.curioussouls.cafe/topics/work-that-resonates/)**: Explore your evolving relationship with work, purpose, and fulfillment.
 
 In the app, questions marked with a spiral emoji 🌀 are deeper, while those with a seedling emoji 🌱 are introductory.
 
-💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for [Happiness](https://app.curioussouls.cafe/pages/happiness.html), [Love Relationships](https://app.curioussouls.cafe/pages/love-relationships.html), and [The Mind Speaks](https://app.curioussouls.cafe/pages/the-mind-speaks.html), and to all participants who contributed to the [Global Curiosities](https://app.curioussouls.cafe/pages/global-curiosities.html) deck.
+💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for [Happiness](https://app.curioussouls.cafe/topics/happiness/), [Love Relationships](https://app.curioussouls.cafe/topics/love-relationships/), and [The Mind Speaks](https://app.curioussouls.cafe/topics/the-mind-speaks/), and to all participants who contributed to the [Global Curiosities](https://app.curioussouls.cafe/topics/global-curiosities/) deck.
 
 ## 🎉 Bundled Apps
 
-- **The Dice Roller**: Access the [Virtual Dice Roller](https://app.curioussouls.cafe/dice) (or read its [docs](https://curioussouls.cafe/dice/)) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
-- **Meaningful Actions**: Access the [Action Prompts](https://app.curioussouls.cafe/action-prompts) to spark gratitude, kindness, and inspiration with randomly presented creative tasks.
+- **The Dice Roller**: Access the [Virtual Dice Roller](https://app.curioussouls.cafe/dice/) (or read its [docs](https://curioussouls.cafe/dice/)) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
+- **Meaningful Actions**: Access the [Action Prompts](https://app.curioussouls.cafe/action-prompts/) to spark gratitude, kindness, and inspiration with randomly presented creative tasks.
 
 ## ✨ App Features & Tools
 
@@ -77,7 +77,7 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 - **Question Color**: A random color (blue, red, or yellow) will be revealed after tapping. These colors match the default options of the dice, which can be used to decide whose question goes first.
 - **Return to Main Page**: Clicking the round logo at the top of any page will take you back to the topic selection screen.
 - **Quick Scroll to Top**: Use the sticky "Top" button at the bottom-right to quickly return to the top of any page.
-- **Direct Topic Links**: Each topic has a unique URL (e.g., `<URL>/pages/icebreaker.html`) that you can share directly with participants.
+- **Direct Topic Links**: Each topic has a unique URL (e.g., `app.curioussouls.cafe/topics/icebreaker/`) that you can share directly with participants.
 
 ## 📂 For Contributors
 
