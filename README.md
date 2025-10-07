@@ -52,6 +52,11 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for [Happiness](https://app.curioussouls.cafe/pages/happiness.html), [Love Relationships](https://app.curioussouls.cafe/pages/love-relationships.html), and [The Mind Speaks](https://app.curioussouls.cafe/pages/the-mind-speaks.html), and to all participants who contributed to the [Global Curiosities](https://app.curioussouls.cafe/pages/global-curiosities.html) deck.
 
+## 🎉 Bundled Apps
+
+- **The Dice Roller**: Access the [Virtual Dice Roller](https://curioussouls.cafe/dice) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
+- **Meaningful Actions**: Access the [Action Prompts](https://curioussouls.cafe/action-prompts) to spark gratitude, kindness, and inspiration with randomly presented creative tasks.
+
 ## ✨ App Features & Tools
 
 - **Get Random Questions**: Select the number of questions to display from any deck.
@@ -59,8 +64,9 @@ In the app, questions marked with a spiral emoji 🌀 are deeper, while those wi
 - **Submit Custom Questions**: Add your own list of questions for a private session. Your custom list is saved locally in your browser.
 - **Search and Filter**: Use the search bar on the main page to find topics, or within a topic page to find specific questions.
 - **Question Numbering**: There is a question number at the top right corner of each question (except for the dymanic question deck, 'All Questions') that can be shared with other participants to quickly jump to a particular question.
+- **Sharing Questions**: Select a question and tap the 'sharing' icon on the bottom right corner to share the question via numberous methods supported by your device (e.g., messaging apps).
+- **Look Up Online**: Select a question and tap the 'magnifier' icon on the bottom right corner to research the question online via AI-powered search engines and dictionaries.
 - **Favorite Topics**: Tap the star icon next to a topic to move it to the top of the list for quick access.
-- **The Dice Roller**: Access the [Virtual Dice Roller](https://curioussouls.cafe/dice) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
 - **Optimized for On-the-Go**: The web app is designed to work seamlessly on smartphones and tablets.
 - **Join a Live Discussion**: During special events, a prominent "Live Discussion" button may appear on the main page, giving you access to real-time questions curated for that event.
 
