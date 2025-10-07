@@ -48,8 +48,6 @@ At the heart of our gatherings are questions designed to guide soul-searching di
 * **[True Wealth](https://app.curioussouls.cafe/topics/true-wealth/)**: Explore what it means to live a truly rich life—beyond material wealth—through questions that spark reflection on abundance, sufficiency, connection, and purpose
 * **[Work that Resonates](https://app.curioussouls.cafe/topics/work-that-resonates/)**: Explore your evolving relationship with work, purpose, and fulfillment.
 
-In the app, questions marked with a spiral emoji 🌀 are deeper, while those with a seedling emoji 🌱 are introductory.
-
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for [Happiness](https://app.curioussouls.cafe/topics/happiness/), [Love Relationships](https://app.curioussouls.cafe/topics/love-relationships/), and [The Mind Speaks](https://app.curioussouls.cafe/topics/the-mind-speaks/), and to all participants who contributed to the [Global Curiosities](https://app.curioussouls.cafe/topics/global-curiosities/) deck.
 
 ## 🎉 Bundled Apps
