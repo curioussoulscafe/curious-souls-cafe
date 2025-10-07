@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Mind Speaks: Mental Health and Insights into the Mind</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+      line-height: 1.6;
+      color: #24292e;
+      background-color: #f6f8fa;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      border-bottom: 1px solid #eaecef;
+      padding-bottom: 0.3rem;
+      color: #0366d6;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 1rem 0;
+    }
+
+    ul {
+      padding-left: 0; /* Remove space before list items */
+      list-style-type: none; /* Removes bullet points */
+    }
+
+    ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    blockquote {
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      color: #6a737d;
+      border-left: 4px solid #dfe2e5;
+      background-color: #f6f8fa;
+    }
+
+    a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: #eaecef;
+      margin: 2rem 0;
+    }
+
+    code, pre {
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.9rem;
+      background-color: #f6f8fa;
+      border: 1px solid #eaecef;
+      border-radius: 3px;
+      padding: 0.2rem 0.4rem;
+    }
+
+    pre {
+      padding: 1rem;
+      overflow: auto;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    strong {
+      font-weight: 600;
+    }
+
+    /* Floating back button (ported from code A) */
+    .floating-back-btn {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
+      background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
+
+      --pulse-from: #43c6a6;
+      --pulse-to: #6b7280;
+      --glow-color: rgba(99,102,241,0.55);
+    }
+    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
+    .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
+
+    @keyframes backBtnPulse {
+      0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+      50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
+      100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+    }
+    .floating-back-btn.attention {
+      animation: backBtnPulse 900ms ease-in-out 0s 3;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floating-back-btn.attention {
+        animation: none;
+        outline: 2px solid #a855f7;
+        outline-offset: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Back Button -->
+  <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
+    <i class="fas fa-arrow-left"></i>
+    Back
+  </button>
+
+  <div class="container">
+    <h2>The Mind Speaks: Mental Health and Insights into the Mind</h2>
+
+    <a href="https://unsplash.com/photos/the-word-mental-health-spelled-with-scrabbles-next-to-a-green-leaf-Ianw4RdVuoo" target="_blank" rel="noopener noreferrer">
+      <img src="https://images.unsplash.com/photo-1604480132736-44c188fe4d20?w=800&h=600&fit=crop&q=80" 
+       alt="The word 'mental health' spelled with scrabbles next to a green leaf" />
+    </a>
+    <p>
+      (Photo by <a href="https://unsplash.com/@totalshape" target="_blank" rel="noopener noreferrer">Total Shape</a> on 
+      <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>)
+    </p>
+
+    <p>❤️ A special thanks to our Singaporean facilitators for crafting the thought-provoking questions that shaped the success of this event at the Singapore branch of Curious Souls Café.</p>
+    <p>This event aims to raise awareness of mental health through sharing of perspectives and personal experiences using specially curated question cards on topics related to mental health and on a deeper level--the Mind.</p>
+    <h3>Examples:</h3>
+    <ul>
+      <li>How would you define good mental well-being?</li>
+      <li>How can journaling or creative expression improve mental health?</li>
+      <li>Do people have habitual thought patterns? If so, are they helpful and why?</li>
+    </ul>
+    <p>Anyone is welcomed. You can choose to just listen or to share. At the end of the day, we hope everyone will leave with new insights and perspectives.</p>
+
+    <h3>Inviting all Curious Souls who are passionate about:</h3>
+    <ul>
+      <li>🌍 Embracing open-mindedness.</li>
+      <li>🤝 Tapping into collective wisdom.</li>
+      <li>🗣️ Engaging in meaningful conversations.</li>
+      <li>🌱 Embarking on a journey of self-improvement.</li>
+      <li>📚 Exploring diverse schools of thought and personal experiences.</li>
+    </ul>
+    
+    <h2>🗓️ Agenda / What You'll Experience</h2>
+
+    <h3>💬 Meaningful Icebreaker Conversation Cards</h3>
+    <p>We will begin the session with the meaningful conversation cards. You'll have the opportunity to pick a card and initiate thought-provoking conversations with fellow attendees.</p>
+
+    <h3>💬 Focused Discussion on a Meaningful Topic (Optional Round)</h3>
+    <p>After warming up, our diverse group of friends and strangers will come together in a circle to exchange ideas on an intriguing topic chosen spontaneously.</p>
+    <p>Each participant is encouraged to contribute by sharing a unique question. You’re welcome to bring a question that’s been on your mind, or you can draw inspiration from the icebreaker conversation cards provided. Once all the questions are collected, the group will collaboratively select one to kick off the discussion.</p>
+    <p>From there, we’ll embark on a respectful, engaging, and meaningful conversation, celebrating the diversity of perspectives and ideas within the group.</p>
+
+    <h3>💬 Final Thoughts and Feedback</h3>
+    <p>In the final 10 minutes of the event, we’ll take a moment to reflect on the key insights, memorable moments, and takeaways from our discussions. This is a chance to distill the shared wisdom and leave with a deeper understanding of the topics we’ve explored together.</p>
+    <p>After the event officially concludes, we may choose to extend the session, depending on the group’s interest. Of course, you’re welcome to leave at any time that feels right for you.</p>
+
+    <h2>✨ What is Curious Souls Café?</h2>
+    <p>Curious Souls Café is an event designed to nurture healthy curiosity and foster connections through meaningful conversations.</p>
+    <p>We look forward to meeting you at one of our events in the future! 😊</p>
+    <hr>
+    <p><strong>Past Event Example</strong>: <a href="https://www.meetup.com/curious-souls-cafe/events/307060081/" target="_blank" rel="noopener noreferrer">The Mind Speaks: Mental Health and Insights into the Mind</a><i> (Meetup account required)</i></p>
+    <!-- <p>⬅️ <a href="../the-mind-speaks.html">Leave this page</a> (go to Curious Souls Café web app)</p> -->
+  </div>
+
+  <script>
+    // Back behavior with fallback + first-visit attention effect
+    function goBackFallback() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Fallback to home of the web app root
+        window.location.href = '../../index.html';
+      }
+    }
+
+    function runBackButtonAttention() {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (!floatingBackButton) return;
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        floatingBackButton.classList.add('attention');
+        setTimeout(() => {
+          floatingBackButton.classList.remove('attention');
+        }, 3000);
+      } else {
+        floatingBackButton.style.outline = '2px solid #a855f7';
+        floatingBackButton.style.outlineOffset = '2px';
+        setTimeout(() => {
+          floatingBackButton.style.outline = '';
+          floatingBackButton.style.outlineOffset = '';
+        }, 2000);
+      }
+    }
+
+    // ------- Hash based show/hide of Back button (ported from global-event-list.html) -------
+    // Supports:
+    // - #show-back   => force show
+    // - #hide-back   => force hide
+    // - any other/no hash => default hidden unless JS logic calls attention
+    function applyBackButtonHashRule() {
+      const hash = (window.location.hash || '').toLowerCase();
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (!floatingBackButton) return;
+
+      // Reset inline overrides
+      floatingBackButton.style.display = '';
+      floatingBackButton.style.visibility = '';
+      floatingBackButton.style.pointerEvents = '';
+
+      if (hash === '#hide-back') {
+        floatingBackButton.style.display = 'none';
+        floatingBackButton.classList.remove('attention');
+      } else if (hash === '#show-back') {
+        floatingBackButton.style.display = 'inline-flex';
+        runBackButtonAttention();
+      } else {
+        // Default = hidden
+        floatingBackButton.style.display = 'none';
+        floatingBackButton.classList.remove('attention');
+      }
+    }
+    // ------- End hash based show/hide -------
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (floatingBackButton) {
+        floatingBackButton.addEventListener('click', goBackFallback);
+      }
+
+      // Apply once on load
+      applyBackButtonHashRule();
+
+      // Update if hash changes
+      window.addEventListener('hashchange', applyBackButtonHashRule);
+
+      // Run attention animation if not explicitly hidden
+      if ((window.location.hash || '').toLowerCase() !== '#hide-back') {
+        runBackButtonAttention();
+      }
+    });
+  </script>
+</body>
+</html>
