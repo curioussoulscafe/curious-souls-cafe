@@ -1406,7 +1406,7 @@
       const allMuted = actionsMount.querySelectorAll('.pill.muted');
       if (allMuted.length >= 2) {
         allMuted[0].classList.add('hidden');
-        allMuted[1].classList.remove('hidden');
+        allMute[1].classList.remove('hidden');
       }
     });
 
@@ -1463,17 +1463,23 @@
       alert('Text copied!');
       closeChoiceModal();
     });
+    
+    // *** START: MODIFIED SHARE/QR SECTION ***
+    // Helper function to get the clean URL without hash
+    function getCleanUrl() {
+        return `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+    }
 
     // Share selected with correct URL
     function buildShareURL() {
-      if (!selectedType || !selectedText) return window.location.href;
+      if (!selectedType || !selectedText) return getCleanUrl();
       if (selectedType === 'topic' && selectedTopicId) {
         return `${location.origin}${location.pathname.replace(/\/[^/]*$/, '/')}${selectedTopicId}.html`;
       }
       if (selectedType === 'action') {
         return `${location.origin}${location.pathname.replace(/\/[^/]*$/, '/') }action-prompts.html`;
       }
-      return window.location.href;
+      return getCleanUrl();
     }
 
     function buildSharePayload() {
@@ -1510,13 +1516,13 @@
       gettingStartedModal.classList.remove('show');
     });
 
-    // QR modal logic (from Code B, adapted)
+    // QR modal logic
     function openShareModal() {
-      const pageUrl = window.location.href;
-      const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pageUrl)}`;
+      const cleanUrl = getCleanUrl();
+      const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(cleanUrl)}`;
       qrModalImage.src = qrCodeApiUrl;
-      qrPageUrlAnchor.href = pageUrl;
-      qrPageUrlAnchor.textContent = pageUrl;
+      qrPageUrlAnchor.href = cleanUrl;
+      qrPageUrlAnchor.textContent = cleanUrl;
       qrCodeModal.classList.add('show');
     }
     function closeShareModal() {
@@ -1538,9 +1544,9 @@
 
     copyLinkTextLink.addEventListener('click', function (event) {
       event.preventDefault();
-      const pageUrl = window.location.href;
+      const cleanUrl = getCleanUrl();
       const tempInput = document.createElement('textarea');
-      tempInput.value = pageUrl;
+      tempInput.value = cleanUrl;
       document.body.appendChild(tempInput);
       tempInput.select();
       document.execCommand('copy');
@@ -1555,7 +1561,7 @@
           await navigator.share({
             title: document.title,
             text: 'Join me on this Saved Items page at Curious Souls Café!',
-            url: window.location.href
+            url: getCleanUrl()
           });
         } catch (err) {
           console.warn('Share canceled or failed:', err);
@@ -1564,6 +1570,7 @@
         // No fallback beyond copy; keep silent per pattern
       }
     });
+    // *** END: MODIFIED SHARE/QR SECTION ***
 
     // Floating Back button behavior
     function goBackFallback() {
