@@ -65,7 +65,7 @@ At the heart of our gatherings are questions designed to guide soul-searching di
 - **Search and Filter**: Use the search bar on the main page to find topics, or within a topic page to find specific questions.
 - **Light & Deep**: Filter questions by difficulty levels: 🌱 (light), ☕ (middle), and 🌀 (deep)
 - **Question Numbering**: There is a question number at the top right corner of each question (except for the dymanic question deck, 'All Questions') that can be shared with other participants to quickly jump to a particular question.
-- **Sharing Questions**: Select a question and tap the 'sharing' icon on the bottom right corner to share the question via numberous methods supported by your device (e.g., messaging apps).
+- **Share Questions**: Select a question and tap the 'sharing' icon on the bottom right corner to share the question via numberous methods supported by your device (e.g., messaging apps).
 - **Look Up Online**: Select a question and tap the 'magnifier' icon on the bottom right corner to research the question online via AI-powered search engines and dictionaries.
 - **Submit Custom Questions**: Add your own list of questions for a private session. Your custom list is saved locally in your browser. This feature is also useful to show ad-hoc questions during meetings.
 - **Favorite Topics**: Tap the star icon next to a topic to move it to the top of the list for quick access.
