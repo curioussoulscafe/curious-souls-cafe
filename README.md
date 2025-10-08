@@ -2,6 +2,14 @@
 
 Welcome to the Curious Souls Café! This [live web app](https://app.curioussouls.cafe/) is an open-source tool and a companion for our global community, designed to spark meaningful conversations, foster genuine connection, and support personal growth.
 
+## ✨ Key Features
+
+The Curious Souls Café web app is built around a few core components designed to facilitate connection and conversation.
+
+- **Question Decks**: Access the [Question Decks](https://app.curioussouls.cafe/), a collection of curated questions designed to guide soul-searching discussions. These decks cover diverse themes and were often co-developed with the global community.
+- **The Dice Roller**: Access the [Virtual Dice Roller](https://app.curioussouls.cafe/dice/) (or read its [docs](https://curioussouls.cafe/dice/)) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
+- **Meaningful Actions**: Access the [Action Prompts](https://app.curioussouls.cafe/action-prompts/) to spark gratitude, kindness, and inspiration with randomly presented creative tasks.
+
 ## What is Curious Souls Café?
 
 Curious Souls Café is a "third place" away from home and work, founded to counter the isolation of modern life. It's a global community that hosts events where people can explore life's big questions together. Our philosophy is centered on the power of face-to-face conversations to build deeper bonds in a safe, non-judgmental environment. This web app was originally created to support our in-person and online events.
@@ -49,11 +57,6 @@ At the heart of our gatherings are questions designed to guide soul-searching di
 * **[Work that Resonates](https://app.curioussouls.cafe/topics/work-that-resonates/)**: Explore your evolving relationship with work, purpose, and fulfillment.
 
 💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for [Happiness](https://app.curioussouls.cafe/topics/happiness/), [Love Relationships](https://app.curioussouls.cafe/topics/love-relationships/), and [The Mind Speaks](https://app.curioussouls.cafe/topics/the-mind-speaks/), and to all participants who contributed to the [Global Curiosities](https://app.curioussouls.cafe/topics/global-curiosities/) deck.
-
-## 🎉 Bundled Apps
-
-- **The Dice Roller**: Access the [Virtual Dice Roller](https://app.curioussouls.cafe/dice/) (or read its [docs](https://curioussouls.cafe/dice/)) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful "punishment" prompts.
-- **Meaningful Actions**: Access the [Action Prompts](https://app.curioussouls.cafe/action-prompts/) to spark gratitude, kindness, and inspiration with randomly presented creative tasks.
 
 ## ✨ App Features & Tools
 
