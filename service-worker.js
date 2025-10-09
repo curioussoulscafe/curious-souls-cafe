@@ -33,6 +33,7 @@ const FILES_TO_CACHE = [
   '/questions/global-curiosities.txt',
   '/questions/true-wealth.txt',
   '/questions/legacy.txt',
+  '/questions/clarity.txt',
 
   // Pages
   '/pages/action-prompts.html',
@@ -110,6 +111,8 @@ const FILES_TO_CACHE = [
   '/topics/legacy/index.html',
   '/topics/legacy/about/index.html',
   '/pages/global-event-list.html',
+  '/topics/clarity/index.html',
+  '/topics/clarity/about/index.html',
 
   // Pages (descriptions)
   '/pages/descriptions/authenticity.html',
@@ -133,6 +136,7 @@ const FILES_TO_CACHE = [
   '/pages/descriptions/global-curiosities.html',
   '/pages/descriptions/true-wealth.html',
   '/pages/descriptions/legacy.html',
+  '/pages/descriptions/clarity.html',
 
   // Images
   '/images/csc_logo.jpg',
@@ -162,6 +166,7 @@ const FILES_TO_CACHE = [
   '/images/qr/qr-code-topic-legacy.png',
   '/images/qr/qr-code-topic-global-curiosities.png',
   '/images/qr/qr-code-welcome.png',
+  '/images/qr/qr-code-topic-clarity.png',
 
   // Icons
   '/images/icons/apple-touch-icon.png',

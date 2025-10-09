@@ -38,6 +38,7 @@ At the heart of our gatherings are questions designed to guide soul-searching di
 
 * **[Adulthood](https://app.curioussouls.cafe/topics/adulthood/)**: Explore the holistic journey of adulting—personal growth, authenticity, and connection.
 * **[Authenticity](https://app.curioussouls.cafe/topics/authenticity/)**: Align your actions with your values and embrace your true self.
+* **[Clarity](https://app.curioussouls.cafe/topics/clarity/)**: Explore clarity, align with your truth, and navigate decisions with self-awareness.
 * **[Entrepreneurship](https://app.curioussouls.cafe/topics/entrepreneurship/)**: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.
 * **[Friendship](https://app.curioussouls.cafe/topics/friendship/)**: Deepen connection and explore the many facets of meaningful friendships.
 * **[Global Curiosities](https://app.curioussouls.cafe/topics/global-curiosities/)**: Questions written by participants from our events around the world.
