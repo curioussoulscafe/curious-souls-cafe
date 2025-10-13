@@ -139,7 +139,7 @@ const FILES_TO_CACHE = [
   '/pages/descriptions/clarity.html',
 
   // Images
-  '/images/csc_logo.jpg',
+  '/images/csc_logo_mid.jpg',
   '/images/favicon.ico',
   '/images/qr/qr-code.png',
   '/images/qr/qr-code-function-action-prompts.png',
