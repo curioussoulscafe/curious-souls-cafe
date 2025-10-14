@@ -929,7 +929,7 @@
 
         <hr class="border-gray-300 my-6 w-full mx-auto">
 
-        <div class="mb-4">
+        <div id="goto-question-anchor" class="mb-4">
             <label for="goto-number-input" class="block text-gray-700 text-sm font-bold mb-2">Go to question number:</label>
             <div class="flex gap-2">
                 <input type="text" id="goto-number-input" placeholder="e.g., 5 or 10-15 or 5,8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -1585,21 +1585,26 @@
             }
             const numItemsToPick = parseInt(itemCountInput.value);
 
-            // Pick without repetition; if fewer available, just show what's left
-            const picked = selectUniqueItems(itemList, isNaN(numItemsToPick) ? 0 : numItemsToPick);
-
-            if (!picked || picked.length === 0) {
-                // If nothing is available, inform user (and do NOT refill)
-                resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
+            // If count is 0 or invalid, just clear the display.
+            if (isNaN(numItemsToPick) || numItemsToPick <= 0) {
+                resultDisplay.innerHTML = '';
             } else {
-                // Render each with subtle number (only if number available)
-                let itemDivs = picked.map(item => {
-                    const qn = Number.isInteger(item.num) ? `#${item.num}` : ""; // empty if missing
-                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
-                });
-                let resultHTML = itemDivs.join('');
-                resultDisplay.innerHTML = resultHTML;
-                addHighlightingAndChooseLogic(resultDisplay);
+                // Pick without repetition; if fewer available, just show what's left
+                const picked = selectUniqueItems(itemList, numItemsToPick);
+
+                if (!picked || picked.length === 0) {
+                    // If nothing is available, inform user (and do NOT refill)
+                    resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
+                } else {
+                    // Render each with subtle number (only if number available)
+                    let itemDivs = picked.map(item => {
+                        const qn = Number.isInteger(item.num) ? `#${item.num}` : ""; // empty if missing
+                        return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                    });
+                    let resultHTML = itemDivs.join('');
+                    resultDisplay.innerHTML = resultHTML;
+                    addHighlightingAndChooseLogic(resultDisplay);
+                }
             }
 
             // Reset selections across all sections when generating new random set
@@ -1902,18 +1907,36 @@
         }
 
         /**
-         * Checks the URL for a hash on page load and, if found, uses it
-         * to perform a "Go to number" search automatically.
+         * Checks the URL for a hash on page load. If it's a numeric query,
+         * it sets the random count to 0, performs a "Go to number" search,
+         * and scrolls to the input area.
          */
         function handleUrlHashSearch() {
             if (window.location.hash && window.location.hash.length > 1) {
                 const searchTerm = decodeURIComponent(window.location.hash.substring(1));
-                if (searchTerm) {
-                    console.log(`URL hash found: "${searchTerm}". Populating 'Go to number' input.`);
+                if (!searchTerm) return;
+
+                const numericQueryResult = parseNumericQuery(searchTerm);
+
+                if (numericQueryResult.isNumericQuery) {
+                    console.log(`Numeric URL hash found: "${searchTerm}". Adjusting UI and performing search.`);
+                    
+                    // Requirement 1: Set "No. to pick" to 0 and clear the initial random questions.
+                    itemCountInput.value = '0';
+                    displayRandomItems(); 
+                    
+                    // Populate the input and perform the search.
                     gotoNumberInput.value = searchTerm;
                     handleGoToNumber();
-                    // Scroll the search results into view for better user experience
-                    searchResultsDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Requirement 2: Jump to the "Go to question number" anchor.
+                    const gotoAnchor = document.getElementById('goto-question-anchor');
+                    if (gotoAnchor) {
+                        // Scroll after a tiny delay to ensure the DOM has settled after handleGoToNumber renders results.
+                        setTimeout(() => {
+                            gotoAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100); 
+                    }
                 }
             }
         }
