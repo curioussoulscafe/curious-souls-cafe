@@ -61,6 +61,9 @@ At the heart of our gatherings are questions designed to guide soul-searching di
 
 ## ✨ App Features & Tools
 
+- **Question Decks**: Browse and select from dozens of themed question decks to guide your conversations.
+- **Virtual Dice Roller**: Use the floating dice icon to randomly select a color-coded team to start the discussion.
+- **Action Prompts**: Engage in meaningful bonding actions, often used with the dice roller's "punishment" feature.
 - **Get Random Questions**: Select the number of questions to display from any deck.
 - **Save Questions**: Tap any question to add it to a "Saved Questions" list for easy reference during a discussion.
 - **Search and Filter**: Use the search bar on the main page to find topics, or within a topic page to find specific questions.
