@@ -868,7 +868,6 @@
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by meetup group/type:</label>
             <div id="city-filter" class="flex flex-wrap justify-center gap-2">
-                <!-- Removed "All" button; city buttons now act as independent toggles -->
                 <button class="city-filter-btn" data-city="Hong Kong">Hong Kong</button>
                 <button class="city-filter-btn" data-city="Singapore">Singapore</button>
                 <button class="city-filter-btn" data-city="Seoul">Seoul</button>
@@ -880,7 +879,7 @@
         </div>
 
         <div class="mb-4">
-            <!-- <label class="block text-gray-700 text-sm font-bold mb-2 text-center">Filter by type:</label> --><hr class="border-gray-300 my-4 w-full mx-auto">
+            <hr class="border-gray-300 my-4 w-full mx-auto">
             <div id="difficulty-filter" class="flex flex-wrap justify-center gap-2">
                 <button data-filter="lighter" class="filter-btn" title="Show light questions">🌱 Light</button>
                 <button data-filter="middle" class="filter-btn" title="Show medium questions">☕</button>
@@ -1353,6 +1352,7 @@
                 fullItemList = buildQuestionsWithNumbers(cachedContent);
                 applyFilter(); // Apply filters (none selected initially)
                 loadSavedQuestions(); 
+                handleUrlHashSearch(); // Handle URL hash search after questions are loaded
             } else {
                 console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
                 try {
@@ -1368,6 +1368,7 @@
 
                     applyFilter(); // Apply filters (none selected initially)
                     loadSavedQuestions(); 
+                    handleUrlHashSearch(); // Handle URL hash search after questions are loaded
                 } catch (error) {
                     console.error("Could not load questions:", error);
                     document.getElementById('random-result').textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
@@ -1898,6 +1899,23 @@
                 }
             }
             return { isNumericQuery: nums.size > 0, numbers: nums };
+        }
+
+        /**
+         * Checks the URL for a hash on page load and, if found, uses it
+         * to perform a "Go to number" search automatically.
+         */
+        function handleUrlHashSearch() {
+            if (window.location.hash && window.location.hash.length > 1) {
+                const searchTerm = decodeURIComponent(window.location.hash.substring(1));
+                if (searchTerm) {
+                    console.log(`URL hash found: "${searchTerm}". Populating 'Go to number' input.`);
+                    gotoNumberInput.value = searchTerm;
+                    handleGoToNumber();
+                    // Scroll the search results into view for better user experience
+                    searchResultsDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
         }
 
         // --- Event Listeners ---
