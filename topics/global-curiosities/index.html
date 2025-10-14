@@ -1578,6 +1578,7 @@
         function displayRandomItems() {
             if (itemList.length === 0) {
                 resultDisplay.textContent = "No questions available to pick. Please adjust filters or load questions first.";
+                resultDisplay.style.minHeight = ''; // Ensure default height for this message
                 selectedRandomQuestionText = null;
                 selectedRandomQuestionNum = null;
                 refreshFloatingLookupVisibility();
@@ -1585,10 +1586,12 @@
             }
             const numItemsToPick = parseInt(itemCountInput.value);
 
-            // If count is 0 or invalid, just clear the display.
+            // If count is 0 or invalid, just clear the display and collapse the space.
             if (isNaN(numItemsToPick) || numItemsToPick <= 0) {
                 resultDisplay.innerHTML = '';
+                resultDisplay.style.minHeight = '0px'; // Collapse the space
             } else {
+                resultDisplay.style.minHeight = ''; // Restore default space for content
                 // Pick without repetition; if fewer available, just show what's left
                 const picked = selectUniqueItems(itemList, numItemsToPick);
 
