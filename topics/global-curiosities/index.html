@@ -1835,12 +1835,25 @@
 
         function buildSharePayload() {
             if (!selectedRandomQuestionText) return null;
-            const pageUrl = window.location.href;
+
+            // Get the base URL (origin + pathname) to ensure no old hash is present.
+            const baseUrl = window.location.origin + window.location.pathname;
+            let finalUrl = baseUrl;
+
+            // If a question with a number is selected, append its number as a hash.
+            if (selectedRandomQuestionNum) {
+                // The variable is stored as "#123", so we remove the '#' for the hash.
+                const questionNumber = selectedRandomQuestionNum.replace('#', '').trim();
+                if (questionNumber && !isNaN(questionNumber)) {
+                    finalUrl = `${baseUrl}#${questionNumber}`;
+                }
+            }
+            
             const cleanedQuestion = removeEmojiPrefix(removeTrailingEventInfo(selectedRandomQuestionText));
             return {
                 title: `Curious Souls Café - ${displayTopicName}`,
                 text: cleanedQuestion,
-                url: pageUrl
+                url: finalUrl
             };
         }
 
