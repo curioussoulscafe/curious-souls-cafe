@@ -449,7 +449,7 @@
 
   <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
     <div class="flex justify-center mb-6">
-      <a href="../index.html" aria-label="Back to Home">
+      <a href="../" aria-label="Back to Home">
         <img src="../images/csc_logo_mid.jpg" alt="Curious Souls Cafe Logo" class="w-24 h-24 rounded-full border-2 border-purple-500">
       </a>
     </div>
@@ -547,7 +547,7 @@
     <div class="modal-content max-w-sm">
       <h3 class="text-xl font-semibold text-gray-800 mb-3">🚀 Meaningful Talk</h3>
       <ol class="getting-started-list">
-        <li><b>Invite Others:</b> Ask folks to scan the QR code on the bottom of the main page. <a class="text-blue-600 hover:underline" href="../index.html">Open main page</a></li>
+        <li><b>Invite Others:</b> Ask folks to scan the QR code on the bottom of the main page. <a class="text-blue-600 hover:underline" href="../">Open main page</a></li>
         <li><b>Pick Questions:</b> On any topic page, tap questions to save them. They’ll appear here as “Saved Items”.</li>
         <li><b>Discuss:</b> Pick a saved question, then everyone answers it in turn. Repeat with the next person’s question.</li>
       </ol>
@@ -879,7 +879,7 @@
         openTopicBtn.className = 'pill';
         openTopicBtn.innerHTML = '<i class="fa-solid fa-up-right-from-square mr-1"></i>Open';
         const kebab = kebabizeTopicId(topicId);
-        openTopicBtn.href = `../topics/${kebab}/index.html`;
+        openTopicBtn.href = `../topics/${kebab}/`;
         openTopicBtn.rel = 'noopener noreferrer';
         openTopicBtn.title = 'Open topic page';
 
@@ -1577,7 +1577,7 @@
       if (window.history.length > 1) {
         window.history.back();
       } else {
-        window.location.href = '../index.html';
+        window.location.href = '../';
       }
     }
     function runBackButtonAttention() {

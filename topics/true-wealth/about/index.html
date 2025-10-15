@@ -237,7 +237,7 @@
               safeNavigate(document.referrer);
             } else {
               // Fallback to home of the web app root
-              safeNavigate('../../index.html');
+              safeNavigate('../../');
             }
           }
         }, 250);
@@ -246,7 +246,7 @@
         if (document.referrer && isSameOrigin(document.referrer)) {
           safeNavigate(document.referrer);
         } else {
-          safeNavigate('../index.html');
+          safeNavigate('../');
         }
       }
     }

@@ -408,7 +408,7 @@
 
   <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transition-transform">
     <div class="flex justify-center mb-6">
-      <a href="../index.html" class="logo-link">
+      <a href="../" class="logo-link">
         <img src="../images/csc_logo_mid.jpg" alt="Curious Souls Cafe Logo">
       </a>
     </div>
@@ -958,7 +958,7 @@
     }
 
     // Robust back navigation helpers (aligned with global-event-list)
-    const HOME_FALLBACK = '../index.html';
+    const HOME_FALLBACK = '../';
     function safeNavigate(url) {
       try { window.location.href = url; }
       catch { window.location.href = HOME_FALLBACK || '/'; }
