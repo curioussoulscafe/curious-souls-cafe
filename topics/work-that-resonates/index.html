@@ -894,7 +894,7 @@
 
         <hr class="border-gray-300 my-6 w-full mx-auto">
 
-        <div class="mb-4">
+        <div id="goto-question-anchor" class="mb-4">
             <label for="goto-number-input" class="block text-gray-700 text-sm font-bold mb-2">Go to question number:</label>
             <div class="flex gap-2">
                 <input type="text" id="goto-number-input" placeholder="e.g., 5 or 10-15 or 5,8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -1267,6 +1267,7 @@
                 fullItemList = buildQuestionsWithNumbers(cachedContent);
                 applyFilter(); // Apply union filter (defaults to all when none selected)
                 loadSavedQuestions(); 
+                handleUrlHashSearch(); // Handle URL hash search after questions are loaded
             } else {
                 console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
                 try {
@@ -1282,6 +1283,7 @@
 
                     applyFilter(); // Apply union filter (defaults to all)
                     loadSavedQuestions(); 
+                    handleUrlHashSearch(); // Handle URL hash search after questions are loaded
                 } catch (error) {
                     console.error("Could not load questions:", error);
                     document.getElementById('random-result').textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
@@ -1498,22 +1500,30 @@
             }
             const numItemsToPick = parseInt(itemCountInput.value);
 
-            // Pick without repetition; if fewer available, just show what's left
-            const picked = selectUniqueItems(itemList, isNaN(numItemsToPick) ? 0 : numItemsToPick);
-
-            if (!picked || picked.length === 0) {
-                // If nothing is available, inform user (and do NOT refill)
-                resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
+            // If count is 0 or invalid, just clear the display and collapse the space.
+            if (isNaN(numItemsToPick) || numItemsToPick <= 0) {
+                resultDisplay.innerHTML = '';
+                resultDisplay.style.minHeight = '0px'; // Collapse the space
             } else {
-                // Render each with subtle number (only if number available)
-                let itemDivs = picked.map(item => {
-                    const qn = Number.isInteger(item.num) ? `#${item.num}` : ""; // empty if missing
-                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
-                });
-                let resultHTML = itemDivs.join('');
-                resultDisplay.innerHTML = resultHTML;
-                addHighlightingAndChooseLogic(resultDisplay);
+                resultDisplay.style.minHeight = ''; // Restore default space for content
+                // Pick without repetition; if fewer available, just show what's left
+                const picked = selectUniqueItems(itemList, numItemsToPick);
+
+                if (!picked || picked.length === 0) {
+                    // If nothing is available, inform user (and do NOT refill)
+                    resultDisplay.textContent = "No more unique questions available. Adjust filters or count, or try again later.";
+                } else {
+                    // Render each with subtle number (only if number available)
+                    let itemDivs = picked.map(item => {
+                        const qn = Number.isInteger(item.num) ? `#${item.num}` : ""; // empty if missing
+                        return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                    });
+                    let resultHTML = itemDivs.join('');
+                    resultDisplay.innerHTML = resultHTML;
+                    addHighlightingAndChooseLogic(resultDisplay);
+                }
             }
+
 
             // Reset selections across all sections when generating new random set
             selectedRandomQuestionText = null;
@@ -1741,12 +1751,25 @@
          */
         function buildSharePayload() {
             if (!selectedRandomQuestionText) return null;
-            const pageUrl = window.location.href;
+
+            // Get the base URL (origin + pathname) to ensure no old hash is present.
+            const baseUrl = window.location.origin + window.location.pathname;
+            let finalUrl = baseUrl;
+
+            // If a question with a number is selected, append its number as a hash.
+            if (selectedRandomQuestionNum) {
+                // The variable is stored as "#123", so we remove the '#' for the hash.
+                const questionNumber = selectedRandomQuestionNum.replace('#', '').trim();
+                if (questionNumber && !isNaN(questionNumber)) {
+                    finalUrl = `${baseUrl}#${questionNumber}`;
+                }
+            }
+            
             const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
             return {
                 title: `Curious Souls Café - ${displayTopicName}`,
                 text: cleanedQuestion, // question only
-                url: pageUrl           // URL separate; many share sheets append it
+                url: finalUrl           // URL separate; many share sheets append it
             };
         }
 
@@ -1817,6 +1840,41 @@
                 }
             }
             return { isNumericQuery: nums.size > 0, numbers: nums };
+        }
+
+        /**
+         * Checks the URL for a hash on page load. If it's a numeric query,
+         * it sets the random count to 0, performs a "Go to number" search,
+         * and scrolls to the input area.
+         */
+        function handleUrlHashSearch() {
+            if (window.location.hash && window.location.hash.length > 1) {
+                const searchTerm = decodeURIComponent(window.location.hash.substring(1));
+                if (!searchTerm) return;
+
+                const numericQueryResult = parseNumericQuery(searchTerm);
+
+                if (numericQueryResult.isNumericQuery) {
+                    console.log(`Numeric URL hash found: "${searchTerm}". Adjusting UI and performing search.`);
+                    
+                    // Requirement 1: Set "No. to pick" to 0 and clear the initial random questions.
+                    itemCountInput.value = '0';
+                    displayRandomItems(); 
+                    
+                    // Populate the input and perform the search.
+                    gotoNumberInput.value = searchTerm;
+                    handleGoToNumber();
+                    
+                    // Requirement 2: Jump to the "Go to question number" anchor.
+                    const gotoAnchor = document.getElementById('goto-question-anchor');
+                    if (gotoAnchor) {
+                        // Scroll after a tiny delay to ensure the DOM has settled after handleGoToNumber renders results.
+                        setTimeout(() => {
+                            gotoAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100); 
+                    }
+                }
+            }
         }
 
         // --- Event Listeners ---

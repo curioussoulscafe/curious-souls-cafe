@@ -895,7 +895,7 @@
 
         <hr class="border-gray-300 my-6 w-full mx-auto">
 
-        <div class="mb-4">
+        <div id="goto-question-anchor" class="mb-4">
             <label for="goto-number-input" class="block text-gray-700 text-sm font-bold mb-2">Go to question number:</label>
             <div class="flex gap-2">
                 <input type="text" id="goto-number-input" placeholder="e.g., 5 or 10-15 or 5,8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -1267,6 +1267,7 @@
                 fullItemList = buildQuestionsWithNumbers(cachedContent);
                 applyFilter(); // Apply current filters (multi-select supported)
                 loadSavedQuestions(); 
+                handleUrlHashSearch(); 
             } else {
                 console.log(`Loading questions for topic "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
                 try {
@@ -1282,6 +1283,7 @@
 
                     applyFilter(); // Apply current filters (multi-select supported)
                     loadSavedQuestions(); 
+                    handleUrlHashSearch(); 
                 } catch (error) {
                     console.error("Could not load questions:", error);
                     resultDisplay.textContent = `Failed to load questions for topic "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
@@ -1741,12 +1743,22 @@
          */
         function buildSharePayload() {
             if (!selectedRandomQuestionText) return null;
-            const pageUrl = window.location.href;
+            
+            const baseUrl = window.location.origin + window.location.pathname;
+            let finalUrl = baseUrl;
+
+            if (selectedRandomQuestionNum) {
+                const questionNumber = selectedRandomQuestionNum.replace('#', '').trim();
+                if (questionNumber && !isNaN(questionNumber)) {
+                    finalUrl = `${baseUrl}#${questionNumber}`;
+                }
+            }
+            
             const cleanedQuestion = removeEmojiPrefix(selectedRandomQuestionText);
             return {
                 title: `Curious Souls Café - ${displayTopicName}`,
-                text: cleanedQuestion, // question only
-                url: pageUrl           // URL separate; many share sheets append it
+                text: cleanedQuestion,
+                url: finalUrl
             };
         }
 
@@ -1817,6 +1829,30 @@
                 }
             }
             return { isNumericQuery: nums.size > 0, numbers: nums };
+        }
+
+        function handleUrlHashSearch() {
+            if (window.location.hash && window.location.hash.length > 1) {
+                const searchTerm = decodeURIComponent(window.location.hash.substring(1));
+                if (!searchTerm) return;
+
+                const numericQueryResult = parseNumericQuery(searchTerm);
+
+                if (numericQueryResult.isNumericQuery) {
+                    itemCountInput.value = '0';
+                    displayRandomItems(); 
+                    
+                    gotoNumberInput.value = searchTerm;
+                    handleGoToNumber();
+                    
+                    const gotoAnchor = document.getElementById('goto-question-anchor');
+                    if (gotoAnchor) {
+                        setTimeout(() => {
+                            gotoAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100); 
+                    }
+                }
+            }
         }
 
         // --- Event Listeners ---

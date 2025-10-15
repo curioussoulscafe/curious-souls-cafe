@@ -686,8 +686,8 @@
 
         <hr class="border-gray-300 my-6 w-full mx-auto">
 
-        <!-- Updated: separate Go to number field -->
-        <div class="mb-4">
+        <!-- Updated: separate Go to number field with anchor -->
+        <div id="goto-action-anchor" class="mb-4">
             <label for="goto-number-input" class="block text-gray-700 text-sm font-bold mb-2">Go to action number:</label>
             <div class="flex gap-2">
                 <input type="text" id="goto-number-input" placeholder="e.g., 5 or 10-15 or 5,8" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -1063,6 +1063,7 @@
                 fullItemList = buildActionsWithNumbers(cachedContent);
                 applyFilter(); // NEW: initialize filtered view (defaults to all)
                 loadSavedActions();
+                handleUrlHashSearch(); // Handle URL hash search
             } else {
                 console.log(`Loading "${displayTopicName}" from relative path: ${githubRawUrl} (not found in localStorage).`);
                 try {
@@ -1073,6 +1074,7 @@
                     localStorage.setItem(localStorageKey, text);
                     applyFilter(); // NEW: initialize filtered view (defaults to all)
                     loadSavedActions();
+                    handleUrlHashSearch(); // Handle URL hash search
                 } catch (error) {
                     console.error("Could not load actions:", error);
                     resultDisplay.textContent = `Failed to load "${displayTopicName}". Please ensure the file exists at ${githubRawUrl} and is publicly accessible.`;
@@ -1179,21 +1181,27 @@
         }
 
         function displayRandomItems() {
-            if (itemList.length === 0) {
+             if (itemList.length === 0) {
                 resultDisplay.textContent = "No actions available to pick.";
+                resultDisplay.style.minHeight = ''; // Ensure default height
                 return;
             }
-            const numItemsToPick = parseInt(itemCountInput.value) || 0;
-            const picked = selectUniqueItems(itemList, numItemsToPick);
+            const numItemsToPick = parseInt(itemCountInput.value);
 
-            resultDisplay.innerHTML = picked.length === 0
-                ? "No more unique actions available. Adjust count or try again later."
-                : picked.map(item => {
-                    const an = Number.isInteger(item.num) ? `#${item.num}` : "";
-                    return `<div class="item" data-text="${escapeHtml(item.text)}"${an ? ` data-qn="${an}"` : ''}>${escapeHtml(item.text)}</div>`;
-                  }).join('');
-            
-            if (picked.length > 0) addHighlightingAndChooseLogic(resultDisplay);
+            if (isNaN(numItemsToPick) || numItemsToPick <= 0) {
+                resultDisplay.innerHTML = '';
+                resultDisplay.style.minHeight = '0px'; // Collapse space
+            } else {
+                resultDisplay.style.minHeight = ''; // Restore default space
+                const picked = selectUniqueItems(itemList, numItemsToPick);
+                resultDisplay.innerHTML = picked.length === 0
+                    ? "No more unique actions available. Adjust count or try again later."
+                    : picked.map(item => {
+                        const an = Number.isInteger(item.num) ? `#${item.num}` : "";
+                        return `<div class="item" data-text="${escapeHtml(item.text)}"${an ? ` data-qn="${an}"` : ''}>${escapeHtml(item.text)}</div>`;
+                      }).join('');
+                if (picked.length > 0) addHighlightingAndChooseLogic(resultDisplay);
+            }
             
             selectedActionText = null;
             selectedActionNum = null;
@@ -1330,13 +1338,63 @@
             navigator.clipboard.writeText(cleaned).then(() => alert("Action copied to clipboard!"));
         }
 
-        async function handleShareSelectedAction() {
-            if (!selectedActionText) { alert("Please select an action first to share."); return; }
+        function buildSharePayload() {
+            if (!selectedActionText) return null;
+
+            const baseUrl = window.location.origin + window.location.pathname;
+            let finalUrl = baseUrl;
+
+            if (selectedActionNum) {
+                const actionNumber = selectedActionNum.replace('#', '').trim();
+                if (actionNumber && !isNaN(actionNumber)) {
+                    finalUrl = `${baseUrl}#${actionNumber}`;
+                }
+            }
+            
             const cleaned = removeEmojiPrefix(selectedActionText);
+            return {
+                title: `Curious Souls Café - ${displayTopicName}`,
+                text: cleaned,
+                url: finalUrl
+            };
+        }
+
+        async function handleShareSelectedAction() {
+            const payload = buildSharePayload();
+            if (!payload) {
+                alert("Please select an action first to share.");
+                return;
+            }
             if (navigator.share) {
                 try {
-                    await navigator.share({ title: `Curious Souls Café - ${displayTopicName}`, text: cleaned, url: window.location.href });
+                    await navigator.share(payload);
                 } catch (err) { console.warn("Web Share API failed or was canceled:", err); }
+            }
+        }
+
+        function handleUrlHashSearch() {
+            if (window.location.hash && window.location.hash.length > 1) {
+                const searchTerm = decodeURIComponent(window.location.hash.substring(1));
+                if (!searchTerm) return;
+
+                const numericQueryResult = parseNumericQuery(searchTerm);
+
+                if (numericQueryResult.isNumericQuery) {
+                    console.log(`Numeric URL hash found: "${searchTerm}". Adjusting UI and performing search.`);
+                    
+                    itemCountInput.value = '0';
+                    displayRandomItems(); 
+                    
+                    gotoNumberInput.value = searchTerm;
+                    handleGoToNumber();
+                    
+                    const gotoAnchor = document.getElementById('goto-action-anchor');
+                    if (gotoAnchor) {
+                        setTimeout(() => {
+                            gotoAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100); 
+                    }
+                }
             }
         }
 
