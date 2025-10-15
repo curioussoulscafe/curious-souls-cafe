@@ -914,9 +914,9 @@
             </button>
         </div>
 
-        <div class="mb-4">
-            <label for="search-text-input" class="block text-gray-700 text-sm font-bold mb-2">Search by keyword:</label>
-            <input type="text" id="search-text-input" placeholder="Enter search term..." class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
+        <div class="mb-4" id="search-text-anchor">
+            <label for="search-text-input" class="block text-gray-700 text-sm font-bold mb-2">Search by keyword or event:</label>
+            <input type="text" id="search-text-input" placeholder="e.g., love, global:10, hongkong:5" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2">
             <div class="flex gap-2">
                 <button id="search-text-button" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline w-full transition duration-300 ease-in-out">
                     Search
@@ -1086,11 +1086,7 @@
         const githubRawUrl = "../../questions/global-curiosities.txt"; // Relative path to global-curiosities.txt
         // End Hardcoded Configuration
 
-        // Each question will be represented as { num: number, text: string, raw: string, city: string }
-        // - num: 1-based line number in the source file
-        // - text: the display text (as-is from file)
-        // - raw: same as text (kept for clarity/compat)
-        // - city: parsed city from "(City Event N · Global M)" or "Other" if unmatched
+        // Each question will be represented as an object with properties like num, text, city, localNum, globalNum
         let fullItemList = []; // Master list of all questions (objects)
         let itemList = []; // The currently filtered list of questions (objects)
 
@@ -1192,51 +1188,44 @@
         const savedItemCountKey = `csc_saved_item_count_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
         const saveItemCountToggleKey = `csc_save_item_count_toggle_${displayTopicName.replace(/ /g, '_').toLowerCase()}`;
 
-        // Helper: parse city from the tail marker "(City Event N · Global M)"
-        function parseCityFromLine(trimmed) {
-            const match = trimmed.match(/\(([^()]+?)\s+Event\s+\d+\s*·\s*Global\s+\d+\)\s*$/);
-            if (!match) return 'Other';
-            const segment = match[1].trim();
-            // The city is the part before "Event"
-            // e.g. "Hong Kong" from "Hong Kong"
-            // For safety, handle cases with extra words like "Let's Meet in ...": map them later
-            return segment;
-        }
-
-        // Normalize city names to known set or "Other"
-        function normalizeCity(cityRaw) {
-            const known = ['Hong Kong','Kuala Lumpur','Osaka','Seoul','Singapore','Taipei'];
-            // Direct hit
-            if (known.includes(cityRaw)) return cityRaw;
-
-            // Map phrases found in question tail to a canonical city or Other
-            const map = {
-                'Guangzhou': 'Other',
-                'Macau': 'Other',
-                'Shanghai': 'Other',
-                'Shenzhen': 'Other',
-                'Zoom': 'Other',
-            };
-            if (map[cityRaw]) return map[cityRaw];
-
-            // Some lines may have "Let's Meet in X" elsewhere, but tail already standardized.
-            return 'Other';
-        }
-
-        // Helper: build object list with numbers and city from text file lines
+        // Helper: build question objects with all metadata from text file lines
         function buildQuestionsWithNumbers(text) {
             const lines = text.split('\n');
             const items = [];
-            let num = 0;
+            let num = 0; // This is the 1-based line number in the source file
+            const eventRegex = /\(([^()]+?)\s+Event\s+(\d+)\s*·\s*Global\s+(\d+)\)\s*$/;
+
             for (let i = 0; i < lines.length; i++) {
                 const trimmed = lines[i].trim();
-                if (trimmed.length === 0) continue; // skip blank
+                if (trimmed.length === 0) continue; // skip blank lines
                 num += 1;
-                const cityRaw = parseCityFromLine(trimmed);
-                const city = normalizeCity(cityRaw);
-                items.push({ num, text: trimmed, raw: trimmed, city });
+                
+                const match = trimmed.match(eventRegex);
+                let city = 'Other';
+                let localNum = null;
+                let globalNum = null;
+                
+                if (match) {
+                    city = normalizeCity(match[1].trim());
+                    localNum = parseInt(match[2], 10);
+                    globalNum = parseInt(match[3], 10);
+                }
+
+                items.push({ num, text: trimmed, raw: trimmed, city, localNum, globalNum });
             }
             return items;
+        }
+        
+        // Normalize city names to known set or "Other"
+        function normalizeCity(cityRaw) {
+            const known = ['Hong Kong','Kuala Lumpur','Osaka','Seoul','Singapore','Taipei'];
+            if (known.includes(cityRaw)) return cityRaw;
+            
+            const map = {
+                'Guangzhou': 'Other', 'Macau': 'Other', 'Shanghai': 'Other', 
+                'Shenzhen': 'Other', 'Zoom': 'Other', 'Beijing': 'Other'
+            };
+            return map[cityRaw] || 'Other';
         }
 
         /**
@@ -1338,7 +1327,7 @@
         // Function to fetch questions from localStorage or GitHub
         async function fetchQuestions() {
             // -- 1. ADD A VERSION IDENTIFIER --
-            const CACHE_VERSION = '20251009-02'; // Use today's date or any unique string
+            const CACHE_VERSION = '20251015-02'; // Use today's date or any unique string
 
             // -- 2. MODIFY THE LOCALSTORAGE KEY TO INCLUDE THE VERSION --
             const localStorageKey = `csc_topic_${displayTopicName.replace(/ /g, '_').toLowerCase()}_${CACHE_VERSION}`;
@@ -1617,43 +1606,101 @@
             document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
             refreshFloatingLookupVisibility();
         }
-
-        // NEW: Handles text search logic
+        
+        // Helper to parse comma and range-based number strings (e.g., "1, 3, 5-7")
+        const parseNumbers = (query) => {
+            const numbers = new Set();
+            query.split(',').forEach(part => {
+                if (part.includes('-')) {
+                    const [start, end] = part.split('-').map(n => parseInt(n.trim(), 10));
+                    if (!isNaN(start) && !isNaN(end)) {
+                        for (let i = Math.min(start, end); i <= Math.max(start, end); i++) numbers.add(i);
+                    }
+                } else {
+                    const num = parseInt(part.trim(), 10);
+                    if (!isNaN(num)) numbers.add(num);
+                }
+            });
+            return Array.from(numbers);
+        };
+        
+        // NEW: Handles text search logic (keywords and event queries)
         function handleTextSearch() {
-            if (itemList.length === 0) {
-                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                return;
-            }
-            const currentSearchTerm = searchTextInput.value.trim();
+            const searchTerm = searchTextInput.value.trim().toLowerCase();
+            gotoNumberInput.value = ''; // Clear other input
 
-            // To avoid confusion, clear the other input field
-            gotoNumberInput.value = '';
-
-            if (currentSearchTerm === "") {
+            if (searchTerm === "") {
                 emptySearchModal.classList.add('show');
                 return;
             }
+            executeSearch(searchTerm);
+        }
+
+        function executeSearch(searchTerm) {
+            lastSearchTerm = searchTerm;
+            let searchResults = [];
+
+            // A map to normalize city names from search prefixes to the data model's city name
+            const cityPrefixMap = {
+                'hongkong': 'Hong Kong', 'singapore': 'Singapore', 'seoul': 'Seoul', 'taipei': 'Taipei',
+                'kualalumpur': 'Kuala Lumpur', 'osaka': 'Osaka', 'other': 'Other', 'beijing': 'Other',
+                'guangzhou': 'Other', 'macau': 'Other', 'shanghai': 'Other', 'shenzhen': 'Other', 'zoom': 'Other'
+            };
+
+            const prefixMatch = searchTerm.match(/^([\w\s]+):([\d,-]+)$/);
+
+            if (prefixMatch) { // Handle searches like "global:10" or "hongkong:5"
+                const prefix = prefixMatch[1].trim();
+                const numQuery = prefixMatch[2].trim();
+                const targetNumbers = parseNumbers(numQuery);
+                
+                if (prefix === 'global') {
+                    searchResults = fullItemList.filter(item => item.globalNum && targetNumbers.includes(item.globalNum));
+                } else if (cityPrefixMap[prefix]) {
+                    const targetCity = cityPrefixMap[prefix];
+                    searchResults = fullItemList.filter(item => item.city === targetCity && item.localNum && targetNumbers.includes(item.localNum));
+                } else {
+                    // If prefix is not recognized, treat it as a regular keyword search
+                    searchResults = fullItemList.filter(item => item.text.toLowerCase().includes(searchTerm));
+                }
+            } else { // Handle regular keyword search
+                searchResults = fullItemList.filter(item => item.text.toLowerCase().includes(searchTerm));
+            }
             
-            executeSearch(currentSearchTerm.toLowerCase());
+            // Apply current difficulty and city filters to the search results
+            const finalResults = searchResults.filter(item => {
+                const cityOK = selectedCityFilters.size === 0 || (selectedCityFilters.has('Other') && item.city === 'Other') || selectedCityFilters.has(item.city);
+                const difficultyOK = selectedDifficultyFilters.size === 0 ||
+                    (selectedDifficultyFilters.has('lighter') && item.text.startsWith('🌱')) ||
+                    (selectedDifficultyFilters.has('deeper') && item.text.startsWith('🌀')) ||
+                    (selectedDifficultyFilters.has('middle') && !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
+                return cityOK && difficultyOK;
+            });
+            
+            if (finalResults.length === 0) {
+                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search and filters.</p>`;
+            } else {
+                searchResultsDisplay.innerHTML = finalResults.map(item => {
+                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
+                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
+                }).join('');
+                addHighlightingAndChooseLogic(searchResultsDisplay);
+            }
+
+            // Clear selections after search
+            selectedRandomQuestionText = null;
+            selectedRandomQuestionNum = null;
+            refreshFloatingLookupVisibility();
         }
 
         // NEW: Handles "Go to number" logic
         function handleGoToNumber() {
             const numberQuery = gotoNumberInput.value.trim();
             if (numberQuery === '') return;
-
-            // To avoid confusion, clear the other input field
-            searchTextInput.value = '';
+            searchTextInput.value = ''; // Clear other input
 
             const numericQueryResult = parseNumericQuery(numberQuery);
-
-            selectedRandomQuestionText = null;
-            selectedRandomQuestionNum = null;
-            refreshFloatingLookupVisibility();
-
-            const nums = Array.from(numericQueryResult.numbers)
-                .filter(n => Number.isInteger(n) && n > 0);
-            
+            const nums = Array.from(numericQueryResult.numbers);
             if (nums.length === 0) {
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No valid question numbers found.</p>`;
                 return;
@@ -1666,75 +1713,33 @@
                 if (found) results.push(found);
                 else notFound.push(n);
             });
-
-            // IMPORTANT: Apply current city and difficulty filters to numeric results
-            // City filtering uses selectedCityFilters (empty set = no filter)
-            const cityFilteredResults = results.filter(item => {
-                if (selectedCityFilters.size === 0) return true;
-                if (selectedCityFilters.has('Other') && item.city === 'Other') return true;
-                return selectedCityFilters.has(item.city);
+            
+            const finalResults = results.filter(item => {
+                 const cityOK = selectedCityFilters.size === 0 || (selectedCityFilters.has('Other') && item.city === 'Other') || selectedCityFilters.has(item.city);
+                const difficultyOK = selectedDifficultyFilters.size === 0 ||
+                    (selectedDifficultyFilters.has('lighter') && item.text.startsWith('🌱')) ||
+                    (selectedDifficultyFilters.has('deeper') && item.text.startsWith('🌀')) ||
+                    (selectedDifficultyFilters.has('middle') && !item.text.startsWith('🌱') && !item.text.startsWith('🌀'));
+                return cityOK && difficultyOK;
             });
 
-            const difficultyFilteredResults = cityFilteredResults.filter(item => {
-                // Respect multi-select difficulty
-                if (selectedDifficultyFilters.size === 0) return true;
-                const isLight = item.text.startsWith('🌱');
-                const isDeep = item.text.startsWith('🌀');
-                const isMiddle = !isLight && !isDeep;
-                if (selectedDifficultyFilters.has('lighter') && isLight) return true;
-                if (selectedDifficultyFilters.has('deeper') && isDeep) return true;
-                if (selectedDifficultyFilters.has('middle') && isMiddle) return true;
-                return false;
-            });
-
-            if (difficultyFilteredResults.length === 0) {
+            if (finalResults.length === 0) {
                 const notFoundMsg = notFound.length > 0 ? ` Some numbers not found: ${notFound.join(', ')}.` : '';
                 searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No matching numbers found under the current filters.${notFoundMsg}</p>`;
             } else {
-                let itemDivs = difficultyFilteredResults.map(item => {
+                let itemDivs = finalResults.map(item => {
                     const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
                     return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
                 });
                 const note = notFound.length > 0 
-                    ? `<p class="text-gray-400 text-xs mt-2">Could not find: ${notFound.join(', ')}.</p>`
+                    ? `<p class="text-gray-400 text-xs mt-2">Could not find line numbers: ${notFound.join(', ')}.</p>`
                     : '';
                 searchResultsDisplay.innerHTML = itemDivs.join('') + note;
                 addHighlightingAndChooseLogic(searchResultsDisplay);
             }
-        }
-
-
-        function executeSearch(searchTerm) {
-            if (itemList.length === 0) {
-                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions available to search.</p>`;
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-                refreshFloatingLookupVisibility();
-                return;
-            }
-            
-            const filteredResult = itemList.filter(item => item.text.toLowerCase().includes(searchTerm));
-
-            if (filteredResult.length === 0) {
-                searchResultsDisplay.innerHTML = `<p class="text-gray-500 text-sm">No questions found matching your search.</p>`;
-                selectedRandomQuestionText = null;
-                selectedRandomQuestionNum = null;
-            } else {
-                let itemDivs = filteredResult.map(item => {
-                    const qn = Number.isInteger(item.num) ? `#${item.num}` : "";
-                    return `<div class="item" data-text="${escapeHtml(item.text)}"${qn ? ` data-qn="${qn}"` : ''}>${escapeHtml(item.text)}</div>`;
-                });
-                let resultHTML = itemDivs.join('');
-                searchResultsDisplay.innerHTML = resultHTML;
-                addHighlightingAndChooseLogic(searchResultsDisplay);
-            }
-            lastSearchTerm = searchTerm;
-            // Clear all selections when new search runs
-            selectedRandomQuestionText = null;
-            selectedRandomQuestionNum = null;
-            document.querySelectorAll('.item.selected-item').forEach(el => el.classList.remove('selected-item'));
-            document.querySelectorAll('.chosen-item.selected-chosen-item').forEach(el => el.classList.remove('selected-chosen-item'));
-            refreshFloatingLookupVisibility();
+             selectedRandomQuestionText = null;
+             selectedRandomQuestionNum = null;
+             refreshFloatingLookupVisibility();
         }
 
         /**
@@ -1923,9 +1928,7 @@
         }
 
         /**
-         * Checks the URL for a hash on page load. If it's a numeric query,
-         * it sets the random count to 0, performs a "Go to number" search,
-         * and scrolls to the input area.
+         * Checks the URL for a hash on page load and performs the appropriate search.
          */
         function handleUrlHashSearch() {
             if (window.location.hash && window.location.hash.length > 1) {
@@ -1933,29 +1936,26 @@
                 if (!searchTerm) return;
 
                 const numericQueryResult = parseNumericQuery(searchTerm);
+                const isEventQuery = searchTerm.includes(':');
 
-                if (numericQueryResult.isNumericQuery) {
-                    console.log(`Numeric URL hash found: "${searchTerm}". Adjusting UI and performing search.`);
-                    
-                    // Requirement 1: Set "No. to pick" to 0 and clear the initial random questions.
+                if (numericQueryResult.isNumericQuery && !isEventQuery) {
+                    console.log(`Numeric URL hash found: "${searchTerm}". Searching by question number.`);
                     itemCountInput.value = '0';
                     displayRandomItems(); 
-                    
-                    // Populate the input and perform the search.
                     gotoNumberInput.value = searchTerm;
                     handleGoToNumber();
-                    
-                    // Requirement 2: Jump to the "Go to question number" anchor.
-                    const gotoAnchor = document.getElementById('goto-question-anchor');
-                    if (gotoAnchor) {
-                        // Scroll after a tiny delay to ensure the DOM has settled after handleGoToNumber renders results.
-                        setTimeout(() => {
-                            gotoAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 100); 
-                    }
+                    document.getElementById('goto-question-anchor')?.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    console.log(`Keyword/Event URL hash found: "${searchTerm}". Searching by keyword.`);
+                    itemCountInput.value = '0';
+                    displayRandomItems();
+                    searchTextInput.value = searchTerm;
+                    executeSearch(searchTerm.toLowerCase());
+                    document.getElementById('search-text-anchor')?.scrollIntoView({ behavior: 'smooth' });
                 }
             }
         }
+
 
         // --- Event Listeners ---
         clearChosenButton.addEventListener('click', function() {
@@ -2286,5 +2286,18 @@
                 .replace(/'/g, "&#039;");
         }
     </script>
+    <!-- [Tip: Do not remove]
+    
+    'Search by keyword' field now supports three types of queries:
+
+    - Keyword Search: Find questions containing a specific word (e.g., love).
+
+    - Global Event Search: Find questions from a specific global event (e.g., global:10).
+
+    - Regional Event Search: Find questions from a specific regional event (e.g., hongkong:5 or singapore:1).
+
+    This also supports deep-linking via the URL hash for the same.
+
+    -->
 </body>
 </html>
