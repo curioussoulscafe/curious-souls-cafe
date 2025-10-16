@@ -34,6 +34,7 @@ const FILES_TO_CACHE = [
   '/questions/true-wealth.txt',
   '/questions/legacy.txt',
   '/questions/clarity.txt',
+  '/questions/focus.txt',
 
   // Pages
   '/pages/action-prompts.html',
@@ -113,6 +114,8 @@ const FILES_TO_CACHE = [
   '/pages/global-event-list.html',
   '/topics/clarity/index.html',
   '/topics/clarity/about/index.html',
+  '/topics/focus/index.html',
+  '/topics/focus/about/index.html',
 
   // Pages (descriptions)
   '/pages/descriptions/authenticity.html',
@@ -167,6 +170,7 @@ const FILES_TO_CACHE = [
   '/images/qr/qr-code-topic-global-curiosities.png',
   '/images/qr/qr-code-welcome.png',
   '/images/qr/qr-code-topic-clarity.png',
+  '/images/qr/qr-code-topic-focus.png',
 
   // Icons
   '/images/icons/apple-touch-icon.png',
