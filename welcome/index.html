@@ -34,7 +34,48 @@
       padding: 0 1.5rem;
     }
 
+    /* --- Splash Screen Styles --- */
+    #splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--bg-light);
+      z-index: 10000; /* High z-index to cover everything */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+      opacity: 1;
+      visibility: visible;
+    }
+    #splash-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none; /* Allows clicks to pass through after hiding */
+    }
+    .splash-content {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    /* --- End Splash Screen Styles --- */
+
+
     /* Main Content */
+    /* Hide main content initially for fade-in effect */
+    main {
+      opacity: 0;
+      visibility: hidden;
+      /* Add a slight delay so splash starts fading first */
+      transition: opacity 0.5s ease-in 0.3s, visibility 0.5s ease-in 0.3s;
+    }
+    main.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
     .content-section {
       padding: 3rem 1.5rem;
       background-color: var(--bg-white);
@@ -188,6 +229,12 @@
   </style>
 </head>
 <body>
+
+  <div id="splash-screen">
+    <div class="splash-content">
+      Loading the Welcome Leaflet...
+    </div>
+  </div>
   <main>
     <section class="content-section">
       <div class="content-body">
@@ -235,13 +282,11 @@
     </section>
   </main>
 
-  <!-- Floating back button (controlled by #show-back / #hide-back hash) -->
   <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
     <i class="fas fa-arrow-left"></i>
     Back
   </button>
 
-  <!-- QR Code Modal -->
   <div id="qr-code-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="qr-modal-title" aria-modal="true">
     <div id="qr-modal-content" class="modal-content">
       <button class="qr-modal-close-button" id="qr-modal-close-button" aria-label="Close">&times;</button>
@@ -338,6 +383,22 @@
 
     // Back button (#show-back / #hide-back)
     document.addEventListener('DOMContentLoaded', () => {
+      
+      // --- Splash Screen Logic ---
+      const splashScreen = document.getElementById('splash-screen');
+      const mainContent = document.querySelector('main');
+      
+      setTimeout(() => {
+        if (splashScreen) {
+          splashScreen.classList.add('hidden');
+        }
+        if (mainContent) {
+          mainContent.classList.add('visible');
+        }
+      }, 1500); // 1.5-second (1500ms) delay
+      // --- End Splash Screen Logic ---
+
+
       const floatingBackButton = document.getElementById('floating-back-button');
 
       if (floatingBackButton) {
