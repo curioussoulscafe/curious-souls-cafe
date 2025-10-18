@@ -42,7 +42,7 @@
       width: 100vw;
       height: 100vh;
       background-color: var(--bg-light);
-      z-index: 10000; /* High z-index to cover everything */
+      z-index: 10000;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -53,7 +53,7 @@
     #splash-screen.hidden {
       opacity: 0;
       visibility: hidden;
-      pointer-events: none; /* Allows clicks to pass through after hiding */
+      pointer-events: none;
     }
     .splash-content {
       font-size: 1.25rem;
@@ -62,13 +62,10 @@
     }
     /* --- End Splash Screen Styles --- */
 
-
     /* Main Content */
-    /* Hide main content initially for fade-in effect */
     main {
       opacity: 0;
       visibility: hidden;
-      /* Add a slight delay so splash starts fading first */
       transition: opacity 0.5s ease-in 0.3s, visibility 0.5s ease-in 0.3s;
     }
     main.visible {
@@ -178,7 +175,7 @@
       border-radius: 0 0.5rem 0.5rem 0;
     }
 
-    /* Modal and Floating Button Styles (kept for #show-back and QR modal) */
+    /* Modal and Floating Button Styles */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center;
@@ -210,14 +207,19 @@
     }
     .qr-code-link:hover { color: var(--secondary-color); text-decoration: underline; }
 
+    /* Floating Back Button aligned with code A colors */
     .floating-back-btn {
       position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
-      background-color: var(--primary-color); color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
       box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
       transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
-      --pulse-from: var(--primary-color); --pulse-to: var(--secondary-color); --glow-color: rgba(168, 85, 247, 0.55);
+      --pulse-from: #43c6a6;
+      --pulse-to: #6b7280;
+      --glow-color: rgba(99,102,241,0.55);
     }
-    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: var(--secondary-color); opacity: 1; }
+    .floating-back-btn:hover {
+      transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1;
+    }
     .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
     @keyframes backBtnPulse {
       0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
@@ -316,12 +318,10 @@
     const shareLinkButton = document.getElementById('share-link-button');
     const pageDirectLink = document.getElementById('page-direct-link');
 
-    // Helper: Get the current page URL without any hash
     function getCleanUrl() {
       return `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
     }
 
-    // Modal open/close
     function openModal() {
       const cleanUrl = getCleanUrl();
       const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(cleanUrl)}`;
@@ -338,13 +338,11 @@
       showQrCodeLink.focus();
     }
 
-    // Events for modal
     showQrCodeLink.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
     qrModalCloseButton.addEventListener('click', closeModal);
     qrCodeModal.addEventListener('click', (e) => { if (e.target === qrCodeModal) closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && qrCodeModal.classList.contains('show')) closeModal(); });
 
-    // Copy link
     copyLinkTextLink.addEventListener('click', async (e) => {
       e.preventDefault();
       const cleanUrl = getCleanUrl();
@@ -356,7 +354,6 @@
       }
     });
 
-    // Share link
     function updateShareButtonAvailability() {
       if (!navigator.share) {
         shareLinkButton.classList.add('btn-disabled');
@@ -381,23 +378,14 @@
       }
     });
 
-    // Back button (#show-back / #hide-back)
     document.addEventListener('DOMContentLoaded', () => {
-      
-      // --- Splash Screen Logic ---
+      // Splash Screen Logic
       const splashScreen = document.getElementById('splash-screen');
       const mainContent = document.querySelector('main');
-      
       setTimeout(() => {
-        if (splashScreen) {
-          splashScreen.classList.add('hidden');
-        }
-        if (mainContent) {
-          mainContent.classList.add('visible');
-        }
-      }, 1000); // 1-second (1000ms) delay
-      // --- End Splash Screen Logic ---
-
+        if (splashScreen) splashScreen.classList.add('hidden');
+        if (mainContent) mainContent.classList.add('visible');
+      }, 1000);
 
       const floatingBackButton = document.getElementById('floating-back-button');
 
