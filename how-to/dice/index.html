@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roll the Colored Dice - Curious Souls Café</title>
+    <meta name="description" content="Learn how Curious Souls Café uses colored dice, bonding actions, and app tools to create a fun and meaningful way to decide who starts the discussion.">
+    <link rel="icon" type="image/x-icon" href="https://app.curioussouls.cafe/images/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6b46c1;
+            --secondary-color: #a855f7;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --bg-white: #ffffff;
+            --border-color: #e5e7eb;
+        }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+            scroll-behavior: smooth;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        /* --- Header & Hero --- */
+        .main-header {
+            background-color: var(--bg-white);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-dark); }
+        .logo img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary-color); }
+        .logo span { font-size: 1.25rem; font-weight: 700; }
+        .main-nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 1.5rem;
+            transition: color 0.2s;
+        }
+        .main-nav a:hover { color: var(--primary-color); }
+        .hamburger-menu {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .hero {
+            background: var(--bg-white); /* Set background to white as requested */
+            padding: 3.5rem 0 0 0;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .hero a {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .hero a:hover {
+            text-decoration: underline;
+        }
+        
+        /* --- Main Content --- */
+        .content-section {
+            padding: 3rem 1.5rem;
+            background-color: var(--bg-white);
+        }
+        .content-body {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .content-body h2 {
+            font-size: 2rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .content-body h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+         .content-body h4 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        .content-body p, .content-body li {
+            color: var(--text-light);
+        }
+        .content-body a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .content-body a:hover {
+            text-decoration: underline;
+        }
+        .content-body ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .content-body li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 0.75rem;
+        }
+        .content-body li::before {
+            content: '\f105'; /* fa-chevron-right */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+            top: 4px;
+        }
+        .content-body hr {
+            border: 0;
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 2.5rem 0;
+        }
+        .content-body figure {
+            margin: 2rem 0;
+        }
+        .content-body img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .img-caption {
+            text-align: center;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-top: -0.5rem;
+        }
+        .note-box {
+            background-color: var(--bg-light);
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        .info-box {
+            background-color: #eef2ff;
+            border-left: 4px solid #818cf8;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .info-box i {
+            font-size: 1.5rem;
+            color: #6366f1; /* text-indigo-500 */
+            margin-top: 5px;
+        }
+        .info-box p, .info-box li {
+            color: #374151;
+            line-height: 1.7;
+            margin: 0;
+        }
+        .info-box .info-box-title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .info-box .info-box-body {
+            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .info-box ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 0.75rem;
+        }
+        .info-box li {
+            position: static;
+            padding-left: 0;
+            margin-bottom: 0.25rem;
+        }
+        .info-box li::before {
+            content: none; /* Remove default chevron */
+        }
+        .info-box a {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        /* --- Quick Navigation Box --- */
+        .quick-nav-box {
+            background-color: #f3f4f6;
+            border: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            border-radius: 0.5rem;
+        }
+        .quick-nav-box h3 {
+            font-size: 1.25rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .quick-nav-box ul {
+            padding-left: 0;
+            list-style: none;
+            margin: 0;
+        }
+        .quick-nav-box li a {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .quick-nav-box li a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- MODIFIED: Button Styles to match about.html --- */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            border: 1px solid transparent;
+            margin: 0.5rem 0;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: var(--bg-white);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-primary:hover { 
+            background-color: var(--primary-color); 
+            color: var(--bg-white);
+            transform: translateY(-2px); 
+            text-decoration: none;
+        }
+        .btn-primary:focus-visible {
+            outline: 3px solid rgba(104, 64, 199, 0.3);
+            outline-offset: 2px;
+        }
+        .btn .icon { 
+            margin-right: 0.5rem; 
+        }
+
+        /* --- Footer --- */
+        .main-footer {
+            background-color: var(--text-dark);
+            color: #d1d5db;
+            padding: 3rem 0 2rem;
+            text-align: center;
+        }
+        .footer-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--bg-white);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .footer-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--secondary-color);
+        }
+        .footer-links {
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem 1.5rem;
+        }
+        .footer-contact-links {
+            margin-bottom: 1.5rem;
+            color: #9ca3af;
+        }
+        .footer-contact-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 0.5rem;
+        }
+        .footer-contact-links a:hover {
+            text-decoration: underline;
+        }
+        .footer-socials {
+            margin-bottom: 0;
+        }
+        .footer-socials a {
+            color: #d1d5db;
+            font-size: 1.5rem;
+            margin: 0 0.75rem;
+            transition: color 0.2s;
+        }
+        .footer-socials a:hover {
+            color: var(--secondary-color);
+        }
+        .footer-copyright {
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        @media (min-width: 768px) {
+            .footer-top {
+                flex-direction: row;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+        }
+
+        /* --- Floating Back Button Styles (from dice/) --- */
+        .floating-back-btn {
+            position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
+            background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+            box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+            transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
+
+            /* Attention effect variables */
+            --pulse-from: #43c6a6;
+            --pulse-to: #6b7280;
+            --glow-color: rgba(99,102,241,0.55);
+        }
+        .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
+        .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
+
+        @keyframes backBtnPulse {
+            0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+            50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
+            100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+        }
+        .floating-back-btn.attention {
+            animation: backBtnPulse 900ms ease-in-out 0s 3; /* ~2.7s total */
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .floating-back-btn.attention {
+                animation: none;
+                outline: 2px solid #a855f7;
+                outline-offset: 2px;
+            }
+            /* Ensure JS scroll also respects reduced motion */
+            html {
+                scroll-behavior: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+            .hamburger-menu { display: block; }
+            .main-nav {
+                position: fixed; top: 0; right: 0; width: 280px; height: 100%;
+                background-color: var(--bg-white); z-index: 1000; display: flex;
+                flex-direction: column; padding: 5rem 0 2rem;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            .main-nav.is-open { transform: translateX(0); }
+            .main-nav a {
+                margin: 0; padding: 1rem 2rem; font-size: 1.1rem;
+                color: var(--text-dark); border-bottom: 1px solid var(--border-color);
+            }
+            .main-nav a:hover {
+                background-color: var(--bg-light); color: var(--primary-color);
+            }
+        }
+
+        /* Optional: native offset for anchor targets so sticky header doesn't cover them */
+        :target {
+            scroll-margin-top: 80px; /* approximate header height */
+        }
+    </style>
+</head>
+<body>
+    <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
+        <i class="fas fa-arrow-left"></i>
+        Back
+    </button>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Roll the Colored Dice</h1>
+                <br>
+                <p>One fun and meaningful way to decide who begins a Curious Souls Café discussion is to use the colored dice. Learn about both the physical dice and the <a href="#how-to-use-the-virtual-dice-roller" data-scroll>virtual</a> dice roller on our web app.</p>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <div class="content-body">
+                <hr>
+                <p>At Curious Souls Café, our events bring people together for structured, meaningful conversations. A key part of our format involves multiple rounds of discussion where participants explore various topics. To kick off a discussion in a fair and engaging way, we use a few fun methods, one of which is rolling the colored dice.</p>
+                <p>To enhance bonding, participants are sometimes grouped into teams (e.g., 2-3 participants per team) associated with one of three colors: blue, yellow, or red. The dice roll then determines which team starts the conversation.</p>
+
+                <div class="quick-nav-box">
+                    <h3>Quick Navigation</h3>
+                    <ul>
+                        <li><a href="#how-to-use-the-virtual-dice-roller" data-scroll>Jump to the Virtual Dice Roller Guide</a></li>
+                    </ul>
+                    <a href="https://app.curioussouls.cafe/dice/" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-dice icon"></i>Launch Virtual Dice Roller
+                    </a>
+                </div>
+
+                <div id="info-box" class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <p class="info-box-title">How does this fit into an event?</p>
+                        <p class="info-box-body">
+                            This page explains how the dice works. To understand the bigger picture, we recommend exploring:
+                        </p>
+                        <ul>
+                            <li>Our <a href="../about/">About page</a> for how we conduct the main session.</li>
+                            <li>The <a href="../how-to/">Event Structure guide</a> for the complete event format.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h2>How the Dice Works</h2>
+                <p>The process is simple. A designated person, often the first to arrive at the event, rolls a colorful six-sided dice. The result determines who begins the discussion. The selected individual or team starts by answering their chosen question first, followed by others in turn. The person asking the question decides the direction in which the discussion will proceed (e.g., clockwise or counterclockwise).</p>
+                <ul>
+                    <li>🔵 <strong>Blue</strong>: Pick people in the blue team to initiate a group discussion.</li>
+                    <li>🟡 <strong>Yellow</strong>: Pick people in the yellow team to initiate a group discussion.</li>
+                    <li>🔴 <strong>Red</strong>: Pick people in the red team to initiate a group discussion.</li>
+                </ul>
+                <figure>
+                    <img src="https://substackcdn.com/image/fetch/w_1184,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F0c770d9d-565c-485a-904f-5e024415ddff_1184x864.png" alt="Handmade colored D6 dice, each with two faces in red, yellow, and blue.">
+                    <figcaption class="img-caption">Handmade colored six-sided dice, each with two faces in red, yellow, and blue. Three sides also include a striped face for each color variant.</figcaption>
+                </figure>
+                <p>Each six-sided dice contains only three colors. One of the two sides for each color can optionally be striped to enable meaningful "punishments" designed to make the session more engaging.</p>
+                
+                <h2>A Twist: The Striped Dice and Meaningful 'Punishment'</h2>
+                <p>If a team rolls the dice and it shows stripes, they need to draw a "punishment" card and work on a meaningful action together before discussing the next question. These cards facilitate bonding by encouraging actions like: “Write down one thing you want to manifest this year and date it. Compare.”</p>
+                <figure>
+                    <img src="https://substackcdn.com/image/fetch/$s_!s5Sa!,w_1456,c_limit,f_webp,q_auto:good,fl_progressive:steep/httpsTER%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc72d1388-31ff-4a07-b3a7-f3b8e89212e6_1912x1434.jpeg" alt="A striped dice next to a punishment card with a meaningful action prompt.">
+                    <figcaption class="img-caption">A striped dice for our game variation (left) and a "punishment" card that inspires a meaningful action (right).</figcaption>
+                </figure>
+                <div class="note-box"><p><strong>Note:</strong> Using the striped dice for meaningful actions is entirely optional. Feel free to skip directly to the discussion once a color is revealed.</p></div>
+
+                <h2 id="how-to-use-the-virtual-dice-roller">How to Use the Virtual Dice Roller</h2>
+                
+                <a href="https://app.curioussouls.cafe/dice/" target="_blank" class="btn btn-primary">
+                    <i class="fas fa-dice icon"></i>Launch the Dice Roller App
+                </a>
+                
+                <p>The virtual dice roller offers a simple way to start the discussion without needing physical dice. To access it, tap the floating dice icon in the bottom right corner of our <a href="https://app.curioussouls.cafe/" target="_blank" rel="noopener noreferrer">web app</a>, or use the button above.</p>
+                <figure>
+                    <img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F12c66bce-a2d2-4e2d-bb9d-4ffefc7203f1_456x300.png" alt="Floating dice roller icon">
+                    <figcaption class="img-caption">The floating dice-roller icon located at the bottom-right corner of the app.</figcaption>
+                </figure>
+                
+                <h4>Get the Dice Rolling!</h4>
+                <p>Below is the main interface of the virtual dice roller. You can enable the optional meaningful punishment mode with the “Punish” toggle. Tap “Roll the Dice” to begin!</p>
+                <figure>
+                    <img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fdf3233d1-f04a-48d4-8826-7bc932f45fb6_1472x1140.png" alt="The main interface of the virtual dice roller with the Punish toggle.">
+                    <figcaption class="img-caption">Enable the “Punish” toggle to use the virtual striped dice for meaningful bonding actions.</figcaption>
+                </figure>
+
+                <h4>Meaningful “Punishment”: Optional Action Prompts</h4>
+                <p>If the “Punish” option is enabled and the dice lands on a striped color, the corresponding team must tap “Choose Punishment.” They will then be presented with a choice of meaningful actions to complete together before starting their discussion.</p>
+                <figure>
+                    <img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fd3470917-b8f9-4fa2-90f2-fc9f11580838_1454x1298.png" alt="A dice roll result showing a striped blue side.">
+                    <figcaption class="img-caption">If the dice shows stripes, the team must complete a bonding action before proceeding.</figcaption>
+                </figure>
+                <p>After tapping “Choose Punishment,” one team member will need to choose from a list of meaningful actions for the team to collaborate on. This facilitates bonding and helps solidify common ground. You can see an example of the actions page below.</p>
+                <figure>
+                    <img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fae855349-b39c-41c5-9679-fbd5e502528b_1430x1116.png" alt="Action Prompt page">
+                    <figcaption class="img-caption">The meaningful Action Prompt page shown after choosing “Punishment.”</figcaption>
+                </figure>
+
+                <a href="https://app.curioussouls.cafe/dice/" target="_blank" class="btn btn-primary">
+                    <i class="fas fa-external-link-alt icon"></i>Try the Virtual Dice Roller
+                </a>
+                
+                 <h2>Bonus: Tap-and-Reveal Colors</h2>
+                 <p>Another way to decide who starts, which doesn't require forming teams, is to ask participants to tap their chosen question on the app to reveal the color behind it. If the revealed color matches the result of a dice roll, individuals with question cards of that color can start first.</p>
+                 <figure>
+                    <img src="https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6ebe2da3-9d95-4787-8417-abd51dabd998_1730x1308.png" alt="Tapping a question card to reveal its color">
+                    <figcaption class="img-caption">Tapping a question card reveals its color (e.g., yellow) for matching with the dice.</figcaption>
+                </figure>
+                <div class="note-box"><p><strong>Note:</strong> The colors on the virtual question cards are fixed as blue, yellow, or red and cannot be changed.</p></div>
+                <hr>
+
+                <p><a href="https://curioussouls.cafe/">Curious Souls Café</a> aims to foster a collaborative and reflective environment where dialogue and shared experience create meaning and build connections. The methods discussed here are flexible and can be adjusted to fit your group's needs.</p>
+
+            </div>
+        </section>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const floatingBackButton = document.getElementById('floating-back-button');
+        const infoBox = document.getElementById('info-box');
+
+        // --- New logic for info-box visibility ---
+        function applyInfoBoxHashRule() {
+            if (!infoBox) return;
+            const hash = (window.location.hash || '').toLowerCase();
+            // Show the info-box only if the hash is #show-info
+            if (hash === '#show-info') {
+                infoBox.style.display = 'flex';
+            } else {
+                infoBox.style.display = 'none';
+            }
+        }
+        applyInfoBoxHashRule();
+        window.addEventListener('hashchange', applyInfoBoxHashRule);
+        // --- End of new logic ---
+
+        // Fallback path if browser history is not available.
+        const HOME_FALLBACK = '/'; 
+        
+        function safeNavigate(url) {
+            try {
+                window.location.href = url;
+            } catch (e) {
+                window.location.href = '/';
+            }
+        }
+
+        function isSameOrigin(url) {
+            try {
+                const u = new URL(url, window.location.href);
+                return u.origin === window.location.origin;
+            } catch {
+                return false;
+            }
+        }
+
+        if (floatingBackButton) {
+            floatingBackButton.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                if (window.history && window.history.length > 1) {
+                    window.history.back();
+                    
+                    const current = window.location.href;
+                    setTimeout(() => {
+                        if (window.location.href === current) {
+                            if (document.referrer && isSameOrigin(document.referrer)) {
+                                safeNavigate(document.referrer);
+                            } else {
+                                safeNavigate(HOME_FALLBACK || '/');
+                            }
+                        }
+                    }, 250);
+                } else {
+                    if (document.referrer && isSameOrigin(document.referrer)) {
+                        safeNavigate(document.referrer);
+                    } else {
+                        safeNavigate(HOME_FALLBACK || '/');
+                    }
+                }
+            });
+        }
+
+        function runBackButtonAttention() {
+            if (!floatingBackButton) return;
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!prefersReduced) {
+                floatingBackButton.classList.add('attention');
+                setTimeout(() => floatingBackButton.classList.remove('attention'), 3000);
+            } else {
+                floatingBackButton.style.outline = '2px solid #a855f7';
+                floatingBackButton.style.outlineOffset = '2px';
+                setTimeout(() => {
+                    floatingBackButton.style.outline = '';
+                    floatingBackButton.style.outlineOffset = '';
+                }, 2000);
+            }
+        }
+
+        function applyBackButtonHashRule() {
+            const hash = (window.location.hash || '').toLowerCase();
+            if (!floatingBackButton) return;
+
+            floatingBackButton.style.display = '';
+            floatingBackButton.style.visibility = '';
+            floatingBackButton.style.pointerEvents = '';
+
+            if (hash === '#hide-back') {
+                floatingBackButton.style.display = 'none';
+                floatingBackButton.classList.remove('attention');
+            } else if (hash === '#show-back') {
+                floatingBackButton.style.display = 'inline-flex';
+                runBackButtonAttention();
+            } else {
+                floatingBackButton.style.display = 'none';
+                floatingBackButton.classList.remove('attention');
+            }
+        }
+
+        applyBackButtonHashRule();
+        
+        window.addEventListener('hashchange', applyBackButtonHashRule);
+
+        const nav = document.getElementById('main-nav');
+        const hamburgerBtn = document.getElementById('hamburger-menu');
+        if (hamburgerBtn && nav) {
+            hamburgerBtn.addEventListener('click', () => {
+                const isOpen = nav.classList.toggle('is-open');
+                hamburgerBtn.setAttribute('aria-expanded', isOpen);
+                const icon = hamburgerBtn.querySelector('i');
+                if (isOpen) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+
+        // Smooth scroll handler with sticky header offset
+        const header = document.querySelector('.main-header');
+
+        function scrollWithOffset(targetEl) {
+            if (!targetEl) return;
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const headerHeight = header ? header.offsetHeight : 0;
+            const rect = targetEl.getBoundingClientRect();
+            const absoluteY = rect.top + window.pageYOffset;
+            const y = Math.max(absoluteY - headerHeight - 8, 0); // 8px breathing room
+
+            window.scrollTo({
+                top: y,
+                behavior: prefersReduced ? 'auto' : 'smooth'
+            });
+
+            // Update hash without causing an extra jump
+            history.pushState(null, '', '#' + targetEl.id);
+        }
+
+        // Intercept clicks on same-page anchors with data-scroll or href starting with '#'
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            const hasDataScroll = link.hasAttribute('data-scroll');
+
+            // Only handle same-page anchors; ignore special control hashes used by back button logic
+            if (href && href.length > 1 && (hasDataScroll || true) && !['#hide-back', '#show-back'].includes(href.toLowerCase())) {
+                const id = href.slice(1);
+                const target = document.getElementById(id);
+                if (target) {
+                    e.preventDefault();
+                    scrollWithOffset(target);
+                }
+            }
+        });
+
+        // If the page loads with a hash, adjust initial position to account for header
+        if (window.location.hash) {
+            const id = window.location.hash.slice(1);
+            const target = document.getElementById(id);
+            if (target) {
+                // Delay to allow layout to settle
+                setTimeout(() => scrollWithOffset(target), 0);
+            }
+        }
+    });
+  </script>
+</body>
+</html>

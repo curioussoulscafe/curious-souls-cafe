@@ -20,9 +20,9 @@ The Curious Souls Café web app is built around a few core components designed t
 
 <div style="border:1px solid #e5e7eb;border-radius:12px;padding:16px;flex:1 1 260px;max-width:360px;">
 
-<h3 style="margin:0 0 8px 0;">🎲 The Virtual Dice Roller</h3>
+<h3 style="margin:0 0 8px 0;">🎲 The Virtual Dice Roller</h3> 
 
-<p style="margin:0 0 12px 0;">A fun tool to decide who starts, break ties, or engage in meaningful "punishment" bonding actions. (Read more about it <a href="https://curioussouls.cafe/dice" target="_blank">here</a>)</p>
+<p style="margin:0 0 12px 0;">A fun tool to decide who starts, break ties, or engage in meaningful "punishment" bonding actions. <span> (<a href="https://app.curioussouls.cafe/how-to/dice">Docs</a>)</span></p>
 
 <p style="margin:0;">➡️ <a href="https://app.curioussouls.cafe/dice" target="_blank">Roll the Dice</a></p>
 
@@ -44,7 +44,7 @@ The Curious Souls Café web app is built around a few core components designed t
 
 Curious Souls Café is a "third place" away from home and work, founded to counter the isolation of modern life. It's a global community that hosts events where people can explore life's big questions together. Our philosophy is centered on the power of face-to-face conversations to build deeper bonds in a safe, non-judgmental environment. This web app was originally created to support our in-person and online events.
 
-To learn more about the initiative, check out our [main website](https://curioussouls.cafe/).
+To learn more about the initiative, check out our [official website](https://curioussouls.cafe/).
 
 ## 🚀 Getting Started
 
