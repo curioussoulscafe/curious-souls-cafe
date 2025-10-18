@@ -14,7 +14,7 @@ The Curious Souls Café web app is built around a few core components designed t
 
 <p style="margin:0 0 12px 0;">Access collections of curated questions designed to guide soul-searching discussions on diverse themes.</p>
 
-<p style="margin:0;"><a href="https://app.curioussouls.cafe/" target="_blank">Launch App</a></p>
+<p style="margin:0;">➡️ <a href="https://app.curioussouls.cafe/" target="_blank">Launch App</a></p>
 
 </div>
 
@@ -22,9 +22,9 @@ The Curious Souls Café web app is built around a few core components designed t
 
 <h3 style="margin:0 0 8px 0;">🎲 The Virtual Dice Roller</h3>
 
-<p style="margin:0 0 12px 0;">Decide who starts, break ties, or add playful “punishment” action prompts. Read its docs <a href="https://curioussouls.cafe/dice">here</a>.</p>
+<p style="margin:0 0 12px 0;">A fun tool to decide who starts, break ties, or engage in meaningful "punishment" bonding actions. (Read more about it <a href="https://curioussouls.cafe/dice" target="_blank">here</a>)</p>
 
-<p style="margin:0;"><a href="https://app.curioussouls.cafe/dice" target="_blank">Roll the Dice</a></p>
+<p style="margin:0;">➡️ <a href="https://app.curioussouls.cafe/dice" target="_blank">Roll the Dice</a></p>
 
 </div>
 
@@ -32,9 +32,9 @@ The Curious Souls Café web app is built around a few core components designed t
 
 <h3 style="margin:0 0 8px 0;">💡 Action Prompts</h3>
 
-<p style="margin:0 0 12px 0;">Spark gratitude, kindness, and inspiration with creative tasks.</p>
+<p style="margin:0 0 12px 0;">Spark gratitude, kindness, and inspiration with randomly presented creative and meaningful tasks.</p>
 
-<p style="margin:0;"><a href="https://app.curioussouls.cafe/action-prompts" target="_blank">Try the Prompts</a></p>
+<p style="margin:0;">➡️ <a href="https://app.curioussouls.cafe/action-prompts" target="_blank">Try the Prompts</a></p>
 
 </div>
 
