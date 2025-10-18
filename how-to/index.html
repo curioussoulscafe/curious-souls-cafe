@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Digital Tools for Meaningful Conversations - Main Content Only</title>
+  <meta name="description" content="Main content with #show-back functionality only." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #6b46c1;
+      --secondary-color: #a855f7;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --bg-light: #f9fafb;
+      --bg-white: #ffffff;
+      --border-color: #e5e7eb;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.7;
+      scroll-behavior: smooth;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Inline and block code */
+    code, kbd, samp {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.9rem;
+      font-weight: 400;
+      background: #f3f4f6;
+      color: #111827;
+      padding: 0.08em 0.32em;
+      border-radius: 0.35rem;
+      border: 1px solid #e5e7eb;
+    }
+    pre code {
+      font-size: 0.9rem;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      font-weight: 400;
+    }
+    pre {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      overflow: auto;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(to right, #f3f4f6 0%, #ede9fe 20%, #ede9fe 80%, #f3f4f6 100%);
+      padding: 3rem 0;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .hero p a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .hero p a:hover { text-decoration: underline; }
+
+    /* Main Content */
+    .content-section {
+      padding: 3rem 1.5rem;
+      background-color: var(--bg-white);
+    }
+    .content-body {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .content-body h2 {
+      font-size: 1.75rem;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 0.5rem;
+      margin-top: 2rem;
+      margin-bottom: 1.25rem;
+    }
+    .content-body h3 {
+      font-size: 1.35rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .content-body h4 {
+      font-size: 1.1rem;
+      color: var(--primary-color);
+      margin-top: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .content-body p, .content-body li {
+      color: var(--text-light);
+    }
+    .content-body a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .content-body a:hover { text-decoration: underline; }
+    .content-body ul, .content-body ol { padding-left: 25px; }
+    .content-body ul { list-style: disc; }
+    .content-body ol li, .content-body ul li {
+      padding-left: 0;
+      margin-bottom: 0.65rem;
+    }
+    .content-body hr {
+      border: 0;
+      height: 1px;
+      background-color: var(--border-color);
+      margin: 2rem 0;
+    }
+    .content-body figure { margin: 2rem 0; }
+    .content-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      margin: 1rem auto;
+      display: block;
+    }
+    .img-caption {
+      text-align: center;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-top: -0.5rem;
+    }
+    .note-box {
+      background-color: var(--bg-light);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+
+    /* Buttons and tool cards */
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.25rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background-color: var(--bg-white);
+      color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    .btn-primary:hover {
+      background-color: var(--primary-color);
+      color: var(--bg-white);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+    .btn-secondary {
+      background-color: var(--bg-white);
+      color: var(--primary-color);
+      border-color: var(--border-color);
+    }
+    .btn-secondary:hover {
+      background-color: var(--bg-light);
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    .tool-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin: 1.5rem 0;
+      justify-content: center;
+    }
+    .tool-card {
+      background-color: var(--bg-light);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      flex: 1 1 250px;
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+    }
+    .tool-card h3 {
+      font-size: 1.2rem;
+      margin: 0 0 0.6rem 0;
+      color: var(--text-dark);
+    }
+    .tool-card p {
+      flex-grow: 1;
+      margin-bottom: 1rem;
+    }
+    .tool-card-actions {
+      margin-top: auto;
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    /* Floating Back Button */
+    .floating-back-btn {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
+      background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
+      --pulse-from: #43c6a6;
+      --pulse-to: #6b7280;
+      --glow-color: rgba(99,102,241,0.55);
+      cursor: pointer;
+    }
+    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
+    .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
+
+    @keyframes backBtnPulse {
+      0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+      50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
+      100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+    }
+    .floating-back-btn.attention { animation: backBtnPulse 900ms ease-in-out 0s 3; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.75rem; }
+      code, kbd, samp { font-size: 0.9rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floating-back-btn.attention {
+        animation: none;
+        outline: 2px solid #a855f7;
+        outline-offset: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Back Button (hash-controlled) -->
+  <button id="floating-back-button" class="floating-back-btn" aria-label="Go back" style="display:none">
+    Back
+  </button>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Digital Tools for Meaningful Conversations</h1>
+        <p>Curious Souls Café <a href="https://app.curioussouls.cafe/">web app</a> is an open-source tool and a companion for our global community, designed to spark meaningful conversations, foster genuine connection, and support personal growth.</p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="content-body">
+
+        <h2 id="-key-features">✨ Key Tools</h2>
+        <p>The Curious Souls Café web app is built around a few core components designed to facilitate connection and conversation.</p>
+
+        <div class="tool-cards-container">
+          <div class="tool-card">
+            <h3>Virtual Question Decks</h3>
+            <p>Access collections of curated questions designed to guide soul-searching discussions on diverse themes.</p>
+            <div class="tool-card-actions">
+              <a href="https://app.curioussouls.cafe/" target="_blank" class="btn btn-primary">Launch App</a>
+            </div>
+          </div>
+          <div class="tool-card">
+            <h3>The Virtual Dice Roller</h3>
+            <p>A fun tool to decide who starts, break ties, or engage in meaningful "punishment" bonding actions. (Read its docs <a href="../dice">here</a>)</p>
+            <div class="tool-card-actions">
+              <a href="https://app.curioussouls.cafe/dice" target="_blank" class="btn btn-primary">Roll the Dice</a>
+            </div>
+          </div>
+          <div class="tool-card">
+            <h3>Action Prompts</h3>
+            <p>Spark gratitude, kindness, and inspiration with randomly presented creative and meaningful tasks.</p>
+            <div class="tool-card-actions">
+              <a href="https://app.curioussouls.cafe/action-prompts" target="_blank" class="btn btn-primary">Try the Prompts</a>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="-getting-started">🚀 Getting Started</h2>
+        <p>Step into meaningful conversations with ease! Here's how to use the app:</p>
+        <ol>
+          <li><p><strong>Launch the Web App</strong><br>Open the app in your browser: <a href="https://app.curioussouls.cafe/">app.curioussouls.cafe</a>.</p></li>
+          <li><p><strong>Invite Others</strong><br>Share the QR code on the main page so others can join instantly.</p></li>
+          <li><p><strong>Pick a Topic</strong><br>Choose a question deck that resonates with your group. The <a href="https://app.curioussouls.cafe/topics/icebreaker/">Icebreaker</a> deck is recommended for first-timers.</p></li>
+          <li><p><strong>Start the Conversation</strong><br>Each person chooses one of the displayed questions, and the group decides which to discuss first.</p></li>
+        </ol>
+
+        <h2 id="what-is-curious-souls-caf">What is Curious Souls Café?</h2>
+        <p>Curious Souls Café is a "third place" away from home and work, founded to counter the isolation of modern life. It's a global community that hosts events where people can explore life's big questions together. Our philosophy is centered on the power of face-to-face conversations to build deeper bonds in a safe, non-judgmental environment. This web app was originally created to support our in-person and online events.</p>
+        <p>To learn more about the initiative, check out our <a href="https://curioussouls.cafe/">main website</a>.</p>
+
+        <div id="info-box" class="note-box">
+          <p><strong>Pro Tip:</strong>
+          <br>- For an overview of our meetup, check out the <a href="https://curioussouls.cafe/about">About</a> page of our official website (recommended). For a deeper understanding of how our events are structured, including different conversation styles and facilitation tips, check out our <a href="../how-to/">Event Structure Guide</a>.
+          <br>- Curious about how our past events went? Explore our <a href="https://curioussouls.cafe/insights">Event Insights</a> for anonymous highlights from our meetups.</p>
+        </div>
+
+        <h2 id="-the-question-decks">📚 The Question Decks</h2>
+        <p>At the heart of our gatherings are questions designed to guide soul-searching discussions. This app includes numerous decks on diverse themes, many of which were co-developed with our global community.</p>
+        <ul>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/adulthood/">Adulthood</a></strong>: Explore the holistic journey of adulting—personal growth, authenticity, and connection.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/authenticity/">Authenticity</a></strong>: Align your actions with your values and embrace your true self.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/clarity/">Clarity</a></strong>: How we find, test, and live our truth—cutting through noise with values, self-awareness, and present-moment insight.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/entrepreneurship/">Entrepreneurship</a></strong>: Ignite self-leadership, entrepreneurial thinking, and bold experimentation in designing a purposeful, resilient life.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/focus/">Focus</a></strong>: How we find, lose, and design focus—solo and together—through habits, environment, emotions, and mindful practice.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/friendship/">Friendship</a></strong>: Deepen connection and explore the many facets of meaningful friendships.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/global-curiosities/">Global Curiosities</a></strong>: Questions written by participants from our events around the world.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/happiness/">Happiness</a></strong>: Explore your personal definition and journey with happiness.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/interdependence/">Interdependence</a></strong>: Explore interdependent connection and the invisible threads that sustain our relationships and communities.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/icebreaker/">Icebreaker</a></strong>: Spark lighthearted, meaningful, and heart-warming conversations.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/inner-child/">Inner Child</a></strong>: Reconnect with your playful younger self and nurture creativity.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/legacy/">Legacy</a></strong>: Reflect on the impact you make in the world and transform your values into a meaningful legacy.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/love-relationships/">Love Relationships</a></strong>: Reflect on the dynamics of love and intimacy.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/parenting/">Parenting</a></strong>: Inspire reflection, share insights, and spark meaningful conversations about the joys, challenges, and growth in raising children.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/purpose/">Purpose</a></strong>: Explore purpose, meaning, and the journey toward a fulfilling life, blending wisdom from philosophy, literature, and personal reflection.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/reflection/">Reflection</a></strong>: Explore how reflection transforms memories into meaning, challenges into resilience, and endings into new beginnings.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/reimagine/">Reimagine</a></strong>: Explore evolving perspectives, personal growth and reimagine life’s narratives through self-awareness, curiosity, and renewal.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/the-mind-speaks/">The Mind Speaks</a></strong>: Reflect on thoughts, feelings, mindfulness, and personal well-being.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/transitions/">Transitions</a></strong>: Navigate life’s changes with prompts that foster reflection and personal growth.</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/true-wealth/">True Wealth</a></strong>: Explore what it means to live a truly rich life—beyond material wealth—through questions that spark reflection on abundance, sufficiency, connection, and purpose</li>
+          <li><strong><a href="https://app.curioussouls.cafe/topics/work-that-resonates/">Work that Resonates</a></strong>: Explore your evolving relationship with work, purpose, and fulfillment.</li>
+        </ul>
+
+        <p>💖 We express our heartfelt gratitude to the Singaporean facilitator(s) for the question sets for <a href="https://app.curioussouls.cafe/topics/happiness/">Happiness</a>, <a href="https://app.curioussouls.cafe/topics/love-relationships/">Love Relationships</a>, and <a href="https://app.curioussouls.cafe/topics/the-mind-speaks/">The Mind Speaks</a>, and to all participants who contributed to the <a href="https://app.curioussouls.cafe/topics/global-curiosities/">Global Curiosities</a> deck.</p>
+
+        <h2 id="-app-features-amp-tools">✨ App Features & Tools</h2>
+        <ul>
+          <li><p><strong>Question Decks</strong>: Browse and select from dozens of themed question decks to guide your conversations.</p></li>
+          <li><p><strong>Virtual Dice Roller</strong>: Use the floating dice icon to randomly select a color-coded team to start the discussion.</p></li>
+          <li><p><strong>Action Prompts</strong>: Engage in meaningful bonding actions, often used with the dice roller's "punishment" feature.</p></li>
+          <li><p><strong>Get Random Questions</strong>: Select the number of questions to display from any deck.</p></li>
+          <li><p><strong>Save Questions</strong>: Tap any question to add it to a "Saved Questions" list for easy reference during a discussion.</p></li>
+          <li><p><strong>Search and Filter</strong>: Use the search bar on the main page to find topics, or within a topic page to find specific questions.</p></li>
+          <li><p><strong>Light & Deep</strong>: Filter questions by difficulty levels: 🌱 (light), ☕ (middle), and 🌀 (deep)</p></li>
+          <li><p><strong>Question Numbering</strong>: There is a question number at the top right corner of each question (except for the dymanic question deck, 'All Questions') that can be shared with other participants to quickly jump to a particular question.</p></li>
+          <li><p><strong>Share Questions</strong>: Select a question and tap the 'sharing' icon on the bottom right corner to share the question via numberous methods supported by your device (e.g., messaging apps).</p></li>
+          <li><p><strong>Look Up Online</strong>: Select a question and tap the 'magnifier' icon on the bottom right corner to research the question online via AI-powered search engines and dictionaries.</p></li>
+          <li><p><strong>Submit Custom Questions</strong>: Add your own list of questions for a private session. Your custom list is saved locally in your browser. This feature is also useful to show ad-hoc questions during meetings.</p></li>
+          <li><p><strong>Favorite Topics</strong>: Tap the star icon next to a topic to move it to the top of the list for quick access.</p></li>
+          <li><p><strong>Optimized for On-the-Go</strong>: The web app is designed to work seamlessly on smartphones and tablets.</p></li>
+          <li><p><strong>Join a Live Discussion</strong>: During special events, a prominent "Live Discussion" button may appear on the main page, giving you access to real-time questions curated for that event.</p></li>
+        </ul>
+
+        <h2 id="-tips-for-using-the-app">💡 Tips for Using the App</h2>
+        <ul>
+          <li><p><strong>Highlight the Chosen Question</strong>: Tap the chosen question to highlight it. This helps everyone focus on the active prompt.</p></li>
+          <li><p><strong>Question Color</strong>: A random color (blue, red, or yellow) will be revealed after tapping. These colors match the default options of the dice, which can be used to decide whose question goes first.</p></li>
+          <li><p><strong>Return to Main Page</strong>: Clicking the round logo at the top of any page will take you back to the topic selection screen.</p></li>
+          <li><p><strong>Quick Scroll to Top</strong>: Use the sticky "Top" button at the bottom-right to quickly return to the top of any page.</p></li>
+          <li><p><strong>Direct Topic Links</strong>: Each topic has a unique URL (e.g., <code>app.curioussouls.cafe/topics/icebreaker/</code>) that you can share directly with participants.</p></li>
+        </ul>
+
+        <h2 id="-for-contributors">📂 For Contributors</h2>
+        <p>The web app is <a href="https://github.com/curioussoulscafe/curious-souls-cafe" target="_blank">open source</a> and organized for easy contributions.</p>
+
+        <h3>File Organization</h3>
+        <ul>
+          <li><p><code>index.html</code> is the main page in the <strong>root folder</strong>.</p></li>
+          <li><p>Topic pages (e.g., <code>icebreaker/index.html</code>) are in the <strong><code>/topics</code></strong> folder.</p></li>
+          <li><p>Question sets (<code>.txt</code> files) are in the <strong><code>/questions</code></strong> folder.</p></li>
+          <li><p>Images and other data are in the <strong><code>/images</code></strong> and <strong><code>/data</strong></code> folders, respectively.</p></li>
+        </ul>
+
+        <h3>How to Add New Question Sets</h3>
+        <ol>
+          <li><p><strong>Add Questions File</strong>: Create a new <code>.txt</code> file in the <code>/questions</code> folder (e.g., <code>MyNewTopic.txt</code>). Add one question per line.</p></li>
+          <li><p><strong>Create HTML Page</strong>: Duplicate an existing topic folder (e.g., <code>icebreaker/index.html</code>) in the <code>/topics</code> folder and rename it (e.g., <code>mynewtopic/index.html</code>). Update the file's content to reference your new topic and <code>.txt</code> file.</p></li>
+          <li><p><strong>Register the Deck</strong>: In <code>index.html</code>, find the <code>TOPIC_CONFIGS</code> array and add a new object for your topic, specifying its <code>name</code>, <code>htmlFileName</code>, and <code>txtUrl</code>.</p></li>
+          <li><p><strong>Update the Service Worker</strong>: Add the file paths for your new <code>.txt</code> and <code>.html</code> files to the <code>FILES_TO_CACHE</code> array in <code>service-worker.js</code>. This ensures the new content can be cached.</p></li>
+        </ol>
+
+        <h3>Managing Live Discussion Questions</h3>
+        <p>The "Live Discussion" feature is controlled by the presence of a <code>live-discussion.txt</code> file in the <code>/questions</code> folder. Add the file to enable the feature for an event and remove it to disable it afterward. You will also need to uncomment/comment out the related elements in <code>index.html</code>.</p>
+        <hr>
+        <p>Thank you for visiting the Curious Souls Café! We hope it sparks many interesting conversations. 😊</p>
+
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Back Button Utilities
+    const HOME_FALLBACK = './index.html';
+
+    function safeNavigate(url) {
+      try { window.location.href = url; } catch (e) { window.location.href = '/'; }
+    }
+
+    function isSameOrigin(url) {
+      try {
+        const u = new URL(url, window.location.href);
+        return u.origin === window.location.origin;
+      } catch { return false; }
+    }
+
+    function goBackFallback(e) {
+      if (e) e.preventDefault();
+      if (window.history && window.history.length > 1) {
+        const current = window.location.href;
+        window.history.back();
+        setTimeout(() => {
+          if (window.location.href === current) {
+            if (document.referrer && isSameOrigin(document.referrer)) {
+              safeNavigate(document.referrer);
+            } else {
+              safeNavigate(HOME_FALLBACK || '/');
+            }
+          }
+        }, 250);
+      } else {
+        if (document.referrer && isSameOrigin(document.referrer)) {
+          safeNavigate(document.referrer);
+        } else {
+          safeNavigate(HOME_FALLBACK || '/');
+        }
+      }
+    }
+
+    function runBackButtonAttention() {
+      const floatingBackButton = document.getElementById('floating-back-button');
+      if (!floatingBackButton || window.getComputedStyle(floatingBackButton).display === 'none') return;
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        floatingBackButton.classList.add('attention');
+        setTimeout(() => floatingBackButton.classList.remove('attention'), 3000);
+      } else {
+        floatingBackButton.style.outline = '2px solid #a855f7';
+        floatingBackButton.style.outlineOffset = '2px';
+        setTimeout(() => {
+          floatingBackButton.style.outline = '';
+          floatingBackButton.style.outlineOffset = '';
+        }, 2000);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const infoBox = document.getElementById('info-box');
+      const floatingBackButton = document.getElementById('floating-back-button');
+
+      // Toggle info-box only when #show-info
+      function applyInfoBoxHashRule() {
+        if (!infoBox) return;
+        const hash = (window.location.hash || '').toLowerCase();
+        infoBox.style.display = (hash === '#show-info') ? 'block' : 'none';
+      }
+
+      // Back button visibility: show only with #show-back, hide with #hide-back
+      const applyBackButtonHashRule = () => {
+        if (!floatingBackButton) return;
+        const hash = (window.location.hash || '').toLowerCase();
+        if (hash === '#show-back') {
+          floatingBackButton.style.display = 'inline-flex';
+          runBackButtonAttention();
+        } else if (hash === '#hide-back') {
+          floatingBackButton.style.display = 'none';
+        } else {
+          floatingBackButton.style.display = 'inline-flex';
+          runBackButtonAttention();
+        }
+      };
+
+      if (floatingBackButton) {
+        floatingBackButton.addEventListener('click', goBackFallback);
+      }
+
+      applyInfoBoxHashRule();
+      applyBackButtonHashRule();
+      window.addEventListener('hashchange', () => {
+        applyInfoBoxHashRule();
+        applyBackButtonHashRule();
+      });
+    });
+  </script>
+</body>
+</html>

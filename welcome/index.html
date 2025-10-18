@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome Leaflet - Curious Souls Café</title>
+  <meta name="description" content="Welcome Leaflet for new attendees of Curious Souls Café events, explaining our philosophy and what to expect.">
+  <link rel="icon" type="image/x-icon" href="https://app.curioussouls.cafe/images/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #6b46c1;
+      --secondary-color: #a855f7;
+      --text-dark: #1f2937;
+      --text-light: #6b7280;
+      --bg-light: #f9fafb;
+      --bg-white: #ffffff;
+      --border-color: #e5e7eb;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      line-height: 1.7;
+      scroll-behavior: smooth;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Main Content */
+    .content-section {
+      padding: 3rem 1.5rem;
+      background-color: var(--bg-white);
+    }
+    .content-body {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .content-body h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+      text-align: center;
+    }
+    .content-body .intro {
+      font-size: 1.075rem;
+      color: var(--text-light);
+      text-align: center;
+      margin: 0 auto 1.5rem;
+      max-width: 700px;
+    }
+    .content-body h2 {
+      font-size: 2rem;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 0.5rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .content-body h3 {
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    .content-body h4 {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+      margin-top: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .content-body p, .content-body li {
+      color: var(--text-light);
+    }
+    .content-body a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .content-body a:hover {
+      text-decoration: underline;
+    }
+    .content-body ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .content-body li {
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 0.75rem;
+    }
+    .content-body li::before {
+      content: '\f105';
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      color: var(--secondary-color);
+      position: absolute;
+      left: 0;
+      top: 4px;
+    }
+    .content-body hr {
+      border: 0;
+      height: 1px;
+      background-color: var(--border-color);
+      margin: 2.5rem 0;
+    }
+    .content-body figure {
+      margin: 2rem 0;
+    }
+    .content-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5rem;
+      margin: 1rem 0;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .img-caption {
+      text-align: center;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #9ca3af;
+      margin-top: -0.5rem;
+    }
+    .note-box {
+      background-color: var(--bg-light);
+      border-left: 4px solid var(--secondary-color);
+      padding: 1rem 1.5rem;
+      margin: 1.5rem 0;
+      border-radius: 0 0.5rem 0.5rem 0;
+    }
+
+    /* Modal and Floating Button Styles (kept for #show-back and QR modal) */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6); display: flex; justify-content: center;
+      align-items: center; z-index: 2000; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s; padding: 1rem; box-sizing: border-box;
+    }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+    .modal-content {
+      background-color: white; padding: 2rem; border-radius: 0.75rem;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); text-align: center;
+      max-width: 360px; width: 100%; transform: translateY(-20px); transition: transform 0.3s;
+    }
+    .modal-overlay.show .modal-content { transform: translateY(0); }
+    #qr-modal-content { max-width: 380px; padding: 1.5rem; position: relative; }
+    #qr-modal-content img {
+      width: 100%; height: auto; max-width: 250px; margin: 0 auto 1rem auto;
+      display: block; border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .qr-modal-close-button {
+      position: absolute; top: 0.75rem; right: 0.75rem; background: none; border: none;
+      font-size: 1.5rem; cursor: pointer; color: #4a5568; line-height: 1;
+      padding: 0.25rem; border-radius: 50%; transition: background-color 0.2s, color 0.2s;
+    }
+    .qr-modal-close-button:hover { background-color: #e2e8f0; color: #2d3748; }
+    .qr-code-link {
+      font-size: 1rem; color: var(--primary-color); text-decoration: none; font-weight: 600;
+      transition: color 0.2s ease-in-out, text-decoration 0.2s ease-in-out;
+      display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;
+    }
+    .qr-code-link:hover { color: var(--secondary-color); text-decoration: underline; }
+
+    .floating-back-btn {
+      position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
+      background-color: var(--primary-color); color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
+      transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
+      --pulse-from: var(--primary-color); --pulse-to: var(--secondary-color); --glow-color: rgba(168, 85, 247, 0.55);
+    }
+    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: var(--secondary-color); opacity: 1; }
+    .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
+    @keyframes backBtnPulse {
+      0%   { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+      50%  { transform: translateY(-1px) scale(1.06); background-color: var(--pulse-to);   box-shadow: 0 0 18px var(--glow-color), 0 12px 22px rgba(0,0,0,.20); }
+      100% { transform: translateY(0) scale(1);   background-color: var(--pulse-from); box-shadow: 0 0 0 rgba(0,0,0,0), 0 8px 16px rgba(0,0,0,.15); }
+    }
+    .floating-back-btn.attention { animation: backBtnPulse 900ms ease-in-out 0s 3; }
+    .btn-disabled { opacity: 0.5; cursor: not-allowed; text-decoration: none !important; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="content-section">
+      <div class="content-body">
+        <h1>Welcome to the Curious Souls Café</h1>
+        <p class="intro">This is a welcome leaflet for new participants of the Curious Souls Café, explaining what to expect. If you've attended an event but didn’t receive this welcome leaflet, here it is for you. 😊</p>
+
+        <h2 id="dear-curious-souls">Dear Curious Souls</h2>
+        <p>💖 <strong>Welcome to Curious Souls Café</strong> — a fresh concept designed to spark engaging conversations and build a vibrant community. We believe our city thrives on diverse interactions, and we’re excited to create a space where shared curiosity flourishes.</p>
+        <p>In today’s world, where personalized feeds often isolate us, our events aim to enhance cross-cultural awareness and mutual understanding. We recognize that our increasingly autonomous lifestyles can limit opportunities for meaningful, face-to-face conversations. By coming together, we can break these barriers and forge meaningful connections.</p>
+        <hr>
+        <h2 id="-what-to-expect">📅 What to Expect</h2>
+        <ul>
+          <li><p><strong>Regular Meetings</strong>:<br>Join us regularly to explore a wide range of topics. Each meeting will be a platform for open dialogue and exploration.</p></li>
+          <li><p><strong>Facilitating for All</strong>:<br>Whether you’re experienced or new, anyone can take the lead, provided that we respect one another. The floor is open for sharing ideas, practicing empathy, and enhancing communication skills.</p></li>
+          <li><p><strong>Respectful Dialogue</strong>:<br>Remember, there are no right or wrong answers here. We value respect and understanding in all discussions, encouraging a safe space for everyone’s thoughts.</p></li>
+          <li><p><strong>Peer-Powered Gatherings</strong>:<br>We’re not affiliated with any organization or restaurant. This is a grassroots effort, a meaningful hangout for everyone.</p></li>
+          <li><p><strong>Building Community</strong>:<br>After a couple of meetings, we’ll hope to pass the facilitator’s torch to someone new, encouraging a cycle of participation.</p></li>
+        </ul>
+        <hr>
+        <h2 id="-inspired-by-global-communities">🌍 Inspired by Global Communities</h2>
+        <p>We draw inspiration from various global groups that host similar events. These models encourage curiosity and dialogue, and we believe the world needs more of such events.</p>
+        <p>We welcome your suggestions and ideas as we grow together. If this initiative inspires you to start your own group, whether similar or different, we consider that the ultimate success.</p>
+        <p>Let’s embark on this journey of knowledge, wisdom, and philosophy—broadly defined—in a supportive environment. Together, we can cultivate a community that thrives on curiosity and connection.</p>
+        <p>Looking forward to meeting each of you! 😊</p>
+
+        <figure>
+          <a href="https://unsplash.com/s/visual/c4c07c2d-d20d-42a3-ba43-e23d6028a471" target="_blank" rel="noopener noreferrer">
+            <img src="https://images.unsplash.com/photo-1486122151631-4b5aaa3ac70d?w=800&h=600&fit=crop&q=80"
+                 alt="Closeup photo of ceramic coffee mug with brown liquid inside" />
+          </a>
+          <figcaption class="img-caption">
+            (Photo by <a href="https://unsplash.com/@davidoa" target="_blank" rel="noopener noreferrer">David O. Andersen</a>)
+          </figcaption>
+        </figure>
+
+        <h2 id="disclaimer">Disclaimer</h2>
+        <p>Curious Souls Café fosters open discussions for idea exploration, not professional advice; participants are responsible for their well-being and encouraged to consult qualified professionals when needed.</p>
+
+        <a href="#" id="show-qr-code-link" class="qr-code-link">
+          <i class="fas fa-qrcode"></i> Show a QR Code/Link for this Page
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating back button (controlled by #show-back / #hide-back hash) -->
+  <button id="floating-back-button" class="floating-back-btn" aria-label="Go back">
+    <i class="fas fa-arrow-left"></i>
+    Back
+  </button>
+
+  <!-- QR Code Modal -->
+  <div id="qr-code-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="qr-modal-title" aria-modal="true">
+    <div id="qr-modal-content" class="modal-content">
+      <button class="qr-modal-close-button" id="qr-modal-close-button" aria-label="Close">&times;</button>
+      <h3 id="qr-modal-title" style="font-size: 1.25rem; font-weight: 600; color: #1f2937; margin-bottom: 1rem;">Share this Page</h3>
+      <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem;">Scan the QR code below to quickly share or access this page:</p>
+      <img id="qr-modal-image" src="images/qr/qr-code-welcome.png" alt="QR Code for this page"
+           onerror="this.onerror=null;this.src='https://placehold.co/250x250/E0E0E0/6B46C1?text=QR+Code+Loading';">
+      <p style="font-size: 0.875rem; color: #1f2937; margin-top: 0.5rem;">
+        <i class="fa-solid fa-link" style="margin-right: 0.25rem;"></i>
+        <a id="page-direct-link" href="https://app.curioussouls.cafe/welcome" style="word-break: break-all;">https://app.curioussouls.cafe/welcome</a>
+        <br>
+        <button id="copy-link-text-link" style="background: none; border: none; color: var(--primary-color); font-size: 0.875rem; margin-top: 1rem; cursor: pointer; font-weight: 600;" type="button"><i class="fas fa-copy"></i>&nbsp;&nbsp;Copy page link</button>
+        &nbsp;<span style="color: #d1d5db; user-select: none;">|</span>&nbsp;&nbsp;
+        <button id="share-link-button" style="background: none; border: none; color: var(--primary-color); font-size: 0.875rem; margin-top: 1rem; cursor: pointer; font-weight: 600;" type="button"><i class="fas fa-share-from-square"></i> Share...</button>
+      </p>
+      <p style="color: #6b7280; font-size: 0.875rem; margin-top: 1rem;">Let's help fellow curious souls launch this page and start the conversation! 😊</p>
+    </div>
+  </div>
+
+  <script>
+    // Elements
+    const showQrCodeLink = document.getElementById('show-qr-code-link');
+    const qrCodeModal = document.getElementById('qr-code-modal');
+    const qrModalImage = document.getElementById('qr-modal-image');
+    const qrModalCloseButton = document.getElementById('qr-modal-close-button');
+    const copyLinkTextLink = document.getElementById('copy-link-text-link');
+    const shareLinkButton = document.getElementById('share-link-button');
+    const pageDirectLink = document.getElementById('page-direct-link');
+
+    // Helper: Get the current page URL without any hash
+    function getCleanUrl() {
+      return `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+    }
+
+    // Modal open/close
+    function openModal() {
+      const cleanUrl = getCleanUrl();
+      const qrCodeApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(cleanUrl)}`;
+      qrModalImage.src = qrCodeApiUrl;
+      qrCodeModal.classList.add('show');
+      qrCodeModal.setAttribute('aria-hidden', 'false');
+      qrModalCloseButton.focus();
+      pageDirectLink.href = cleanUrl;
+      pageDirectLink.textContent = cleanUrl;
+    }
+    function closeModal() {
+      qrCodeModal.classList.remove('show');
+      qrCodeModal.setAttribute('aria-hidden', 'true');
+      showQrCodeLink.focus();
+    }
+
+    // Events for modal
+    showQrCodeLink.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
+    qrModalCloseButton.addEventListener('click', closeModal);
+    qrCodeModal.addEventListener('click', (e) => { if (e.target === qrCodeModal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && qrCodeModal.classList.contains('show')) closeModal(); });
+
+    // Copy link
+    copyLinkTextLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const cleanUrl = getCleanUrl();
+      try {
+        await navigator.clipboard.writeText(cleanUrl);
+        alert('Link copied to clipboard!');
+      } catch (err) {
+        alert('Unable to copy link.');
+      }
+    });
+
+    // Share link
+    function updateShareButtonAvailability() {
+      if (!navigator.share) {
+        shareLinkButton.classList.add('btn-disabled');
+        shareLinkButton.setAttribute('aria-disabled', 'true');
+        shareLinkButton.title = 'Sharing not supported by this browser';
+      }
+    }
+    shareLinkButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const cleanUrl = getCleanUrl();
+      if (!navigator.share) {
+        try {
+          await navigator.clipboard.writeText(cleanUrl);
+          alert('Sharing not supported. Link copied instead.');
+        } catch {}
+        return;
+      }
+      try {
+        await navigator.share({ title: document.title, text: 'Join me at Curious Souls Café!', url: cleanUrl });
+      } catch (err) {
+        console.warn('Share canceled or failed:', err);
+      }
+    });
+
+    // Back button (#show-back / #hide-back)
+    document.addEventListener('DOMContentLoaded', () => {
+      const floatingBackButton = document.getElementById('floating-back-button');
+
+      if (floatingBackButton) {
+        floatingBackButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = '../';
+          }
+        });
+
+        function runBackButtonAttention() {
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!prefersReduced) {
+            floatingBackButton.classList.add('attention');
+            setTimeout(() => {
+              floatingBackButton.classList.remove('attention');
+            }, 2700);
+          }
+        }
+
+        function applyBackButtonHashRule() {
+          const hash = (window.location.hash || '').toLowerCase();
+          floatingBackButton.style.display = '';
+          if (hash === '#hide-back') {
+            floatingBackButton.style.display = 'none';
+          } else if (hash === '#show-back') {
+            floatingBackButton.style.display = 'inline-flex';
+            runBackButtonAttention();
+          } else {
+            floatingBackButton.style.display = 'none';
+          }
+        }
+
+        applyBackButtonHashRule();
+        window.addEventListener('hashchange', applyBackButtonHashRule);
+      }
+
+      updateShareButtonAvailability();
+    });
+  </script>
+</body>
+</html>
