@@ -7,6 +7,7 @@
   <meta name="description" content="Main content with #show-back functionality only." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -58,23 +59,23 @@
       overflow: auto;
     }
 
-    /* Hero */
+    /* Hero (reduced spacing) */
     .hero {
-      background: linear-gradient(to right, #f3f4f6 0%, #ede9fe 20%, #ede9fe 80%, #f3f4f6 100%);
-      padding: 3rem 0;
+      background: var(--bg-white);
+      padding: 4.5rem 0 0.5rem 0;
       text-align: center;
     }
     .hero h1 {
-      font-size: 2rem;
+      font-size: 1.85rem; /* slightly smaller for tighter feel */
       font-weight: 700;
-      margin-bottom: 1rem;
+      margin: 0 0 0.5rem 0; /* tighter */
       line-height: 1.2;
     }
     .hero p {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       color: var(--text-light);
       max-width: 700px;
-      margin: 0 auto;
+      margin: 0.25rem auto 0; /* tighter */
     }
     .hero p a {
       color: var(--primary-color);
@@ -83,9 +84,9 @@
     }
     .hero p a:hover { text-decoration: underline; }
 
-    /* Main Content */
+    /* Main Content (reduced top padding) */
     .content-section {
-      padding: 3rem 1.5rem;
+      padding: 2rem 1.5rem 3rem; /* top reduced from 3rem to 2rem */
       background-color: var(--bg-white);
     }
     .content-body {
@@ -96,12 +97,12 @@
       font-size: 1.75rem;
       border-bottom: 2px solid var(--primary-color);
       padding-bottom: 0.5rem;
-      margin-top: 2rem;
-      margin-bottom: 1.25rem;
+      margin-top: 1.25rem;  /* was 2rem */
+      margin-bottom: 1rem;  /* was 1.25rem */
     }
     .content-body h3 {
       font-size: 1.35rem;
-      margin-top: 1.5rem;
+      margin-top: 1.25rem;
       margin-bottom: 0.75rem;
     }
     .content-body h4 {
@@ -190,7 +191,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1.25rem;
-      margin: 1.5rem 0;
+      margin: 1.25rem 0; /* slightly tighter */
       justify-content: center;
     }
     .tool-card {
@@ -225,18 +226,18 @@
       flex-wrap: wrap;
     }
 
-    /* Floating Back Button */
+    /* Floating Back Button (styled to match Code B) */
     .floating-back-btn {
       position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
-      background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      background-color: var(--primary-color); color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
       box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
       transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
-      --pulse-from: #43c6a6;
-      --pulse-to: #6b7280;
-      --glow-color: rgba(99,102,241,0.55);
+      --pulse-from: var(--primary-color);
+      --pulse-to: var(--secondary-color);
+      --glow-color: rgba(168, 85, 247, 0.55);
       cursor: pointer;
     }
-    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1; }
+    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: var(--secondary-color); opacity: 1; }
     .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
 
     @keyframes backBtnPulse {
@@ -247,7 +248,7 @@
     .floating-back-btn.attention { animation: backBtnPulse 900ms ease-in-out 0s 3; }
 
     @media (max-width: 768px) {
-      .hero h1 { font-size: 1.75rem; }
+      .hero h1 { font-size: 1.65rem; }
       code, kbd, samp { font-size: 0.9rem; }
     }
 
@@ -264,7 +265,8 @@
 
   <!-- Floating Back Button (hash-controlled) -->
   <button id="floating-back-button" class="floating-back-btn" aria-label="Go back" style="display:none">
-    Back
+     <i class="fas fa-arrow-left"></i>
+       Back
   </button>
 
   <main>
@@ -387,7 +389,7 @@
           <li><p><code>index.html</code> is the main page in the <strong>root folder</strong>.</p></li>
           <li><p>Topic pages (e.g., <code>icebreaker/index.html</code>) are in the <strong><code>/topics</code></strong> folder.</p></li>
           <li><p>Question sets (<code>.txt</code> files) are in the <strong><code>/questions</code></strong> folder.</p></li>
-          <li><p>Images and other data are in the <strong><code>/images</code></strong> and <strong><code>/data</strong></code> folders, respectively.</p></li>
+          <li><p>Images and other data are in the <strong><code>/images</strong></code> and <strong><code>/data</code></strong> folders, respectively.</p></li>
         </ul>
 
         <h3>How to Add New Question Sets</h3>
