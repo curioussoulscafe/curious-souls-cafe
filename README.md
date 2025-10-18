@@ -22,7 +22,7 @@ The Curious Souls Café web app is built around a few core components designed t
 
 <h3 style="margin:0 0 8px 0;">🎲 The Virtual Dice Roller</h3>
 
-<p style="margin:0 0 12px 0;">Decide who starts, break ties, or add playful “punishment” action prompts. Read its docs <a href="https://app.curioussouls.cafe/dice">here</a>.</p>
+<p style="margin:0 0 12px 0;">Decide who starts, break ties, or add playful “punishment” action prompts. Read its docs <a href="https://curioussouls.cafe/dice">here</a>.</p>
 
 <p style="margin:0;"><a href="https://app.curioussouls.cafe/dice" target="_blank">Roll the Dice</a></p>
 
