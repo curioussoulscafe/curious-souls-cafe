@@ -66,16 +66,16 @@
       text-align: center;
     }
     .hero h1 {
-      font-size: 1.85rem; /* slightly smaller for tighter feel */
+      font-size: 1.85rem;
       font-weight: 700;
-      margin: 0 0 0.5rem 0; /* tighter */
+      margin: 0 0 0.5rem 0;
       line-height: 1.2;
     }
     .hero p {
       font-size: 1.02rem;
       color: var(--text-light);
       max-width: 700px;
-      margin: 0.25rem auto 0; /* tighter */
+      margin: 0.25rem auto 0;
     }
     .hero p a {
       color: var(--primary-color);
@@ -86,7 +86,7 @@
 
     /* Main Content (reduced top padding) */
     .content-section {
-      padding: 2rem 1.5rem 3rem; /* top reduced from 3rem to 2rem */
+      padding: 2rem 1.5rem 3rem;
       background-color: var(--bg-white);
     }
     .content-body {
@@ -97,8 +97,8 @@
       font-size: 1.75rem;
       border-bottom: 2px solid var(--primary-color);
       padding-bottom: 0.5rem;
-      margin-top: 1.25rem;  /* was 2rem */
-      margin-bottom: 1rem;  /* was 1.25rem */
+      margin-top: 1.25rem;
+      margin-bottom: 1rem;
     }
     .content-body h3 {
       font-size: 1.35rem;
@@ -191,7 +191,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 1.25rem;
-      margin: 1.25rem 0; /* slightly tighter */
+      margin: 1.25rem 0;
       justify-content: center;
     }
     .tool-card {
@@ -226,18 +226,20 @@
       flex-wrap: wrap;
     }
 
-    /* Floating Back Button (styled to match Code B) */
+    /* Floating Back Button aligned with Code A colors */
     .floating-back-btn {
       position: fixed; left: 1rem; bottom: 1rem; z-index: 3000;
-      background-color: var(--primary-color); color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
+      background-color: #43c6a6; color: white; border: none; padding: .65rem .9rem; border-radius: 9999px;
       box-shadow: 0 8px 16px rgba(0,0,0,.15); display: inline-flex; align-items: center; gap: .5rem; font-weight: 600;
       transition: transform .15s ease, box-shadow .2s ease, background-color .2s ease, opacity .2s ease; opacity: .95;
-      --pulse-from: var(--primary-color);
-      --pulse-to: var(--secondary-color);
-      --glow-color: rgba(168, 85, 247, 0.55);
+      --pulse-from: #43c6a6;
+      --pulse-to: #6b7280;
+      --glow-color: rgba(99,102,241,0.55);
       cursor: pointer;
     }
-    .floating-back-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: var(--secondary-color); opacity: 1; }
+    .floating-back-btn:hover {
+      transform: translateY(-2px); box-shadow: 0 12px 22px rgba(0,0,0,.20); background-color: #374151; opacity: 1;
+    }
     .floating-back-btn:active { transform: translateY(0); box-shadow: 0 6px 12px rgba(0,0,0,.15); }
 
     @keyframes backBtnPulse {
