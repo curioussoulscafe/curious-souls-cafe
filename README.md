@@ -6,9 +6,39 @@ Welcome to the Curious Souls Café! This [live web app](https://app.curioussouls
 
 The Curious Souls Café web app is built around a few core components designed to facilitate connection and conversation.
 
-- **Question Decks**: Access our [Question Decks](https://app.curioussouls.cafe/), a collection of curated questions designed to guide soul-searching discussions. These decks cover diverse themes and are often co-developed with the global community.
-- **The Dice Roller**: Access the [Virtual Dice Roller](https://app.curioussouls.cafe/dice/) (or read its [docs](https://curioussouls.cafe/dice/)) via the floating dice icon on any page. This is a fun tool used to decide who starts, break ties, or engage in meaningful punishment.
-- **Actions Prompts**: Access meaningful [Action Prompts](https://app.curioussouls.cafe/action-prompts/) to spark gratitude, kindness, and inspiration with randomly presented creative tasks.
+<div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;max-width:1100px;margin:1rem 0;">
+
+<div style="border:1px solid #e5e7eb;border-radius:12px;padding:16px;flex:1 1 260px;max-width:360px;">
+
+<h3 style="margin:0 0 8px 0;">💬 Virtual Question Decks</h3>
+
+<p style="margin:0 0 12px 0;">Access collections of curated questions designed to guide soul-searching discussions on diverse themes.</p>
+
+<p style="margin:0;"><a href="https://app.curioussouls.cafe/" target="_blank">Launch App</a></p>
+
+</div>
+
+<div style="border:1px solid #e5e7eb;border-radius:12px;padding:16px;flex:1 1 260px;max-width:360px;">
+
+<h3 style="margin:0 0 8px 0;">🎲 The Virtual Dice Roller</h3>
+
+<p style="margin:0 0 12px 0;">Decide who starts, break ties, or add playful “punishment” action prompts. Read its docs <a href="https://app.curioussouls.cafe/dice">here</a>.</p>
+
+<p style="margin:0;"><a href="https://app.curioussouls.cafe/dice" target="_blank">Roll the Dice</a></p>
+
+</div>
+
+<div style="border:1px solid #e5e7eb;border-radius:12px;padding:16px;flex:1 1 260px;max-width:360px;">
+
+<h3 style="margin:0 0 8px 0;">💡 Action Prompts</h3>
+
+<p style="margin:0 0 12px 0;">Spark gratitude, kindness, and inspiration with creative tasks.</p>
+
+<p style="margin:0;"><a href="https://app.curioussouls.cafe/action-prompts" target="_blank">Try the Prompts</a></p>
+
+</div>
+
+</div>
 
 ## What is Curious Souls Café?
 
